@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.132] - 2025-09-20
+
+### Changes
+- Add Google Cloud Workflows module for brand knowledge extraction (#138)
+
+**Source:** project-beta-api@2414830 "Add Google Cloud Workflows module for brand knowledge extraction (#138)"
+
 ## [v0.0.131] - 2025-09-20
 
 ### Changes
