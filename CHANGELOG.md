@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.133] - 2025-09-20
+
+### Changes
+- Fix Terraform workspace selection in CloudBuild workflow (#146)
+
+**Source:** project-beta-api@813d7f2 "Fix Terraform workspace selection in CloudBuild workflow (#146)"
+
 ## [v0.0.132] - 2025-09-20
 
 ### Changes
