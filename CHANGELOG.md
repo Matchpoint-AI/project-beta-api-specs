@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.131] - 2025-09-20
+
+### Changes
+- Merge pull request #145 from Matchpoint-AI/feat/fix-workflow-1758400330
+
+**Source:** project-beta-api@32c87f9 "Merge pull request #145 from Matchpoint-AI/feat/fix-workflow-1758400330"
+
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
