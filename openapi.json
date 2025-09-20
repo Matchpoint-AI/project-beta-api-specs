@@ -1,0 +1,4380 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Project Beta API",
+    "description": "AI-powered content generation platform API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v2/brands": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Create Brand",
+        "description": "Create a new brand and automatically trigger knowledge workflow.\n\nCreates a new brand with server-generated ID and immediately starts\na knowledge extraction workflow in the background.",
+        "operationId": "create_brand_api_v2_brands_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Brand created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "409": {
+            "description": "Brand with this name already exists"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "List Brands",
+        "description": "List all brands.\n\nReturns a list of brands with pagination support.",
+        "operationId": "list_brands_api_v2_brands_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of brands returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BrandResponse"
+                  },
+                  "title": "Response List Brands Api V2 Brands Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}": {
+      "put": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update Brand",
+        "description": "Update an existing brand.\n\nUpdates an existing brand. Returns 404 if the brand doesn't exist.\nOnly provided fields will be updated (partial update).",
+        "operationId": "update_brand_api_v2_brands__brandId__put",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Brand updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Get Brand",
+        "description": "Get brand information.\n\nReturns the brand details and status.\nReturns 404 if brand doesn't exist.",
+        "operationId": "get_brand_api_v2_brands__brandId__get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand information returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/with-files": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Create Brand With Files",
+        "description": "Create a new brand with file uploads.\n\nCreates a new brand with server-generated ID and handles file uploads for\nbrand guidelines (PDF) and logo (PNG/JPEG/JPG). Files are uploaded to\nGoogle Cloud Storage and URLs are stored in the brand record.",
+        "operationId": "create_brand_with_files_api_v2_brands_with_files_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_brand_with_files_api_v2_brands_with_files_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Brand created successfully with file uploads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data or file validation failed"
+          },
+          "409": {
+            "description": "Brand with this name already exists"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/with-files": {
+      "put": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update Brand With Files",
+        "description": "Update an existing brand with file uploads.\n\nUpdates an existing brand and handles file uploads for brand guidelines (PDF)\nand logo (PNG/JPEG/JPG). New files replace existing ones. Returns 404 if the\nbrand doesn't exist. Only provided fields will be updated (partial update).",
+        "operationId": "update_brand_with_files_api_v2_brands__brandId__with_files_put",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_update_brand_with_files_api_v2_brands__brandId__with_files_put"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Brand updated successfully with file uploads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "400": {
+            "description": "Invalid request data or file validation failed"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/colors": {
+      "put": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update Brand Colors",
+        "description": "Update selected brand colors (including custom colors).\n\nUpdates the brand colors with enhanced metadata including color names,\nusage roles (primary/secondary/accent), and custom status.",
+        "operationId": "update_brand_colors_api_v2_brands__brandId__colors_put",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandColorsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Brand colors updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandColorsUpdateResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "400": {
+            "description": "Invalid color data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/extraction/progress": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Get Extraction Progress",
+        "description": "Real-time progress updates during brand data extraction.\n\nReturns detailed progress information for the brand extraction workflow.\nSupports polling for real-time updates.",
+        "operationId": "get_extraction_progress_api_v2_brands__brandId__extraction_progress_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Progress data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandExtractionProgressResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand or extraction job not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/knowledge": {
+      "get": {
+        "tags": [
+          "brand-workflow"
+        ],
+        "summary": "Get Brand Knowledge V2",
+        "description": "Get extracted brand knowledge in V2 format.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.",
+        "operationId": "get_brand_knowledge_v2_api_v2_brands__brandId__knowledge_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand knowledge returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/src__schemas__brand_knowledge__BrandKnowledgeV2Response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand knowledge not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/onboarding/progress": {
+      "patch": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update Brand Onboarding Progress",
+        "description": "Update brand onboarding progress step.\n\nUpdates the current step and progress information for a brand's onboarding process.\nThis endpoint is used to track progress through various onboarding steps such as\nbrand-info, assets-upload, knowledge-review, etc.",
+        "operationId": "update_brand_onboarding_progress_api_v2_brands__brandId__onboarding_progress_patch",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandOnboardingProgressUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Brand onboarding progress updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandOnboardingProgressResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "400": {
+            "description": "Invalid progress data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/complete": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Complete Brand Onboarding",
+        "description": "Mark brand onboarding as complete and finalize brand profile.\n\nValidates that all required approvals have been given and marks\nthe brand onboarding process as completed.",
+        "operationId": "complete_brand_onboarding_api_v2_brands__brandId__complete_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandOnboardingComplete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Brand onboarding completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandOnboardingCompleteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Required approvals missing"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/files": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Upload Brand Files",
+        "description": "Upload brand files (guidelines PDF and logo).\n\nProper REST endpoint for uploading brand files to an existing brand.\nReplaces the non-RESTful /with-files endpoint.",
+        "operationId": "upload_brand_files_api_v2_brands__brandId__files_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_brand_files_api_v2_brands__brandId__files_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Brand files uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file format or size"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "413": {
+            "description": "File too large"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update Brand Files",
+        "description": "Update brand files (guidelines PDF and logo).\n\nProper REST endpoint for updating brand files.\nReplaces the non-RESTful /with-files endpoint.",
+        "operationId": "update_brand_files_api_v2_brands__brandId__files_put",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_update_brand_files_api_v2_brands__brandId__files_put"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Brand files updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file format or size"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "413": {
+            "description": "File too large"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/knowledge/workflows/{workflowId}": {
+      "get": {
+        "tags": [
+          "brand-workflow"
+        ],
+        "summary": "Get Brand Workflow",
+        "description": "Get the status of the knowledge collection workflow.\n\nReturns the current status of the background workflow including\nprogress, current step, and any results. This endpoint is used\nby the frontend to monitor the progress of the knowledge extraction\nthat was initiated internally during brand creation.",
+        "operationId": "get_brand_workflow_api_v2_brands__brandId__knowledge_workflows__workflowId__get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "workflowId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The workflow ID",
+              "title": "Workflowid"
+            },
+            "description": "The workflow ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workflow status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No workflow found for this brand"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/pages": {
+      "post": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Crawl Single Page",
+        "description": "Crawl a single page for workflow-driven crawling.\n\nThis endpoint is designed to be called by Google Cloud Workflows\nfor each individual page. The workflow handles iteration and\norchestrates the overall crawling process.",
+        "operationId": "crawl_single_page_api_v2_brands__brandId__pages_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__schemas__crawled_pages__CrawlPageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Page crawled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlPageWorkflowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "List Brand Pages",
+        "description": "List crawled pages for a brand.\n\nCan optionally filter by website URL to get pages from a specific website.",
+        "operationId": "list_brand_pages_api_v2_brands__brandId__pages_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "website_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by website URL (can be domain or full URL)",
+              "title": "Website Url"
+            },
+            "description": "Filter by website URL (can be domain or full URL)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of pages",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum number of pages"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of pages to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of pages to skip"
+          },
+          {
+            "name": "processed_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only return processed pages",
+              "default": false,
+              "title": "Processed Only"
+            },
+            "description": "Only return processed pages"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of crawled pages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CrawledPageResponse"
+                  },
+                  "title": "Response List Brand Pages Api V2 Brands  Brandid  Pages Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/knowledge/extract": {
+      "post": {
+        "tags": [
+          "brand-workflow"
+        ],
+        "summary": "Extract Brand Knowledge",
+        "description": "Extract and create knowledge from crawled pages.\n\nAnalyzes crawled content to extract and store brand knowledge including\npersonality traits, tone attributes, visual style, products, etc.\nThis is a workflow operation typically triggered by crawling completion.",
+        "operationId": "extract_brand_knowledge_api_v2_brands__brandId__knowledge_extract_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractKnowledgeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Knowledge extracted and created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractKnowledgeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Knowledge extraction failed"
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "List Campaigns",
+        "description": "List all campaigns.\n\nReturns a list of all campaigns for the authenticated user.",
+        "operationId": "list_campaigns_api_v2_campaigns_get",
+        "responses": {
+          "200": {
+            "description": "List of campaigns returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CampaignResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Campaigns Api V2 Campaigns Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Create Campaign",
+        "description": "Create a new campaign.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.",
+        "operationId": "create_campaign_api_v2_campaigns_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Campaign created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "409": {
+            "description": "Campaign with this name already exists"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}": {
+      "put": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Update Campaign",
+        "description": "Update an existing campaign.\n\nUpdates an existing campaign. Returns 404 if the campaign doesn't exist.\nOnly provided fields will be updated (partial update).",
+        "operationId": "update_campaign_api_v2_campaigns__campaign_id__put",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campaign updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Campaign",
+        "description": "Get campaign information.\n\nReturns the campaign details and status.\nReturns 404 if campaign doesn't exist.",
+        "operationId": "get_campaign_api_v2_campaigns__campaign_id__get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign information returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Delete Campaign",
+        "description": "Delete a campaign.\n\nDeletes the specified campaign. Returns 204 on successful deletion.\nReturns 404 if campaign doesn't exist.",
+        "operationId": "delete_campaign_api_v2_campaigns__campaign_id__delete",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Campaign deleted successfully"
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/crawl-queue/initialize": {
+      "post": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Initialize Crawl Session",
+        "description": "Initialize a new crawl session for a brand.\n\nCleans up any previous queue entries and sets up a fresh crawl\nwith the starting URL.",
+        "operationId": "initialize_crawl_session_api_v2_brands__brandId__crawl_queue_initialize_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitializeCrawlRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Crawl session initialized successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InitializeCrawlResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/crawl-queue/next": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Get Next Url To Crawl",
+        "description": "Get the next URL to crawl from the queue.\n\nReturns the highest priority pending URL, or null if no URLs\nare available to crawl.",
+        "operationId": "get_next_url_to_crawl_api_v2_brands__brandId__crawl_queue_next_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "base_domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Base domain for the crawl session",
+              "title": "Base Domain"
+            },
+            "description": "Base domain for the crawl session"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Next URL retrieved (or no URLs available)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NextUrlResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/crawl-queue/{queueEntryId}": {
+      "put": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Update Crawl Queue Entry",
+        "description": "Update the status of a crawl queue entry.\n\nCalled by workflows after attempting to crawl a URL to\nupdate its status and any relevant metadata.",
+        "operationId": "update_crawl_queue_entry_api_v2_brands__brandId__crawl_queue__queueEntryId__put",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "queueEntryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The queue entry ID",
+              "title": "Queueentryid"
+            },
+            "description": "The queue entry ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrawlQueueUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Queue entry updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlQueueResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Queue entry not found"
+          },
+          "400": {
+            "description": "Invalid update data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/crawl-queue": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "List Crawl Queue Entries",
+        "description": "List crawl queue entries for a brand with optional filtering.",
+        "operationId": "list_crawl_queue_entries_api_v2_brands__brandId__crawl_queue_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "base_domain",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by base domain",
+              "title": "Base Domain"
+            },
+            "description": "Filter by base domain"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by status",
+              "title": "Status"
+            },
+            "description": "Filter by status"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of entries",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum number of entries"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of entries to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of entries to skip"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Queue entries retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CrawlQueueResponse"
+                  },
+                  "title": "Response List Crawl Queue Entries Api V2 Brands  Brandid  Crawl Queue Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/pages/{pageId}": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Get Page",
+        "description": "Get a specific crawled page by ID.",
+        "operationId": "get_page_api_v2_brands__brandId__pages__pageId__get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The page ID",
+              "title": "Pageid"
+            },
+            "description": "The page ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Crawled page details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawledPageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Page not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/pages/unprocessed": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "List Unprocessed Pages",
+        "description": "List unprocessed crawled pages for a brand.",
+        "operationId": "list_unprocessed_pages_api_v2_brands__brandId__pages_unprocessed_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum number of pages",
+              "default": 10,
+              "title": "Limit"
+            },
+            "description": "Maximum number of pages"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of unprocessed pages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CrawledPageResponse"
+                  },
+                  "title": "Response List Unprocessed Pages Api V2 Brands  Brandid  Pages Unprocessed Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/pages/count": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Count Brand Pages",
+        "description": "Get the count of crawled pages for a brand.",
+        "operationId": "count_brand_pages_api_v2_brands__brandId__pages_count_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "processed_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only count processed pages",
+              "default": false,
+              "title": "Processed Only"
+            },
+            "description": "Only count processed pages"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page count for brand",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Count Brand Pages Api V2 Brands  Brandid  Pages Count Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health Check",
+        "description": "Health check endpoint.",
+        "operationId": "health_check_api_v2_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Check Api V2 Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "description": "Root endpoint returning API information.",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Root  Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_create_brand_with_files_api_v2_brands_with_files_post": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Brand name"
+          },
+          "website": {
+            "type": "string",
+            "title": "Website",
+            "description": "Brand website URL"
+          },
+          "brand_colors": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Colors",
+            "description": "JSON array of RGB hex codes"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry",
+            "description": "Brand industry"
+          },
+          "target_audience": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Audience",
+            "description": "Target audience description"
+          },
+          "brand_guidelines": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Guidelines"
+          },
+          "logo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "website"
+        ],
+        "title": "Body_create_brand_with_files_api_v2_brands_with_files_post"
+      },
+      "Body_update_brand_files_api_v2_brands__brandId__files_put": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Brand name"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "Brand website URL"
+          },
+          "brand_colors": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Colors",
+            "description": "JSON array of RGB hex codes"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry",
+            "description": "Brand industry"
+          },
+          "target_audience": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Audience",
+            "description": "Target audience"
+          },
+          "brand_guidelines": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Guidelines"
+          },
+          "logo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo"
+          }
+        },
+        "type": "object",
+        "title": "Body_update_brand_files_api_v2_brands__brandId__files_put"
+      },
+      "Body_update_brand_with_files_api_v2_brands__brandId__with_files_put": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Brand name"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "Brand website URL"
+          },
+          "brand_colors": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Colors",
+            "description": "JSON array of RGB hex codes"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry",
+            "description": "Brand industry"
+          },
+          "target_audience": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Audience",
+            "description": "Target audience"
+          },
+          "brand_guidelines": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Guidelines"
+          },
+          "logo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo"
+          }
+        },
+        "type": "object",
+        "title": "Body_update_brand_with_files_api_v2_brands__brandId__with_files_put"
+      },
+      "Body_upload_brand_files_api_v2_brands__brandId__files_post": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Brand name"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "Brand website URL"
+          },
+          "brand_colors": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Colors",
+            "description": "JSON array of RGB hex codes"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry",
+            "description": "Brand industry"
+          },
+          "target_audience": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Audience",
+            "description": "Target audience"
+          },
+          "brand_guidelines": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Guidelines"
+          },
+          "logo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo"
+          }
+        },
+        "type": "object",
+        "title": "Body_upload_brand_files_api_v2_brands__brandId__files_post"
+      },
+      "BrandColor": {
+        "properties": {
+          "colorHex": {
+            "type": "string",
+            "pattern": "^#[0-9A-Fa-f]{6}$",
+            "title": "Colorhex",
+            "description": "Color in hex format (e.g., #FF0000)"
+          },
+          "colorName": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 1,
+            "title": "Colorname",
+            "description": "Human-readable name for the color"
+          },
+          "usage": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary",
+              "accent"
+            ],
+            "title": "Usage",
+            "description": "Role of color in brand palette"
+          },
+          "isCustom": {
+            "type": "boolean",
+            "title": "Iscustom",
+            "description": "Whether this color was custom-added by user",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "colorHex",
+          "colorName",
+          "usage"
+        ],
+        "title": "BrandColor",
+        "description": "Brand color schema with metadata."
+      },
+      "BrandColorsUpdate": {
+        "properties": {
+          "brandColors": {
+            "items": {
+              "$ref": "#/components/schemas/BrandColor"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Brandcolors",
+            "description": "Updated brand colors with metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandColors"
+        ],
+        "title": "BrandColorsUpdate",
+        "description": "Schema for updating brand colors."
+      },
+      "BrandColorsUpdateResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "colorsUpdated": {
+            "type": "integer",
+            "title": "Colorsupdated",
+            "description": "Number of colors updated"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "Timestamp when colors were updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "colorsUpdated",
+          "updatedAt"
+        ],
+        "title": "BrandColorsUpdateResponse",
+        "description": "Schema for brand colors update response."
+      },
+      "BrandCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "website": {
+            "type": "string",
+            "title": "Website",
+            "description": "Brand website URL"
+          },
+          "brandColors": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandcolors",
+            "description": "List of brand colors (RGB hex codes from color picker)"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry",
+            "description": "Brand industry or sector"
+          },
+          "targetAudience": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Targetaudience",
+            "description": "Description of target audience"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "website"
+        ],
+        "title": "BrandCreate",
+        "description": "Schema for creating a new brand."
+      },
+      "BrandExtractionProgress": {
+        "properties": {
+          "percentage": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Percentage",
+            "description": "Progress percentage (0-100)"
+          },
+          "currentStep": {
+            "type": "string",
+            "title": "Currentstep",
+            "description": "Current step being processed"
+          },
+          "stepsCompleted": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Stepscompleted",
+            "description": "Number of steps completed"
+          },
+          "totalSteps": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Totalsteps",
+            "description": "Total number of steps in the process"
+          },
+          "itemsCrawled": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Itemscrawled",
+            "description": "Number of items crawled so far",
+            "default": 0
+          },
+          "estimatedTimeRemaining": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimatedtimeremaining",
+            "description": "Estimated time remaining in seconds"
+          }
+        },
+        "type": "object",
+        "required": [
+          "percentage",
+          "currentStep",
+          "stepsCompleted",
+          "totalSteps"
+        ],
+        "title": "BrandExtractionProgress",
+        "description": "Schema for brand extraction progress information."
+      },
+      "BrandExtractionProgressResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "extractionJobId": {
+            "type": "string",
+            "title": "Extractionjobid",
+            "description": "Extraction job ID"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "processing",
+              "completed",
+              "failed"
+            ],
+            "title": "Status",
+            "description": "Current extraction status"
+          },
+          "progress": {
+            "$ref": "#/components/schemas/BrandExtractionProgress",
+            "description": "Detailed progress information"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Lastupdated",
+            "description": "When the progress was last updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "extractionJobId",
+          "status",
+          "progress",
+          "lastUpdated"
+        ],
+        "title": "BrandExtractionProgressResponse",
+        "description": "Schema for brand extraction progress response."
+      },
+      "BrandOnboardingComplete": {
+        "properties": {
+          "reviewedData": {
+            "$ref": "#/components/schemas/BrandOnboardingReview",
+            "description": "Review status of all onboarding data"
+          },
+          "additionalNotes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Additionalnotes",
+            "description": "Additional notes about the onboarding completion"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reviewedData"
+        ],
+        "title": "BrandOnboardingComplete",
+        "description": "Schema for completing brand onboarding."
+      },
+      "BrandOnboardingCompleteResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "status": {
+            "type": "string",
+            "const": "completed",
+            "enum": ["completed"],
+            "title": "Status",
+            "description": "Status after completion",
+            "default": "completed"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Completedat",
+            "description": "Timestamp when onboarding was completed"
+          },
+          "profileUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profileurl",
+            "description": "URL to the completed brand profile"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "completedAt"
+        ],
+        "title": "BrandOnboardingCompleteResponse",
+        "description": "Schema for brand onboarding completion response."
+      },
+      "BrandOnboardingProgressResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "currentStep": {
+            "type": "string",
+            "title": "Currentstep",
+            "description": "Current step in the onboarding process"
+          },
+          "completedSteps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Completedsteps",
+            "description": "List of completed steps in chronological order"
+          },
+          "progressPercentage": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progresspercentage",
+            "description": "Overall progress percentage (0-100)",
+            "default": 0
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "Additional metadata about the current step or progress"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "When the progress was last updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "currentStep",
+          "updatedAt"
+        ],
+        "title": "BrandOnboardingProgressResponse",
+        "description": "Schema for brand onboarding progress response."
+      },
+      "BrandOnboardingProgressUpdate": {
+        "properties": {
+          "currentStep": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Currentstep",
+            "description": "Current step in the onboarding process (e.g., 'brand-info', 'assets-upload', 'knowledge-review')"
+          },
+          "completedSteps": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedsteps",
+            "description": "List of completed steps in chronological order"
+          },
+          "progressPercentage": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Progresspercentage",
+            "description": "Overall progress percentage (0-100)"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "Additional metadata about the current step or progress"
+          }
+        },
+        "type": "object",
+        "required": [
+          "currentStep"
+        ],
+        "title": "BrandOnboardingProgressUpdate",
+        "description": "Schema for updating brand onboarding progress step."
+      },
+      "BrandOnboardingReview": {
+        "properties": {
+          "knowledgeApproved": {
+            "type": "boolean",
+            "title": "Knowledgeapproved",
+            "description": "Whether the extracted brand knowledge has been approved"
+          },
+          "assetsApproved": {
+            "type": "boolean",
+            "title": "Assetsapproved",
+            "description": "Whether the uploaded brand assets have been approved"
+          },
+          "colorsApproved": {
+            "type": "boolean",
+            "title": "Colorsapproved",
+            "description": "Whether the brand colors have been approved"
+          }
+        },
+        "type": "object",
+        "required": [
+          "knowledgeApproved",
+          "assetsApproved",
+          "colorsApproved"
+        ],
+        "title": "BrandOnboardingReview",
+        "description": "Schema for reviewing brand onboarding data."
+      },
+      "BrandResponse": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          },
+          "id": {
+            "type": "string",
+            "title": "ID"
+          },
+          "brandGuidelinesUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandguidelinesurl",
+            "description": "Google Cloud Storage URL for brand guidelines PDF"
+          },
+          "logoUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logourl",
+            "description": "Google Cloud Storage URL for brand logo"
+          },
+          "brandColors": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandcolors",
+            "description": "Brand colors (RGB hex codes from frontend or extracted during crawling)"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry"
+          },
+          "targetAudience": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Targetaudience"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BrandStatus"
+          },
+          "workflowId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workflowid",
+            "description": "ID of the associated brand extraction workflow"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "id",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "BrandResponse",
+        "description": "Schema for brand responses."
+      },
+      "BrandStatus": {
+        "type": "string",
+        "enum": [
+          "active",
+          "inactive"
+        ],
+        "title": "BrandStatus",
+        "description": "Brand status enumeration."
+      },
+      "BrandUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "Brand website URL"
+          },
+          "brandGuidelinesUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandguidelinesurl"
+          },
+          "logoUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logourl"
+          },
+          "brandColors": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandcolors",
+            "description": "List of brand colors (RGB hex codes)"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry"
+          },
+          "targetAudience": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Targetaudience"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BrandStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "BrandUpdate",
+        "description": "Schema for updating an existing brand."
+      },
+      "CampaignCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "durationWeeks": {
+            "type": "integer",
+            "maximum": 52.0,
+            "minimum": 1.0,
+            "title": "Duration Weeks",
+            "default": 1
+          },
+          "postsPerDay": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Posts Per Day",
+            "default": 3
+          },
+          "campaignType": {
+            "$ref": "#/components/schemas/CampaignType",
+            "title": "Campaign Type",
+            "description": "Type of media content for the campaign",
+            "default": "image"
+          },
+          "campaignVariables": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Variables"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "CampaignCreate",
+        "description": "Schema for creating a new campaign."
+      },
+      "CampaignResponse": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "durationWeeks": {
+            "type": "integer",
+            "maximum": 52.0,
+            "minimum": 1.0,
+            "title": "Duration Weeks",
+            "default": 1
+          },
+          "postsPerDay": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Posts Per Day",
+            "default": 3
+          },
+          "campaignType": {
+            "$ref": "#/components/schemas/CampaignType",
+            "title": "Campaign Type",
+            "description": "Type of media content for the campaign",
+            "default": "image"
+          },
+          "campaignVariables": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Variables"
+          },
+          "id": {
+            "type": "integer",
+            "title": "ID"
+          },
+          "userId": {
+            "type": "string",
+            "title": "User ID"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CampaignStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "id",
+          "userId",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "CampaignResponse",
+        "description": "Schema for campaign responses."
+      },
+      "CampaignStatus": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "active",
+          "paused",
+          "completed",
+          "archived"
+        ],
+        "title": "CampaignStatus",
+        "description": "Campaign status enumeration."
+      },
+      "CampaignType": {
+        "type": "string",
+        "enum": [
+          "image",
+          "video"
+        ],
+        "title": "CampaignType",
+        "description": "Campaign type enumeration for media content types."
+      },
+      "CampaignUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "durationWeeks": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 52.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Weeks"
+          },
+          "postsPerDay": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 10.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posts Per Day"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CampaignStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "campaignType": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CampaignType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Type",
+            "description": "Type of media content for the campaign"
+          },
+          "campaignVariables": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Variables"
+          }
+        },
+        "type": "object",
+        "title": "CampaignUpdate",
+        "description": "Schema for updating an existing campaign."
+      },
+      "CrawlPageResponse": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "The crawled URL"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "Page title"
+          },
+          "textContent": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textcontent",
+            "description": "Extracted text content"
+          },
+          "metaDescription": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadescription",
+            "description": "Meta description"
+          },
+          "discoveredUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Discoveredurls",
+            "description": "URLs found on page"
+          },
+          "statusCode": {
+            "type": "integer",
+            "title": "Statuscode",
+            "description": "HTTP status code",
+            "default": 200
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error message if failed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "CrawlPageResponse",
+        "description": "Response from crawling a page."
+      },
+      "CrawlPageWorkflowResponse": {
+        "properties": {
+          "pageUrl": {
+            "type": "string",
+            "title": "Pageurl",
+            "description": "URL that was crawled"
+          },
+          "crawlStatus": {
+            "type": "string",
+            "title": "Crawlstatus",
+            "description": "Status of crawl operation"
+          },
+          "discoveredUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Discoveredurls",
+            "description": "URLs discovered on this page"
+          },
+          "pageId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pageid",
+            "description": "ID of stored page (if successful)"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error message if crawl failed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pageUrl",
+          "crawlStatus"
+        ],
+        "title": "CrawlPageWorkflowResponse",
+        "description": "Response model for single-page crawl operation via workflow."
+      },
+      "CrawlQueueResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Queue entry ID"
+          },
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Associated brand ID"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "URL to crawl"
+          },
+          "baseDomain": {
+            "type": "string",
+            "title": "Basedomain",
+            "description": "Base domain for this crawl session"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CrawlStatus",
+            "description": "Current crawl status"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority",
+            "description": "Priority (higher numbers crawled first)"
+          },
+          "discoveredFrom": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Discoveredfrom",
+            "description": "URL this was discovered from"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error message if failed"
+          },
+          "pageId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pageid",
+            "description": "ID of created page if successful"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "When URL was added to queue"
+          },
+          "updatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updatedat",
+            "description": "Last status update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "brandId",
+          "url",
+          "baseDomain",
+          "status",
+          "priority",
+          "discoveredFrom",
+          "errorMessage",
+          "pageId",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "CrawlQueueResponse",
+        "description": "Response model for crawl queue entries."
+      },
+      "CrawlQueueUpdate": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/CrawlStatus",
+            "description": "New status for the URL"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error message if status is failed"
+          },
+          "pageId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pageid",
+            "description": "ID of created page if successful"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "CrawlQueueUpdate",
+        "description": "Request model for updating crawl queue entry status."
+      },
+      "CrawlStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "crawling",
+          "completed",
+          "failed",
+          "skipped"
+        ],
+        "title": "CrawlStatus",
+        "description": "Status of a URL in the crawl queue."
+      },
+      "CrawledPageResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Page ID"
+          },
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Associated brand ID"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Page URL"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Page title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Page content (text)"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PageMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Page metadata"
+          },
+          "processed": {
+            "type": "boolean",
+            "title": "Processed",
+            "description": "Whether page has been processed",
+            "default": false
+          },
+          "crawledAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Crawledat",
+            "description": "Crawl timestamp"
+          },
+          "updatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updatedat",
+            "description": "Last update timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "brandId",
+          "url",
+          "title",
+          "content",
+          "crawledAt"
+        ],
+        "title": "CrawledPageResponse",
+        "description": "Response model for a crawled page."
+      },
+      "ExtractKnowledgeRequest": {
+        "properties": {
+          "workflowId": {
+            "type": "string",
+            "title": "Workflowid",
+            "description": "Workflow ID"
+          },
+          "crawledPages": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Crawledpages",
+            "description": "List of crawled page data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "workflowId",
+          "crawledPages"
+        ],
+        "title": "ExtractKnowledgeRequest",
+        "description": "Request for extracting brand knowledge from crawled pages."
+      },
+      "ExtractKnowledgeResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "personalityTraits": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Personalitytraits",
+            "description": "2-5 personality traits as lowercase adjectives"
+          },
+          "toneAttributes": {
+            "$ref": "#/components/schemas/src__schemas__brand_crawler__ToneAttributes",
+            "description": "Communication tone attributes"
+          },
+          "colorPalette": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Colorpalette",
+            "description": "3-5 hex color codes"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/ProductInfo"
+            },
+            "type": "array",
+            "title": "Products",
+            "description": "Products and services"
+          },
+          "brandDescription": {
+            "type": "string",
+            "title": "Branddescription",
+            "description": "1-2 sentence brand description"
+          },
+          "valueProposition": {
+            "type": "string",
+            "title": "Valueproposition",
+            "description": "1-2 sentence value proposition"
+          },
+          "targetAudience": {
+            "type": "string",
+            "title": "Targetaudience",
+            "description": "1-2 sentence target audience description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "personalityTraits",
+          "toneAttributes",
+          "colorPalette",
+          "products",
+          "brandDescription",
+          "valueProposition",
+          "targetAudience"
+        ],
+        "title": "ExtractKnowledgeResponse",
+        "description": "Response from brand knowledge extraction."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InitializeCrawlRequest": {
+        "properties": {
+          "startingUrl": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Startingurl",
+            "description": "Initial URL to start crawling"
+          },
+          "maxPages": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 1.0,
+            "title": "Maxpages",
+            "description": "Maximum pages to crawl",
+            "default": 50
+          }
+        },
+        "type": "object",
+        "required": [
+          "startingUrl"
+        ],
+        "title": "InitializeCrawlRequest",
+        "description": "Request model for initializing a new crawl session."
+      },
+      "InitializeCrawlResponse": {
+        "properties": {
+          "crawlSessionId": {
+            "type": "string",
+            "title": "Crawlsessionid",
+            "description": "Unique ID for this crawl session"
+          },
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "startingUrl": {
+            "type": "string",
+            "title": "Startingurl",
+            "description": "Initial URL"
+          },
+          "maxPages": {
+            "type": "integer",
+            "title": "Maxpages",
+            "description": "Maximum pages to crawl"
+          },
+          "baseDomain": {
+            "type": "string",
+            "title": "Basedomain",
+            "description": "Detected base domain"
+          },
+          "urlsQueued": {
+            "type": "integer",
+            "title": "Urlsqueued",
+            "description": "Number of URLs initially queued"
+          }
+        },
+        "type": "object",
+        "required": [
+          "crawlSessionId",
+          "brandId",
+          "startingUrl",
+          "maxPages",
+          "baseDomain",
+          "urlsQueued"
+        ],
+        "title": "InitializeCrawlResponse",
+        "description": "Response model for crawl initialization."
+      },
+      "NextUrlResponse": {
+        "properties": {
+          "queueEntryId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Queueentryid",
+            "description": "Queue entry ID (null if no URLs available)"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url",
+            "description": "Next URL to crawl (null if none available)"
+          },
+          "baseDomain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Basedomain",
+            "description": "Base domain for link filtering"
+          },
+          "hasMoreUrls": {
+            "type": "boolean",
+            "title": "Hasmoreurls",
+            "description": "Whether more URLs are available in queue"
+          },
+          "totalPending": {
+            "type": "integer",
+            "title": "Totalpending",
+            "description": "Total number of pending URLs"
+          },
+          "totalCompleted": {
+            "type": "integer",
+            "title": "Totalcompleted",
+            "description": "Total number of completed URLs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "queueEntryId",
+          "url",
+          "baseDomain",
+          "hasMoreUrls",
+          "totalPending",
+          "totalCompleted"
+        ],
+        "title": "NextUrlResponse",
+        "description": "Response model for next URL to crawl."
+      },
+      "PageMetadata": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Page meta description"
+          },
+          "metaDescription": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadescription",
+            "description": "Page meta description (alias)"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords",
+            "description": "Page keywords"
+          },
+          "author": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Author",
+            "description": "Page author"
+          },
+          "publishedDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisheddate",
+            "description": "Publication date"
+          },
+          "lastModified": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastmodified",
+            "description": "Last modification date"
+          },
+          "pageType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pagetype",
+            "description": "Type of page (blog, product, etc)"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language",
+            "description": "Page language code",
+            "default": "en"
+          },
+          "discoveredUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Discoveredurls",
+            "description": "Discovered URLs"
+          },
+          "crawledAt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crawledat",
+            "description": "Crawl timestamp"
+          },
+          "statusCode": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Statuscode",
+            "description": "HTTP status code"
+          },
+          "contentType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contenttype",
+            "description": "Content type"
+          }
+        },
+        "type": "object",
+        "title": "PageMetadata",
+        "description": "Metadata for a crawled page."
+      },
+      "ProductInfo": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Product name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Product category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category"
+        ],
+        "title": "ProductInfo",
+        "description": "Product information schema."
+      },
+      "ToneAttributesV2": {
+        "properties": {
+          "formality": {
+            "type": "string",
+            "title": "Formality",
+            "description": "Formality level (casual, professional, formal)"
+          },
+          "enthusiasm": {
+            "type": "string",
+            "title": "Enthusiasm",
+            "description": "Enthusiasm level (low, medium, high)"
+          },
+          "expertise": {
+            "type": "string",
+            "title": "Expertise",
+            "description": "Expertise level (beginner, intermediate, expert)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "formality",
+          "enthusiasm",
+          "expertise"
+        ],
+        "title": "ToneAttributesV2",
+        "description": "V2 Tone attributes for brand knowledge."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WorkflowResponse": {
+        "properties": {
+          "workflowId": {
+            "type": "string",
+            "title": "Workflowid",
+            "description": "Unique workflow identifier"
+          },
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand identifier"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Overall workflow status: running, completed, failed"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowStep"
+            },
+            "type": "array",
+            "title": "Steps",
+            "description": "Workflow steps with status"
+          },
+          "createdAt": {
+            "type": "string",
+            "title": "Createdat",
+            "description": "ISO timestamp when workflow was created"
+          },
+          "progress": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Progress",
+            "description": "Overall progress percentage 0-100"
+          },
+          "currentStep": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentstep",
+            "description": "Currently executing step"
+          },
+          "sources": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sources",
+            "description": "URLs being crawled"
+          },
+          "pagesCrawled": {
+            "type": "integer",
+            "title": "Pagescrawled",
+            "description": "Number of pages successfully downloaded/scraped",
+            "default": 0
+          },
+          "pagesProcessed": {
+            "type": "integer",
+            "title": "Pagesprocessed",
+            "description": "Number of pages analyzed for knowledge extraction",
+            "default": 0
+          },
+          "totalPages": {
+            "type": "integer",
+            "title": "Totalpages",
+            "description": "Total pages discovered (can increase during crawl)",
+            "default": 0
+          },
+          "totalPercentage": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Totalpercentage",
+            "description": "Detailed progress percentage with decimals"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result",
+            "description": "Final workflow result (only when completed)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "workflowId",
+          "brandId",
+          "status",
+          "steps",
+          "createdAt"
+        ],
+        "title": "WorkflowResponse",
+        "description": "Response from workflow operations with detailed progress tracking."
+      },
+      "WorkflowStep": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Step name: crawling, analyzing, or completed"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Step status: pending, running, completed, or failed"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At",
+            "description": "ISO timestamp when step started"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At",
+            "description": "ISO timestamp when step completed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "status"
+        ],
+        "title": "WorkflowStep",
+        "description": "Schema for workflow step tracking."
+      },
+      "src__schemas__brand_crawler__CrawlPageRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "URL to crawl"
+          },
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID for domain filtering"
+          },
+          "extractLinks": {
+            "type": "boolean",
+            "title": "Extractlinks",
+            "description": "Whether to extract links",
+            "default": true
+          },
+          "waitForSelector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waitforselector",
+            "description": "CSS selector to wait for"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url",
+          "brandId"
+        ],
+        "title": "CrawlPageRequest",
+        "description": "Request for crawling a single page."
+      },
+      "src__schemas__brand_crawler__ToneAttributes": {
+        "properties": {
+          "formality": {
+            "type": "string",
+            "title": "Formality",
+            "description": "Formality level: casual, semi-formal, formal"
+          },
+          "enthusiasm": {
+            "type": "string",
+            "title": "Enthusiasm",
+            "description": "Enthusiasm level: low, medium, high"
+          },
+          "expertise": {
+            "type": "string",
+            "title": "Expertise",
+            "description": "Expertise level: beginner, intermediate, authoritative"
+          }
+        },
+        "type": "object",
+        "required": [
+          "formality",
+          "enthusiasm",
+          "expertise"
+        ],
+        "title": "ToneAttributes",
+        "description": "Tone attributes schema."
+      },
+      "src__schemas__brand_knowledge__BrandKnowledgeV2Response": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "personalityTraits": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Personalitytraits",
+            "description": "2-5 lowercase adjectives describing brand personality"
+          },
+          "toneAttributes": {
+            "$ref": "#/components/schemas/ToneAttributesV2",
+            "description": "Structured tone characteristics"
+          },
+          "colorPalette": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Colorpalette",
+            "description": "3-5 hex color codes from brand visual identity"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/src__schemas__brand_knowledge__ProductV2"
+            },
+            "type": "array",
+            "title": "Products",
+            "description": "List of products with name and category"
+          },
+          "brandDescription": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Branddescription",
+            "description": "1-2 sentences describing the brand"
+          },
+          "valueProposition": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Valueproposition",
+            "description": "1-2 sentences describing the value proposition"
+          },
+          "targetAudience": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Targetaudience",
+            "description": "1-2 sentences describing the target audience"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "personalityTraits",
+          "toneAttributes",
+          "colorPalette",
+          "products",
+          "brandDescription",
+          "valueProposition",
+          "targetAudience"
+        ],
+        "title": "BrandKnowledgeV2Response",
+        "description": "V2 Response model for simplified brand knowledge extraction."
+      },
+      "src__schemas__brand_knowledge__ProductV2": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Product name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Product category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category"
+        ],
+        "title": "ProductV2",
+        "description": "V2 Product information for brand knowledge."
+      },
+      "src__schemas__brands__BrandKnowledgeV2Response": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "personalityTraits": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "minItems": 2,
+            "title": "Personalitytraits",
+            "description": "2-5 lowercase adjectives describing brand personality"
+          },
+          "toneAttributes": {
+            "$ref": "#/components/schemas/src__schemas__brands__ToneAttributes",
+            "description": "Structured tone attributes"
+          },
+          "colorPalette": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "minItems": 3,
+            "title": "Colorpalette",
+            "description": "3-5 hex color codes"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/src__schemas__brands__ProductV2"
+            },
+            "type": "array",
+            "title": "Products",
+            "description": "List of products with name and category"
+          },
+          "brandDescription": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Branddescription",
+            "description": "1-2 sentences describing the brand"
+          },
+          "valueProposition": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Valueproposition",
+            "description": "1-2 sentences describing unique value"
+          },
+          "targetAudience": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Targetaudience",
+            "description": "1-2 sentences describing target audience"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "personalityTraits",
+          "toneAttributes",
+          "colorPalette",
+          "products",
+          "brandDescription",
+          "valueProposition",
+          "targetAudience"
+        ],
+        "title": "BrandKnowledgeV2Response",
+        "description": "V2 API response schema for brand knowledge extraction."
+      },
+      "src__schemas__brands__ProductV2": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Product name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Product category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category"
+        ],
+        "title": "ProductV2",
+        "description": "Product information for brand knowledge."
+      },
+      "src__schemas__brands__ToneAttributes": {
+        "properties": {
+          "formality": {
+            "type": "string",
+            "title": "Formality",
+            "description": "Formality level (formal/semi-formal/casual)"
+          },
+          "enthusiasm": {
+            "type": "string",
+            "title": "Enthusiasm",
+            "description": "Enthusiasm level (low/medium/high)"
+          },
+          "expertise": {
+            "type": "string",
+            "title": "Expertise",
+            "description": "Expertise level (beginner/authoritative/expert)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "formality",
+          "enthusiasm",
+          "expertise"
+        ],
+        "title": "ToneAttributes",
+        "description": "Tone attributes for brand knowledge."
+      },
+      "src__schemas__crawled_pages__CrawlPageRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Url",
+            "description": "URL to crawl"
+          },
+          "baseDomain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Basedomain",
+            "description": "Base domain for link filtering (auto-detected if not provided)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "CrawlPageRequest",
+        "description": "Request model for crawling a single page via workflow."
+      }
+    }
+  }
+}
