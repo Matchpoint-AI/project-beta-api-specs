@@ -13,7 +13,12 @@ This repository provides public access to OpenAPI specifications while keeping t
 
 ## Swagger UI
 
-The repository includes a Swagger UI interface for interactive API documentation. Access it by opening `index.html` in a web browser. The UI loads the OpenAPI specification from `openapi.json` and provides an interactive interface for exploring the API endpoints.
+The repository includes a Swagger UI interface for interactive API documentation:
+
+- **Live Documentation**: https://matchpoint-ai.github.io/project-beta-api-specs/
+- **Local Access**: Open `index.html` in a web browser
+
+The UI loads the OpenAPI specification from `openapi.json` and provides an interactive interface for exploring the API endpoints.
 
 ## Usage
 
