@@ -11,6 +11,10 @@ This repository provides public access to OpenAPI specifications while keeping t
 - `openapi.json` - Current OpenAPI 3.0 specification
 - Tags correspond to releases in the main `project-beta-api` repository
 
+## Swagger UI
+
+The repository includes a Swagger UI interface for interactive API documentation. Access it by opening `index.html` in a web browser. The UI loads the OpenAPI specification from `openapi.json` and provides an interactive interface for exploring the API endpoints.
+
 ## Usage
 
 Frontend applications and API consumers can fetch the OpenAPI specification directly from this repository:
