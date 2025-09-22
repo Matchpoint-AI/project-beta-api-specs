@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.139] - 2025-09-22
+
+### Changes
+- feat: implement missing v2 API endpoints for content generation (#157)
+
+**Source:** project-beta-api@675001f "feat: implement missing v2 API endpoints for content generation (#157)"
+
 ## [v0.0.138] - 2025-09-22
 
 ### Changes

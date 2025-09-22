@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.138"
+    "version": "0.0.139"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1224,6 +1224,979 @@
         }
       }
     },
+    "/api/v2/campaigns/{campaign_id}/statistics": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Campaign Statistics",
+        "description": "Get campaign statistics.\n\nReturns detailed statistics for a specific campaign including engagement metrics,\nplatform breakdown, content performance, and campaign progress.",
+        "operationId": "get_campaign_statistics_api_v2_campaigns__campaign_id__statistics_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign statistics returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignStatistics"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/captions": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Generate Caption",
+        "description": "Generate captions for content.",
+        "operationId": "generate_caption_api_v2_content__content_id__captions_post",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Captions",
+        "description": "Get all captions for a content item.",
+        "operationId": "get_captions_api_v2_content__content_id__captions_get",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CaptionResponse"
+                  },
+                  "title": "Response Get Captions Api V2 Content  Content Id  Captions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/captions/{caption_id}/regenerate": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Regenerate Caption",
+        "description": "Regenerate a specific caption.",
+        "operationId": "regenerate_caption_api_v2_content__content_id__captions__caption_id__regenerate_post",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          },
+          {
+            "name": "caption_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Caption Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionRegenerateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/captions/{caption_id}": {
+      "delete": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Delete Caption",
+        "description": "Delete a specific caption.",
+        "operationId": "delete_caption_api_v2_content__content_id__captions__caption_id__delete",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          },
+          {
+            "name": "caption_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Caption Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/captions/validate": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Validate Captions",
+        "description": "Validate captions against brand guidelines.",
+        "operationId": "validate_captions_api_v2_captions_validate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionValidationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionValidationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/policy": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Create Scene Mix Policy",
+        "description": "Create a scene mix policy for a campaign.",
+        "operationId": "create_scene_mix_policy_api_v2_campaigns__campaign_id__policy_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SceneMixPolicyCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Scene Mix Policy",
+        "description": "Get scene mix policy for a campaign.",
+        "operationId": "get_scene_mix_policy_api_v2_campaigns__campaign_id__policy_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/policy/{policy_id}": {
+      "put": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Update Scene Mix Policy",
+        "description": "Update a scene mix policy.",
+        "operationId": "update_scene_mix_policy_api_v2_campaigns__campaign_id__policy__policy_id__put",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Campaign Id"
+            }
+          },
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SceneMixPolicyUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/plan": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Create Scene Mix Plan",
+        "description": "Create a scene mix plan for a campaign.",
+        "operationId": "create_scene_mix_plan_api_v2_campaigns__campaign_id__plan_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SceneMixPlanCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPlanResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Scene Mix Plan",
+        "description": "Get scene mix plan for a campaign.",
+        "operationId": "get_scene_mix_plan_api_v2_campaigns__campaign_id__plan_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPlanResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/plans": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get All Plans",
+        "description": "Get all scene mix plans.",
+        "operationId": "get_all_plans_api_v2_plans_get",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images/generate": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Generate Image",
+        "description": "Generate an image using AI.",
+        "operationId": "generate_image_api_v2_images_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images/batch": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Generate Images Batch",
+        "description": "Generate multiple images in batch.",
+        "operationId": "generate_images_batch_api_v2_images_batch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageBatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageBatchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images/remix/{image_id}": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Remix Image",
+        "description": "Remix an existing image.",
+        "operationId": "remix_image_api_v2_images_remix__image_id__post",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageRemixRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images/models": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Image Models",
+        "description": "Get available image generation models.",
+        "operationId": "get_image_models_api_v2_images_models_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageModelsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations/redirect-uri": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Integration Redirect Uri",
+        "description": "Get OAuth redirect URI for platform integration.",
+        "operationId": "get_integration_redirect_uri_api_v2_integrations_redirect_uri_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationRedirectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationRedirectResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Integrations",
+        "description": "Get all configured integrations.",
+        "operationId": "get_integrations_api_v2_integrations_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationsListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations/{platform}/auth": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Authenticate Integration",
+        "description": "Authenticate with a platform.",
+        "operationId": "authenticate_integration_api_v2_integrations__platform__auth_post",
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Platform"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationAuthRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations/{platform}": {
+      "delete": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Disconnect Integration",
+        "description": "Disconnect a platform integration.",
+        "operationId": "disconnect_integration_api_v2_integrations__platform__delete",
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Platform"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/pages/count": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Count Brand Pages",
+        "description": "Get the count of crawled pages for a brand.",
+        "operationId": "count_brand_pages_api_v2_brands__brandId__pages_count_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "processed_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only count processed pages",
+              "default": false,
+              "title": "Processed Only"
+            },
+            "description": "Only count processed pages"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page count for brand",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Count Brand Pages Api V2 Brands  Brandid  Pages Count Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brandId}/crawl-queue/initialize": {
       "post": {
         "tags": [
@@ -1636,68 +2609,6 @@
                     "$ref": "#/components/schemas/CrawledPageResponse"
                   },
                   "title": "Response List Unprocessed Pages Api V2 Brands  Brandid  Pages Unprocessed Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brandId}/pages/count": {
-      "get": {
-        "tags": [
-          "crawled-pages"
-        ],
-        "summary": "Count Brand Pages",
-        "description": "Get the count of crawled pages for a brand.",
-        "operationId": "count_brand_pages_api_v2_brands__brandId__pages_count_get",
-        "parameters": [
-          {
-            "name": "brandId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brandid"
-            },
-            "description": "The brand ID"
-          },
-          {
-            "name": "processed_only",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Only count processed pages",
-              "default": false,
-              "title": "Processed Only"
-            },
-            "description": "Only count processed pages"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Page count for brand",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Count Brand Pages Api V2 Brands  Brandid  Pages Count Get"
                 }
               }
             }
@@ -2404,12 +3315,7 @@
             "description": "Brand ID"
           },
           "status": {
-            "type": "string",
-            "const": "completed",
-            "enum": [
-              "completed"
-            ],
-            "title": "Status",
+            "$ref": "#/components/schemas/OnboardingStatus",
             "description": "Status after completion",
             "default": "completed"
           },
@@ -2953,6 +3859,89 @@
             "type": "string",
             "format": "date-time",
             "title": "Updated At"
+          },
+          "startDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Start Date"
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Timezone"
+          },
+          "postingDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Post Date"
+          },
+          "contentCount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Content Count",
+            "default": 0
+          },
+          "approvedCount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved Content Count",
+            "default": 0
+          },
+          "pendingCount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending Content Count",
+            "default": 0
+          },
+          "generatingCount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generating Content Count",
+            "default": 0
           }
         },
         "type": "object",
@@ -2966,6 +3955,121 @@
         ],
         "title": "CampaignResponse",
         "description": "Schema for campaign responses."
+      },
+      "CampaignStatistics": {
+        "properties": {
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaign ID"
+          },
+          "totalPosts": {
+            "type": "integer",
+            "title": "Total Posts"
+          },
+          "publishedPosts": {
+            "type": "integer",
+            "title": "Published Posts"
+          },
+          "scheduledPosts": {
+            "type": "integer",
+            "title": "Scheduled Posts"
+          },
+          "draftPosts": {
+            "type": "integer",
+            "title": "Draft Posts"
+          },
+          "totalImpressions": {
+            "type": "integer",
+            "title": "Total Impressions",
+            "default": 0
+          },
+          "totalEngagements": {
+            "type": "integer",
+            "title": "Total Engagements",
+            "default": 0
+          },
+          "averageEngagementRate": {
+            "type": "number",
+            "title": "Average Engagement Rate",
+            "default": 0.0
+          },
+          "platformStats": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Platform Statistics"
+          },
+          "bestPerformingTime": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Best Performing Time"
+          },
+          "bestPerformingDay": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Best Performing Day"
+          },
+          "topPerformingPosts": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Top Performing Posts"
+          },
+          "contentTypePerformance": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Content Type Performance"
+          },
+          "completionPercentage": {
+            "type": "number",
+            "title": "Campaign Completion %",
+            "default": 0.0
+          },
+          "daysRemaining": {
+            "type": "integer",
+            "title": "Days Remaining",
+            "default": 0
+          },
+          "postsRemaining": {
+            "type": "integer",
+            "title": "Posts Remaining",
+            "default": 0
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId",
+          "totalPosts",
+          "publishedPosts",
+          "scheduledPosts",
+          "draftPosts",
+          "lastUpdated"
+        ],
+        "title": "CampaignStatistics",
+        "description": "Schema for campaign statistics."
       },
       "CampaignStatus": {
         "type": "string",
@@ -3078,6 +4182,314 @@
         "type": "object",
         "title": "CampaignUpdate",
         "description": "Schema for updating an existing campaign."
+      },
+      "CaptionCreate": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "Caption text"
+          },
+          "platform": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Platform",
+            "description": "Target platform (instagram, facebook, linkedin)"
+          },
+          "tone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone",
+            "description": "Desired tone (professional, casual, friendly)"
+          },
+          "hashtags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hashtags",
+            "description": "Hashtags to include"
+          },
+          "maxLength": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxlength",
+            "description": "Maximum caption length"
+          },
+          "brandVoice": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandvoice",
+            "description": "Brand voice guidelines"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "CaptionCreate",
+        "description": "Schema for creating a caption."
+      },
+      "CaptionRegenerateRequest": {
+        "properties": {
+          "feedback": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback",
+            "description": "User feedback on current caption"
+          },
+          "adjustments": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adjustments",
+            "description": "Specific adjustments to make"
+          },
+          "tone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone",
+            "description": "New tone to apply"
+          },
+          "maxLength": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxlength",
+            "description": "New maximum length"
+          },
+          "includeHashtags": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Includehashtags",
+            "description": "Whether to include hashtags",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "CaptionRegenerateRequest",
+        "description": "Schema for regenerating a caption."
+      },
+      "CaptionResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Caption ID"
+          },
+          "contentId": {
+            "type": "string",
+            "title": "Contentid",
+            "description": "Parent content ID"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "Caption text"
+          },
+          "platform": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Platform",
+            "description": "Target platform"
+          },
+          "tone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone",
+            "description": "Caption tone"
+          },
+          "hashtags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Hashtags",
+            "description": "Included hashtags"
+          },
+          "approved": {
+            "type": "boolean",
+            "title": "Approved",
+            "description": "Approval status",
+            "default": false
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generatedat",
+            "description": "Generation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "Last update timestamp"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata",
+            "description": "Additional metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "contentId",
+          "text",
+          "generatedAt",
+          "updatedAt"
+        ],
+        "title": "CaptionResponse",
+        "description": "Schema for caption response."
+      },
+      "CaptionValidationRequest": {
+        "properties": {
+          "captions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Captions",
+            "description": "List of captions to validate"
+          },
+          "platform": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Platform",
+            "description": "Platform-specific validation rules"
+          },
+          "brandGuidelines": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandguidelines",
+            "description": "Brand guidelines to check against"
+          }
+        },
+        "type": "object",
+        "required": [
+          "captions"
+        ],
+        "title": "CaptionValidationRequest",
+        "description": "Schema for validating captions."
+      },
+      "CaptionValidationResponse": {
+        "properties": {
+          "valid": {
+            "type": "boolean",
+            "title": "Valid",
+            "description": "Overall validation result"
+          },
+          "results": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Results",
+            "description": "Individual caption validation results"
+          },
+          "suggestions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Suggestions",
+            "description": "Improvement suggestions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "valid",
+          "results"
+        ],
+        "title": "CaptionValidationResponse",
+        "description": "Schema for caption validation response."
       },
       "CrawlPageResponse": {
         "properties": {
@@ -3542,6 +4954,394 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "ImageBatchRequest": {
+        "properties": {
+          "prompts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Prompts",
+            "description": "List of image generation prompts"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model",
+            "description": "Model to use",
+            "default": "dall-e-3"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size",
+            "description": "Image size for all images",
+            "default": "1024x1024"
+          },
+          "quality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quality",
+            "description": "Quality level",
+            "default": "standard"
+          },
+          "style": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Style",
+            "description": "Style",
+            "default": "vivid"
+          },
+          "brandColors": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandcolors",
+            "description": "Brand colors to incorporate"
+          },
+          "brandStyle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandstyle",
+            "description": "Brand visual style guidelines"
+          }
+        },
+        "type": "object",
+        "required": [
+          "prompts"
+        ],
+        "title": "ImageBatchRequest",
+        "description": "Schema for batch image generation request."
+      },
+      "ImageBatchResponse": {
+        "properties": {
+          "batchId": {
+            "type": "string",
+            "title": "Batchid",
+            "description": "Batch operation ID"
+          },
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/ImageResponse"
+            },
+            "type": "array",
+            "title": "Images",
+            "description": "Generated images"
+          },
+          "totalRequested": {
+            "type": "integer",
+            "title": "Totalrequested",
+            "description": "Total images requested"
+          },
+          "totalGenerated": {
+            "type": "integer",
+            "title": "Totalgenerated",
+            "description": "Total images successfully generated"
+          },
+          "failedPrompts": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Failedprompts",
+            "description": "Failed prompts with error messages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "batchId",
+          "images",
+          "totalRequested",
+          "totalGenerated"
+        ],
+        "title": "ImageBatchResponse",
+        "description": "Schema for batch image generation response."
+      },
+      "ImageGenerateRequest": {
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "description": "Image generation prompt"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model",
+            "description": "Model to use (dall-e-3, midjourney, stable-diffusion)",
+            "default": "dall-e-3"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size",
+            "description": "Image size",
+            "default": "1024x1024"
+          },
+          "quality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quality",
+            "description": "Quality level (standard, hd)",
+            "default": "standard"
+          },
+          "style": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Style",
+            "description": "Style (vivid, natural)",
+            "default": "vivid"
+          },
+          "n": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 4.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "N",
+            "description": "Number of images to generate",
+            "default": 1
+          },
+          "brandColors": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandcolors",
+            "description": "Brand colors to incorporate"
+          },
+          "brandStyle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandstyle",
+            "description": "Brand visual style guidelines"
+          }
+        },
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "title": "ImageGenerateRequest",
+        "description": "Schema for image generation request."
+      },
+      "ImageModelsResponse": {
+        "properties": {
+          "models": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Models",
+            "description": "Available image generation models"
+          },
+          "defaultModel": {
+            "type": "string",
+            "title": "Defaultmodel",
+            "description": "Default model name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "models",
+          "defaultModel"
+        ],
+        "title": "ImageModelsResponse",
+        "description": "Schema for available image models response."
+      },
+      "ImageRemixRequest": {
+        "properties": {
+          "modifications": {
+            "type": "string",
+            "title": "Modifications",
+            "description": "Description of modifications to make"
+          },
+          "styleTransfer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Styletransfer",
+            "description": "Style to transfer to the image"
+          },
+          "colorAdjustments": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coloradjustments",
+            "description": "Color adjustment parameters"
+          },
+          "keepComposition": {
+            "type": "boolean",
+            "title": "Keepcomposition",
+            "description": "Whether to maintain original composition",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "modifications"
+        ],
+        "title": "ImageRemixRequest",
+        "description": "Schema for image remix request."
+      },
+      "ImageResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Image ID"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "description": "Generation prompt used"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "description": "Model used"
+          },
+          "size": {
+            "type": "string",
+            "title": "Size",
+            "description": "Image dimensions"
+          },
+          "quality": {
+            "type": "string",
+            "title": "Quality",
+            "description": "Quality level"
+          },
+          "style": {
+            "type": "string",
+            "title": "Style",
+            "description": "Style applied"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Generation timestamp"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata",
+            "description": "Additional metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "url",
+          "prompt",
+          "model",
+          "size",
+          "quality",
+          "style",
+          "createdAt"
+        ],
+        "title": "ImageResponse",
+        "description": "Schema for generated image response."
+      },
       "InitializeCrawlRequest": {
         "properties": {
           "startingUrl": {
@@ -3613,6 +5413,263 @@
         "title": "InitializeCrawlResponse",
         "description": "Response model for crawl initialization."
       },
+      "IntegrationAuthRequest": {
+        "properties": {
+          "authCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authcode",
+            "description": "OAuth authorization code"
+          },
+          "accessToken": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accesstoken",
+            "description": "Direct access token"
+          },
+          "refreshToken": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Refreshtoken",
+            "description": "Refresh token"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope",
+            "description": "Requested permissions"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "Platform-specific metadata"
+          }
+        },
+        "type": "object",
+        "title": "IntegrationAuthRequest",
+        "description": "Schema for integration authentication request."
+      },
+      "IntegrationRedirectRequest": {
+        "properties": {
+          "platform": {
+            "type": "string",
+            "title": "Platform",
+            "description": "Platform name (instagram, facebook, linkedin, twitter)"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope",
+            "description": "Requested OAuth scopes"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State",
+            "description": "State parameter for OAuth flow"
+          }
+        },
+        "type": "object",
+        "required": [
+          "platform"
+        ],
+        "title": "IntegrationRedirectRequest",
+        "description": "Schema for integration redirect URI request."
+      },
+      "IntegrationRedirectResponse": {
+        "properties": {
+          "redirectUri": {
+            "type": "string",
+            "title": "Redirecturi",
+            "description": "OAuth redirect URI"
+          },
+          "state": {
+            "type": "string",
+            "title": "State",
+            "description": "State parameter to verify callback"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expiresat",
+            "description": "Expiration time for this redirect"
+          }
+        },
+        "type": "object",
+        "required": [
+          "redirectUri",
+          "state",
+          "expiresAt"
+        ],
+        "title": "IntegrationRedirectResponse",
+        "description": "Schema for integration redirect URI response."
+      },
+      "IntegrationResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Integration ID"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform",
+            "description": "Platform name"
+          },
+          "accountId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accountid",
+            "description": "Connected account ID"
+          },
+          "accountName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accountname",
+            "description": "Connected account name"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Integration status (connected, disconnected, error)"
+          },
+          "scope": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scope",
+            "description": "Granted permissions"
+          },
+          "expiresAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expiresat",
+            "description": "Token expiration time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Integration creation time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "Last update time"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata",
+            "description": "Platform-specific data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "platform",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "IntegrationResponse",
+        "description": "Schema for integration response."
+      },
+      "IntegrationsListResponse": {
+        "properties": {
+          "integrations": {
+            "items": {
+              "$ref": "#/components/schemas/IntegrationResponse"
+            },
+            "type": "array",
+            "title": "Integrations",
+            "description": "List of integrations"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of integrations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "integrations",
+          "total"
+        ],
+        "title": "IntegrationsListResponse",
+        "description": "Schema for listing all integrations."
+      },
       "NextUrlResponse": {
         "properties": {
           "queueEntryId": {
@@ -3678,6 +5735,15 @@
         ],
         "title": "NextUrlResponse",
         "description": "Response model for next URL to crawl."
+      },
+      "OnboardingStatus": {
+        "const": "completed",
+        "type": "string",
+        "enum": [
+          "completed"
+        ],
+        "title": "OnboardingStatus",
+        "description": "Enum for onboarding completion status."
       },
       "PageMetadata": {
         "properties": {
@@ -3825,6 +5891,42 @@
         "title": "PageMetadata",
         "description": "Metadata for a crawled page."
       },
+      "PlanListResponse": {
+        "properties": {
+          "plans": {
+            "items": {
+              "$ref": "#/components/schemas/SceneMixPlanResponse"
+            },
+            "type": "array",
+            "title": "Plans",
+            "description": "List of plans"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of plans"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page",
+            "description": "Current page",
+            "default": 1
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Items per page",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "plans",
+          "total"
+        ],
+        "title": "PlanListResponse",
+        "description": "Schema for listing all plans."
+      },
       "ProductInfo": {
         "properties": {
           "name": {
@@ -3845,6 +5947,467 @@
         ],
         "title": "ProductInfo",
         "description": "Product information schema."
+      },
+      "SceneMixPlanCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Plan name"
+          },
+          "policyId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policyid",
+            "description": "Associated policy ID"
+          },
+          "durationDays": {
+            "type": "integer",
+            "title": "Durationdays",
+            "description": "Plan duration in days"
+          },
+          "postsPerDay": {
+            "type": "integer",
+            "title": "Postsperday",
+            "description": "Number of posts per day"
+          },
+          "contentMix": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Contentmix",
+            "description": "Content type distribution percentages"
+          },
+          "themes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Themes",
+            "description": "Content themes"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords",
+            "description": "Target keywords"
+          },
+          "autoGenerate": {
+            "type": "boolean",
+            "title": "Autogenerate",
+            "description": "Auto-generate content on approval",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "durationDays",
+          "postsPerDay",
+          "contentMix"
+        ],
+        "title": "SceneMixPlanCreate",
+        "description": "Schema for creating a scene mix plan."
+      },
+      "SceneMixPlanResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Plan ID"
+          },
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "policyId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policyid",
+            "description": "Associated policy ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Plan name"
+          },
+          "durationDays": {
+            "type": "integer",
+            "title": "Durationdays",
+            "description": "Plan duration in days"
+          },
+          "postsPerDay": {
+            "type": "integer",
+            "title": "Postsperday",
+            "description": "Number of posts per day"
+          },
+          "contentMix": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Contentmix",
+            "description": "Content type distribution"
+          },
+          "themes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Themes",
+            "description": "Content themes"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords",
+            "description": "Target keywords"
+          },
+          "autoGenerate": {
+            "type": "boolean",
+            "title": "Autogenerate",
+            "description": "Auto-generate enabled",
+            "default": false
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Plan status (draft, active, completed)",
+            "default": "draft"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "Last update timestamp"
+          },
+          "executionStats": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Executionstats",
+            "description": "Execution statistics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "campaignId",
+          "name",
+          "durationDays",
+          "postsPerDay",
+          "contentMix",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "SceneMixPlanResponse",
+        "description": "Schema for scene mix plan response."
+      },
+      "SceneMixPolicyCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Policy name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Policy description"
+          },
+          "contentTypes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Contenttypes",
+            "description": "Allowed content types"
+          },
+          "platforms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Platforms",
+            "description": "Target platforms"
+          },
+          "frequencyRules": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Frequencyrules",
+            "description": "Content frequency rules"
+          },
+          "diversitySettings": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Diversitysettings",
+            "description": "Content diversity settings"
+          },
+          "qualityThresholds": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Qualitythresholds",
+            "description": "Quality thresholds"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active",
+            "description": "Whether policy is active",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "contentTypes",
+          "platforms",
+          "frequencyRules"
+        ],
+        "title": "SceneMixPolicyCreate",
+        "description": "Schema for creating a scene mix policy."
+      },
+      "SceneMixPolicyResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Policy ID"
+          },
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Policy name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Policy description"
+          },
+          "contentTypes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Contenttypes",
+            "description": "Allowed content types"
+          },
+          "platforms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Platforms",
+            "description": "Target platforms"
+          },
+          "frequencyRules": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Frequencyrules",
+            "description": "Content frequency rules"
+          },
+          "diversitySettings": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Diversitysettings",
+            "description": "Content diversity settings"
+          },
+          "qualityThresholds": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Qualitythresholds",
+            "description": "Quality thresholds"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active",
+            "description": "Whether policy is active",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "Last update timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "campaignId",
+          "name",
+          "contentTypes",
+          "platforms",
+          "frequencyRules",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "SceneMixPolicyResponse",
+        "description": "Schema for scene mix policy response."
+      },
+      "SceneMixPolicyUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "contentTypes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contenttypes"
+          },
+          "platforms": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Platforms"
+          },
+          "frequencyRules": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frequencyrules"
+          },
+          "diversitySettings": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diversitysettings"
+          },
+          "qualityThresholds": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualitythresholds"
+          },
+          "active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active"
+          }
+        },
+        "type": "object",
+        "title": "SceneMixPolicyUpdate",
+        "description": "Schema for updating a scene mix policy."
       },
       "ToneAttributesV2": {
         "properties": {
