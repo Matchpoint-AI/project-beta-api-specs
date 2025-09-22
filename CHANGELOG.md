@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.138] - 2025-09-22
+
+### Changes
+- feat: Add automatic OpenAPI version update to match Git tags (#159)
+
+**Source:** project-beta-api@1f224bd "feat: Add automatic OpenAPI version update to match Git tags (#159)"
+
 ## [v0.0.137] - 2025-09-22
 
 ### Changes
