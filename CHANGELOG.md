@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.140] - 2025-09-22
+
+### Changes
+- feat: Add comprehensive error handling and logging standards (#131)
+
+**Source:** project-beta-api@1cfdf78 "feat: Add comprehensive error handling and logging standards (#131)"
+
 ## [v0.0.139] - 2025-09-22
 
 ### Changes
