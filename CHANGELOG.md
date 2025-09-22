@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.137] - 2025-09-22
+
+### Changes
+- docs: Add architecture highlights section to README (#158)
+
+**Source:** project-beta-api@eeb9706 "docs: Add architecture highlights section to README (#158)"
+
 ## [v0.0.136] - 2025-09-22
 
 ### Changes
