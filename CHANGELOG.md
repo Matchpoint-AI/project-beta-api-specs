@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.136] - 2025-09-22
+
+### Changes
+- feat: Complete v1→v2 API consolidation with LLM integration (#151)
+
+**Source:** project-beta-api@d259e06 "feat: Complete v1→v2 API consolidation with LLM integration (#151)"
+
 ## [v0.0.135] - 2025-09-22
 
 ### Changes
