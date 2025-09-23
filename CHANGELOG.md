@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.141] - 2025-09-23
+
+### Changes
+- Implement T16 Knowledge Extraction API with comprehensive testing (#129)
+
+**Source:** project-beta-api@1ba3bdf "Implement T16 Knowledge Extraction API with comprehensive testing (#129)"
+
 ## [v0.0.140] - 2025-09-22
 
 ### Changes
