@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.143] - 2025-09-25
+
+### Changes
+- AI PR pr393-brand-onboarding-progress: Implement PATCH /brands/{brandId}/onboarding/progress (#161)
+
+**Source:** project-beta-api@3862815 "AI PR pr393-brand-onboarding-progress: Implement PATCH /brands/{brandId}/onboarding/progress (#161)"
+
 ## [v0.0.142] - 2025-09-25
 
 ### Changes

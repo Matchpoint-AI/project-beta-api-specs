@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.142"
+    "version": "0.0.143"
   },
   "paths": {
     "/api/v2/brands": {
@@ -488,7 +488,7 @@
           "brands"
         ],
         "summary": "Update Brand Onboarding Progress",
-        "description": "Update brand onboarding progress step.\n\nUpdates the current step and progress information for a brand's onboarding process.\nThis endpoint is used to track progress through various onboarding steps such as\nbrand-info, assets-upload, knowledge-review, etc.",
+        "description": "Update brand onboarding progress step.\n\nTracks onboarding workflow progress including current step, completed steps,\nand optional metadata to keep the frontend aligned with backend state.",
         "operationId": "update_brand_onboarding_progress_api_v2_brands__brandId__onboarding_progress_patch",
         "parameters": [
           {
@@ -524,11 +524,11 @@
               }
             }
           },
-          "404": {
-            "description": "Brand not found"
-          },
           "400": {
             "description": "Invalid progress data"
+          },
+          "404": {
+            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
