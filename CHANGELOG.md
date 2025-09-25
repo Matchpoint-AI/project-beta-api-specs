@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.142] - 2025-09-25
+
+### Changes
+- fix: update file upload error messages (pr388-patch-brand-onboarding-progress) (#160)
+
+**Source:** project-beta-api@0d658ed "fix: update file upload error messages (pr388-patch-brand-onboarding-progress) (#160)"
+
 ## [v0.0.141] - 2025-09-23
 
 ### Changes
