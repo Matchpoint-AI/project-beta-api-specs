@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.144] - 2025-09-28
+
+### Changes
+- Remove deprecated project_beta_api module from terraform configuration (#164)
+
+**Source:** project-beta-api@d2d0581 "Remove deprecated project_beta_api module from terraform configuration (#164)"
+
 ## [v0.0.143] - 2025-09-25
 
 ### Changes
