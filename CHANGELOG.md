@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.146] - 2025-09-28
+
+### Changes
+- Increase campaign_controller test coverage from 71.9% to 100% (#167)
+
+**Source:** project-beta-api@91b11d7 "Increase campaign_controller test coverage from 71.9% to 100% (#167)"
+
 ## [v0.0.145] - 2025-09-28
 
 ### Changes
