@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.147] - 2025-09-28
+
+### Changes
+- test: increase firebase_auth_service coverage to 100% (#165)
+
+**Source:** project-beta-api@d776a9c "test: increase firebase_auth_service coverage to 100% (#165)"
+
 ## [v0.0.146] - 2025-09-28
 
 ### Changes
