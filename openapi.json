@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.144"
+    "version": "0.0.145"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2651,6 +2651,122 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/user": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get User Profile",
+        "description": "Get authenticated user profile.\n\nArgs:\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    User profile with brand ownership status\n\nRaises:\n    HTTPException: If authentication fails or user not found",
+        "operationId": "get_user_profile_api_v2_user_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/user/register": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Register User",
+        "description": "Register a new user.\n\nArgs:\n    request: User registration details\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Registration confirmation\n\nRaises:\n    HTTPException: If registration fails",
+        "operationId": "register_user_api_v2_user_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegisterResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/user/profile": {
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update User Profile",
+        "description": "Update user profile.\n\nArgs:\n    request: Update details\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Updated user information\n\nRaises:\n    HTTPException: If update fails",
+        "operationId": "update_user_profile_api_v2_user_profile_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserUpdateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/": {
@@ -5737,7 +5853,6 @@
         "description": "Response model for next URL to crawl."
       },
       "OnboardingStatus": {
-        "const": "completed",
         "type": "string",
         "enum": [
           "completed"
@@ -6436,6 +6551,224 @@
         "title": "ToneAttributesV2",
         "description": "V2 Tone attributes for brand knowledge."
       },
+      "UserProfile": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "User unique identifier"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "User email address"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "User display name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "User role (USER or ADMIN)",
+            "default": "USER"
+          },
+          "plan": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan",
+            "description": "User subscription plan"
+          },
+          "is_admin": {
+            "type": "boolean",
+            "title": "Is Admin",
+            "description": "Whether user has admin privileges",
+            "default": false
+          },
+          "hasBrand": {
+            "type": "boolean",
+            "title": "Hasbrand",
+            "description": "Whether user has created a brand",
+            "default": false
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "Account creation timestamp"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "Last update timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "name"
+        ],
+        "title": "UserProfile",
+        "description": "User profile returned by authentication endpoints."
+      },
+      "UserRegisterRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "User email address"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "User full name"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Password",
+            "description": "User password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "name",
+          "password"
+        ],
+        "title": "UserRegisterRequest",
+        "description": "Request body for user registration."
+      },
+      "UserRegisterResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Newly created user ID"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "User email address"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "User display name"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "User registered successfully"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "name"
+        ],
+        "title": "UserRegisterResponse",
+        "description": "Response from user registration."
+      },
+      "UserUpdateRequest": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "User display name"
+          },
+          "plan": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan",
+            "description": "Subscription plan"
+          }
+        },
+        "type": "object",
+        "title": "UserUpdateRequest",
+        "description": "Request body for updating user profile."
+      },
+      "UserUpdateResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "User ID"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "User email address"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Updated user name"
+          },
+          "plan": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan",
+            "description": "Updated subscription plan"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Profile updated successfully"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "name"
+        ],
+        "title": "UserUpdateResponse",
+        "description": "Response from user update."
+      },
       "ValidationError": {
         "properties": {
           "loc": {
@@ -6939,6 +7272,12 @@
         ],
         "title": "CrawlPageRequest",
         "description": "Request model for crawling a single page via workflow."
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }

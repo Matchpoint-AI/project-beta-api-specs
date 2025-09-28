@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.145] - 2025-09-28
+
+### Changes
+- feat: Add v2 user management endpoints (#163)
+
+**Source:** project-beta-api@81dd254 "feat: Add v2 user management endpoints (#163)"
+
 ## [v0.0.144] - 2025-09-28
 
 ### Changes
