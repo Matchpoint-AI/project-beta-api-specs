@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.148] - 2025-09-29
+
+### Changes
+- feat: Increase content_repository coverage to 98% (#168)
+
+**Source:** project-beta-api@4049006 "feat: Increase content_repository coverage to 98% (#168)"
+
 ## [v0.0.147] - 2025-09-28
 
 ### Changes
