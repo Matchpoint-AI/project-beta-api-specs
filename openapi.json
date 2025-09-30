@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.148"
+    "version": "0.0.149"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1084,8 +1084,67 @@
           "campaigns"
         ],
         "summary": "Update Campaign",
-        "description": "Update an existing campaign.\n\nUpdates an existing campaign. Returns 404 if the campaign doesn't exist.\nOnly provided fields will be updated (partial update).",
+        "description": "Update an existing campaign (full update).\n\nUpdates an existing campaign. Returns 404 if the campaign doesn't exist.\nOnly provided fields will be updated (partial update).",
         "operationId": "update_campaign_api_v2_campaigns__campaign_id__put",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campaign updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Patch Campaign",
+        "description": "Partially update a campaign (e.g., publish).\n\nThis is the RMM Level 2 compliant endpoint for partial campaign updates.\nInstead of POST /campaigns/{id}/publish, use PATCH with status update.\n\nExample: To publish a campaign, send PATCH with {\"status\": \"published\"}",
+        "operationId": "patch_campaign_api_v2_campaigns__campaign_id__patch",
         "parameters": [
           {
             "name": "campaign_id",
@@ -1258,6 +1317,195 @@
           },
           "404": {
             "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}": {
+      "patch": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Update Content",
+        "description": "Update content fields (e.g., approval status).\n\nThis is the RMM Level 2 compliant endpoint for content updates including approval.\nInstead of POST /content/{id}/approve, we use PATCH /content/{id} with approved=true.\n\nExample: To approve content, send PATCH with {\"approved\": 1}",
+        "operationId": "update_content_api_v2_content__content_id__patch",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/content": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Campaign Content",
+        "description": "Get content for a campaign.\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.",
+        "operationId": "get_campaign_content_api_v2_campaigns__campaign_id__content_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedContent"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Generate Campaign Content",
+        "description": "Generate content for a campaign.\n\nThis is the RMM Level 2 compliant endpoint for generating content for a specific campaign.\nCreates a new content record associated with the campaign.",
+        "operationId": "generate_campaign_content_api_v2_campaigns__campaign_id__content_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Create Content",
+        "description": "Create new content or regenerate existing content.\n\nThis is the RMM Level 2 compliant endpoint for content creation/regeneration.\nInstead of POST /content/{id}/regenerate, we POST to /content to create a new version.\n\nThe client can include metadata indicating this is a regeneration of existing content.",
+        "operationId": "create_content_api_v2_content_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentResponse"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -4607,6 +4855,210 @@
         "title": "CaptionValidationResponse",
         "description": "Schema for caption validation response."
       },
+      "ContentCreate": {
+        "properties": {
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          },
+          "readyForReview": {
+            "type": "integer",
+            "title": "Readyforreview",
+            "default": 0
+          },
+          "approved": {
+            "type": "integer",
+            "title": "Approved",
+            "default": 0
+          },
+          "exported": {
+            "type": "integer",
+            "title": "Exported",
+            "default": 0
+          },
+          "published": {
+            "type": "boolean",
+            "title": "Published",
+            "default": false
+          },
+          "totalPosts": {
+            "type": "integer",
+            "title": "Totalposts",
+            "default": 0
+          },
+          "contentData": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentdata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId",
+          "userId"
+        ],
+        "title": "ContentCreate",
+        "description": "Schema for creating content."
+      },
+      "ContentResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          },
+          "readyForReview": {
+            "type": "integer",
+            "title": "Readyforreview"
+          },
+          "approved": {
+            "type": "integer",
+            "title": "Approved"
+          },
+          "exported": {
+            "type": "integer",
+            "title": "Exported"
+          },
+          "published": {
+            "type": "boolean",
+            "title": "Published"
+          },
+          "totalPosts": {
+            "type": "integer",
+            "title": "Totalposts"
+          },
+          "contentData": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentdata"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "campaignId",
+          "userId",
+          "readyForReview",
+          "approved",
+          "exported",
+          "published",
+          "totalPosts",
+          "contentData",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "ContentResponse",
+        "description": "Schema for content response."
+      },
+      "ContentUpdate": {
+        "properties": {
+          "readyForReview": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Readyforreview"
+          },
+          "approved": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved"
+          },
+          "exported": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exported"
+          },
+          "published": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published"
+          },
+          "totalPosts": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Totalposts"
+          },
+          "contentData": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentdata"
+          }
+        },
+        "type": "object",
+        "title": "ContentUpdate",
+        "description": "Schema for updating content."
+      },
       "CrawlPageResponse": {
         "properties": {
           "url": {
@@ -4967,6 +5419,37 @@
         "title": "CrawledPageResponse",
         "description": "Response model for a crawled page."
       },
+      "DayContent": {
+        "properties": {
+          "dayNumber": {
+            "type": "integer",
+            "title": "Daynumber"
+          },
+          "approved": {
+            "type": "boolean",
+            "title": "Approved",
+            "default": false
+          },
+          "postsToGenerate": {
+            "type": "integer",
+            "title": "Poststogenerate",
+            "default": 3
+          },
+          "posts": {
+            "items": {
+              "$ref": "#/components/schemas/PostSchema"
+            },
+            "type": "array",
+            "title": "Posts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "dayNumber"
+        ],
+        "title": "DayContent",
+        "description": "Schema for daily content."
+      },
       "ExtractKnowledgeRequest": {
         "properties": {
           "workflowId": {
@@ -5056,6 +5539,62 @@
         ],
         "title": "ExtractKnowledgeResponse",
         "description": "Response from brand knowledge extraction."
+      },
+      "GeneratedContent": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          },
+          "readyForReview": {
+            "type": "integer",
+            "title": "Readyforreview"
+          },
+          "approved": {
+            "type": "integer",
+            "title": "Approved"
+          },
+          "exported": {
+            "type": "integer",
+            "title": "Exported"
+          },
+          "published": {
+            "type": "boolean",
+            "title": "Published"
+          },
+          "totalPosts": {
+            "type": "integer",
+            "title": "Totalposts"
+          },
+          "weeks": {
+            "items": {
+              "$ref": "#/components/schemas/WeekContent"
+            },
+            "type": "array",
+            "title": "Weeks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "campaignId",
+          "userId",
+          "readyForReview",
+          "approved",
+          "exported",
+          "published",
+          "totalPosts"
+        ],
+        "title": "GeneratedContent",
+        "description": "Schema for generated content with nested structure."
       },
       "HTTPValidationError": {
         "properties": {
@@ -6042,6 +6581,69 @@
         "title": "PlanListResponse",
         "description": "Schema for listing all plans."
       },
+      "PostSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "default": ""
+          },
+          "imagePrompt": {
+            "type": "string",
+            "title": "Imageprompt",
+            "default": ""
+          },
+          "imageUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Imageurls"
+          },
+          "textVersions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Textversions"
+          },
+          "generationCount": {
+            "type": "integer",
+            "title": "Generationcount",
+            "default": 1
+          },
+          "regenerateCount": {
+            "type": "integer",
+            "title": "Regeneratecount",
+            "default": 3
+          },
+          "posted": {
+            "type": "boolean",
+            "title": "Posted",
+            "default": false
+          },
+          "approved": {
+            "type": "boolean",
+            "title": "Approved",
+            "default": false
+          },
+          "selectedImageIndex": {
+            "type": "integer",
+            "title": "Selectedimageindex",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "PostSchema",
+        "description": "Schema for individual social media post."
+      },
       "ProductInfo": {
         "properties": {
           "name": {
@@ -6801,6 +7403,27 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "WeekContent": {
+        "properties": {
+          "weekNumber": {
+            "type": "integer",
+            "title": "Weeknumber"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/DayContent"
+            },
+            "type": "array",
+            "title": "Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "weekNumber"
+        ],
+        "title": "WeekContent",
+        "description": "Schema for weekly content."
       },
       "WorkflowResponse": {
         "properties": {

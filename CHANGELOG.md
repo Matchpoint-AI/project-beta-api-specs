@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.149] - 2025-09-30
+
+### Changes
+- feat: Phase 4 V2 Content Approval & Campaign Publishing Endpoints (#173)
+
+**Source:** project-beta-api@882a7b5 "feat: Phase 4 V2 Content Approval & Campaign Publishing Endpoints (#173)"
+
 ## [v0.0.148] - 2025-09-29
 
 ### Changes
