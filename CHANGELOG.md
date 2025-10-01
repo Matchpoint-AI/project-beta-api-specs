@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.150] - 2025-10-01
+
+### Changes
+- docs: Add Gemini CLI guidance for large codebase analysis (#174)
+
+**Source:** project-beta-api@acfb392 "docs: Add Gemini CLI guidance for large codebase analysis (#174)"
+
 ## [v0.0.149] - 2025-09-30
 
 ### Changes
