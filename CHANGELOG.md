@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.156] - 2025-10-02
+
+### Changes
+- Add /brands/{id}/files endpoint aliases for frontend compatibility (#182)
+
+**Source:** project-beta-api@2e4bc61 "Add /brands/{id}/files endpoint aliases for frontend compatibility (#182)"
+
 ## [v0.0.155] - 2025-10-02
 
 ### Changes
