@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.165] - 2025-10-02
+
+### Changes
+- feat: Implement POST /v2/content/{contentId}/approvals (BACKEND-001) (#178)
+
+**Source:** project-beta-api@8ea79ea "feat: Implement POST /v2/content/{contentId}/approvals (BACKEND-001) (#178)"
+
 ## [v0.0.164] - 2025-10-02
 
 ### Changes

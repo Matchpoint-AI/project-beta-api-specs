@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.164"
+    "version": "0.0.165"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1469,6 +1469,59 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ContentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/approvals": {
+      "post": {
+        "tags": [
+          "content-approval"
+        ],
+        "summary": "Approve Content",
+        "description": "Approve or unapprove content for a specific day.\n\nThis endpoint allows users to approve/reject content for a specific day.\nUpdates approval status in database and manages approval counters.\nDirect port from V1 tag v0.2.46.\n\nArgs:\n    content_id: ID of the content to approve\n    request: Approval request with week, day, and post data\n    content_approval_service: Injected service\n\nReturns:\n    Updated day data with approval status\n\nRaises:\n    HTTPException: 404 if content not found, 400 if request invalid",
+        "operationId": "approve_content_api_v2_content__content_id__approvals_post",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentApprovalResponse"
                 }
               }
             }
@@ -5223,6 +5276,84 @@
         "title": "CaptionValidationResponse",
         "description": "Schema for caption validation response."
       },
+      "ContentApprovalRequest": {
+        "properties": {
+          "campaign_content_id": {
+            "type": "string",
+            "title": "Campaign Content Id",
+            "description": "ID of the content document"
+          },
+          "week": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Week",
+            "description": "Week number (1-indexed)"
+          },
+          "day": {
+            "type": "integer",
+            "maximum": 7.0,
+            "minimum": 1.0,
+            "title": "Day",
+            "description": "Day number (1-7)"
+          },
+          "approved": {
+            "type": "boolean",
+            "title": "Approved",
+            "description": "Whether to approve or unapprove"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone",
+            "description": "Timezone for scheduling"
+          },
+          "posts": {
+            "patternProperties": {
+              "^post_\\d+$": {
+                "$ref": "#/components/schemas/PostContent"
+              }
+            },
+            "type": "object",
+            "title": "Posts",
+            "description": "Map of post keys to post content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaign_content_id",
+          "week",
+          "day",
+          "approved",
+          "timezone",
+          "posts"
+        ],
+        "title": "ContentApprovalRequest",
+        "description": "Request schema for approving/unapproving content for a specific day.\n\nThis is a direct port of V1's ApproveRequest schema."
+      },
+      "ContentApprovalResponse": {
+        "properties": {
+          "approved": {
+            "type": "boolean",
+            "title": "Approved",
+            "description": "Whether the day is approved"
+          },
+          "posts": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Posts",
+            "description": "Updated posts data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "approved",
+          "posts"
+        ],
+        "title": "ContentApprovalResponse",
+        "description": "Response schema for content approval.\n\nReturns the updated day data after approval/unapproval."
+      },
       "ContentCreate": {
         "properties": {
           "campaignId": {
@@ -7109,6 +7240,31 @@
         "type": "object",
         "title": "PageMetadata",
         "description": "Metadata for a crawled page."
+      },
+      "PostContent": {
+        "properties": {
+          "selected_image": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Selected Image",
+            "description": "URL of the selected image"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Text",
+            "description": "Post caption text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selected_image",
+          "text"
+        ],
+        "title": "PostContent",
+        "description": "Schema for post content in approval request."
       },
       "PostSchema": {
         "properties": {
