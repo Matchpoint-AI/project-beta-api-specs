@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.159] - 2025-10-02
+
+### Changes
+- docs: Add RMM L2 compliance tracking to CLAUDE.md (#185)
+
+**Source:** project-beta-api@a2d2845 "docs: Add RMM L2 compliance tracking to CLAUDE.md (#185)"
+
 ## [v0.0.158] - 2025-10-02
 
 ### Changes
