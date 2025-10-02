@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.164] - 2025-10-02
+
+### Changes
+- feat: Add V2 content export tracking endpoints (#191)
+
+**Source:** project-beta-api@63ee7dd "feat: Add V2 content export tracking endpoints (#191)"
+
 ## [v0.0.163] - 2025-10-02
 
 ### Changes
