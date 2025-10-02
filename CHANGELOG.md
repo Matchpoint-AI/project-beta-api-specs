@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.151] - 2025-10-02
+
+### Changes
+- refactor: Remove generic /plans endpoint (#177)
+
+**Source:** project-beta-api@20dca2b "refactor: Remove generic /plans endpoint (#177)"
+
 ## [v0.0.150] - 2025-10-01
 
 ### Changes

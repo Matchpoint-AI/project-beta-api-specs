@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.150"
+    "version": "0.0.151"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2000,60 +2000,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SceneMixPlanResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/plans": {
-      "get": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get All Plans",
-        "description": "Get all scene mix plans.",
-        "operationId": "get_all_plans_api_v2_plans_get",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 1,
-              "title": "Page"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 10,
-              "title": "Limit"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlanListResponse"
                 }
               }
             }
@@ -6544,42 +6490,6 @@
         "type": "object",
         "title": "PageMetadata",
         "description": "Metadata for a crawled page."
-      },
-      "PlanListResponse": {
-        "properties": {
-          "plans": {
-            "items": {
-              "$ref": "#/components/schemas/SceneMixPlanResponse"
-            },
-            "type": "array",
-            "title": "Plans",
-            "description": "List of plans"
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total",
-            "description": "Total number of plans"
-          },
-          "page": {
-            "type": "integer",
-            "title": "Page",
-            "description": "Current page",
-            "default": 1
-          },
-          "limit": {
-            "type": "integer",
-            "title": "Limit",
-            "description": "Items per page",
-            "default": 10
-          }
-        },
-        "type": "object",
-        "required": [
-          "plans",
-          "total"
-        ],
-        "title": "PlanListResponse",
-        "description": "Schema for listing all plans."
       },
       "PostSchema": {
         "properties": {
