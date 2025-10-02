@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.154"
+    "version": "0.0.155"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2346,6 +2346,59 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{contentId}/text-versions": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Update text versions for content",
+        "description": "Updates text, text_versions array, and selected image index. Direct port from V1.",
+        "operationId": "update_text_versions_api_v2_content__contentId__text_versions_post",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Contentid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTextVersionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTextVersionsResponse"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -7150,6 +7203,79 @@
         ],
         "title": "ToneAttributesV2",
         "description": "V2 Tone attributes for brand knowledge."
+      },
+      "UpdateTextVersionsRequest": {
+        "properties": {
+          "content_id": {
+            "type": "string",
+            "title": "Content Id",
+            "description": "Content ID to update"
+          },
+          "week_num": {
+            "type": "integer",
+            "title": "Week Num",
+            "description": "Week number in campaign"
+          },
+          "day_num": {
+            "type": "integer",
+            "title": "Day Num",
+            "description": "Day number in week"
+          },
+          "post_num": {
+            "type": "integer",
+            "title": "Post Num",
+            "description": "Post number in day"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "Currently selected text"
+          },
+          "text_versions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Text Versions",
+            "description": "Array of text versions"
+          },
+          "selected_image_index": {
+            "type": "integer",
+            "title": "Selected Image Index",
+            "description": "Currently selected image index"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content_id",
+          "week_num",
+          "day_num",
+          "post_num",
+          "text",
+          "text_versions",
+          "selected_image_index"
+        ],
+        "title": "UpdateTextVersionsRequest",
+        "description": "Request schema for updating text versions.\n\nDirect port from V1 UpdateTextVersionsRequest model."
+      },
+      "UpdateTextVersionsResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Operation status",
+            "default": "success"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success message",
+            "default": "Text versions updated successfully"
+          }
+        },
+        "type": "object",
+        "title": "UpdateTextVersionsResponse",
+        "description": "Response schema for text versions update.\n\nDirect port from V1 response format."
       },
       "UserProfile": {
         "properties": {

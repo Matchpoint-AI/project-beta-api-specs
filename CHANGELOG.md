@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.155] - 2025-10-02
+
+### Changes
+- Implement POST /v2/content/{contentId}/text-versions (BACKEND-006) (#184)
+
+**Source:** project-beta-api@22eeadc "Implement POST /v2/content/{contentId}/text-versions (BACKEND-006) (#184)"
+
 ## [v0.0.154] - 2025-10-02
 
 ### Changes
