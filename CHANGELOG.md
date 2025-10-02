@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.152] - 2025-10-02
+
+### Changes
+- refactor: remove /images/models endpoint (#180)
+
+**Source:** project-beta-api@0147ff3 "refactor: remove /images/models endpoint (#180)"
+
 ## [v0.0.151] - 2025-10-02
 
 ### Changes
