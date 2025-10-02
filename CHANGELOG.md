@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.160] - 2025-10-02
+
+### Changes
+- fix: use E2_HIGHCPU_8 machine type (N1 not supported in region) (#188)
+
+**Source:** project-beta-api@a9dbe1f "fix: use E2_HIGHCPU_8 machine type (N1 not supported in region) (#188)"
+
 ## [v0.0.159] - 2025-10-02
 
 ### Changes
