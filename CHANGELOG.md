@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.154] - 2025-10-02
+
+### Changes
+- Implement POST /v2/content/{contentId}/regenerate (BACKEND-003) (#181)
+
+**Source:** project-beta-api@02080e2 "Implement POST /v2/content/{contentId}/regenerate (BACKEND-003) (#181)"
+
 ## [v0.0.153] - 2025-10-02
 
 ### Changes
