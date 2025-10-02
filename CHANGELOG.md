@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.158] - 2025-10-02
+
+### Changes
+- infra: add Cloud Build configuration (INFRA-000a) (#186)
+
+**Source:** project-beta-api@4249f62 "infra: add Cloud Build configuration (INFRA-000a) (#186)"
+
 ## [v0.0.157] - 2025-10-02
 
 ### Changes
