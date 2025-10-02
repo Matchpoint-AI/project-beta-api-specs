@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.153] - 2025-10-02
+
+### Changes
+- feat: Implement GET /v2/campaigns/{campaignId}/content (BACKEND-002) (#179)
+
+**Source:** project-beta-api@48e7e56 "feat: Implement GET /v2/campaigns/{campaignId}/content (BACKEND-002) (#179)"
+
 ## [v0.0.152] - 2025-10-02
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.152"
+    "version": "0.0.153"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1331,59 +1331,6 @@
         }
       }
     },
-    "/api/v2/content/{content_id}": {
-      "patch": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Update Content",
-        "description": "Update content fields (e.g., approval status).\n\nThis is the RMM Level 2 compliant endpoint for content updates including approval.\nInstead of POST /content/{id}/approve, we use PATCH /content/{id} with approved=true.\n\nExample: To approve content, send PATCH with {\"approved\": 1}",
-        "operationId": "update_content_api_v2_content__content_id__patch",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Content Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/campaigns/{campaign_id}/content": {
       "get": {
         "tags": [
@@ -1456,6 +1403,59 @@
         },
         "responses": {
           "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}": {
+      "patch": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Update Content",
+        "description": "Update content fields (e.g., approval status).\n\nThis is the RMM Level 2 compliant endpoint for content updates including approval.\nInstead of POST /content/{id}/approve, we use PATCH /content/{id} with approved=true.\n\nExample: To approve content, send PATCH with {\"approved\": 1}",
+        "operationId": "update_content_api_v2_content__content_id__patch",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -4016,6 +4016,28 @@
         "type": "object",
         "title": "BrandUpdate",
         "description": "Schema for updating an existing brand."
+      },
+      "CampaignContentResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "arr": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Arr"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "CampaignContentResponse",
+        "description": "Schema for complete campaign content response.\n\nMatches V1 response format: {id: str, arr: [week1, week2, ...]}.\nThis is the exact structure returned by GET /api/v1/get-content."
       },
       "CampaignCreate": {
         "properties": {
