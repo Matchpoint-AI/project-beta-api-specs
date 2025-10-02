@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.157] - 2025-10-02
+
+### Changes
+- feat: implement GET /v2/users/me/regeneration-quota endpoint (#183)
+
+**Source:** project-beta-api@e33dec7 "feat: implement GET /v2/users/me/regeneration-quota endpoint (#183)"
+
 ## [v0.0.156] - 2025-10-02
 
 ### Changes

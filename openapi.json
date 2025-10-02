@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.156"
+    "version": "0.0.157"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3035,6 +3035,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/user/me/regeneration-quota": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get Regeneration Quota",
+        "description": "Get user's regeneration quota.\n\nArgs:\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Regeneration quota information\n\nRaises:\n    HTTPException: If authentication fails or quota retrieval fails",
+        "operationId": "get_regeneration_quota_api_v2_user_me_regeneration_quota_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegenerationQuotaResponse"
                 }
               }
             }
@@ -6655,6 +6682,46 @@
         ],
         "title": "ProductInfo",
         "description": "Product information schema."
+      },
+      "RegenerationQuotaResponse": {
+        "properties": {
+          "remaining": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Remaining",
+            "description": "Remaining regenerations allowed"
+          },
+          "totalAllowed": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Totalallowed",
+            "description": "Total regenerations allowed per plan"
+          },
+          "used": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Used",
+            "description": "Number of regenerations used"
+          },
+          "plan": {
+            "type": "string",
+            "enum": [
+              "FREE",
+              "PRO"
+            ],
+            "title": "Plan",
+            "description": "User's subscription plan"
+          }
+        },
+        "type": "object",
+        "required": [
+          "remaining",
+          "totalAllowed",
+          "used",
+          "plan"
+        ],
+        "title": "RegenerationQuotaResponse",
+        "description": "Schema for regeneration quota response."
       },
       "RegenerationRequest": {
         "properties": {
