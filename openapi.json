@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.162"
+    "version": "0.0.163"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1317,6 +1317,67 @@
           },
           "404": {
             "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/publications": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Create Campaign Publication",
+        "description": "Create a campaign publication (RMM L2: publication is a resource).\n\nDirect port from V1 POST /api/v1/campaign/publish endpoint.\n\nRMM L2 Rationale:\n- Publications are resources representing published campaign instances\n- Creating publication is resource creation (not RPC-style /publish)\n- Publications track platform, schedule, and status\n\nThis endpoint:\n- Validates campaign exists and has approved content\n- Schedules posts via Cloud Scheduler (TODO)\n- Returns publication summary with scheduling results",
+        "operationId": "create_campaign_publication_api_v2_campaigns__campaign_id__publications_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignPublicationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Publication created and scheduled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignPublicationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "400": {
+            "description": "Invalid publication data"
           },
           "422": {
             "description": "Validation Error",
@@ -4284,6 +4345,87 @@
         "title": "CampaignCreate",
         "description": "Schema for creating a new campaign."
       },
+      "CampaignPublicationCreate": {
+        "properties": {
+          "timezone": {
+            "type": "string",
+            "title": "Timezone",
+            "description": "IANA timezone for scheduling"
+          },
+          "scheduled_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheduled At",
+            "description": "Optional scheduled publication time"
+          }
+        },
+        "type": "object",
+        "required": [
+          "timezone"
+        ],
+        "title": "CampaignPublicationCreate",
+        "description": "Request schema for creating a publication.\n\nDirect port from V1 PublishRequest model with timezone field.\nRMM L2: Creating a publication is resource creation, not an action."
+      },
+      "CampaignPublicationResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Publication status message"
+          },
+          "scheduled": {
+            "type": "integer",
+            "title": "Scheduled",
+            "description": "Number of posts successfully scheduled"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of posts processed"
+          },
+          "posts": {
+            "items": {
+              "$ref": "#/components/schemas/PublishedPostSummary"
+            },
+            "type": "array",
+            "title": "Posts",
+            "description": "Details of scheduled posts"
+          },
+          "publication_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Id",
+            "description": "Unique publication identifier"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Publication creation timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "scheduled",
+          "total"
+        ],
+        "title": "CampaignPublicationResponse",
+        "description": "Response schema for publication creation.\n\nDirect port from V1 publish endpoint response format.\nTracks publication status and scheduled posts."
+      },
       "CampaignResponse": {
         "properties": {
           "name": {
@@ -6834,6 +6976,46 @@
         ],
         "title": "ProductInfo",
         "description": "Product information schema."
+      },
+      "PublishedPostSummary": {
+        "properties": {
+          "week_key": {
+            "type": "string",
+            "title": "Week Key",
+            "description": "Week identifier (e.g., week_1)"
+          },
+          "day_key": {
+            "type": "string",
+            "title": "Day Key",
+            "description": "Day identifier (e.g., day_1)"
+          },
+          "post_key": {
+            "type": "string",
+            "title": "Post Key",
+            "description": "Post identifier (e.g., post_1)"
+          },
+          "post_name": {
+            "type": "string",
+            "title": "Post Name",
+            "description": "Unique post name for tracking"
+          },
+          "scheduled_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Scheduled Time",
+            "description": "Scheduled publication time"
+          }
+        },
+        "type": "object",
+        "required": [
+          "week_key",
+          "day_key",
+          "post_key",
+          "post_name",
+          "scheduled_time"
+        ],
+        "title": "PublishedPostSummary",
+        "description": "Summary of a single published post within a publication."
       },
       "RegenerationQuotaResponse": {
         "properties": {

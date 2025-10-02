@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.163] - 2025-10-02
+
+### Changes
+- feat: implement POST /campaigns/{campaignId}/publications endpoint (BACKEND-009) (#189)
+
+**Source:** project-beta-api@58bfe01 "feat: implement POST /campaigns/{campaignId}/publications endpoint (BACKEND-009) (#189)"
+
 ## [v0.0.162] - 2025-10-02
 
 ### Changes
