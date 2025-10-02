@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.160"
+    "version": "0.0.161"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1556,6 +1556,59 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RegenerationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/versions": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Create Content Version",
+        "description": "Create a new version of content (RMM L2 compliant regeneration).\n\nThis is the REST-compliant version of content regeneration.\nInstead of POST /regenerate (verb), we POST /versions (noun) to create a resource.\n\nDirect port from V1 (tag v0.2.46) with proper REST design:\n- Creates a new version as a resource\n- Maintains parent-child lineage\n- Enforces plan limits: FREE=3, PRO=10 versions per content\n\nArgs:\n    content_id: Content identifier (from URL path)\n    request: Version creation request with parent ID and optional prompt\n\nReturns:\n    ContentVersionResponse with new version details and quota info\n\nRaises:\n    400 Bad Request: If content not found or generation limit exceeded\n    500 Internal Server Error: If version creation fails",
+        "operationId": "create_content_version_api_v2_content__content_id__versions_post",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentVersionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentVersionResponse"
                 }
               }
             }
@@ -5137,6 +5190,105 @@
         "type": "object",
         "title": "ContentUpdate",
         "description": "Schema for updating content."
+      },
+      "ContentVersionCreate": {
+        "properties": {
+          "parent_content_id": {
+            "type": "string",
+            "title": "Parent Content Id",
+            "description": "ID of the parent content being versioned"
+          },
+          "custom_prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Custom Prompt",
+            "description": "Optional custom prompt for image generation. If not provided, uses parent's prompt."
+          }
+        },
+        "type": "object",
+        "required": [
+          "parent_content_id"
+        ],
+        "title": "ContentVersionCreate",
+        "description": "Request schema for creating a new content version.\n\nReplaces V1's RegenerationRequest with REST resource approach.\nInstead of \"regenerating\", we're creating a new version.",
+        "example": {
+          "custom_prompt": "Modern office workspace with natural lighting",
+          "parent_content_id": "content-123"
+        }
+      },
+      "ContentVersionResponse": {
+        "properties": {
+          "version_id": {
+            "type": "string",
+            "title": "Version Id",
+            "description": "Unique ID for this version"
+          },
+          "parent_content_id": {
+            "type": "string",
+            "title": "Parent Content Id",
+            "description": "ID of parent content"
+          },
+          "image_url": {
+            "type": "string",
+            "title": "Image Url",
+            "description": "URL of newly generated image"
+          },
+          "caption_text": {
+            "type": "string",
+            "title": "Caption Text",
+            "description": "Generated caption text"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "description": "Prompt used for generation"
+          },
+          "generation_count": {
+            "type": "integer",
+            "title": "Generation Count",
+            "description": "Total number of versions generated for this content"
+          },
+          "remaining_generations": {
+            "type": "integer",
+            "title": "Remaining Generations",
+            "description": "Remaining generations available in quota"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Version creation timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version_id",
+          "parent_content_id",
+          "image_url",
+          "caption_text",
+          "prompt",
+          "generation_count",
+          "remaining_generations",
+          "created_at"
+        ],
+        "title": "ContentVersionResponse",
+        "description": "Response schema for content version creation.\n\nReturns the newly created version with metadata and remaining quota.",
+        "example": {
+          "caption_text": "Innovative workspace design for modern teams",
+          "created_at": "2024-01-15T10:30:00Z",
+          "generation_count": 2,
+          "image_url": "https://cdn.example.com/image-789.jpg",
+          "parent_content_id": "content-123",
+          "prompt": "Modern office workspace with natural lighting",
+          "remaining_generations": 8,
+          "version_id": "version-456"
+        }
       },
       "CrawlPageResponse": {
         "properties": {

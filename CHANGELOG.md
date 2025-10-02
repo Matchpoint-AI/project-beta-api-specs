@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.161] - 2025-10-02
+
+### Changes
+- feat: Implement RMM L2 compliant content versioning endpoint (#187)
+
+**Source:** project-beta-api@be9d0cd "feat: Implement RMM L2 compliant content versioning endpoint (#187)"
+
 ## [v0.0.160] - 2025-10-02
 
 ### Changes
