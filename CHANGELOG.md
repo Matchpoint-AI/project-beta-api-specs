@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.167] - 2025-10-03
+
+### Changes
+- docs: migrate CLAUDE.md guidance to AGENTS (#194)
+
+**Source:** project-beta-api@a2acd21 "docs: migrate CLAUDE.md guidance to AGENTS (#194)"
+
 ## [v0.0.166] - 2025-10-03
 
 ### Changes
