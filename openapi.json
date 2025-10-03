@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.165"
+    "version": "0.0.166"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2563,6 +2563,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UpdateTextVersionsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{contentId}/status": {
+      "patch": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Update Content Status",
+        "description": "Update content approval status.\n\nRMM L2 Compliance: Status is a field on the content resource (not /approve action).\nThis replaces the V1 POST /api/v1/contentgen/approve endpoint.\n\nArgs:\n    contentId: UUID of the content to update\n    status_update: New status and optional metadata\n    user_id: ID of user making the change (from auth)\n    content_status_service: Injected status service\n\nReturns:\n    ContentStatusResponse with updated status and metadata\n\nRaises:\n    HTTPException: 400 for invalid transition, 404 if content not found",
+        "operationId": "update_content_status_api_v2_content__contentId__status_patch",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Contentid"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "placeholder-user-id",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentStatusUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentStatusResponse"
                 }
               }
             }
@@ -5606,6 +5669,157 @@
         ],
         "title": "ContentResponse",
         "description": "Schema for content response."
+      },
+      "ContentStatus": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "pending",
+          "approved",
+          "published",
+          "rejected"
+        ],
+        "title": "ContentStatus",
+        "description": "Valid content status values."
+      },
+      "ContentStatusResponse": {
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "title": "Contentid",
+            "description": "ID of the content"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ContentStatus",
+            "description": "Current status of the content"
+          },
+          "approvedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approvedby",
+            "description": "User ID who approved the content"
+          },
+          "approvedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approvedat",
+            "description": "Timestamp when content was approved"
+          },
+          "rejectedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejectedby",
+            "description": "User ID who rejected the content"
+          },
+          "rejectedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejectedat",
+            "description": "Timestamp when content was rejected"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Notes about the status change"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "Timestamp of the status update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contentId",
+          "status",
+          "updatedAt"
+        ],
+        "title": "ContentStatusResponse",
+        "description": "Response after updating content status.\n\nReturns the updated content with its new status and metadata.",
+        "example": {
+          "approvedAt": "2025-10-02T18:20:00Z",
+          "approvedBy": "user123",
+          "contentId": "content123",
+          "status": "approved",
+          "updatedAt": "2025-10-02T18:20:00Z"
+        }
+      },
+      "ContentStatusUpdate": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ContentStatus",
+            "description": "New status for the content"
+          },
+          "approvedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approvedby",
+            "description": "User ID who approved/rejected the content"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Optional notes about the status change"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ContentStatusUpdate",
+        "description": "Request to update content status.\n\nRMM L2 Compliance: PATCH updates a specific field (status) on the content resource.",
+        "example": {
+          "approvedBy": "user123",
+          "notes": "Looks great!",
+          "status": "approved"
+        }
       },
       "ContentUpdate": {
         "properties": {

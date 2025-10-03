@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.166] - 2025-10-03
+
+### Changes
+- feat: implement PATCH /content/{contentId}/status endpoint (BACKEND-008) (#192)
+
+**Source:** project-beta-api@ee14abe "feat: implement PATCH /content/{contentId}/status endpoint (BACKEND-008) (#192)"
+
 ## [v0.0.165] - 2025-10-02
 
 ### Changes
