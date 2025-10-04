@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.168] - 2025-10-04
+
+### Changes
+- feat: implement explicit brand knowledge workflow trigger endpoint (#195)
+
+**Source:** project-beta-api@6689f2a "feat: implement explicit brand knowledge workflow trigger endpoint (#195)"
+
 ## [v0.0.167] - 2025-10-03
 
 ### Changes

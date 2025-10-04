@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.167"
+    "version": "0.0.168"
   },
   "paths": {
     "/api/v2/brands": {
@@ -714,6 +714,70 @@
           },
           "413": {
             "description": "File too large"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/knowledge/workflows": {
+      "post": {
+        "tags": [
+          "brand-workflow"
+        ],
+        "summary": "Start Knowledge Workflow",
+        "description": "Start knowledge discovery workflow for a brand.\n\nCreates a new workflow resource that orchestrates website crawling,\ncontent extraction, and knowledge storage. This is an explicit trigger\nfollowing RMM Level 2 principles.\n\nThe workflow runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running",
+        "operationId": "start_knowledge_workflow_api_v2_brands__brandId__knowledge_workflows_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Workflow started successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "409": {
+            "description": "Workflow already running for this brand"
           },
           "422": {
             "description": "Validation Error",
@@ -8536,6 +8600,30 @@
         ],
         "title": "WeekContent",
         "description": "Schema for weekly content."
+      },
+      "WorkflowRequest": {
+        "properties": {
+          "sources": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sources",
+            "description": "Website URLs to crawl"
+          },
+          "maxPages": {
+            "type": "integer",
+            "title": "Maxpages",
+            "description": "Maximum pages to crawl",
+            "default": 100
+          }
+        },
+        "type": "object",
+        "required": [
+          "sources"
+        ],
+        "title": "WorkflowRequest",
+        "description": "Request for starting a crawling workflow."
       },
       "WorkflowResponse": {
         "properties": {
