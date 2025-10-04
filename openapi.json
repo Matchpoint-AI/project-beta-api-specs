@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.168"
+    "version": "0.0.169"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4854,6 +4854,81 @@
             ],
             "title": "Generating Content Count",
             "default": 0
+          },
+          "currentWeek": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Week Number",
+            "description": "Current week number in campaign (1-indexed), 0 if not started"
+          },
+          "formattedDateRange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Formatted Date Range",
+            "description": "Human-readable date range (e.g., 'Jan 1 - Jan 31, 2025')"
+          },
+          "postingSchedule": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posting Schedule",
+            "description": "Array of posting times with timezone (e.g., ['9 AM GMT', '2 PM GMT'])"
+          },
+          "weekProgress": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Week Progress Percentage",
+            "description": "Campaign progress as percentage (0.0 to 100.0)"
+          },
+          "isCompleted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Campaign Completed",
+            "description": "Whether campaign end date has passed"
+          },
+          "daysRemaining": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Remaining",
+            "description": "Number of days remaining in campaign (0 if completed)"
           }
         },
         "type": "object",

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.169] - 2025-10-04
+
+### Changes
+- Add server-authoritative calculated fields to campaign responses (#197)
+
+**Source:** project-beta-api@c55fb91 "Add server-authoritative calculated fields to campaign responses (#197)"
+
 ## [v0.0.168] - 2025-10-04
 
 ### Changes
