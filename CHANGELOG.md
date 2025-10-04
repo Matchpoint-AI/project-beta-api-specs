@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.170] - 2025-10-04
+
+### Changes
+- feat(BACKEND-010b-1): Campaign export repository with 90%+ test coverage (#198)
+
+**Source:** project-beta-api@245f372 "feat(BACKEND-010b-1): Campaign export repository with 90%+ test coverage (#198)"
+
 ## [v0.0.169] - 2025-10-04
 
 ### Changes
