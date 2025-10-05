@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.172] - 2025-10-05
+
+### Changes
+- feat: Add brand file upload with LLM extraction (BACKEND-011) (#200)
+
+**Source:** project-beta-api@4c35146 "feat: Add brand file upload with LLM extraction (BACKEND-011) (#200)"
+
 ## [v0.0.171] - 2025-10-05
 
 ### Changes

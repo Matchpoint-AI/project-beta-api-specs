@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.171"
+    "version": "0.0.172"
   },
   "paths": {
     "/api/v2/brands": {
@@ -610,7 +610,7 @@
           "brands"
         ],
         "summary": "Upload Brand Files",
-        "description": "Upload brand files (guidelines PDF and logo).\n\nProper REST endpoint for uploading brand files to an existing brand.\nReplaces the non-RESTful /with-files endpoint.",
+        "description": "Upload brand files (guidelines PDF and logo) with LLM extraction.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines using LLM processing.",
         "operationId": "upload_brand_files_api_v2_brands__brandId__files_post",
         "parameters": [
           {
@@ -636,11 +636,11 @@
         },
         "responses": {
           "201": {
-            "description": "Brand files uploaded successfully",
+            "description": "Brand files uploaded and processed successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BrandResponse"
+                  "$ref": "#/components/schemas/BrandFileUploadResponse"
                 }
               }
             }
@@ -4130,6 +4130,58 @@
         ],
         "title": "BrandExtractionProgressResponse",
         "description": "Schema for brand extraction progress response."
+      },
+      "BrandFileUploadResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "brandGuidelinesUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandguidelinesurl",
+            "description": "Google Cloud Storage URL for uploaded brand guidelines PDF"
+          },
+          "logoUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logourl",
+            "description": "Google Cloud Storage URL for uploaded logo image"
+          },
+          "extractedData": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extracteddata",
+            "description": "Extracted brand information from PDF (colors, typography, photography)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId"
+        ],
+        "title": "BrandFileUploadResponse",
+        "description": "Response schema for brand file upload with LLM extraction."
       },
       "BrandOnboardingComplete": {
         "properties": {
