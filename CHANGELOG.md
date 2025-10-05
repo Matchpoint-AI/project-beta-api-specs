@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.171] - 2025-10-05
+
+### Changes
+- feat: Add color name conversion endpoint (BACKEND-010d-1) (#196)
+
+**Source:** project-beta-api@29fe6f3 "feat: Add color name conversion endpoint (BACKEND-010d-1) (#196)"
+
 ## [v0.0.170] - 2025-10-04
 
 ### Changes
