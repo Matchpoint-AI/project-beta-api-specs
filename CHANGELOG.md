@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.174] - 2025-10-07
+
+### Changes
+- feat: add POST /campaigns/{campaignId}/specifications endpoint (#202)
+
+**Source:** project-beta-api@71b46dc "feat: add POST /campaigns/{campaignId}/specifications endpoint (#202)"
+
 ## [v0.0.173] - 2025-10-07
 
 ### Changes

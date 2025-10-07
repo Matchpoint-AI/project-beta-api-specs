@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.173"
+    "version": "0.0.174"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1493,6 +1493,66 @@
           },
           "400": {
             "description": "Invalid publication data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/specifications": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Generate Campaign Specifications",
+        "description": "Generate campaign specifications using LLM analysis.\n\nDirect port from V1 /api/v1/llm/openai endpoint used by CampaignDetails.tsx.\n\nAnalyzes campaign data (objective, audience, product features) and generates\nstructured specifications including:\n- key_features: Product benefits and competitive features\n- audience: Target audience description with demographics\n- purpose: Campaign goal and focus description\n\nRMM L2 Design: Specifications are a computed sub-resource of campaign.\nPOST generates new specs from current campaign data using LLM analysis.",
+        "operationId": "generate_campaign_specifications_api_v2_campaigns__campaign_id__specifications_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignSpecificationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campaign specifications generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignSpecificationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "500": {
+            "description": "Failed to generate specifications"
           },
           "422": {
             "description": "Validation Error",
@@ -5113,6 +5173,44 @@
         ],
         "title": "CampaignResponse",
         "description": "Schema for campaign responses."
+      },
+      "CampaignSpecificationRequest": {
+        "properties": {},
+        "type": "object",
+        "title": "CampaignSpecificationRequest",
+        "description": "Request schema for campaign specification generation (optional, can be empty)."
+      },
+      "CampaignSpecificationResponse": {
+        "properties": {
+          "keyFeatures": {
+            "type": "string",
+            "title": "Keyfeatures",
+            "description": "Concise description of the product's benefits based on product features"
+          },
+          "audience": {
+            "type": "string",
+            "title": "Audience",
+            "description": "Description of target audience including age, gender, interests, and emotional goals"
+          },
+          "purpose": {
+            "type": "string",
+            "title": "Purpose",
+            "description": "Description explaining the goal of the campaign and its focus"
+          }
+        },
+        "type": "object",
+        "required": [
+          "keyFeatures",
+          "audience",
+          "purpose"
+        ],
+        "title": "CampaignSpecificationResponse",
+        "description": "Response schema for campaign specification generation.\n\nDirect port from V1 CampaignDetails.tsx JSON output format.",
+        "example": {
+          "audience": "Health-conscious millennials aged 25-40, interested in sustainability and wellness",
+          "keyFeatures": "Premium organic ingredients, eco-friendly packaging, supports local farmers",
+          "purpose": "Launch new product line focused on environmental responsibility and premium quality"
+        }
       },
       "CampaignStatistics": {
         "properties": {
