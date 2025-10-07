@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.173] - 2025-10-07
+
+### Changes
+- feat: add POST /brands/{brandId}/summary endpoint (V1→V2 port) (#201)
+
+**Source:** project-beta-api@1cc2659 "feat: add POST /brands/{brandId}/summary endpoint (V1→V2 port) (#201)"
+
 ## [v0.0.172] - 2025-10-05
 
 ### Changes
