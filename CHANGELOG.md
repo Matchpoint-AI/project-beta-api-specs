@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.177] - 2025-10-08
+
+### Changes
+- feat: Add campaign specifications endpoint (BACKEND-013) (#205)
+
+**Source:** project-beta-api@078dd4d "feat: Add campaign specifications endpoint (BACKEND-013) (#205)"
+
 ## [v0.0.176] - 2025-10-08
 
 ### Changes
