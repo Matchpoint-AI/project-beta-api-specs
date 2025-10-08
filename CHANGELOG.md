@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.179] - 2025-10-08
+
+### Changes
+- refactor: improve dependency injection with proper injector patterns (#206)
+
+**Source:** project-beta-api@ed15a63 "refactor: improve dependency injection with proper injector patterns (#206)"
+
 ## [v0.0.178] - 2025-10-08
 
 ### Changes
