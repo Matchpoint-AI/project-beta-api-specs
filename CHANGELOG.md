@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.183] - 2025-10-08
+
+### Changes
+- feat: initialize Alembic for database migrations (INFRA-012) (#211)
+
+**Source:** project-beta-api@21b7947 "feat: initialize Alembic for database migrations (INFRA-012) (#211)"
+
 ## [v0.0.182] - 2025-10-08
 
 ### Changes
