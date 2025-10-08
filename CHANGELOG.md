@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.178] - 2025-10-08
+
+### Changes
+- chore: Remove terraform infrastructure from API repo (#193)
+
+**Source:** project-beta-api@9366f3a "chore: Remove terraform infrastructure from API repo (#193)"
+
 ## [v0.0.177] - 2025-10-08
 
 ### Changes
