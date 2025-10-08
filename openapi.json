@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.174"
+    "version": "0.0.175"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1553,6 +1553,57 @@
           },
           "500": {
             "description": "Failed to generate specifications"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/audience/suggestions": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Generate Audience Suggestions",
+        "description": "Generate audience emotion and interest suggestions for campaign.\n\nDirect port from V1 AudienceForm.tsx audience suggestion logic.\n\nRMM L2 Rationale:\n- Suggestions are computed sub-resource under campaign audience\n- POST generates new suggestions based on campaign context\n- Returns emotional triggers and interest categories\n- Uses OpenAI for intelligent audience analysis\n\nThis endpoint:\n- Fetches campaign and brand data\n- Constructs LLM prompt for audience analysis\n- Generates emotion and interest arrays using GPT-4\n- Returns exactly 3 items in each array",
+        "operationId": "generate_audience_suggestions_api_v2_campaigns__campaign_id__audience_suggestions_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Audience suggestions generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudienceSuggestionsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "500": {
+            "description": "Failed to generate suggestions"
           },
           "422": {
             "description": "Validation Error",
@@ -3639,6 +3690,49 @@
   },
   "components": {
     "schemas": {
+      "AudienceSuggestionsResponse": {
+        "properties": {
+          "audience_emotion": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 3,
+            "title": "Audience Emotion",
+            "description": "Array of 3 emotional triggers that resonate with target audience"
+          },
+          "audience_interests": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 3,
+            "title": "Audience Interests",
+            "description": "Array of 3 interest categories relevant to target audience"
+          }
+        },
+        "type": "object",
+        "required": [
+          "audience_emotion",
+          "audience_interests"
+        ],
+        "title": "AudienceSuggestionsResponse",
+        "description": "Response schema for audience suggestions.\n\nPort from V1 AudienceForm.tsx (lines 54-87) which extracts two arrays:\n- audienceEmotion: emotional triggers for the target audience\n- audienceInterests: interest categories for the target audience",
+        "example": {
+          "audience_emotion": [
+            "excited",
+            "inspired",
+            "curious"
+          ],
+          "audience_interests": [
+            "technology",
+            "innovation",
+            "sustainability"
+          ]
+        }
+      },
       "Body_create_brand_with_files_api_v2_brands_with_files_post": {
         "properties": {
           "name": {

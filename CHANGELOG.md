@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.175] - 2025-10-08
+
+### Changes
+- Add POST endpoint for AI-powered audience suggestions (BACKEND-014) (#203)
+
+**Source:** project-beta-api@22985c2 "Add POST endpoint for AI-powered audience suggestions (BACKEND-014) (#203)"
+
 ## [v0.0.174] - 2025-10-07
 
 ### Changes
