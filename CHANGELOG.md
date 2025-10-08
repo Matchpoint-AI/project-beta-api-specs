@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.182] - 2025-10-08
+
+### Changes
+- test: add E2E tests for brand knowledge workflow endpoints (#210)
+
+**Source:** project-beta-api@e9247d2 "test: add E2E tests for brand knowledge workflow endpoints (#210)"
+
 ## [v0.0.181] - 2025-10-08
 
 ### Changes
