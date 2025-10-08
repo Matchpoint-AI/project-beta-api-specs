@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.181] - 2025-10-08
+
+### Changes
+- feat: Set up Alembic database migrations for project-beta-api (#209)
+
+**Source:** project-beta-api@8ee60db "feat: Set up Alembic database migrations for project-beta-api (#209)"
+
 ## [v0.0.180] - 2025-10-08
 
 ### Changes
