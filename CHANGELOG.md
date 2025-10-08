@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.180] - 2025-10-08
+
+### Changes
+- feat: add LLM dry-run mode for E2E testing (#207)
+
+**Source:** project-beta-api@d8d7c16 "feat: add LLM dry-run mode for E2E testing (#207)"
+
 ## [v0.0.179] - 2025-10-08
 
 ### Changes
