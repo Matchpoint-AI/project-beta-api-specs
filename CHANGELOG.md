@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.185] - 2025-10-09
+
+### Changes
+- feat: add E2E tests for campaign content generation (#212)
+
+**Source:** project-beta-api@f14255f "feat: add E2E tests for campaign content generation (#212)"
+
 ## [v0.0.184] - 2025-10-09
 
 ### Changes
