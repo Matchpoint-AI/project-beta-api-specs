@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.184] - 2025-10-09
+
+### Changes
+- test: add E2E tests for campaign specifications endpoint (#214)
+
+**Source:** project-beta-api@470ae51 "test: add E2E tests for campaign specifications endpoint (#214)"
+
 ## [v0.0.183] - 2025-10-08
 
 ### Changes
