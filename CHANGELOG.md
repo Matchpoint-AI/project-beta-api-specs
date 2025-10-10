@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.187] - 2025-10-10
+
+### Changes
+- feat: Instagram OAuth Integration Endpoint (BACKEND-020) (#215)
+
+**Source:** project-beta-api@d5166a2 "feat: Instagram OAuth Integration Endpoint (BACKEND-020) (#215)"
+
 ## [v0.0.186] - 2025-10-10
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.186"
+    "version": "0.0.187"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3474,6 +3474,48 @@
                   "additionalProperties": true,
                   "type": "object",
                   "title": "Response Health Check Api V2 Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations/instagram/oauth": {
+      "post": {
+        "tags": [
+          "integrations"
+        ],
+        "summary": "Instagram Oauth",
+        "description": "Handle Instagram OAuth token exchange.\n\nExchanges Instagram authorization code for long-lived access token and\nstores the integration in the database.\n\n**OAuth Flow**:\n1. User authorizes app on Instagram\n2. Instagram redirects with authorization code\n3. This endpoint exchanges code for long-lived token (60 days)\n4. Stores user's Instagram credentials\n\n**RMM Level 2 Compliance**:\n- Resource: /integrations/instagram/oauth (noun-based)\n- HTTP Method: POST (creates new OAuth integration)\n- Status Code: 201 Created (resource creation)\n\nArgs:\n    request: Instagram OAuth request with authorization code\n    instagram_oauth_service: Injected Instagram OAuth service\n    auth_service: Injected authentication service\n\nReturns:\n    Instagram OAuth response with user info and token details\n\nRaises:\n    HTTPException: If OAuth exchange fails",
+        "operationId": "instagram_oauth_api_v2_integrations_instagram_oauth_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstagramOAuthRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstagramOAuthResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -7543,6 +7585,75 @@
         ],
         "title": "InitializeCrawlResponse",
         "description": "Response model for crawl initialization."
+      },
+      "InstagramOAuthRequest": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Code",
+            "description": "Authorization code from Instagram OAuth callback"
+          },
+          "redirectUri": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Redirecturi",
+            "description": "Redirect URI used in authorization request"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "redirectUri"
+        ],
+        "title": "InstagramOAuthRequest",
+        "description": "Schema for Instagram OAuth token exchange request."
+      },
+      "InstagramOAuthResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Instagram account ID"
+          },
+          "userName": {
+            "type": "string",
+            "title": "Username",
+            "description": "Instagram username"
+          },
+          "accessToken": {
+            "type": "string",
+            "title": "Accesstoken",
+            "description": "Long-lived access token"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "title": "Expiresin",
+            "description": "Token expiration time in seconds"
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Issuedat",
+            "description": "Token issuance timestamp"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid",
+            "description": "Associated user ID from our system"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "userName",
+          "accessToken",
+          "expiresIn",
+          "issuedAt",
+          "userId"
+        ],
+        "title": "InstagramOAuthResponse",
+        "description": "Schema for Instagram OAuth token exchange response."
       },
       "IntegrationAuthRequest": {
         "properties": {
