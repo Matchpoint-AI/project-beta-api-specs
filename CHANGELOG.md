@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.186] - 2025-10-10
+
+### Changes
+- Phase 3: Remove Terraform from API repo (#171)
+
+**Source:** project-beta-api@09c11c5 "Phase 3: Remove Terraform from API repo (#171)"
+
 ## [v0.0.185] - 2025-10-09
 
 ### Changes
