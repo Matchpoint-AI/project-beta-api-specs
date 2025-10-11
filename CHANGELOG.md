@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.197] - 2025-10-11
+
+### Changes
+- test: increase user_controller coverage to 95%+ (#166)
+
+**Source:** project-beta-api@4d47c26 "test: increase user_controller coverage to 95%+ (#166)"
+
 ## [v0.0.196] - 2025-10-11
 
 ### Changes
