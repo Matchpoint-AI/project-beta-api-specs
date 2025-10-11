@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.190] - 2025-10-11
+
+### Changes
+- docs: rewrite AGENTS.md to reflect V2 target state (#218)
+
+**Source:** project-beta-api@f02ef8a "docs: rewrite AGENTS.md to reflect V2 target state (#218)"
+
 ## [v0.0.189] - 2025-10-11
 
 ### Changes
