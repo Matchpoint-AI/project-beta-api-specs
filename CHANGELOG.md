@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.192] - 2025-10-11
+
+### Changes
+- test: add E2E tests for audience suggestions endpoint (#216)
+
+**Source:** project-beta-api@a25536c "test: add E2E tests for audience suggestions endpoint (#216)"
+
 ## [v0.0.191] - 2025-10-11
 
 ### Changes
