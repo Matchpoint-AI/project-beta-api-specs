@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.196] - 2025-10-11
+
+### Changes
+- docs: Add comprehensive V2 coding guidelines (#222)
+
+**Source:** project-beta-api@7549915 "docs: Add comprehensive V2 coding guidelines (#222)"
+
 ## [v0.0.195] - 2025-10-11
 
 ### Changes
