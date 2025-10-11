@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.191] - 2025-10-11
+
+### Changes
+- docs: consolidate .ai directory to single README.md file (#219)
+
+**Source:** project-beta-api@013ccf0 "docs: consolidate .ai directory to single README.md file (#219)"
+
 ## [v0.0.190] - 2025-10-11
 
 ### Changes
