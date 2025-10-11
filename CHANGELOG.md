@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.189] - 2025-10-11
+
+### Changes
+- docs: create .ai directory structure for project-beta-api (#217)
+
+**Source:** project-beta-api@ccf09e0 "docs: create .ai directory structure for project-beta-api (#217)"
+
 ## [v0.0.188] - 2025-10-10
 
 ### Changes
