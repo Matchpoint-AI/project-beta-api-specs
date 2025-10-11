@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.194] - 2025-10-11
+
+### Changes
+- Phase 4: Add V1 to V2 endpoint mapping document (#172)
+
+**Source:** project-beta-api@ade272f "Phase 4: Add V1 to V2 endpoint mapping document (#172)"
+
 ## [v0.0.193] - 2025-10-11
 
 ### Changes
