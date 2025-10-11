@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.193] - 2025-10-11
+
+### Changes
+- test: Verify CI baseline checks on main (#175)
+
+**Source:** project-beta-api@77a6d99 "test: Verify CI baseline checks on main (#175)"
+
 ## [v0.0.192] - 2025-10-11
 
 ### Changes
