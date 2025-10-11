@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.195] - 2025-10-11
+
+### Changes
+- docs: rewrite AGENTS.md to V2 target state (4571→803 lines) (#220)
+
+**Source:** project-beta-api@7c7ee9d "docs: rewrite AGENTS.md to V2 target state (4571→803 lines) (#220)"
+
 ## [v0.0.194] - 2025-10-11
 
 ### Changes
