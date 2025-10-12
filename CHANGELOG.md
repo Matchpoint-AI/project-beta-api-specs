@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.198] - 2025-10-12
+
+### Changes
+- feat: implement GET /api/v2/users/me endpoint (BACKEND-020) (#223)
+
+**Source:** project-beta-api@d2d3b21 "feat: implement GET /api/v2/users/me endpoint (BACKEND-020) (#223)"
+
 ## [v0.0.197] - 2025-10-11
 
 ### Changes

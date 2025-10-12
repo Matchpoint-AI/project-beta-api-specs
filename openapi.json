@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.197"
+    "version": "0.0.198"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3523,14 +3523,14 @@
         }
       }
     },
-    "/api/v2/user": {
+    "/api/v2/users/me": {
       "get": {
         "tags": [
           "users"
         ],
         "summary": "Get User Profile",
         "description": "Get authenticated user profile.\n\nArgs:\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    User profile with brand ownership status\n\nRaises:\n    HTTPException: If authentication fails or user not found",
-        "operationId": "get_user_profile_api_v2_user_get",
+        "operationId": "get_user_profile_api_v2_users_me_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -3550,14 +3550,14 @@
         ]
       }
     },
-    "/api/v2/user/register": {
+    "/api/v2/users/register": {
       "post": {
         "tags": [
           "users"
         ],
         "summary": "Register User",
         "description": "Register a new user.\n\nArgs:\n    request: User registration details\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Registration confirmation\n\nRaises:\n    HTTPException: If registration fails",
-        "operationId": "register_user_api_v2_user_register_post",
+        "operationId": "register_user_api_v2_users_register_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3592,14 +3592,14 @@
         }
       }
     },
-    "/api/v2/user/profile": {
+    "/api/v2/users/profile": {
       "put": {
         "tags": [
           "users"
         ],
         "summary": "Update User Profile",
         "description": "Update user profile.\n\nArgs:\n    request: Update details\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Updated user information\n\nRaises:\n    HTTPException: If update fails",
-        "operationId": "update_user_profile_api_v2_user_profile_put",
+        "operationId": "update_user_profile_api_v2_users_profile_put",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3639,14 +3639,14 @@
         ]
       }
     },
-    "/api/v2/user/me/regeneration-quota": {
+    "/api/v2/users/me/quota": {
       "get": {
         "tags": [
           "users"
         ],
         "summary": "Get Regeneration Quota",
         "description": "Get user's regeneration quota.\n\nArgs:\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Regeneration quota information\n\nRaises:\n    HTTPException: If authentication fails or quota retrieval fails",
-        "operationId": "get_regeneration_quota_api_v2_user_me_regeneration_quota_get",
+        "operationId": "get_regeneration_quota_api_v2_users_me_quota_get",
         "responses": {
           "200": {
             "description": "Successful Response",
