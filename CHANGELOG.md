@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.201] - 2025-10-12
+
+### Changes
+- feat: implement content images API endpoints (BACKEND-022a-d) (#227)
+
+**Source:** project-beta-api@c8a92fb "feat: implement content images API endpoints (BACKEND-022a-d) (#227)"
+
 ## [v0.0.200] - 2025-10-12
 
 ### Changes
