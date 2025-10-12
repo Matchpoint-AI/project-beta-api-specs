@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.200] - 2025-10-12
+
+### Changes
+- feat: add bulk approval endpoint for campaigns (BACKEND-023) (#228)
+
+**Source:** project-beta-api@e44e457 "feat: add bulk approval endpoint for campaigns (BACKEND-023) (#228)"
+
 ## [v0.0.199] - 2025-10-12
 
 ### Changes
