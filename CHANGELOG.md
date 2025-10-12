@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.199] - 2025-10-12
+
+### Changes
+- feat: add content_images table and SQLAlchemy model (BACKEND-022a) (#225)
+
+**Source:** project-beta-api@1a20ea9 "feat: add content_images table and SQLAlchemy model (BACKEND-022a) (#225)"
+
 ## [v0.0.198] - 2025-10-12
 
 ### Changes
