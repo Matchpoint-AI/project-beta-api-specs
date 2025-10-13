@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.203] - 2025-10-13
+
+### Changes
+- feat: implement content images API (BACKEND-022b,c,d) (#226)
+
+**Source:** project-beta-api@f8915eb "feat: implement content images API (BACKEND-022b,c,d) (#226)"
+
 ## [v0.0.202] - 2025-10-13
 
 ### Changes
