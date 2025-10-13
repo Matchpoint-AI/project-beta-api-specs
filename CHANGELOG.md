@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.202] - 2025-10-13
+
+### Changes
+- feat: implement /api/v2/threads/{id}/messages endpoints (BACKEND-024) (#229)
+
+**Source:** project-beta-api@c7a4ef0 "feat: implement /api/v2/threads/{id}/messages endpoints (BACKEND-024) (#229)"
+
 ## [v0.0.201] - 2025-10-12
 
 ### Changes
