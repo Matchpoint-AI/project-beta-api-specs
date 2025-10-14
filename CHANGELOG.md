@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.204] - 2025-10-14
+
+### Changes
+- feat: implement GET /api/v2/campaigns/{id}/approval-status endpoint (BACKEND-021) (#224)
+
+**Source:** project-beta-api@9364f9d "feat: implement GET /api/v2/campaigns/{id}/approval-status endpoint (BACKEND-021) (#224)"
+
 ## [v0.0.203] - 2025-10-13
 
 ### Changes
