@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.204"
+    "version": "0.0.205"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1716,6 +1716,57 @@
           },
           "500": {
             "description": "Failed to get approval status"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/export/approval-status": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Campaign Export Approval Status",
+        "description": "Get detailed export approval status for a campaign.\n\nDirect port from V1 /api/v1/check-approved endpoint used by TabItems.tsx:34.\n\nReturns detailed approval status for the export workflow including:\n- Whether all content is approved\n- Count of approved posts\n- Total count of posts\n- List of unapproved content IDs (for UI to show what needs approval)\n\nRMM L2 Rationale:\n- export/approval-status is a computed sub-resource of campaign\n- GET retrieves the current export-ready state (not a state change)\n- Returns structured data with additional unapproved_content_ids field\n- Separates general approval-status from export-specific approval-status\n\nUsed by export functionality to:\n- Enable/disable export button\n- Show which content items need approval before export\n- Provide detailed feedback to user\n\nReturns:\n    - approved: true if all content is approved, false otherwise\n    - approved_content: number of approved posts\n    - total_content: total number of posts in campaign\n    - unapproved_content_ids: list of content IDs that are not approved",
+        "operationId": "get_campaign_export_approval_status_api_v2_campaigns__campaign_id__export_approval_status_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Export approval status returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignExportApprovalStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign content not found"
+          },
+          "500": {
+            "description": "Failed to get export approval status"
           },
           "422": {
             "description": "Validation Error",
@@ -5485,6 +5536,43 @@
         ],
         "title": "CampaignCreate",
         "description": "Schema for creating a new campaign."
+      },
+      "CampaignExportApprovalStatus": {
+        "properties": {
+          "approved": {
+            "type": "boolean",
+            "title": "Approved",
+            "description": "Whether all content is approved for export"
+          },
+          "approved_content": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Approved Content",
+            "description": "Number of approved posts"
+          },
+          "total_content": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total Content",
+            "description": "Total number of posts"
+          },
+          "unapproved_content_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unapproved Content Ids",
+            "description": "List of unapproved content IDs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "approved",
+          "approved_content",
+          "total_content"
+        ],
+        "title": "CampaignExportApprovalStatus",
+        "description": "Response schema for campaign export approval status.\n\nReturns detailed approval status for export functionality including\nlist of unapproved content IDs."
       },
       "CampaignPublicationCreate": {
         "properties": {
