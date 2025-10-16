@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.206] - 2025-10-16
+
+### Changes
+- feat: add V2 bulk content approval endpoint (BACKEND-029) (#231)
+
+**Source:** project-beta-api@c213ded "feat: add V2 bulk content approval endpoint (BACKEND-029) (#231)"
+
 ## [v0.0.205] - 2025-10-16
 
 ### Changes
