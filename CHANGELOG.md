@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.207] - 2025-10-18
+
+### Changes
+- Add V2 campaign PDF export endpoint (#234)
+
+**Source:** project-beta-api@d582ae6 "Add V2 campaign PDF export endpoint (#234)"
+
 ## [v0.0.206] - 2025-10-16
 
 ### Changes

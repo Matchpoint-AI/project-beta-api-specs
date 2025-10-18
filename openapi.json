@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.206"
+    "version": "0.0.207"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1767,6 +1767,54 @@
           },
           "500": {
             "description": "Failed to get export approval status"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/export/pdf": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Campaign Pdf Export Data",
+        "description": "Get campaign PDF export data (RMM L2: export is a sub-resource).\n\nDirect port from V1 GET /api/v1/getPdfData?campaign_id={id} endpoint.\nUsed by frontend src/shared/utils/exportUtils.ts:51 for PDF generation.\n\nRMM L2 Rationale:\n- Export data is a computed sub-resource of campaign\n- GET returns pre-formatted data for PDF generation\n- Includes campaign metadata, brand profile, and content\n\nThis endpoint:\n- Returns all data needed for PDF generation\n- Includes campaign, brand, and content information\n- Optimized for frontend PDF rendering\n- Performance target: <2s response time\n\nFrontend usage: fetchAndCreatePDF() calls this to get:\n- client_request (campaign variables and metadata)\n- brand_profile (brand identity and styling)\n- campaign_brief (campaign details and content)",
+        "operationId": "get_campaign_pdf_export_data_api_v2_campaigns__campaign_id__export_pdf_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF export data returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignExportData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
           },
           "422": {
             "description": "Validation Error",
@@ -5158,6 +5206,102 @@
         "title": "BrandOnboardingReview",
         "description": "Schema for reviewing brand onboarding data."
       },
+      "BrandProfileExport": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "website": {
+            "type": "string",
+            "title": "Website"
+          },
+          "brandColors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Brandcolors"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry"
+          },
+          "targetAudience": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Targetaudience"
+          },
+          "logoUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logourl"
+          },
+          "mission": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mission"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Values"
+          },
+          "brandPersona": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Brandpersona"
+          },
+          "toneOfVoice": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Toneofvoice"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "website"
+        ],
+        "title": "BrandProfileExport",
+        "description": "Brand profile data for export documents."
+      },
       "BrandResponse": {
         "properties": {
           "name": {
@@ -5685,6 +5829,74 @@
         ],
         "title": "CampaignExportApprovalStatus",
         "description": "Response schema for campaign export approval status.\n\nReturns detailed approval status for export functionality including\nlist of unapproved content IDs."
+      },
+      "CampaignExportData": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "durationWeeks": {
+            "type": "integer",
+            "title": "Durationweeks"
+          },
+          "postsPerDay": {
+            "type": "integer",
+            "title": "Postsperday"
+          },
+          "campaignVariables": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Campaignvariables"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          },
+          "brand": {
+            "$ref": "#/components/schemas/BrandProfileExport"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/ContentExport"
+            },
+            "type": "array",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "durationWeeks",
+          "postsPerDay",
+          "createdAt",
+          "updatedAt",
+          "brand"
+        ],
+        "title": "CampaignExportData",
+        "description": "Complete campaign data for export documents."
       },
       "CampaignPublicationCreate": {
         "properties": {
@@ -6780,6 +6992,51 @@
         ],
         "title": "ContentCreate",
         "description": "Schema for creating content."
+      },
+      "ContentExport": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid"
+          },
+          "totalPosts": {
+            "type": "integer",
+            "title": "Totalposts"
+          },
+          "readyForReview": {
+            "type": "integer",
+            "title": "Readyforreview"
+          },
+          "approved": {
+            "type": "integer",
+            "title": "Approved"
+          },
+          "contentData": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Contentdata"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "campaignId",
+          "totalPosts",
+          "readyForReview",
+          "approved",
+          "createdAt"
+        ],
+        "title": "ContentExport",
+        "description": "Content data for export documents (organized by week/day/post)."
       },
       "ContentExportCreate": {
         "properties": {
