@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.212] - 2025-10-19
+
+### Changes
+- feat: Rename crawl-queue to queue for RMM L2 compliance (RETROFIT-003) (#238)
+
+**Source:** project-beta-api@5ae0131 "feat: Rename crawl-queue to queue for RMM L2 compliance (RETROFIT-003) (#238)"
+
 ## [v0.0.211] - 2025-10-19
 
 ### Changes

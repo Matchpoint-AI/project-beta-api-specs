@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.211"
+    "version": "0.0.212"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3716,14 +3716,130 @@
         }
       }
     },
+    "/api/v2/brands/{brandId}/queue": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "List Queue Entries",
+        "description": "List crawl queue entries for a brand with optional filtering.\n\nRMM L2 Compliant: Uses single-word resource 'queue' instead of hyphenated 'crawl-queue'.",
+        "operationId": "list_queue_entries_api_v2_brands__brandId__queue_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "base_domain",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by base domain",
+              "title": "Base Domain"
+            },
+            "description": "Filter by base domain"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by status",
+              "title": "Status"
+            },
+            "description": "Filter by status"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of entries",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum number of entries"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of entries to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of entries to skip"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Queue entries retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CrawlQueueResponse"
+                  },
+                  "title": "Response List Queue Entries Api V2 Brands  Brandid  Queue Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brandId}/crawl-queue": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "List Crawl Queue Entries",
-        "description": "List crawl queue entries for a brand with optional filtering.",
+        "description": "DEPRECATED: List crawl queue entries for a brand with optional filtering.\n\nThis endpoint is deprecated. Use /brands/{brandId}/queue instead.\nThis endpoint will be removed on 2025-04-19 (6 months from deprecation).",
         "operationId": "list_crawl_queue_entries_api_v2_brands__brandId__crawl_queue_get",
+        "deprecated": true,
         "parameters": [
           {
             "name": "brandId",
@@ -3811,6 +3927,14 @@
                     "$ref": "#/components/schemas/CrawlQueueResponse"
                   },
                   "title": "Response List Crawl Queue Entries Api V2 Brands  Brandid  Crawl Queue Get"
+                }
+              }
+            },
+            "headers": {
+              "Warning": {
+                "description": "Deprecation warning",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
