@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.213] - 2025-10-19
+
+### Changes
+- docs: Add comprehensive API style guide (RMM-2) (#240)
+
+**Source:** project-beta-api@ea37958 "docs: Add comprehensive API style guide (RMM-2) (#240)"
+
 ## [v0.0.212] - 2025-10-19
 
 ### Changes
