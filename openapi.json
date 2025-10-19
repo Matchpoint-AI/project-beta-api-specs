@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.208"
+    "version": "0.0.209"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4222,6 +4222,48 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ColorNameResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/utilities/fetch-url-content": {
+      "post": {
+        "tags": [
+          "Utilities"
+        ],
+        "summary": "Fetch content from URL",
+        "description": "Fetch and extract text content, metadata, and optionally images from a URL",
+        "operationId": "fetch_url_content_api_v2_utilities_fetch_url_content_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/URLContentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/URLContentResponse"
                 }
               }
             }
@@ -10027,6 +10069,91 @@
         ],
         "title": "ToneAttributesV2",
         "description": "V2 Tone attributes for brand knowledge."
+      },
+      "URLContentRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "minLength": 1,
+            "title": "Url",
+            "description": "URL to fetch content from",
+            "example": "https://example.com/about"
+          },
+          "extract_images": {
+            "type": "boolean",
+            "title": "Extract Images",
+            "description": "Whether to extract image URLs from the page",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "URLContentRequest",
+        "description": "Request schema for URL content fetching."
+      },
+      "URLContentResponse": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Extracted text content from the URL"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/URLMetadata",
+            "description": "Page metadata"
+          },
+          "images": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Images",
+            "description": "List of image URLs (if extract_images=true)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content",
+          "metadata"
+        ],
+        "title": "URLContentResponse",
+        "description": "Response schema for URL content fetching."
+      },
+      "URLMetadata": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Page title",
+            "default": ""
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Meta description",
+            "default": ""
+          },
+          "status_code": {
+            "type": "integer",
+            "title": "Status Code",
+            "description": "HTTP status code"
+          },
+          "content_type": {
+            "type": "string",
+            "title": "Content Type",
+            "description": "Content-Type header"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status_code",
+          "content_type"
+        ],
+        "title": "URLMetadata",
+        "description": "Metadata extracted from URL."
       },
       "UpdateTextVersionsRequest": {
         "properties": {

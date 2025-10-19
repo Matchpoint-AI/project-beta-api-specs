@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.209] - 2025-10-19
+
+### Changes
+- feat: add V2 URL content fetching endpoint (BACKEND-032)
+
+**Source:** project-beta-api@45c6b76 "feat: add V2 URL content fetching endpoint (BACKEND-032)"
+
 ## [v0.0.208] - 2025-10-19
 
 ### Changes
