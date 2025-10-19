@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.210] - 2025-10-19
+
+### Changes
+- feat: add RMM-2 compliant PATCH /brands/{brandId}/status endpoint (RETROFIT-002) (#237)
+
+**Source:** project-beta-api@d27c3d5 "feat: add RMM-2 compliant PATCH /brands/{brandId}/status endpoint (RETROFIT-002) (#237)"
+
 ## [v0.0.209] - 2025-10-19
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.209"
+    "version": "0.0.210"
   },
   "paths": {
     "/api/v2/brands": {
@@ -545,14 +545,76 @@
         }
       }
     },
+    "/api/v2/brands/{brandId}/status": {
+      "patch": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update Brand Status",
+        "description": "Update brand onboarding status (RMM-2 compliant).\n\nRichardson Maturity Model Level 2 compliant endpoint using PATCH to update\nthe status resource of a brand. Validates that all required approvals have\nbeen given and marks the brand onboarding process as completed.\n\nThis endpoint replaces the deprecated POST /brands/{brandId}/complete endpoint.",
+        "operationId": "update_brand_status_api_v2_brands__brandId__status_patch",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandOnboardingComplete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Brand onboarding status updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandOnboardingCompleteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Required approvals missing"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brandId}/complete": {
       "post": {
         "tags": [
           "brands"
         ],
         "summary": "Complete Brand Onboarding",
-        "description": "Mark brand onboarding as complete and finalize brand profile.\n\nValidates that all required approvals have been given and marks\nthe brand onboarding process as completed.",
+        "description": "[DEPRECATED] Mark brand onboarding as complete and finalize brand profile.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use PATCH /brands/{brandId}/status instead for RMM Level 2 compliance\n- Verb in path violates Richardson Maturity Model Level 2 principles\n- Same request/response format as new endpoint\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (verb in path)\n\nValidates that all required approvals have been given and marks\nthe brand onboarding process as completed.",
         "operationId": "complete_brand_onboarding_api_v2_brands__brandId__complete_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "brandId",
