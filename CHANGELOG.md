@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.214] - 2025-10-19
+
+### Changes
+- feat: Add RMM-2 compliant queue initialization endpoint (RETROFIT-004) (#239)
+
+**Source:** project-beta-api@209e9de "feat: Add RMM-2 compliant queue initialization endpoint (RETROFIT-004) (#239)"
+
 ## [v0.0.213] - 2025-10-19
 
 ### Changes

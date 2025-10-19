@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.213"
+    "version": "0.0.214"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3524,14 +3524,189 @@
         }
       }
     },
+    "/api/v2/brands/{brandId}/queue": {
+      "post": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Initialize Queue",
+        "description": "Initialize a new crawl queue for a brand (RMM-2 compliant).\n\nThis is the RMM-2 compliant endpoint that uses POST to the queue resource\nto initialize a new crawl session. It cleans up any previous queue entries\nand sets up a fresh crawl with the starting URL.\n\nRMM-2 Compliance:\n- Uses POST method to create queue resource\n- Resource-oriented URL with single-word segment (queue vs crawl-queue)\n- No verb in URL (initialize action is implied by POST method)",
+        "operationId": "initialize_queue_api_v2_brands__brandId__queue_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitializeCrawlRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Crawl session initialized successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InitializeCrawlResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "List Queue Entries",
+        "description": "List crawl queue entries for a brand with optional filtering.\n\nRMM L2 Compliant: Uses single-word resource 'queue' instead of hyphenated 'crawl-queue'.",
+        "operationId": "list_queue_entries_api_v2_brands__brandId__queue_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "base_domain",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by base domain",
+              "title": "Base Domain"
+            },
+            "description": "Filter by base domain"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by status",
+              "title": "Status"
+            },
+            "description": "Filter by status"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of entries",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum number of entries"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of entries to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of entries to skip"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Queue entries retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CrawlQueueResponse"
+                  },
+                  "title": "Response List Queue Entries Api V2 Brands  Brandid  Queue Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brandId}/crawl-queue/initialize": {
       "post": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Initialize Crawl Session",
-        "description": "Initialize a new crawl session for a brand.\n\nCleans up any previous queue entries and sets up a fresh crawl\nwith the starting URL.",
+        "description": "Initialize a new crawl session for a brand.\n\nDEPRECATED: This endpoint is deprecated. Use POST /brands/{brandId}/queue instead.\n\nDeprecation Details:\n- Deprecated as of: 2025-10-19\n- Removal scheduled: 2026-04-19 (6 months)\n- Migration path: Use POST /api/v2/brands/{brandId}/queue\n- Reason: RMM-2 compliance - hyphenated segment and verb in URL\n\nThis endpoint will be removed after a 6-month deprecation period.\nPlease update your clients to use the new endpoint.\n\nNote: This endpoint is marked as deprecated in the OpenAPI specification.\nFuture enhancements may add Warning, Sunset, and Link HTTP headers.",
         "operationId": "initialize_crawl_session_api_v2_brands__brandId__crawl_queue_initialize_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "brandId",
@@ -3702,121 +3877,6 @@
           },
           "400": {
             "description": "Invalid update data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brandId}/queue": {
-      "get": {
-        "tags": [
-          "crawled-pages"
-        ],
-        "summary": "List Queue Entries",
-        "description": "List crawl queue entries for a brand with optional filtering.\n\nRMM L2 Compliant: Uses single-word resource 'queue' instead of hyphenated 'crawl-queue'.",
-        "operationId": "list_queue_entries_api_v2_brands__brandId__queue_get",
-        "parameters": [
-          {
-            "name": "brandId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brandid"
-            },
-            "description": "The brand ID"
-          },
-          {
-            "name": "base_domain",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Filter by base domain",
-              "title": "Base Domain"
-            },
-            "description": "Filter by base domain"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Filter by status",
-              "title": "Status"
-            },
-            "description": "Filter by status"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 1000,
-              "minimum": 1,
-              "description": "Maximum number of entries",
-              "default": 100,
-              "title": "Limit"
-            },
-            "description": "Maximum number of entries"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "description": "Number of entries to skip",
-              "default": 0,
-              "title": "Offset"
-            },
-            "description": "Number of entries to skip"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Queue entries retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CrawlQueueResponse"
-                  },
-                  "title": "Response List Queue Entries Api V2 Brands  Brandid  Queue Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
