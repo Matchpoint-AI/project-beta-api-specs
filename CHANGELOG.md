@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.208] - 2025-10-19
+
+### Changes
+- feat(api): Deprecate /with-files endpoints for RMM-2 compliance (RETROFIT-001) (#236)
+
+**Source:** project-beta-api@c326aeb "feat(api): Deprecate /with-files endpoints for RMM-2 compliance (RETROFIT-001) (#236)"
+
 ## [v0.0.207] - 2025-10-18
 
 ### Changes

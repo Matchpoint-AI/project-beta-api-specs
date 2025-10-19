@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.207"
+    "version": "0.0.208"
   },
   "paths": {
     "/api/v2/brands": {
@@ -223,7 +223,7 @@
           "brands"
         ],
         "summary": "Create Brand With Files",
-        "description": "Create a new brand with file uploads.\n\nCreates a new brand with server-generated ID and handles file uploads for\nbrand guidelines (PDF) and logo (PNG/JPEG/JPG). Files are uploaded to\nGoogle Cloud Storage and URLs are stored in the brand record.",
+        "description": "[DEPRECATED] Create a new brand with file uploads.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use POST /brands for JSON-based brand creation with URLs\n- For file uploads, consider using separate file upload endpoints\n- Hyphenated path segments violate RMM Level 2 principles\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (hyphenated segment)\n\nCreates a new brand with server-generated ID and handles file uploads for\nbrand guidelines (PDF) and logo (PNG/JPEG/JPG). Files are uploaded to\nGoogle Cloud Storage and URLs are stored in the brand record.",
         "operationId": "create_brand_with_files_api_v2_brands_with_files_post",
         "requestBody": {
           "content": {
@@ -262,7 +262,8 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/api/v2/brands/{brandId}/with-files": {
@@ -271,8 +272,9 @@
           "brands"
         ],
         "summary": "Update Brand With Files",
-        "description": "Update an existing brand with file uploads.\n\nUpdates an existing brand and handles file uploads for brand guidelines (PDF)\nand logo (PNG/JPEG/JPG). New files replace existing ones. Returns 404 if the\nbrand doesn't exist. Only provided fields will be updated (partial update).",
+        "description": "[DEPRECATED] Update an existing brand with file uploads.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use PUT /brands/{brandId} for JSON-based brand updates\n- Use PUT /brands/{brandId}/files for file-specific updates\n- Hyphenated path segments violate RMM Level 2 principles\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (hyphenated segment)\n\nUpdates an existing brand and handles file uploads for brand guidelines (PDF)\nand logo (PNG/JPEG/JPG). New files replace existing ones. Returns 404 if the\nbrand doesn't exist. Only provided fields will be updated (partial update).",
         "operationId": "update_brand_with_files_api_v2_brands__brandId__with_files_put",
+        "deprecated": true,
         "parameters": [
           {
             "name": "brandId",
