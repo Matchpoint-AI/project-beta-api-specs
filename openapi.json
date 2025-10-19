@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.210"
+    "version": "0.0.211"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1708,7 +1708,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BulkApprovalRequest"
+                "$ref": "#/components/schemas/src__schemas__campaign_approval__BulkApprovalRequest"
               }
             }
           }
@@ -1719,7 +1719,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BulkApprovalResponse"
+                  "$ref": "#/components/schemas/src__schemas__campaign_approval__BulkApprovalResponse"
                 }
               }
             }
@@ -2227,6 +2227,65 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/content/approve-all": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Bulk Approve Campaign Content",
+        "description": "Bulk approve all content for a campaign.\n\nDirect port from V1 POST /api/v1/approve-all endpoint.\nUsed by ExportComponent.tsx for bulk content approval before export.\n\nRMM L2 Rationale:\n- This is a bulk operation on content resources within a campaign\n- POST creates approval state changes for multiple content items\n- Returns counts of successful and failed approvals\n\nThis endpoint:\n- Approves all content items for a campaign\n- Uses database transaction to ensure atomicity\n- Returns counts of approved/failed items and failed IDs\n- Handles partial failures gracefully",
+        "operationId": "bulk_approve_campaign_content_api_v2_campaigns__campaign_id__content_approve_all_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkContentApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bulk approval completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkContentApprovalResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign or content not found"
+          },
+          "400": {
+            "description": "Invalid request data"
           },
           "422": {
             "description": "Validation Error",
@@ -3224,65 +3283,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/content/approve-all": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Bulk Approve Campaign Content",
-        "description": "Bulk approve all content for a campaign.\n\nDirect port from V1 POST /api/v1/approve-all endpoint.\nUsed by ExportComponent.tsx for bulk content approval before export.\n\nRMM L2 Rationale:\n- This is a bulk operation on content resources within a campaign\n- POST creates approval state changes for multiple content items\n- Returns counts of successful and failed approvals\n\nThis endpoint:\n- Approves all content items for a campaign\n- Uses database transaction to ensure atomicity\n- Returns counts of approved/failed items and failed IDs\n- Handles partial failures gracefully",
-        "operationId": "bulk_approve_campaign_content_api_v2_campaigns__campaign_id__content_approve_all_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BulkContentApprovalRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Bulk approval completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BulkContentApprovalResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign or content not found"
-          },
-          "400": {
-            "description": "Invalid request data"
           },
           "422": {
             "description": "Validation Error",
@@ -5674,67 +5674,6 @@
         "type": "object",
         "title": "BrandUpdate",
         "description": "Schema for updating an existing brand."
-      },
-      "BulkApprovalRequest": {
-        "properties": {
-          "weeks": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "minItems": 1,
-            "title": "Weeks",
-            "description": "List of week identifiers to approve (e.g., ['week_1', 'week_2'])"
-          },
-          "approve_all": {
-            "type": "boolean",
-            "title": "Approve All",
-            "description": "Whether to approve all content in specified weeks",
-            "default": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "weeks"
-        ],
-        "title": "BulkApprovalRequest",
-        "description": "Request schema for bulk approving campaign content.\n\nThis is a V2 replacement for V1's /api/v1/approve-all endpoint.\nAllows bulk approval of content for specified weeks."
-      },
-      "BulkApprovalResponse": {
-        "properties": {
-          "approved_count": {
-            "type": "integer",
-            "title": "Approved Count",
-            "description": "Number of days successfully approved"
-          },
-          "failed_count": {
-            "type": "integer",
-            "title": "Failed Count",
-            "description": "Number of days that failed to approve"
-          },
-          "skipped_count": {
-            "type": "integer",
-            "title": "Skipped Count",
-            "description": "Number of days skipped (no content or already approved)",
-            "default": 0
-          },
-          "details": {
-            "items": {
-              "$ref": "#/components/schemas/ApprovalDetail"
-            },
-            "type": "array",
-            "title": "Details",
-            "description": "Detailed results for each day processed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "approved_count",
-          "failed_count",
-          "details"
-        ],
-        "title": "BulkApprovalResponse",
-        "description": "Response schema for bulk approval operation.\n\nReturns counts of approved/failed approvals and detailed results."
       },
       "BulkContentApprovalRequest": {
         "properties": {
@@ -11026,6 +10965,114 @@
         ],
         "title": "ToneAttributes",
         "description": "Tone attributes for brand knowledge."
+      },
+      "src__schemas__campaign_approval__BulkApprovalRequest": {
+        "properties": {
+          "weeks": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Weeks",
+            "description": "List of week identifiers to approve (e.g., ['week_1', 'week_2'])"
+          },
+          "approve_all": {
+            "type": "boolean",
+            "title": "Approve All",
+            "description": "Whether to approve all content in specified weeks",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "weeks"
+        ],
+        "title": "BulkApprovalRequest",
+        "description": "Request schema for bulk approving campaign content.\n\nThis is a V2 replacement for V1's /api/v1/approve-all endpoint.\nAllows bulk approval of content for specified weeks."
+      },
+      "src__schemas__campaign_approval__BulkApprovalResponse": {
+        "properties": {
+          "approved_count": {
+            "type": "integer",
+            "title": "Approved Count",
+            "description": "Number of days successfully approved"
+          },
+          "failed_count": {
+            "type": "integer",
+            "title": "Failed Count",
+            "description": "Number of days that failed to approve"
+          },
+          "skipped_count": {
+            "type": "integer",
+            "title": "Skipped Count",
+            "description": "Number of days skipped (no content or already approved)",
+            "default": 0
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/ApprovalDetail"
+            },
+            "type": "array",
+            "title": "Details",
+            "description": "Detailed results for each day processed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "approved_count",
+          "failed_count",
+          "details"
+        ],
+        "title": "BulkApprovalResponse",
+        "description": "Response schema for bulk approval operation.\n\nReturns counts of approved/failed approvals and detailed results."
+      },
+      "src__schemas__content__BulkApprovalRequest": {
+        "properties": {
+          "contentIds": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentids"
+          }
+        },
+        "type": "object",
+        "title": "BulkApprovalRequest",
+        "description": "Schema for bulk content approval request."
+      },
+      "src__schemas__content__BulkApprovalResponse": {
+        "properties": {
+          "approvedCount": {
+            "type": "integer",
+            "title": "Approvedcount"
+          },
+          "failedCount": {
+            "type": "integer",
+            "title": "Failedcount"
+          },
+          "failedIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Failedids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "approvedCount",
+          "failedCount"
+        ],
+        "title": "BulkApprovalResponse",
+        "description": "Schema for bulk content approval response."
       },
       "src__schemas__crawled_pages__CrawlPageRequest": {
         "properties": {
