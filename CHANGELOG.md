@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.216] - 2025-10-20
+
+### Changes
+- Create API style guide (docs/api-style.md) (#241)
+
+**Source:** project-beta-api@6a6ae59 "Create API style guide (docs/api-style.md) (#241)"
+
 ## [v0.0.215] - 2025-10-20
 
 ### Changes
