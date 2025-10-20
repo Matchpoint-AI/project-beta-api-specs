@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.216"
+    "version": "0.0.217"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3887,14 +3887,87 @@
         }
       }
     },
+    "/api/v2/brands/{brandId}/queue/{entryId}": {
+      "put": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Update Queue Entry",
+        "description": "Update the status of a crawl queue entry (RMM-2 compliant).\n\nCalled by workflows after attempting to crawl a URL to\nupdate its status and any relevant metadata.\n\nThis is the RMM-2 compliant version with simplified path structure.",
+        "operationId": "update_queue_entry_api_v2_brands__brandId__queue__entryId__put",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The queue entry ID",
+              "title": "Entryid"
+            },
+            "description": "The queue entry ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrawlQueueUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Queue entry updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlQueueResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Queue entry not found"
+          },
+          "400": {
+            "description": "Invalid update data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brandId}/crawl-queue/{queueEntryId}": {
       "put": {
         "tags": [
           "crawled-pages"
         ],
-        "summary": "Update Crawl Queue Entry",
-        "description": "Update the status of a crawl queue entry.\n\nCalled by workflows after attempting to crawl a URL to\nupdate its status and any relevant metadata.",
-        "operationId": "update_crawl_queue_entry_api_v2_brands__brandId__crawl_queue__queueEntryId__put",
+        "summary": "Update Crawl Queue Entry Deprecated",
+        "description": "Update the status of a crawl queue entry (DEPRECATED).\n\n⚠️ DEPRECATED: This endpoint uses a hyphenated path segment which violates RMM-2 compliance.\nPlease use PUT /brands/{brandId}/queue/{entryId} instead.\n\nThis endpoint will be removed after a 6-month deprecation period.\n\nCalled by workflows after attempting to crawl a URL to\nupdate its status and any relevant metadata.",
+        "operationId": "update_crawl_queue_entry_deprecated_api_v2_brands__brandId__crawl_queue__queueEntryId__put",
+        "deprecated": true,
         "parameters": [
           {
             "name": "brandId",
@@ -3931,7 +4004,7 @@
         },
         "responses": {
           "200": {
-            "description": "Queue entry updated successfully",
+            "description": "Queue entry updated successfully (DEPRECATED: Use /brands/{brandId}/queue/{entryId})",
             "content": {
               "application/json": {
                 "schema": {
