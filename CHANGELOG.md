@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.215] - 2025-10-20
+
+### Changes
+- feat: Add RMM-2 compliant /queue/next endpoint (RETROFIT-005) (#242)
+
+**Source:** project-beta-api@2d2d9cc "feat: Add RMM-2 compliant /queue/next endpoint (RETROFIT-005) (#242)"
+
 ## [v0.0.214] - 2025-10-19
 
 ### Changes

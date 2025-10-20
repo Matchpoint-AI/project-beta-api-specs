@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.214"
+    "version": "0.0.215"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3760,14 +3760,14 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/crawl-queue/next": {
+    "/api/v2/brands/{brandId}/queue/next": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
-        "summary": "Get Next Url To Crawl",
-        "description": "Get the next URL to crawl from the queue.\n\nReturns the highest priority pending URL, or null if no URLs\nare available to crawl.",
-        "operationId": "get_next_url_to_crawl_api_v2_brands__brandId__crawl_queue_next_get",
+        "summary": "Get Next Queue Url",
+        "description": "Get the next URL to crawl from the queue (RMM-2 compliant).\n\nThis is the RMM-2 compliant endpoint that uses the single-word resource\n'queue' instead of the hyphenated 'crawl-queue'.\n\nRMM-2 Compliance:\n- Uses GET method for read operation\n- Resource-oriented URL with single-word segment (queue vs crawl-queue)\n- Returns 200 with data or empty result (not 404 when no URLs available)\n\nReturns the highest priority pending URL, or null if no URLs\nare available to crawl.",
+        "operationId": "get_next_queue_url_api_v2_brands__brandId__queue_next_get",
         "parameters": [
           {
             "name": "brandId",
@@ -3799,6 +3799,74 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NextUrlResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/crawl-queue/next": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Get Next Url To Crawl",
+        "description": "Get the next URL to crawl from the queue.\n\nDEPRECATED: This endpoint is deprecated. Use GET /brands/{brandId}/queue/next instead.\n\nDeprecation Details:\n- Deprecated as of: 2025-10-20\n- Removal scheduled: 2026-04-20 (6 months)\n- Migration path: Use GET /api/v2/brands/{brandId}/queue/next\n- Reason: RMM-2 compliance - hyphenated segment in URL\n\nThis endpoint will be removed after a 6-month deprecation period.\nPlease update your clients to use the new endpoint.\n\nReturns the highest priority pending URL, or null if no URLs\nare available to crawl.",
+        "operationId": "get_next_url_to_crawl_api_v2_brands__brandId__crawl_queue_next_get",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "base_domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Base domain for the crawl session",
+              "title": "Base Domain"
+            },
+            "description": "Base domain for the crawl session"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Next URL retrieved (or no URLs available)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NextUrlResponse"
+                }
+              }
+            },
+            "headers": {
+              "Warning": {
+                "description": "Deprecation warning",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
