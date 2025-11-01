@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.242] - 2025-11-01
+
+### Changes
+- Delete trigger_ci_1758492039 (#267)
+
+**Source:** project-beta-api@74132e4 "Delete trigger_ci_1758492039 (#267)"
+
 ## [v0.0.241] - 2025-11-01
 
 ### Changes
