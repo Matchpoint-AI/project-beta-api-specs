@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.243] - 2025-11-01
+
+### Changes
+- refactor: split large coding-guidelines.md into focused sections (#271)
+
+**Source:** project-beta-api@59e6858 "refactor: split large coding-guidelines.md into focused sections (#271)"
+
 ## [v0.0.242] - 2025-11-01
 
 ### Changes
