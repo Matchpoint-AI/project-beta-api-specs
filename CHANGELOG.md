@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.244] - 2025-11-01
+
+### Changes
+- test: increase test coverage for PR #269 compliance (#270)
+
+**Source:** project-beta-api@2f6c91a "test: increase test coverage for PR #269 compliance (#270)"
+
 ## [v0.0.243] - 2025-11-01
 
 ### Changes
