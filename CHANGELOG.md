@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.241] - 2025-11-01
+
+### Changes
+- Delete monitor_ci.sh (#268)
+
+**Source:** project-beta-api@90666e3 "Delete monitor_ci.sh (#268)"
+
 ## [v0.0.240] - 2025-11-01
 
 ### Changes
