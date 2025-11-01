@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.237] - 2025-11-01
+
+### Changes
+- Delete openapi_ci.json (#263)
+
+**Source:** project-beta-api@962f973 "Delete openapi_ci.json (#263)"
+
 ## [v0.0.236] - 2025-11-01
 
 ### Changes
