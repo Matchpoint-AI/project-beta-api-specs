@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.217"
+    "version": "0.0.236"
   },
   "paths": {
     "/api/v2/brands": {
@@ -110,23 +110,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}": {
+    "/api/v2/brands/{brand_id}": {
       "put": {
         "tags": [
           "brands"
         ],
         "summary": "Update Brand",
         "description": "Update an existing brand.\n\nUpdates an existing brand. Returns 404 if the brand doesn't exist.\nOnly provided fields will be updated (partial update).",
-        "operationId": "update_brand_api_v2_brands__brandId__put",
+        "operationId": "update_brand_api_v2_brands__brand_id__put",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -175,19 +175,37 @@
           "brands"
         ],
         "summary": "Get Brand",
-        "description": "Get brand information.\n\nReturns the brand details and status.\nReturns 404 if brand doesn't exist.",
-        "operationId": "get_brand_api_v2_brands__brandId__get",
+        "description": "Get brand information.\n\nReturns the brand details and status.\nReturns 404 if brand doesn't exist.\n\nRMM-2 Compliant Pattern:\n- Use GET /brands/{brand_id} for basic brand data\n- Use GET /brands/{brand_id}?include=files to explicitly request file URLs\n- Replaces non-compliant pattern: GET /brands/{brand_id}/with-files (hyphenated segment)\n\nQuery Parameters:\n- include: Optional comma-separated list of additional data to include\n          Supported values: 'files' (includes brand_guidelines_url, logo_url)\n          Example: ?include=files\n\nNote: File URLs (brand_guidelines_url, logo_url) are always included in the\nresponse for backward compatibility. The include parameter is provided to\ndemonstrate RMM-2 best practices using query parameters instead of hyphenated\npath segments.",
+        "operationId": "get_brand_api_v2_brands__brand_id__get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma-separated list of additional data to include (e.g., 'files')",
+              "title": "Include"
+            },
+            "description": "Comma-separated list of additional data to include (e.g., 'files')"
           }
         ],
         "responses": {
@@ -266,24 +284,24 @@
         "deprecated": true
       }
     },
-    "/api/v2/brands/{brandId}/with-files": {
+    "/api/v2/brands/{brand_id}/with-files": {
       "put": {
         "tags": [
           "brands"
         ],
         "summary": "Update Brand With Files",
-        "description": "[DEPRECATED] Update an existing brand with file uploads.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use PUT /brands/{brandId} for JSON-based brand updates\n- Use PUT /brands/{brandId}/files for file-specific updates\n- Hyphenated path segments violate RMM Level 2 principles\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (hyphenated segment)\n\nUpdates an existing brand and handles file uploads for brand guidelines (PDF)\nand logo (PNG/JPEG/JPG). New files replace existing ones. Returns 404 if the\nbrand doesn't exist. Only provided fields will be updated (partial update).",
-        "operationId": "update_brand_with_files_api_v2_brands__brandId__with_files_put",
+        "description": "[DEPRECATED] Update an existing brand with file uploads.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use PUT /brands/{brand_id} for JSON-based brand updates\n- Use PUT /brands/{brand_id}/files for file-specific updates\n- Hyphenated path segments violate RMM Level 2 principles\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (hyphenated segment)\n\nUpdates an existing brand and handles file uploads for brand guidelines (PDF)\nand logo (PNG/JPEG/JPG). New files replace existing ones. Returns 404 if the\nbrand doesn't exist. Only provided fields will be updated (partial update).",
+        "operationId": "update_brand_with_files_api_v2_brands__brand_id__with_files_put",
         "deprecated": true,
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -292,7 +310,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_update_brand_with_files_api_v2_brands__brandId__with_files_put"
+                "$ref": "#/components/schemas/Body_update_brand_with_files_api_v2_brands__brand_id__with_files_put"
               }
             }
           }
@@ -327,23 +345,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/colors": {
+    "/api/v2/brands/{brand_id}/colors": {
       "put": {
         "tags": [
           "brands"
         ],
         "summary": "Update Brand Colors",
         "description": "Update selected brand colors (including custom colors).\n\nUpdates the brand colors with enhanced metadata including color names,\nusage roles (primary/secondary/accent), and custom status.",
-        "operationId": "update_brand_colors_api_v2_brands__brandId__colors_put",
+        "operationId": "update_brand_colors_api_v2_brands__brand_id__colors_put",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -388,23 +406,83 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/extraction/progress": {
+    "/api/v2/brands/{brand_id}/workflows/{workflow_id}": {
       "get": {
         "tags": [
           "brands"
         ],
-        "summary": "Get Extraction Progress",
-        "description": "Real-time progress updates during brand data extraction.\n\nReturns detailed progress information for the brand extraction workflow.\nSupports polling for real-time updates.",
-        "operationId": "get_extraction_progress_api_v2_brands__brandId__extraction_progress_get",
+        "summary": "Get Workflow Progress",
+        "description": "Get progress for a brand workflow (RMM-2 compliant).\n\nReturns detailed progress information for the brand workflow.\nSupports polling for real-time updates.\n\nThis endpoint replaces the deprecated /brands/{brand_id}/extraction/progress endpoint.\nThe workflowId parameter represents the type of workflow (e.g., 'extraction').",
+        "operationId": "get_workflow_progress_api_v2_brands__brand_id__workflows__workflow_id__get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The workflow ID (currently 'extraction')",
+              "title": "Workflow Id"
+            },
+            "description": "The workflow ID (currently 'extraction')"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workflow progress retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandExtractionProgressResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand or workflow not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/extraction/progress": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Get Extraction Progress",
+        "description": "Real-time progress updates during brand data extraction.\n\n**DEPRECATED**: Use GET /brands/{brand_id}/workflows/{workflow_id} instead.\nThis endpoint will be removed after 2025-04-20 (6-month deprecation period).\n\nReturns detailed progress information for the brand extraction workflow.\nSupports polling for real-time updates.",
+        "operationId": "get_extraction_progress_api_v2_brands__brand_id__extraction_progress_get",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -436,23 +514,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/knowledge": {
+    "/api/v2/brands/{brand_id}/knowledge": {
       "get": {
         "tags": [
           "brand-workflow"
         ],
         "summary": "Get Brand Knowledge V2",
         "description": "Get extracted brand knowledge in V2 format.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.",
-        "operationId": "get_brand_knowledge_v2_api_v2_brands__brandId__knowledge_get",
+        "operationId": "get_brand_knowledge_v2",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -482,25 +560,74 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "brand-workflow"
+        ],
+        "summary": "Create Brand Knowledge",
+        "description": "Create knowledge resource from crawled pages (RMM-2 compliant).\n\nAnalyzes crawled content to extract and store brand knowledge including\npersonality traits, tone attributes, visual style, products, etc.\nThis endpoint follows RMM Level 2 principles by using POST to create\na knowledge resource rather than using a verb in the URL.\n\nThis is a workflow operation typically triggered by crawling completion.\n\nDesign Pattern (RMM L2):\n- POST creates a knowledge resource (not an RPC \"extract\" action)\n- Returns 201 Created with the knowledge resource\n- Resource-oriented URL: /brands/{id}/knowledge",
+        "operationId": "create_brand_knowledge_api_v2_brands__brand_id__knowledge_post",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractKnowledgeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Knowledge extracted and created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractKnowledgeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Knowledge extraction failed"
+          }
+        }
       }
     },
-    "/api/v2/brands/{brandId}/onboarding/progress": {
+    "/api/v2/brands/{brand_id}/onboarding/progress": {
       "patch": {
         "tags": [
           "brands"
         ],
         "summary": "Update Brand Onboarding Progress",
         "description": "Update brand onboarding progress step.\n\nTracks onboarding workflow progress including current step, completed steps,\nand optional metadata to keep the frontend aligned with backend state.",
-        "operationId": "update_brand_onboarding_progress_api_v2_brands__brandId__onboarding_progress_patch",
+        "operationId": "update_brand_onboarding_progress_api_v2_brands__brand_id__onboarding_progress_patch",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -545,23 +672,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/status": {
+    "/api/v2/brands/{brand_id}/status": {
       "patch": {
         "tags": [
           "brands"
         ],
         "summary": "Update Brand Status",
-        "description": "Update brand onboarding status (RMM-2 compliant).\n\nRichardson Maturity Model Level 2 compliant endpoint using PATCH to update\nthe status resource of a brand. Validates that all required approvals have\nbeen given and marks the brand onboarding process as completed.\n\nThis endpoint replaces the deprecated POST /brands/{brandId}/complete endpoint.",
-        "operationId": "update_brand_status_api_v2_brands__brandId__status_patch",
+        "description": "Update brand onboarding status (RMM-2 compliant).\n\nRichardson Maturity Model Level 2 compliant endpoint using PATCH to update\nthe status resource of a brand. Validates that all required approvals have\nbeen given and marks the brand onboarding process as completed.\n\nThis endpoint replaces the deprecated POST /brands/{brand_id}/complete endpoint.",
+        "operationId": "update_brand_status_api_v2_brands__brand_id__status_patch",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -606,24 +733,24 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/complete": {
+    "/api/v2/brands/{brand_id}/complete": {
       "post": {
         "tags": [
           "brands"
         ],
         "summary": "Complete Brand Onboarding",
-        "description": "[DEPRECATED] Mark brand onboarding as complete and finalize brand profile.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use PATCH /brands/{brandId}/status instead for RMM Level 2 compliance\n- Verb in path violates Richardson Maturity Model Level 2 principles\n- Same request/response format as new endpoint\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (verb in path)\n\nValidates that all required approvals have been given and marks\nthe brand onboarding process as completed.",
-        "operationId": "complete_brand_onboarding_api_v2_brands__brandId__complete_post",
+        "description": "[DEPRECATED] Mark brand onboarding as complete and finalize brand profile.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use PATCH /brands/{brand_id}/status instead for RMM Level 2 compliance\n- Verb in path violates Richardson Maturity Model Level 2 principles\n- Same request/response format as new endpoint\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (verb in path)\n\nValidates that all required approvals have been given and marks\nthe brand onboarding process as completed.",
+        "operationId": "complete_brand_onboarding_api_v2_brands__brand_id__complete_post",
         "deprecated": true,
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -668,23 +795,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/files": {
+    "/api/v2/brands/{brand_id}/files": {
       "post": {
         "tags": [
           "brands"
         ],
         "summary": "Upload Brand Files",
         "description": "Upload brand files (guidelines PDF and logo) with LLM extraction.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines using LLM processing.",
-        "operationId": "upload_brand_files_api_v2_brands__brandId__files_post",
+        "operationId": "upload_brand_files_api_v2_brands__brand_id__files_post",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -693,7 +820,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_upload_brand_files_api_v2_brands__brandId__files_post"
+                "$ref": "#/components/schemas/Body_upload_brand_files_api_v2_brands__brand_id__files_post"
               }
             }
           }
@@ -736,16 +863,16 @@
         ],
         "summary": "Update Brand Files",
         "description": "Update brand files (guidelines PDF and logo).\n\nProper REST endpoint for updating brand files.\nReplaces the non-RESTful /with-files endpoint.",
-        "operationId": "update_brand_files_api_v2_brands__brandId__files_put",
+        "operationId": "update_brand_files_api_v2_brands__brand_id__files_put",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -754,7 +881,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_update_brand_files_api_v2_brands__brandId__files_put"
+                "$ref": "#/components/schemas/Body_update_brand_files_api_v2_brands__brand_id__files_put"
               }
             }
           }
@@ -792,23 +919,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/summary": {
+    "/api/v2/brands/{brand_id}/summary": {
       "post": {
         "tags": [
           "brands"
         ],
         "summary": "Generate Brand Summary",
-        "description": "Generate a cohesive brand summary from current brand data.\n\n**RMM L2 Decision**: POST /api/v2/brands/{brandId}/summary\n- Summary is a computed sub-resource of brand\n- POST generates new summary from current brand data\n- Not idempotent (each call generates fresh summary)\n\nPorts V1 logic from ReviewForm.tsx getSummary() function:\n- Generates 60-word brand summary via LLM (OpenAI GPT-4)\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Returns cohesive paragraph summarizing brand identity",
-        "operationId": "generate_brand_summary_api_v2_brands__brandId__summary_post",
+        "description": "Generate a cohesive brand summary from current brand data.\n\n**RMM L2 Decision**: POST /api/v2/brands/{brand_id}/summary\n- Summary is a computed sub-resource of brand\n- POST generates new summary from current brand data\n- Not idempotent (each call generates fresh summary)\n\nPorts V1 logic from ReviewForm.tsx getSummary() function:\n- Generates 60-word brand summary via LLM (OpenAI GPT-4)\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Returns cohesive paragraph summarizing brand identity",
+        "operationId": "generate_brand_summary_api_v2_brands__brand_id__summary_post",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -843,23 +970,84 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/knowledge/workflows": {
+    "/api/v2/brands/{brand_id}/extract/locations": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Extract Brand Locations",
+        "description": "Extract physical locations from text or brand knowledge.\n\nExtracts structured physical location information (address, city, state, country)\nfrom either provided text or from the brand's stored knowledge base.\n\nRMM-2 Compliant Pattern:\n- POST verb for action-oriented extraction operation\n- Hierarchical resource path: /brands/{id}/extract/locations\n- Uses path segment 'extract' as namespace for extraction sub-resources\n- Returns 200 OK with extracted data (not 201 as no resource is created)\n\nBusiness Context:\n- Enables location-based marketing and targeting\n- Extracts from brand website content, social media, or provided text\n- Uses AI/LLM for intelligent location extraction\n- Results are structured for easy querying and filtering\n\nRequest Body:\n- text (optional): Text content to extract locations from\n- If text not provided, extracts from brand's stored knowledge\n\nArgs:\n    brand_id: The brand identifier\n    request: LocationExtractionRequest with optional text\n    extractor_service: Injected ExtractorService for extraction\n\nReturns:\n    LocationExtractionResponse with list of extracted locations\n\nRaises:\n    HTTPException: 404 if brand not found, 400 for invalid data, 500 on failure",
+        "operationId": "extract_brand_locations_api_v2_brands__brand_id__extract_locations_post",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationExtractionRequest",
+                "description": "Optional text to extract locations from"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Physical locations extracted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationExtractionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/knowledge/workflows": {
       "post": {
         "tags": [
           "brand-workflow"
         ],
         "summary": "Start Knowledge Workflow",
         "description": "Start knowledge discovery workflow for a brand.\n\nCreates a new workflow resource that orchestrates website crawling,\ncontent extraction, and knowledge storage. This is an explicit trigger\nfollowing RMM Level 2 principles.\n\nThe workflow runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running",
-        "operationId": "start_knowledge_workflow_api_v2_brands__brandId__knowledge_workflows_post",
+        "operationId": "start_knowledge_workflow_api_v2_brands__brand_id__knowledge_workflows_post",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -907,34 +1095,34 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/knowledge/workflows/{workflowId}": {
+    "/api/v2/brands/{brand_id}/knowledge/workflows/{workflow_id}": {
       "get": {
         "tags": [
           "brand-workflow"
         ],
         "summary": "Get Brand Workflow",
         "description": "Get the status of the knowledge collection workflow.\n\nReturns the current status of the background workflow including\nprogress, current step, and any results. This endpoint is used\nby the frontend to monitor the progress of the knowledge extraction\nthat was initiated internally during brand creation.",
-        "operationId": "get_brand_workflow_api_v2_brands__brandId__knowledge_workflows__workflowId__get",
+        "operationId": "get_brand_workflow_api_v2_brands__brand_id__knowledge_workflows__workflow_id__get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
           {
-            "name": "workflowId",
+            "name": "workflow_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The workflow ID",
-              "title": "Workflowid"
+              "title": "Workflow Id"
             },
             "description": "The workflow ID"
           }
@@ -966,23 +1154,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/pages": {
+    "/api/v2/brands/{brand_id}/pages": {
       "post": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Crawl Single Page",
         "description": "Crawl a single page for workflow-driven crawling.\n\nThis endpoint is designed to be called by Google Cloud Workflows\nfor each individual page. The workflow handles iteration and\norchestrates the overall crawling process.",
-        "operationId": "crawl_single_page_api_v2_brands__brandId__pages_post",
+        "operationId": "crawl_single_page_api_v2_brands__brand_id__pages_post",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -1032,16 +1220,16 @@
         ],
         "summary": "List Brand Pages",
         "description": "List crawled pages for a brand.\n\nCan optionally filter by website URL to get pages from a specific website.",
-        "operationId": "list_brand_pages_api_v2_brands__brandId__pages_get",
+        "operationId": "list_brand_pages_api_v2_brands__brand_id__pages_get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
@@ -1113,7 +1301,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CrawledPageResponse"
                   },
-                  "title": "Response List Brand Pages Api V2 Brands  Brandid  Pages Get"
+                  "title": "Response List Brand Pages Api V2 Brands  Brand Id  Pages Get"
                 }
               }
             }
@@ -1134,23 +1322,24 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/knowledge/extract": {
+    "/api/v2/brands/{brand_id}/knowledge/extract": {
       "post": {
         "tags": [
           "brand-workflow"
         ],
         "summary": "Extract Brand Knowledge",
-        "description": "Extract and create knowledge from crawled pages.\n\nAnalyzes crawled content to extract and store brand knowledge including\npersonality traits, tone attributes, visual style, products, etc.\nThis is a workflow operation typically triggered by crawling completion.",
-        "operationId": "extract_brand_knowledge_api_v2_brands__brandId__knowledge_extract_post",
+        "description": "Extract and create knowledge from crawled pages.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /brands/{brand_id}/knowledge instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-04-20).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /brands/{brand_id}/knowledge/extract\n- New: POST /brands/{brand_id}/knowledge\n- Request/response format: unchanged\n\nAnalyzes crawled content to extract and store brand knowledge including\npersonality traits, tone attributes, visual style, products, etc.\nThis is a workflow operation typically triggered by crawling completion.",
+        "operationId": "extract_brand_knowledge_api_v2_brands__brand_id__knowledge_extract_post",
+        "deprecated": true,
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -2141,8 +2330,9 @@
           "content"
         ],
         "summary": "Regenerate Content",
-        "description": "Regenerate image and/or text for content.\n\nDirect port from V1 (tag v0.2.46) regeneration endpoint.\nEnforces plan limits: FREE=3, PRO=10 regenerations per post.\n\nArgs:\n    content_id: Content identifier (from URL path)\n    request: Regeneration request with optional custom prompt\n\nReturns:\n    RegenerationResponse with new image URL, prompt, remaining generations, and new text\n\nRaises:\n    400 Bad Request: If content not found or generation limit exceeded\n    500 Internal Server Error: If regeneration fails",
+        "description": "Regenerate image and/or text for content.\n\nDEPRECATED: This endpoint is deprecated and will be removed in 6 months.\nPlease use POST /api/v2/content/{content_id}/versions instead.\n\nDirect port from V1 (tag v0.2.46) regeneration endpoint.\nEnforces plan limits: FREE=3, PRO=10 regenerations per post.\n\nArgs:\n    content_id: Content identifier (from URL path)\n    request: Regeneration request with optional custom prompt\n    http_response: FastAPI response object for adding headers\n\nReturns:\n    RegenerationResponse with new image URL, prompt, remaining generations, and new text\n\nRaises:\n    400 Bad Request: If content not found or generation limit exceeded\n    500 Internal Server Error: If regeneration fails",
         "operationId": "regenerate_content_api_v2_content__content_id__regenerate_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "content_id",
@@ -2193,9 +2383,9 @@
         "tags": [
           "content"
         ],
-        "summary": "Create Content Version",
-        "description": "Create a new version of content (RMM L2 compliant regeneration).\n\nThis is the REST-compliant version of content regeneration.\nInstead of POST /regenerate (verb), we POST /versions (noun) to create a resource.\n\nDirect port from V1 (tag v0.2.46) with proper REST design:\n- Creates a new version as a resource\n- Maintains parent-child lineage\n- Enforces plan limits: FREE=3, PRO=10 versions per content\n\nArgs:\n    content_id: Content identifier (from URL path)\n    request: Version creation request with parent ID and optional prompt\n\nReturns:\n    ContentVersionResponse with new version details and quota info\n\nRaises:\n    400 Bad Request: If content not found or generation limit exceeded\n    500 Internal Server Error: If version creation fails",
-        "operationId": "create_content_version_api_v2_content__content_id__versions_post",
+        "summary": "Update text versions for content (RMM-2 compliant)",
+        "description": "Updates text, text_versions array, and selected image index. RMM-2 compliant endpoint with single-word resource naming.",
+        "operationId": "update_versions_api_v2_content__content_id__versions_post",
         "parameters": [
           {
             "name": "content_id",
@@ -2212,7 +2402,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ContentVersionCreate"
+                "$ref": "#/components/schemas/UpdateTextVersionsRequest"
               }
             }
           }
@@ -2223,7 +2413,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContentVersionResponse"
+                  "$ref": "#/components/schemas/UpdateTextVersionsResponse"
                 }
               }
             }
@@ -2398,14 +2588,77 @@
         }
       }
     },
+    "/api/v2/content/{content_id}/captions/{caption_id}/versions": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Create Caption Version",
+        "description": "Create a new version of a caption (RMM-2 compliant regeneration).\n\nThis is the REST-compliant version of caption regeneration.\nInstead of POST /regenerate (verb), we POST /versions (noun) to create a resource.\n\nBusiness Context:\n- Creates a new caption version with user feedback and adjustments\n- Maintains caption versioning history for auditing\n- Supports iterative refinement of AI-generated captions\n\nRMM-2 Compliance:\n- Uses resource noun 'versions' instead of verb 'regenerate'\n- Creates a new version resource through POST method\n- Returns 201 Created status code\n- Proper camelCase parameter naming\n\nArgs:\n    content_id: Parent content identifier\n    caption_id: Caption identifier to create new version from\n    request: Regeneration parameters (feedback, adjustments, tone)\n\nReturns:\n    CaptionResponse with the newly generated caption version\n\nRaises:\n    404 Not Found: If content or caption doesn't exist\n    500 Internal Server Error: If caption generation fails",
+        "operationId": "create_caption_version",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          },
+          {
+            "name": "caption_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Caption Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionRegenerateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/content/{content_id}/captions/{caption_id}/regenerate": {
       "post": {
         "tags": [
           "content"
         ],
         "summary": "Regenerate Caption",
-        "description": "Regenerate a specific caption.",
-        "operationId": "regenerate_caption_api_v2_content__content_id__captions__caption_id__regenerate_post",
+        "description": "Regenerate a specific caption.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /api/v2/content/{content_id}/captions/{caption_id}/versions instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-07-21).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /content/{content_id}/captions/{caption_id}/regenerate\n- New: POST /content/{content_id}/captions/{caption_id}/versions\n- Request/response format: unchanged (CaptionRegenerateRequest)\n- Status code change: 200 OK → 201 Created\n- Parameter naming: snake_case → camelCase",
+        "operationId": "regenerate_caption_deprecated",
+        "deprecated": true,
         "parameters": [
           {
             "name": "content_id",
@@ -2505,14 +2758,14 @@
         }
       }
     },
-    "/api/v2/captions/validate": {
+    "/api/v2/captions/validations": {
       "post": {
         "tags": [
           "content"
         ],
-        "summary": "Validate Captions",
-        "description": "Validate captions against brand guidelines.",
-        "operationId": "validate_captions_api_v2_captions_validate_post",
+        "summary": "Create Caption Validation",
+        "description": "Validate captions against brand guidelines (RMM-2 compliant).\n\nThis endpoint validates multiple captions against platform-specific requirements\nand brand guidelines, returning detailed validation results and suggestions.\n\nRMM-2 Compliance: Uses resource noun 'validations' instead of verb 'validate'.\nCreates a validation resource through POST method.",
+        "operationId": "create_caption_validation",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2545,6 +2798,49 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/captions/validate": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Validate Captions",
+        "description": "Validate captions against brand guidelines.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /captions/validations instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-04-20).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /captions/validate\n- New: POST /captions/validations\n- Request/response format: unchanged",
+        "operationId": "validate_captions_deprecated",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionValidationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionValidationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
       }
     },
     "/api/v2/campaigns/{campaign_id}/policy": {
@@ -2797,14 +3093,14 @@
         }
       }
     },
-    "/api/v2/images/generate": {
+    "/api/v2/images": {
       "post": {
         "tags": [
           "content"
         ],
-        "summary": "Generate Image",
-        "description": "Generate an image using AI.",
-        "operationId": "generate_image_api_v2_images_generate_post",
+        "summary": "Create Image",
+        "description": "Generate an image using AI.\n\nRMM-2 compliant endpoint: POST to collection resource.\nCreates a new image resource using AI generation.\n\nArgs:\n    request: Image generation parameters including prompt, model, size, etc.\n    image_service: Injected image generation service\n\nReturns:\n    ImageResponse with generated image URL and metadata\n\nRaises:\n    HTTPException 500: If image generation fails",
+        "operationId": "create_image_api_v2_images_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2837,6 +3133,49 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/images/generate": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Generate Image",
+        "description": "Generate an image using AI.\n\nDEPRECATED: This endpoint is deprecated and will be removed in 6 months.\nPlease use POST /api/v2/images instead.\n\nThis endpoint uses a verb in the URL path which violates RMM-2 principles.\nThe new /images endpoint follows proper REST conventions.\n\nArgs:\n    request: Image generation parameters\n    http_response: FastAPI response object for adding deprecation headers\n    image_service: Injected image generation service\n\nReturns:\n    ImageResponse with generated image URL and metadata",
+        "operationId": "generate_image_api_v2_images_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
       }
     },
     "/api/v2/images/batch": {
@@ -2881,14 +3220,68 @@
         }
       }
     },
+    "/api/v2/images/{imageId}/variants": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Create Image Variant",
+        "description": "Create a new variant of an existing image (RMM-2 compliant).\n\nThis is the REST-compliant version of image remixing.\nInstead of POST /remix (verb), we POST /variants (noun) to create a resource.\n\nBusiness Context:\n- Creates a new image variant with user-specified modifications\n- Maintains variant lineage for tracking and auditing\n- Supports iterative refinement of AI-generated images\n\nRMM-2 Compliance:\n- Uses resource noun 'variants' instead of verb 'remix'\n- Creates a new variant resource through POST method\n- Returns 201 Created status code\n- Proper camelCase parameter naming\n\nArgs:\n    imageId: Original image identifier to create variant from\n    request: Variant creation parameters (modifications, style, etc.)\n\nReturns:\n    ImageResponse with the newly generated image variant\n\nRaises:\n    404 Not Found: If original image doesn't exist\n    500 Internal Server Error: If image generation fails",
+        "operationId": "create_image_variant",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Imageid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageRemixRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/images/remix/{image_id}": {
       "post": {
         "tags": [
           "content"
         ],
         "summary": "Remix Image",
-        "description": "Remix an existing image.",
-        "operationId": "remix_image_api_v2_images_remix__image_id__post",
+        "description": "Remix an existing image.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /api/v2/images/{imageId}/variants instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-10-21).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /images/remix/{image_id}\n- New: POST /images/{imageId}/variants\n- Request/response format: unchanged (ImageRemixRequest)\n- Status code change: 200 OK → 201 Created\n- Parameter naming: snake_case → camelCase",
+        "operationId": "remix_image_deprecated",
+        "deprecated": true,
         "parameters": [
           {
             "name": "image_id",
@@ -2934,14 +3327,14 @@
         }
       }
     },
-    "/api/v2/integrations/redirect-uri": {
+    "/api/v2/integrations/redirects": {
       "post": {
         "tags": [
           "content"
         ],
-        "summary": "Get Integration Redirect Uri",
-        "description": "Get OAuth redirect URI for platform integration.",
-        "operationId": "get_integration_redirect_uri_api_v2_integrations_redirect_uri_post",
+        "summary": "Get Integration Redirects",
+        "description": "Get OAuth redirect URI for platform integration.\n\nThis is the RMM-2 compliant endpoint that replaces /integrations/redirect-uri.\nUses single-word resource name 'redirects' instead of hyphenated 'redirect-uri'.",
+        "operationId": "get_integration_redirects_api_v2_integrations_redirects_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2974,6 +3367,49 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/integrations/redirect-uri": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Integration Redirect Uri",
+        "description": "Get OAuth redirect URI for platform integration.\n\nDEPRECATED: This endpoint uses a hyphenated resource name which violates RMM-2.\nUse /integrations/redirects instead. This endpoint will be removed in 6 months.\n\nDeprecation date: 2025-10-21\nRemoval date: 2026-04-21\nReplacement: POST /api/v2/integrations/redirects",
+        "operationId": "get_integration_redirect_uri_api_v2_integrations_redirect_uri_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationRedirectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationRedirectResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
       }
     },
     "/api/v2/integrations": {
@@ -3087,22 +3523,23 @@
         }
       }
     },
-    "/api/v2/content/{contentId}/text-versions": {
+    "/api/v2/content/{content_id}/text-versions": {
       "post": {
         "tags": [
           "content"
         ],
-        "summary": "Update text versions for content",
-        "description": "Updates text, text_versions array, and selected image index. Direct port from V1.",
-        "operationId": "update_text_versions_api_v2_content__contentId__text_versions_post",
+        "summary": "Update text versions for content (DEPRECATED)",
+        "description": "DEPRECATED: Use /content/{content_id}/versions instead. This endpoint will be removed after 6 months (2025-04-20).",
+        "operationId": "update_text_versions_api_v2_content__content_id__text_versions_post",
+        "deprecated": true,
         "parameters": [
           {
-            "name": "contentId",
+            "name": "content_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Contentid"
+              "title": "Content Id"
             }
           }
         ],
@@ -3140,22 +3577,22 @@
         }
       }
     },
-    "/api/v2/content/{contentId}/status": {
+    "/api/v2/content/{content_id}/status": {
       "patch": {
         "tags": [
           "content"
         ],
         "summary": "Update Content Status",
-        "description": "Update content approval status.\n\nRMM L2 Compliance: Status is a field on the content resource (not /approve action).\nThis replaces the V1 POST /api/v1/contentgen/approve endpoint.\n\nArgs:\n    contentId: UUID of the content to update\n    status_update: New status and optional metadata\n    user_id: ID of user making the change (from auth)\n    content_status_service: Injected status service\n\nReturns:\n    ContentStatusResponse with updated status and metadata\n\nRaises:\n    HTTPException: 400 for invalid transition, 404 if content not found",
-        "operationId": "update_content_status_api_v2_content__contentId__status_patch",
+        "description": "Update content approval status.\n\nRMM L2 Compliance: Status is a field on the content resource (not /approve action).\nThis replaces the V1 POST /api/v1/contentgen/approve endpoint.\n\nArgs:\n    content_id: UUID of the content to update\n    status_update: New status and optional metadata\n    user_id: ID of user making the change (from auth)\n    content_status_service: Injected status service\n\nReturns:\n    ContentStatusResponse with updated status and metadata\n\nRaises:\n    HTTPException: 400 for invalid transition, 404 if content not found",
+        "operationId": "update_content_status_api_v2_content__content_id__status_patch",
         "parameters": [
           {
-            "name": "contentId",
+            "name": "content_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Contentid"
+              "title": "Content Id"
             }
           },
           {
@@ -3462,23 +3899,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/pages/count": {
+    "/api/v2/brands/{brand_id}/pages/count": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Count Brand Pages",
         "description": "Get the count of crawled pages for a brand.",
-        "operationId": "count_brand_pages_api_v2_brands__brandId__pages_count_get",
+        "operationId": "count_brand_pages_api_v2_brands__brand_id__pages_count_get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
@@ -3503,7 +3940,7 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": true,
-                  "title": "Response Count Brand Pages Api V2 Brands  Brandid  Pages Count Get"
+                  "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
             }
@@ -3524,23 +3961,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/queue": {
+    "/api/v2/brands/{brand_id}/queue": {
       "post": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Initialize Queue",
         "description": "Initialize a new crawl queue for a brand (RMM-2 compliant).\n\nThis is the RMM-2 compliant endpoint that uses POST to the queue resource\nto initialize a new crawl session. It cleans up any previous queue entries\nand sets up a fresh crawl with the starting URL.\n\nRMM-2 Compliance:\n- Uses POST method to create queue resource\n- Resource-oriented URL with single-word segment (queue vs crawl-queue)\n- No verb in URL (initialize action is implied by POST method)",
-        "operationId": "initialize_queue_api_v2_brands__brandId__queue_post",
+        "operationId": "initialize_queue_api_v2_brands__brand_id__queue_post",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -3590,16 +4027,16 @@
         ],
         "summary": "List Queue Entries",
         "description": "List crawl queue entries for a brand with optional filtering.\n\nRMM L2 Compliant: Uses single-word resource 'queue' instead of hyphenated 'crawl-queue'.",
-        "operationId": "list_queue_entries_api_v2_brands__brandId__queue_get",
+        "operationId": "list_queue_entries_api_v2_brands__brand_id__queue_get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
@@ -3677,7 +4114,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CrawlQueueResponse"
                   },
-                  "title": "Response List Queue Entries Api V2 Brands  Brandid  Queue Get"
+                  "title": "Response List Queue Entries Api V2 Brands  Brand Id  Queue Get"
                 }
               }
             }
@@ -3698,24 +4135,24 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/crawl-queue/initialize": {
+    "/api/v2/brands/{brand_id}/crawl-queue/initialize": {
       "post": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Initialize Crawl Session",
-        "description": "Initialize a new crawl session for a brand.\n\nDEPRECATED: This endpoint is deprecated. Use POST /brands/{brandId}/queue instead.\n\nDeprecation Details:\n- Deprecated as of: 2025-10-19\n- Removal scheduled: 2026-04-19 (6 months)\n- Migration path: Use POST /api/v2/brands/{brandId}/queue\n- Reason: RMM-2 compliance - hyphenated segment and verb in URL\n\nThis endpoint will be removed after a 6-month deprecation period.\nPlease update your clients to use the new endpoint.\n\nNote: This endpoint is marked as deprecated in the OpenAPI specification.\nFuture enhancements may add Warning, Sunset, and Link HTTP headers.",
-        "operationId": "initialize_crawl_session_api_v2_brands__brandId__crawl_queue_initialize_post",
+        "description": "Initialize a new crawl session for a brand.\n\nDEPRECATED: This endpoint is deprecated. Use POST /brands/{brand_id}/queue instead.\n\nDeprecation Details:\n- Deprecated as of: 2025-10-19\n- Removal scheduled: 2026-04-19 (6 months)\n- Migration path: Use POST /api/v2/brands/{brand_id}/queue\n- Reason: RMM-2 compliance - hyphenated segment and verb in URL\n\nThis endpoint will be removed after a 6-month deprecation period.\nPlease update your clients to use the new endpoint.\n\nNote: This endpoint is marked as deprecated in the OpenAPI specification.\nFuture enhancements may add Warning, Sunset, and Link HTTP headers.",
+        "operationId": "initialize_crawl_session_api_v2_brands__brand_id__crawl_queue_initialize_post",
         "deprecated": true,
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -3760,23 +4197,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/queue/next": {
+    "/api/v2/brands/{brand_id}/queue/next": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Get Next Queue Url",
         "description": "Get the next URL to crawl from the queue (RMM-2 compliant).\n\nThis is the RMM-2 compliant endpoint that uses the single-word resource\n'queue' instead of the hyphenated 'crawl-queue'.\n\nRMM-2 Compliance:\n- Uses GET method for read operation\n- Resource-oriented URL with single-word segment (queue vs crawl-queue)\n- Returns 200 with data or empty result (not 404 when no URLs available)\n\nReturns the highest priority pending URL, or null if no URLs\nare available to crawl.",
-        "operationId": "get_next_queue_url_api_v2_brands__brandId__queue_next_get",
+        "operationId": "get_next_queue_url_api_v2_brands__brand_id__queue_next_get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
@@ -3819,24 +4256,24 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/crawl-queue/next": {
+    "/api/v2/brands/{brand_id}/crawl-queue/next": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Get Next Url To Crawl",
-        "description": "Get the next URL to crawl from the queue.\n\nDEPRECATED: This endpoint is deprecated. Use GET /brands/{brandId}/queue/next instead.\n\nDeprecation Details:\n- Deprecated as of: 2025-10-20\n- Removal scheduled: 2026-04-20 (6 months)\n- Migration path: Use GET /api/v2/brands/{brandId}/queue/next\n- Reason: RMM-2 compliance - hyphenated segment in URL\n\nThis endpoint will be removed after a 6-month deprecation period.\nPlease update your clients to use the new endpoint.\n\nReturns the highest priority pending URL, or null if no URLs\nare available to crawl.",
-        "operationId": "get_next_url_to_crawl_api_v2_brands__brandId__crawl_queue_next_get",
+        "description": "Get the next URL to crawl from the queue.\n\nDEPRECATED: This endpoint is deprecated. Use GET /brands/{brand_id}/queue/next instead.\n\nDeprecation Details:\n- Deprecated as of: 2025-10-20\n- Removal scheduled: 2026-04-20 (6 months)\n- Migration path: Use GET /api/v2/brands/{brand_id}/queue/next\n- Reason: RMM-2 compliance - hyphenated segment in URL\n\nThis endpoint will be removed after a 6-month deprecation period.\nPlease update your clients to use the new endpoint.\n\nReturns the highest priority pending URL, or null if no URLs\nare available to crawl.",
+        "operationId": "get_next_url_to_crawl_api_v2_brands__brand_id__crawl_queue_next_get",
         "deprecated": true,
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
@@ -3887,34 +4324,34 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/queue/{entryId}": {
+    "/api/v2/brands/{brand_id}/queue/{entry_id}": {
       "put": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Update Queue Entry",
         "description": "Update the status of a crawl queue entry (RMM-2 compliant).\n\nCalled by workflows after attempting to crawl a URL to\nupdate its status and any relevant metadata.\n\nThis is the RMM-2 compliant version with simplified path structure.",
-        "operationId": "update_queue_entry_api_v2_brands__brandId__queue__entryId__put",
+        "operationId": "update_queue_entry_api_v2_brands__brand_id__queue__entry_id__put",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
           {
-            "name": "entryId",
+            "name": "entry_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "description": "The queue entry ID",
-              "title": "Entryid"
+              "title": "Entry Id"
             },
             "description": "The queue entry ID"
           }
@@ -3959,35 +4396,35 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/crawl-queue/{queueEntryId}": {
+    "/api/v2/brands/{brand_id}/crawl-queue/{queue_entry_id}": {
       "put": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Update Crawl Queue Entry Deprecated",
-        "description": "Update the status of a crawl queue entry (DEPRECATED).\n\n⚠️ DEPRECATED: This endpoint uses a hyphenated path segment which violates RMM-2 compliance.\nPlease use PUT /brands/{brandId}/queue/{entryId} instead.\n\nThis endpoint will be removed after a 6-month deprecation period.\n\nCalled by workflows after attempting to crawl a URL to\nupdate its status and any relevant metadata.",
-        "operationId": "update_crawl_queue_entry_deprecated_api_v2_brands__brandId__crawl_queue__queueEntryId__put",
+        "description": "Update the status of a crawl queue entry (DEPRECATED).\n\n⚠️ DEPRECATED: This endpoint uses a hyphenated path segment which violates RMM-2 compliance.\nPlease use PUT /brands/{brand_id}/queue/{entry_id} instead.\n\nThis endpoint will be removed after a 6-month deprecation period.\n\nCalled by workflows after attempting to crawl a URL to\nupdate its status and any relevant metadata.",
+        "operationId": "update_crawl_queue_entry_deprecated_api_v2_brands__brand_id__crawl_queue__queue_entry_id__put",
         "deprecated": true,
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
           {
-            "name": "queueEntryId",
+            "name": "queue_entry_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "description": "The queue entry ID",
-              "title": "Queueentryid"
+              "title": "Queue Entry Id"
             },
             "description": "The queue entry ID"
           }
@@ -4004,7 +4441,7 @@
         },
         "responses": {
           "200": {
-            "description": "Queue entry updated successfully (DEPRECATED: Use /brands/{brandId}/queue/{entryId})",
+            "description": "Queue entry updated successfully (DEPRECATED: Use /brands/{brand_id}/queue/{entry_id})",
             "content": {
               "application/json": {
                 "schema": {
@@ -4032,24 +4469,24 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/crawl-queue": {
+    "/api/v2/brands/{brand_id}/crawl-queue": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "List Crawl Queue Entries",
-        "description": "DEPRECATED: List crawl queue entries for a brand with optional filtering.\n\nThis endpoint is deprecated. Use /brands/{brandId}/queue instead.\nThis endpoint will be removed on 2025-04-19 (6 months from deprecation).",
-        "operationId": "list_crawl_queue_entries_api_v2_brands__brandId__crawl_queue_get",
+        "description": "DEPRECATED: List crawl queue entries for a brand with optional filtering.\n\nThis endpoint is deprecated. Use /brands/{brand_id}/queue instead.\nThis endpoint will be removed on 2025-04-19 (6 months from deprecation).",
+        "operationId": "list_crawl_queue_entries_api_v2_brands__brand_id__crawl_queue_get",
         "deprecated": true,
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
@@ -4127,7 +4564,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CrawlQueueResponse"
                   },
-                  "title": "Response List Crawl Queue Entries Api V2 Brands  Brandid  Crawl Queue Get"
+                  "title": "Response List Crawl Queue Entries Api V2 Brands  Brand Id  Crawl Queue Get"
                 }
               }
             },
@@ -4156,34 +4593,34 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/pages/{pageId}": {
+    "/api/v2/brands/{brand_id}/pages/{page_id}": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Get Page",
         "description": "Get a specific crawled page by ID.",
-        "operationId": "get_page_api_v2_brands__brandId__pages__pageId__get",
+        "operationId": "get_page_api_v2_brands__brand_id__pages__page_id__get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
           {
-            "name": "pageId",
+            "name": "page_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
               "description": "The page ID",
-              "title": "Pageid"
+              "title": "Page Id"
             },
             "description": "The page ID"
           }
@@ -4215,23 +4652,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/pages/unprocessed": {
+    "/api/v2/brands/{brand_id}/pages/unprocessed": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "List Unprocessed Pages",
         "description": "List unprocessed crawled pages for a brand.",
-        "operationId": "list_unprocessed_pages_api_v2_brands__brandId__pages_unprocessed_get",
+        "operationId": "list_unprocessed_pages_api_v2_brands__brand_id__pages_unprocessed_get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
@@ -4260,7 +4697,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CrawledPageResponse"
                   },
-                  "title": "Response List Unprocessed Pages Api V2 Brands  Brandid  Pages Unprocessed Get"
+                  "title": "Response List Unprocessed Pages Api V2 Brands  Brand Id  Pages Unprocessed Get"
                 }
               }
             }
@@ -4330,6 +4767,102 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InstagramOAuthResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/prompts": {
+      "get": {
+        "tags": [
+          "prompts"
+        ],
+        "summary": "List Prompts",
+        "description": "List application prompts with optional category filtering.\n\nBusiness Context:\nReturns system-level AI prompts used for content generation.\nFiltering by category helps frontend fetch only relevant prompts.\n\nPerformance:\n- Response time: <10ms (in-memory cache)\n- Cache-Control header set for client-side caching\n- No database calls required\n\nRMM Level 2:\n- HTTP GET for resource retrieval\n- Query parameter for filtering (not in URL path)\n- Returns 200 OK with list of prompts\n\nArgs:\n    response: FastAPI response object for setting headers\n    category: Optional category filter (brand, content, campaign)\n    prompts_service: Injected prompts service\n\nReturns:\n    PromptsListResponse containing matching prompts\n\nExample:\n    GET /api/v2/prompts\n    GET /api/v2/prompts?category=brand\n\nResponse:\n    {\n      \"prompts\": [\n        {\n          \"id\": \"brand_summary_v1\",\n          \"category\": \"brand\",\n          \"template\": \"Create a summary for {brand_name}...\",\n          \"variables\": [\"brand_name\"],\n          \"version\": \"1.0.0\",\n          \"description\": \"Brand summary generation\"\n        }\n      ],\n      \"total\": 1\n    }",
+        "operationId": "list_prompts_api_v2_prompts_get",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter prompts by category (e.g., 'brand', 'content', 'campaign')",
+              "title": "Category"
+            },
+            "description": "Filter prompts by category (e.g., 'brand', 'content', 'campaign')",
+            "example": "brand"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromptsListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/prompts/{prompt_id}": {
+      "get": {
+        "tags": [
+          "prompts"
+        ],
+        "summary": "Get Prompt",
+        "description": "Get a specific prompt by ID.\n\nBusiness Context:\nRetrieves a single prompt by its unique identifier.\nUseful when frontend needs a specific prompt template.\n\nRMM Level 2:\n- HTTP GET for resource retrieval\n- Resource ID in URL path\n- Returns 200 OK if found, 404 Not Found if missing\n\nArgs:\n    prompt_id: Unique prompt identifier\n    response: FastAPI response object for setting headers\n    prompts_service: Injected prompts service\n\nReturns:\n    PromptResponse with prompt details\n\nRaises:\n    HTTPException: 404 if prompt not found\n\nExample:\n    GET /api/v2/prompts/brand_summary_v1\n\nResponse:\n    {\n      \"id\": \"brand_summary_v1\",\n      \"category\": \"brand\",\n      \"template\": \"Create a summary...\",\n      \"variables\": [\"brand_name\"],\n      \"version\": \"1.0.0\",\n      \"description\": \"Brand summary generation\"\n    }",
+        "operationId": "get_prompt_api_v2_prompts__prompt_id__get",
+        "parameters": [
+          {
+            "name": "prompt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Prompt Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromptResponse"
                 }
               }
             }
@@ -4418,12 +4951,65 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ThreadMessageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/threads/{thread_id}": {
+      "put": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Update Thread Metadata",
+        "description": "Update metadata for an OpenAI Assistant thread.\n\nUpdates custom metadata key-value pairs associated with a thread.\nThis is useful for storing application-specific information like\ncampaign IDs, user IDs, or conversation context.\n\nArgs:\n    thread_id: OpenAI thread ID\n    request: Metadata update request containing key-value pairs\n    service: Thread messages service\n\nReturns:\n    Updated thread information with metadata\n\nRaises:\n    HTTPException: If thread doesn't exist (404) or update fails (500)",
+        "operationId": "update_thread_metadata_api_v2_threads__thread_id__put",
+        "parameters": [
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Thread Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadMetadataUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadResponse"
                 }
               }
             }
@@ -4468,14 +5054,14 @@
         ]
       }
     },
-    "/api/v2/users/register": {
+    "/api/v2/users": {
       "post": {
         "tags": [
           "users"
         ],
         "summary": "Register User",
-        "description": "Register a new user.\n\nArgs:\n    request: User registration details\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Registration confirmation\n\nRaises:\n    HTTPException: If registration fails",
-        "operationId": "register_user_api_v2_users_register_post",
+        "description": "Register a new user.\n\nRMM Level 2 Compliance:\n- POST to /users collection creates a new user resource\n- HTTP verb (POST) indicates the create action\n- No verbs in the URL path\n\nArgs:\n    request: User registration details\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Registration confirmation\n\nRaises:\n    HTTPException: If registration fails",
+        "operationId": "register_user_api_v2_users_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4584,14 +5170,42 @@
         ]
       }
     },
-    "/api/v2/utilities/color-names": {
+    "/api/v2/user/me/regeneration-quota": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get Regeneration Quota Legacy",
+        "description": "Get user's regeneration quota (DEPRECATED).\n\n**DEPRECATED**: This endpoint is deprecated. Use GET /api/v2/users/me/quota instead.\n\nThis endpoint will be removed after 2025-07-01 (6 months deprecation period).\n\nMigration Guide:\n- Old: GET /api/v2/user/me/regeneration-quota\n- New: GET /api/v2/users/me/quota\n\nChanges:\n- Path changed from singular \"user\" to plural \"users\" (RMM-2 compliance)\n- Removed hyphenated \"regeneration-quota\" in favor of simple \"quota\"\n\nArgs:\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Regeneration quota information with deprecation warning header\n\nRaises:\n    HTTPException: If authentication fails or quota retrieval fails",
+        "operationId": "get_regeneration_quota_legacy_api_v2_user_me_regeneration_quota_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegenerationQuotaResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/utilities/colors": {
       "post": {
         "tags": [
           "Utilities"
         ],
         "summary": "Convert hex codes to color names",
         "description": "Convert a list of hex color codes to human-readable, creative color names using LLM",
-        "operationId": "convert_hex_to_color_names_api_v2_utilities_color_names_post",
+        "operationId": "convert_hex_to_color_names_v2_api_v2_utilities_colors_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4624,6 +5238,49 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/utilities/color-names": {
+      "post": {
+        "tags": [
+          "Utilities"
+        ],
+        "summary": "Convert hex codes to color names (DEPRECATED)",
+        "description": "DEPRECATED: Use /utilities/colors instead. This endpoint will be removed after 2025-07-21.",
+        "operationId": "convert_hex_to_color_names_deprecated_api_v2_utilities_color_names_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ColorNameRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColorNameResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
       }
     },
     "/api/v2/utilities/fetch-url-content": {
@@ -4854,7 +5511,7 @@
         ],
         "title": "Body_create_brand_with_files_api_v2_brands_with_files_post"
       },
-      "Body_update_brand_files_api_v2_brands__brandId__files_put": {
+      "Body_update_brand_files_api_v2_brands__brand_id__files_put": {
         "properties": {
           "name": {
             "anyOf": [
@@ -4942,9 +5599,9 @@
           }
         },
         "type": "object",
-        "title": "Body_update_brand_files_api_v2_brands__brandId__files_put"
+        "title": "Body_update_brand_files_api_v2_brands__brand_id__files_put"
       },
-      "Body_update_brand_with_files_api_v2_brands__brandId__with_files_put": {
+      "Body_update_brand_with_files_api_v2_brands__brand_id__with_files_put": {
         "properties": {
           "name": {
             "anyOf": [
@@ -5032,9 +5689,9 @@
           }
         },
         "type": "object",
-        "title": "Body_update_brand_with_files_api_v2_brands__brandId__with_files_put"
+        "title": "Body_update_brand_with_files_api_v2_brands__brand_id__with_files_put"
       },
-      "Body_upload_brand_files_api_v2_brands__brandId__files_post": {
+      "Body_upload_brand_files_api_v2_brands__brand_id__files_post": {
         "properties": {
           "name": {
             "anyOf": [
@@ -5122,7 +5779,7 @@
           }
         },
         "type": "object",
-        "title": "Body_upload_brand_files_api_v2_brands__brandId__files_post"
+        "title": "Body_upload_brand_files_api_v2_brands__brand_id__files_post"
       },
       "BrandColor": {
         "properties": {
@@ -9381,6 +10038,43 @@
         "title": "IntegrationsListResponse",
         "description": "Schema for listing all integrations."
       },
+      "LocationExtractionRequest": {
+        "properties": {
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text",
+            "description": "Text content to extract locations from. If not provided, uses brand knowledge.",
+            "examples": [
+              "We have offices in San Francisco, CA and New York, NY. Visit our retail store at 123 Main St, Austin, TX."
+            ]
+          }
+        },
+        "type": "object",
+        "title": "LocationExtractionRequest",
+        "description": "Request body for location extraction endpoint.\n\nBusiness Logic:\n- If text is provided, extract locations from that text\n- If text is empty/null, extract from brand's stored knowledge\n- Supports both modes to enable flexible extraction workflows"
+      },
+      "LocationExtractionResponse": {
+        "properties": {
+          "locations": {
+            "items": {
+              "$ref": "#/components/schemas/PhysicalLocation"
+            },
+            "type": "array",
+            "title": "Locations",
+            "description": "List of extracted physical locations"
+          }
+        },
+        "type": "object",
+        "title": "LocationExtractionResponse",
+        "description": "Response containing extracted physical locations.\n\nReturns a list of structured location objects extracted from the provided\ntext or brand knowledge. Empty list if no locations found."
+      },
       "NextUrlResponse": {
         "properties": {
           "queueEntryId": {
@@ -9601,6 +10295,73 @@
         "title": "PageMetadata",
         "description": "Metadata for a crawled page."
       },
+      "PhysicalLocation": {
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address",
+            "description": "Street address (e.g., '123 Main St, Suite 100')",
+            "examples": [
+              "123 Main St, Suite 100"
+            ]
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City",
+            "description": "City name",
+            "examples": [
+              "San Francisco"
+            ]
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State",
+            "description": "State or province (2-letter code preferred)",
+            "examples": [
+              "CA"
+            ]
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country",
+            "description": "Country name or code",
+            "examples": [
+              "USA"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "PhysicalLocation",
+        "description": "A structured physical location with address components.\n\nRepresents a single physical location extracted from text, with individual\ncomponents for address, city, state, and country to enable location-based\nqueries and filtering."
+      },
       "PostContent": {
         "properties": {
           "selected_image": {
@@ -9709,6 +10470,109 @@
         ],
         "title": "ProductInfo",
         "description": "Product information schema."
+      },
+      "PromptResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique prompt identifier"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Prompt category (brand, content, campaign)"
+          },
+          "template": {
+            "type": "string",
+            "title": "Template",
+            "description": "Prompt template with {variable} placeholders"
+          },
+          "variables": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Variables",
+            "description": "List of variable names used in template"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "description": "Semantic version (major.minor.patch)",
+            "default": "1.0.0"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Human-readable description of prompt purpose"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "template"
+        ],
+        "title": "PromptResponse",
+        "description": "Response schema for a single application prompt.\n\nAttributes:\n    id: Unique prompt identifier (e.g., \"brand_summary_v1\")\n    category: Prompt category for filtering (e.g., \"brand\", \"content\", \"campaign\")\n    template: The actual prompt template with variable placeholders\n    variables: List of variable names that can be substituted in the template\n    version: Semantic version of the prompt (e.g., \"1.0.0\")\n    description: Human-readable description of what this prompt does",
+        "example": {
+          "category": "brand",
+          "description": "Generate concise brand summary for review",
+          "id": "brand_summary_v1",
+          "template": "Using the data for {brand_name}, create a 60-word summary highlighting {attributes}",
+          "variables": [
+            "brand_name",
+            "attributes"
+          ],
+          "version": "1.0.0"
+        }
+      },
+      "PromptsListResponse": {
+        "properties": {
+          "prompts": {
+            "items": {
+              "$ref": "#/components/schemas/PromptResponse"
+            },
+            "type": "array",
+            "title": "Prompts",
+            "description": "List of application prompts"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of prompts in response"
+          }
+        },
+        "type": "object",
+        "required": [
+          "prompts",
+          "total"
+        ],
+        "title": "PromptsListResponse",
+        "description": "Response schema for listing multiple prompts.\n\nAttributes:\n    prompts: List of prompts matching the filter criteria\n    total: Total number of prompts available (useful for pagination if added later)",
+        "example": {
+          "prompts": [
+            {
+              "category": "brand",
+              "description": "Brand summary generation",
+              "id": "brand_summary_v1",
+              "template": "Create a summary for {brand_name}",
+              "variables": [
+                "brand_name"
+              ],
+              "version": "1.0.0"
+            }
+          ],
+          "total": 1
+        }
       },
       "PublishedPostSummary": {
         "properties": {
@@ -10368,6 +11232,62 @@
         "type": "object",
         "title": "ThreadMessagesListResponse",
         "description": "Response schema for listing thread messages."
+      },
+      "ThreadMetadataUpdate": {
+        "properties": {
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata",
+            "description": "Key-value pairs to update in thread metadata",
+            "examples": [
+              {
+                "campaign_id": "camp_123",
+                "user_id": "user_456"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "metadata"
+        ],
+        "title": "ThreadMetadataUpdate",
+        "description": "Request schema for updating thread metadata."
+      },
+      "ThreadResponse": {
+        "properties": {
+          "thread_id": {
+            "type": "string",
+            "title": "Thread Id",
+            "description": "OpenAI thread ID"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "Thread metadata key-value pairs"
+          },
+          "created_at": {
+            "type": "integer",
+            "title": "Created At",
+            "description": "Unix timestamp of thread creation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "thread_id",
+          "created_at"
+        ],
+        "title": "ThreadResponse",
+        "description": "Response schema for thread information."
       },
       "ToneAttributesV2": {
         "properties": {

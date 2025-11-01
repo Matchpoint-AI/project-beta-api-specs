@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.236] - 2025-11-01
+
+### Changes
+- docs: Add OpenAPI workflow and cross-repo deployment guide (#262)
+
+**Source:** project-beta-api@07b2572 "docs: Add OpenAPI workflow and cross-repo deployment guide (#262)"
+
 ## [v0.0.217] - 2025-10-20
 
 ### Changes
