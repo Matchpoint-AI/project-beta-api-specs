@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.245] - 2025-11-02
+
+### Changes
+- refactor: remove deprecated RMM L2 non-compliant API endpoints (#272)
+
+**Source:** project-beta-api@bf71e70 "refactor: remove deprecated RMM L2 non-compliant API endpoints (#272)"
+
 ## [v0.0.244] - 2025-11-01
 
 ### Changes
