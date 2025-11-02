@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.247] - 2025-11-02
+
+### Changes
+- docs: add agent status update requirement to workflow guidelines (#280)
+
+**Source:** project-beta-api@14c8e54 "docs: add agent status update requirement to workflow guidelines (#280)"
+
 ## [v0.0.246] - 2025-11-02
 
 ### Changes
