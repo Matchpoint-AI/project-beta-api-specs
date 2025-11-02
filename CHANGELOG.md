@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.246] - 2025-11-02
+
+### Changes
+- docs: add AI agent workflow best practices (#273)
+
+**Source:** project-beta-api@91bc858 "docs: add AI agent workflow best practices (#273)"
+
 ## [v0.0.245] - 2025-11-02
 
 ### Changes
