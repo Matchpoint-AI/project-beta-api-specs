@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.248] - 2025-11-02
+
+### Changes
+- docs: add PR reference requirements for AI agents (#281)
+
+**Source:** project-beta-api@116abb5 "docs: add PR reference requirements for AI agents (#281)"
+
 ## [v0.0.247] - 2025-11-02
 
 ### Changes
