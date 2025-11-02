@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.249] - 2025-11-02
+
+### Changes
+- fix: add CORS middleware to allow frontend origins (#282)
+
+**Source:** project-beta-api@f1cddfb "fix: add CORS middleware to allow frontend origins (#282)"
+
 ## [v0.0.248] - 2025-11-02
 
 ### Changes
