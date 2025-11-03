@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.254] - 2025-11-03
+
+### Changes
+- fix: add missing CLOUD_SQL_INSTANCE parameter for Unix socket connections (#289)
+
+**Source:** project-beta-api@8417aac "fix: add missing CLOUD_SQL_INSTANCE parameter for Unix socket connections (#289)"
+
 ## [v0.0.253] - 2025-11-03
 
 ### Changes
