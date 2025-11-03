@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.250] - 2025-11-03
+
+### Changes
+- docs: add Progress Documentation Protocol to workflow guidelines (#283)
+
+**Source:** project-beta-api@c75ca89 "docs: add Progress Documentation Protocol to workflow guidelines (#283)"
+
 ## [v0.0.249] - 2025-11-02
 
 ### Changes
