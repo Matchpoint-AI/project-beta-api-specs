@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.255] - 2025-11-03
+
+### Changes
+- fix: add validation for Cloud SQL proxy configuration and improve error logging (#292)
+
+**Source:** project-beta-api@6b1caae "fix: add validation for Cloud SQL proxy configuration and improve error logging (#292)"
+
 ## [v0.0.254] - 2025-11-03
 
 ### Changes
