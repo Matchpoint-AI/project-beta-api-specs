@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.252] - 2025-11-03
+
+### Changes
+- docs: Add Steps to Reproduce section to API issue template (#284)
+
+**Source:** project-beta-api@f90d142 "docs: Add Steps to Reproduce section to API issue template (#284)"
+
 ## [v0.0.251] - 2025-11-03
 
 ### Changes
