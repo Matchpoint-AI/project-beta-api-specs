@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.256] - 2025-11-03
+
+### Changes
+- feat: Add local API development environment with Cloud SQL proxy (#290) (#293)
+
+**Source:** project-beta-api@d9d4314 "feat: Add local API development environment with Cloud SQL proxy (#290) (#293)"
+
 ## [v0.0.255] - 2025-11-03
 
 ### Changes
