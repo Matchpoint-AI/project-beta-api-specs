@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.253] - 2025-11-03
+
+### Changes
+- fix: add DATABASE_URL environment variable support for Cloud Run (#288)
+
+**Source:** project-beta-api@a198920 "fix: add DATABASE_URL environment variable support for Cloud Run (#288)"
+
 ## [v0.0.252] - 2025-11-03
 
 ### Changes
