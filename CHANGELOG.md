@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.257] - 2025-11-04
+
+### Changes
+- docs: standardize AI assistant config files to reference AGENTS.md
+
+**Source:** project-beta-api@a7ec064 "docs: standardize AI assistant config files to reference AGENTS.md"
+
 ## [v0.0.256] - 2025-11-03
 
 ### Changes
