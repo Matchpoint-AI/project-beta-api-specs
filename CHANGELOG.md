@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.259] - 2025-11-05
+
+### Changes
+- feat: implement real Firebase email verification for user registration (#304)
+
+**Source:** project-beta-api@72a61c6 "feat: implement real Firebase email verification for user registration (#304)"
+
 ## [v0.0.258] - 2025-11-05
 
 ### Changes

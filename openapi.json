@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.258"
+    "version": "0.0.259"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3887,7 +3887,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
@@ -4353,7 +4352,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Health Check Api V2 Health Get"
                 }
@@ -4648,46 +4646,19 @@
         }
       }
     },
-    "/api/v2/users/me": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Get User Profile",
-        "description": "Get authenticated user profile.\n\nArgs:\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    User profile with brand ownership status\n\nRaises:\n    HTTPException: If authentication fails or user not found",
-        "operationId": "get_user_profile_api_v2_users_me_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserProfile"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
     "/api/v2/users": {
       "post": {
         "tags": [
           "users"
         ],
         "summary": "Register User",
-        "description": "Register a new user.\n\nRMM Level 2 Compliance:\n- POST to /users collection creates a new user resource\n- HTTP verb (POST) indicates the create action\n- No verbs in the URL path\n\nArgs:\n    request: User registration details\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Registration confirmation\n\nRaises:\n    HTTPException: If registration fails",
+        "description": "Register a new user with email and password.\n\nCreates a new user account using Firebase Authentication and stores\nuser data in the database. Firebase automatically sends an email\nverification link to the provided email address.\n\nThe user must verify their email before they can fully access the application.\n\nArgs:\n    request: User registration data including email, password, and name\n\nReturns:\n    UserRegistrationResponse with user data and email verification status\n\nRaises:\n    HTTPException 400: If email already exists or data is invalid\n    HTTPException 500: If registration fails due to server error",
         "operationId": "register_user_api_v2_users_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegisterRequest"
+                "$ref": "#/components/schemas/UserCreate"
               }
             }
           },
@@ -4695,14 +4666,20 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Response",
+            "description": "User registered successfully, email verification sent",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserRegisterResponse"
+                  "$ref": "#/components/schemas/UserRegistrationResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request data or email already exists"
+          },
+          "500": {
+            "description": "Internal server error during registration"
           },
           "422": {
             "description": "Validation Error",
@@ -4715,108 +4692,6 @@
             }
           }
         }
-      }
-    },
-    "/api/v2/users/profile": {
-      "put": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Update User Profile",
-        "description": "Update user profile.\n\nArgs:\n    request: Update details\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Updated user information\n\nRaises:\n    HTTPException: If update fails",
-        "operationId": "update_user_profile_api_v2_users_profile_put",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUpdateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserUpdateResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v2/users/me/quota": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Get Regeneration Quota",
-        "description": "Get user's regeneration quota.\n\nArgs:\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Regeneration quota information\n\nRaises:\n    HTTPException: If authentication fails or quota retrieval fails",
-        "operationId": "get_regeneration_quota_api_v2_users_me_quota_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegenerationQuotaResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v2/user/me/regeneration-quota": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Get Regeneration Quota Legacy",
-        "description": "Get user's regeneration quota (DEPRECATED).\n\n**DEPRECATED**: This endpoint is deprecated. Use GET /api/v2/users/me/quota instead.\n\nThis endpoint will be removed after 2025-07-01 (6 months deprecation period).\n\nMigration Guide:\n- Old: GET /api/v2/user/me/regeneration-quota\n- New: GET /api/v2/users/me/quota\n\nChanges:\n- Path changed from singular \"user\" to plural \"users\" (RMM-2 compliance)\n- Removed hyphenated \"regeneration-quota\" in favor of simple \"quota\"\n\nArgs:\n    credentials: Bearer token from request header\n    user_service: Injected user service\n    auth_service: Injected auth service\n\nReturns:\n    Regeneration quota information with deprecation warning header\n\nRaises:\n    HTTPException: If authentication fails or quota retrieval fails",
-        "operationId": "get_regeneration_quota_legacy_api_v2_user_me_regeneration_quota_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegenerationQuotaResponse"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true,
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
       }
     },
     "/api/v2/utilities/colors": {
@@ -4957,7 +4832,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Root  Get"
                 }
@@ -5689,7 +5563,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5804,7 +5677,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5870,7 +5742,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6368,7 +6239,6 @@
           },
           "arr": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -6424,7 +6294,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6508,7 +6377,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -6669,7 +6537,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6947,7 +6814,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -6977,7 +6843,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7121,7 +6986,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7230,7 +7094,6 @@
           "adjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7350,7 +7213,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -7392,7 +7254,6 @@
           "brandGuidelines": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7419,7 +7280,6 @@
           },
           "results": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7569,7 +7429,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7623,7 +7482,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7664,7 +7522,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -7708,7 +7565,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7787,7 +7643,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7988,7 +7843,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8236,7 +8090,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8749,7 +8602,6 @@
           },
           "crawledPages": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9174,7 +9026,6 @@
           "colorAdjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9242,7 +9093,6 @@
             "description": "Generation timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -9458,7 +9308,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9618,7 +9467,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -9767,6 +9615,7 @@
         "enum": [
           "completed"
         ],
+        "const": "completed",
         "title": "OnboardingStatus",
         "description": "Enum for onboarding completion status."
       },
@@ -10235,46 +10084,6 @@
         "title": "PublishedPostSummary",
         "description": "Summary of a single published post within a publication."
       },
-      "RegenerationQuotaResponse": {
-        "properties": {
-          "remaining": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Remaining",
-            "description": "Remaining regenerations allowed"
-          },
-          "totalAllowed": {
-            "type": "integer",
-            "minimum": 1.0,
-            "title": "Totalallowed",
-            "description": "Total regenerations allowed per plan"
-          },
-          "used": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Used",
-            "description": "Number of regenerations used"
-          },
-          "plan": {
-            "type": "string",
-            "enum": [
-              "FREE",
-              "PRO"
-            ],
-            "title": "Plan",
-            "description": "User's subscription plan"
-          }
-        },
-        "type": "object",
-        "required": [
-          "remaining",
-          "totalAllowed",
-          "used",
-          "plan"
-        ],
-        "title": "RegenerationQuotaResponse",
-        "description": "Schema for regeneration quota response."
-      },
       "RegenerationRequest": {
         "properties": {
           "contentId": {
@@ -10495,7 +10304,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10556,13 +10364,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -10638,13 +10444,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -10745,7 +10549,6 @@
           "frequencyRules": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10757,7 +10560,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10857,7 +10659,6 @@
       "ThreadMetadataUpdate": {
         "properties": {
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Key-value pairs to update in thread metadata",
@@ -10886,7 +10687,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11095,98 +10895,18 @@
         "title": "UpdateTextVersionsResponse",
         "description": "Response schema for text versions update.\n\nDirect port from V1 response format."
       },
-      "UserProfile": {
+      "UserCreate": {
         "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "description": "User unique identifier"
-          },
           "email": {
             "type": "string",
+            "format": "email",
             "title": "Email",
             "description": "User email address"
           },
           "name": {
             "type": "string",
-            "title": "Name",
-            "description": "User display name"
-          },
-          "role": {
-            "type": "string",
-            "title": "Role",
-            "description": "User role (USER or ADMIN)",
-            "default": "USER"
-          },
-          "plan": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Plan",
-            "description": "User subscription plan"
-          },
-          "is_admin": {
-            "type": "boolean",
-            "title": "Is Admin",
-            "description": "Whether user has admin privileges",
-            "default": false
-          },
-          "hasBrand": {
-            "type": "boolean",
-            "title": "Hasbrand",
-            "description": "Whether user has created a brand",
-            "default": false
-          },
-          "created_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Created At",
-            "description": "Account creation timestamp"
-          },
-          "updated_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Updated At",
-            "description": "Last update timestamp"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "email",
-          "name"
-        ],
-        "title": "UserProfile",
-        "description": "User profile returned by authentication endpoints."
-      },
-      "UserRegisterRequest": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "title": "Email",
-            "description": "User email address"
-          },
-          "name": {
-            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
             "title": "Name",
             "description": "User full name"
           },
@@ -11194,7 +10914,7 @@
             "type": "string",
             "minLength": 8,
             "title": "Password",
-            "description": "User password"
+            "description": "User password (will be sent to Firebase Auth)"
           }
         },
         "type": "object",
@@ -11203,54 +10923,59 @@
           "name",
           "password"
         ],
-        "title": "UserRegisterRequest",
-        "description": "Request body for user registration."
+        "title": "UserCreate",
+        "description": "Schema for creating a new user (registration).\n\nPassword is handled by Firebase Auth, not stored in our database.\nFirebase will send the email verification link."
       },
-      "UserRegisterResponse": {
+      "UserRegistrationResponse": {
         "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "description": "Newly created user ID"
+          "user": {
+            "$ref": "#/components/schemas/UserResponse",
+            "description": "Created user profile"
           },
+          "emailVerificationSent": {
+            "type": "boolean",
+            "title": "Emailverificationsent",
+            "description": "Whether email verification was sent"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "User-friendly message",
+            "default": "Registration successful. Please check your email to verify your account."
+          }
+        },
+        "type": "object",
+        "required": [
+          "user",
+          "emailVerificationSent"
+        ],
+        "title": "UserRegistrationResponse",
+        "description": "Schema for user registration response.\n\nReturned after successful registration, includes status of email verification."
+      },
+      "UserResponse": {
+        "properties": {
           "email": {
             "type": "string",
+            "format": "email",
             "title": "Email",
             "description": "User email address"
           },
           "name": {
             "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
             "title": "Name",
-            "description": "User display name"
+            "description": "User full name"
           },
-          "message": {
+          "id": {
             "type": "string",
-            "title": "Message",
-            "default": "User registered successfully"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "email",
-          "name"
-        ],
-        "title": "UserRegisterResponse",
-        "description": "Response from user registration."
-      },
-      "UserUpdateRequest": {
-        "properties": {
-          "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name",
-            "description": "User display name"
+            "title": "Id",
+            "description": "User ID"
+          },
+          "emailVerified": {
+            "type": "boolean",
+            "title": "Emailverified",
+            "description": "Whether email has been verified"
           },
           "plan": {
             "anyOf": [
@@ -11263,55 +10988,49 @@
             ],
             "title": "Plan",
             "description": "Subscription plan"
-          }
-        },
-        "type": "object",
-        "title": "UserUpdateRequest",
-        "description": "Request body for updating user profile."
-      },
-      "UserUpdateResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "description": "User ID"
           },
-          "email": {
+          "role": {
             "type": "string",
-            "title": "Email",
-            "description": "User email address"
+            "title": "Role",
+            "description": "User role",
+            "default": "user"
           },
-          "name": {
+          "isAdmin": {
+            "type": "boolean",
+            "title": "Isadmin",
+            "description": "Whether user has admin privileges",
+            "default": false
+          },
+          "hasBrand": {
+            "type": "boolean",
+            "title": "Hasbrand",
+            "description": "Whether user has created a brand",
+            "default": false
+          },
+          "createdAt": {
             "type": "string",
-            "title": "Name",
-            "description": "Updated user name"
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Account creation timestamp"
           },
-          "plan": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Plan",
-            "description": "Updated subscription plan"
-          },
-          "message": {
+          "updatedAt": {
             "type": "string",
-            "title": "Message",
-            "default": "Profile updated successfully"
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "Last update timestamp"
           }
         },
         "type": "object",
         "required": [
-          "id",
           "email",
-          "name"
+          "name",
+          "id",
+          "emailVerified",
+          "createdAt",
+          "updatedAt"
         ],
-        "title": "UserUpdateResponse",
-        "description": "Response from user update."
+        "title": "UserResponse",
+        "description": "Schema for user responses.\n\nExcludes sensitive fields like firebase_uid.\nIncludes all public profile information."
       },
       "ValidationError": {
         "properties": {
@@ -11490,7 +11209,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11969,12 +11687,6 @@
         ],
         "title": "CrawlPageRequest",
         "description": "Request model for crawling a single page via workflow."
-      }
-    },
-    "securitySchemes": {
-      "HTTPBearer": {
-        "type": "http",
-        "scheme": "bearer"
       }
     }
   }
