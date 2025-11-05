@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.258] - 2025-11-05
+
+### Changes
+- test: enable skipped coverage gaps (#300)
+
+**Source:** project-beta-api@1555d6a "test: enable skipped coverage gaps (#300)"
+
 ## [v0.0.257] - 2025-11-04
 
 ### Changes
