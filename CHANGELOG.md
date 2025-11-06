@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.260] - 2025-11-06
+
+### Changes
+- fix: resolve remaining mypy type errors with targeted ignores (#307)
+
+**Source:** project-beta-api@e459648 "fix: resolve remaining mypy type errors with targeted ignores (#307)"
+
 ## [v0.0.259] - 2025-11-05
 
 ### Changes
