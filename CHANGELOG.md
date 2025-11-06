@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.261] - 2025-11-06
+
+### Changes
+- chore: package alembic migrations for automation (#308)
+
+**Source:** project-beta-api@dca26f7 "chore: package alembic migrations for automation (#308)"
+
 ## [v0.0.260] - 2025-11-06
 
 ### Changes
