@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.262] - 2025-11-07
+
+### Changes
+- docs(tests): add GitHub issue references to skipped tests (#311)
+
+**Source:** project-beta-api@bd0cde0 "docs(tests): add GitHub issue references to skipped tests (#311)"
+
 ## [v0.0.261] - 2025-11-06
 
 ### Changes
