@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.264] - 2025-11-07
+
+### Changes
+- fix: implement actual GCS file deletion - resolves #313 (#316)
+
+**Source:** project-beta-api@41b4b9f "fix: implement actual GCS file deletion - resolves #313 (#316)"
+
 ## [v0.0.263] - 2025-11-07
 
 ### Changes
