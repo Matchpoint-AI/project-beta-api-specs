@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.263] - 2025-11-07
+
+### Changes
+- fix: migrate CorrelationIDMiddleware to pure ASGI to support exception handlers (#315)
+
+**Source:** project-beta-api@19e32af "fix: migrate CorrelationIDMiddleware to pure ASGI to support exception handlers (#315)"
+
 ## [v0.0.262] - 2025-11-07
 
 ### Changes
