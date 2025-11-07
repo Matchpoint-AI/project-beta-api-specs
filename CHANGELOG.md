@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.265] - 2025-11-07
+
+### Changes
+- fix: implement extractor service knowledge persistence (#314) (#320)
+
+**Source:** project-beta-api@46b58d7 "fix: implement extractor service knowledge persistence (#314) (#320)"
+
 ## [v0.0.264] - 2025-11-07
 
 ### Changes
