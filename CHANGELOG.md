@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.268] - 2025-11-09
+
+### Changes
+- fix: implement proper user isolation for campaigns (issue #317) (#322)
+
+**Source:** project-beta-api@0458d8c "fix: implement proper user isolation for campaigns (issue #317) (#322)"
+
 ## [v0.0.267] - 2025-11-08
 
 ### Changes

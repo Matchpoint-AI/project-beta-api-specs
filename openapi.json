@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.267"
+    "version": "0.0.268"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1323,30 +1323,6 @@
       }
     },
     "/api/v2/campaigns": {
-      "get": {
-        "tags": [
-          "campaigns"
-        ],
-        "summary": "List Campaigns",
-        "description": "List all campaigns.\n\nReturns a list of all campaigns for the authenticated user.",
-        "operationId": "list_campaigns_api_v2_campaigns_get",
-        "responses": {
-          "200": {
-            "description": "List of campaigns returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/CampaignResponse"
-                  },
-                  "type": "array",
-                  "title": "Response List Campaigns Api V2 Campaigns Get"
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "campaigns"
@@ -1355,14 +1331,14 @@
         "description": "Create a new campaign.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.",
         "operationId": "create_campaign_api_v2_campaigns_post",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CampaignCreate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -1380,6 +1356,54 @@
           },
           "409": {
             "description": "Campaign with this name already exists"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "List Campaigns",
+        "description": "List all campaigns for a specific user.\n\nArgs:\n    user_id: The user ID to filter campaigns by\n\nReturns:\n    List of campaigns for the specified user",
+        "operationId": "list_campaigns_api_v2_campaigns_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of campaigns returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CampaignResponse"
+                  },
+                  "title": "Response List Campaigns Api V2 Campaigns Get"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid user_id parameter"
           },
           "422": {
             "description": "Validation Error",
@@ -6301,11 +6325,18 @@
               }
             ],
             "title": "Campaign Variables"
+          },
+          "userId": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User ID",
+            "description": "ID of the user creating the campaign"
           }
         },
         "type": "object",
         "required": [
-          "name"
+          "name",
+          "userId"
         ],
         "title": "CampaignCreate",
         "description": "Schema for creating a new campaign."
