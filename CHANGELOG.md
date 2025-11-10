@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.269] - 2025-11-10
+
+### Changes
+- fix: replace hardcoded api.example.com with configurable API_BASE_URL (#325)
+
+**Source:** project-beta-api@6a6bc99 "fix: replace hardcoded api.example.com with configurable API_BASE_URL (#325)"
+
 ## [v0.0.268] - 2025-11-09
 
 ### Changes
