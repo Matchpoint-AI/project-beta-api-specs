@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.275] - 2025-11-10
+
+### Changes
+- feat: add POST /api/v2/brands/{brandId}/extractions endpoint (#342)
+
+**Source:** project-beta-api@4029be8 "feat: add POST /api/v2/brands/{brandId}/extractions endpoint (#342)"
+
 ## [v0.0.274] - 2025-11-10
 
 ### Changes

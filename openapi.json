@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.274"
+    "version": "0.0.275"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1477,6 +1477,70 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BrandKnowledgeSummaryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/extractions": {
+      "post": {
+        "tags": [
+          "brand-workflow"
+        ],
+        "summary": "Extract From Campaigns",
+        "description": "Extract and merge brand knowledge from multiple campaigns.\n\nAnalyzes content from multiple campaigns to extract comprehensive\nbrand knowledge including personality traits, tone attributes,\nvisual style, products, etc. This creates a single merged brand\nknowledge entry from all the provided campaigns.",
+        "operationId": "extract_from_campaigns_api_v2_brands__brandId__extractions_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractFromCampaignsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Knowledge extracted from campaigns",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractKnowledgeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or no campaigns provided"
+          },
+          "404": {
+            "description": "Brand or campaigns not found"
+          },
+          "500": {
+            "description": "Knowledge extraction failed"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -9065,6 +9129,24 @@
         ],
         "title": "ExtractBatchResult",
         "description": "Result for a single page in batch extraction."
+      },
+      "ExtractFromCampaignsRequest": {
+        "properties": {
+          "campaignIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Campaignids",
+            "description": "List of campaign IDs to extract knowledge from"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignIds"
+        ],
+        "title": "ExtractFromCampaignsRequest",
+        "description": "Request for extracting brand knowledge from multiple campaigns."
       },
       "ExtractKnowledgeRequest": {
         "properties": {
