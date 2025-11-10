@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.270] - 2025-11-10
+
+### Changes
+- feat: implement POST /api/v2/signups endpoint for landing page beta signups (#327)
+
+**Source:** project-beta-api@d4891ca "feat: implement POST /api/v2/signups endpoint for landing page beta signups (#327)"
+
 ## [v0.0.269] - 2025-11-10
 
 ### Changes
