@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.276] - 2025-11-10
+
+### Changes
+- docs: add PR mergeable status troubleshooting to API workflow docs (#349)
+
+**Source:** project-beta-api@d3842a8 "docs: add PR mergeable status troubleshooting to API workflow docs (#349)"
+
 ## [v0.0.275] - 2025-11-10
 
 ### Changes
