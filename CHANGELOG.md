@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.274] - 2025-11-10
+
+### Changes
+- docs: add AI agent startup workflow documentation
+
+**Source:** project-beta-api@a667ba8 "docs: add AI agent startup workflow documentation"
+
 ## [v0.0.273] - 2025-11-10
 
 ### Changes
