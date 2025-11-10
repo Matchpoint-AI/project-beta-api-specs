@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.272] - 2025-11-10
+
+### Changes
+- test: fix logging setup tests with isolation fixture (#309) (#333)
+
+**Source:** project-beta-api@80b6552 "test: fix logging setup tests with isolation fixture (#309) (#333)"
+
 ## [v0.0.271] - 2025-11-10
 
 ### Changes
