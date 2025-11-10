@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.273] - 2025-11-10
+
+### Changes
+- feat: Implement brand knowledge list/extract-batch/summary endpoints (#331) (#332)
+
+**Source:** project-beta-api@8b117b7 "feat: Implement brand knowledge list/extract-batch/summary endpoints (#331) (#332)"
+
 ## [v0.0.272] - 2025-11-10
 
 ### Changes
