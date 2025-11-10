@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.271] - 2025-11-10
+
+### Changes
+- docs: add dev reference documentation for AI agents (#1301) (#330)
+
+**Source:** project-beta-api@796c0e5 "docs: add dev reference documentation for AI agents (#1301) (#330)"
+
 ## [v0.0.270] - 2025-11-10
 
 ### Changes
