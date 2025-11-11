@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.280] - 2025-11-11
+
+### Changes
+- feat: Add POST /api/v2/brands/{brandId}/knowledge/extract-batch endpoint (#348)
+
+**Source:** project-beta-api@dec65c0 "feat: Add POST /api/v2/brands/{brandId}/knowledge/extract-batch endpoint (#348)"
+
 ## [v0.0.279] - 2025-11-11
 
 ### Changes

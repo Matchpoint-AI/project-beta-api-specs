@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.279"
+    "version": "0.0.280"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1478,67 +1478,6 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/knowledge/batches": {
-      "post": {
-        "tags": [
-          "brand-workflow"
-        ],
-        "summary": "Create Knowledge Batch",
-        "description": "Create a batch knowledge processing job.\n\nProcesses multiple pages simultaneously and merges or replaces\nthe existing brand knowledge based on the merge strategy.\n\nRMM Level 2 Compliance:\n- POST to /brands/{brand_id}/knowledge/batches creates a batch resource\n- HTTP verb (POST) indicates creation\n- Single-word resource name (batches)\n- No verbs in URL path",
-        "operationId": "create_knowledge_batch_api_v2_brands__brand_id__knowledge_batches_post",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExtractBatchRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Batch knowledge processing completed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExtractBatchResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/knowledge/summary": {
       "get": {
         "tags": [
@@ -1561,23 +1500,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/extractions": {
+    "/api/v2/brands/{brand_id}/knowledge/batches": {
       "post": {
         "tags": [
           "brand-workflow"
         ],
-        "summary": "Extract From Campaigns",
-        "description": "Extract and merge brand knowledge from multiple campaigns.\n\nAnalyzes content from multiple campaigns to extract comprehensive\nbrand knowledge including personality traits, tone attributes,\nvisual style, products, etc. This creates a single merged brand\nknowledge entry from all the provided campaigns.",
-        "operationId": "extract_from_campaigns_api_v2_brands__brandId__extractions_post",
+        "summary": "Extract Knowledge From Campaigns",
+        "description": "Extract and merge knowledge from multiple campaigns (RMM-2 compliant).\n\nThis endpoint implements controller orchestration pattern where the controller\ncoordinates multiple services (campaign_service and brand_knowledge_service)\nto extract knowledge from campaign content and merge it into brand knowledge.\n\nThe controller:\n1. Gets campaigns using campaign_service\n2. Extracts content from each campaign\n3. Merges knowledge using brand_knowledge_service\n4. Returns combined knowledge\n\nRMM Level 2 Compliance:\n- POST creates a knowledge resource (not an RPC \"extract\" action)\n- Returns 201 Created with the knowledge resource\n- Resource-oriented URL: /brands/{id}/knowledge/batches\n- Controller handles orchestration, services handle business logic\n\nArgs:\n    brand_id: The brand ID\n    request: Request containing campaign IDs to extract knowledge from\n    campaign_service: Injected campaign service for retrieving campaigns\n    brand_knowledge_service: Injected knowledge service for extraction\n\nReturns:\n    Combined brand knowledge extracted from all campaigns\n\nRaises:\n    HTTPException: If extraction fails or campaigns not found",
+        "operationId": "extract_knowledge_from_campaigns_api_v2_brands__brand_id__knowledge_batches_post",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -1587,14 +1526,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExtractFromCampaignsRequest"
+                "$ref": "#/components/schemas/ExtractBatchCampaignRequest"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Knowledge extracted from campaigns",
+            "description": "Knowledge extracted and merged from campaigns",
             "content": {
               "application/json": {
                 "schema": {
@@ -1604,10 +1543,10 @@
             }
           },
           "400": {
-            "description": "Invalid request or no campaigns provided"
+            "description": "Invalid request data"
           },
           "404": {
-            "description": "Brand or campaigns not found"
+            "description": "Brand or campaign not found"
           },
           "500": {
             "description": "Knowledge extraction failed"
@@ -9278,152 +9217,14 @@
         "title": "DayContent",
         "description": "Schema for daily content."
       },
-      "ExtractBatchPageRequest": {
-        "properties": {
-          "url": {
-            "type": "string",
-            "title": "Url",
-            "description": "Page URL to extract knowledge from"
-          },
-          "htmlContent": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Htmlcontent",
-            "description": "Pre-fetched HTML content (optional)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "url"
-        ],
-        "title": "ExtractBatchPageRequest",
-        "description": "Request model for a single page in batch extraction."
-      },
-      "ExtractBatchRequest": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID to extract knowledge for"
-          },
-          "pages": {
-            "items": {
-              "$ref": "#/components/schemas/ExtractBatchPageRequest"
-            },
-            "type": "array",
-            "maxItems": 50,
-            "minItems": 1,
-            "title": "Pages",
-            "description": "List of pages to extract knowledge from"
-          },
-          "mergeStrategy": {
-            "type": "string",
-            "title": "Mergestrategy",
-            "description": "How to handle extracted data: 'merge' (combine with existing) or 'replace' (overwrite existing)",
-            "default": "merge"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "pages"
-        ],
-        "title": "ExtractBatchRequest",
-        "description": "Request model for batch knowledge extraction."
-      },
-      "ExtractBatchResponse": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "totalPages": {
-            "type": "integer",
-            "title": "Totalpages",
-            "description": "Total number of pages processed"
-          },
-          "successful": {
-            "type": "integer",
-            "title": "Successful",
-            "description": "Number of successful extractions"
-          },
-          "failed": {
-            "type": "integer",
-            "title": "Failed",
-            "description": "Number of failed extractions"
-          },
-          "results": {
-            "items": {
-              "$ref": "#/components/schemas/ExtractBatchResult"
-            },
-            "type": "array",
-            "title": "Results",
-            "description": "Per-page extraction results"
-          },
-          "knowledge": {
-            "$ref": "#/components/schemas/BrandKnowledgeV2Response",
-            "description": "Final merged/replaced brand knowledge"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "totalPages",
-          "successful",
-          "failed",
-          "results",
-          "knowledge"
-        ],
-        "title": "ExtractBatchResponse",
-        "description": "Response model for batch knowledge extraction."
-      },
-      "ExtractBatchResult": {
-        "properties": {
-          "url": {
-            "type": "string",
-            "title": "Url",
-            "description": "Page URL"
-          },
-          "success": {
-            "type": "boolean",
-            "title": "Success",
-            "description": "Whether extraction succeeded"
-          },
-          "error": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Error",
-            "description": "Error message if failed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "url",
-          "success"
-        ],
-        "title": "ExtractBatchResult",
-        "description": "Result for a single page in batch extraction."
-      },
-      "ExtractFromCampaignsRequest": {
+      "ExtractBatchCampaignRequest": {
         "properties": {
           "campaignIds": {
             "items": {
               "type": "string"
             },
             "type": "array",
+            "minItems": 1,
             "title": "Campaignids",
             "description": "List of campaign IDs to extract knowledge from"
           }
@@ -9432,8 +9233,8 @@
         "required": [
           "campaignIds"
         ],
-        "title": "ExtractFromCampaignsRequest",
-        "description": "Request for extracting brand knowledge from multiple campaigns."
+        "title": "ExtractBatchCampaignRequest",
+        "description": "Request for extracting knowledge from multiple campaigns."
       },
       "ExtractKnowledgeRequest": {
         "properties": {
