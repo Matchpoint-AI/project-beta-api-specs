@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.279] - 2025-11-11
+
+### Changes
+- feat: Add weeks structure to SceneMixPlanResponse for detailed content planning (#355)
+
+**Source:** project-beta-api@0c3e120 "feat: Add weeks structure to SceneMixPlanResponse for detailed content planning (#355)"
+
 ## [v0.0.278] - 2025-11-11
 
 ### Changes

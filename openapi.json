@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.278"
+    "version": "0.0.279"
   },
   "paths": {
     "/api/v2/brands": {
@@ -10703,6 +10703,66 @@
         "title": "PostContent",
         "description": "Schema for post content in approval request."
       },
+      "PostPlan": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "title": "Day",
+            "description": "Day of week (1-7)"
+          },
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype",
+            "description": "Scene type (e.g., product_showcase, testimonial, educational)"
+          },
+          "theme": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Theme",
+            "description": "Content theme"
+          },
+          "elements": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Elements",
+            "description": "Content elements"
+          },
+          "captionStyle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Captionstyle",
+            "description": "Caption style"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day",
+          "sceneType"
+        ],
+        "title": "PostPlan",
+        "description": "Individual post within a week."
+      },
       "PostSchema": {
         "properties": {
           "id": {
@@ -11155,6 +11215,14 @@
             "title": "Status",
             "description": "Plan status (draft, active, completed)",
             "default": "draft"
+          },
+          "weeks": {
+            "items": {
+              "$ref": "#/components/schemas/WeekPlan"
+            },
+            "type": "array",
+            "title": "Weeks",
+            "description": "Detailed week-by-week post planning"
           },
           "createdAt": {
             "type": "string",
@@ -12066,6 +12134,30 @@
         ],
         "title": "WeekContent",
         "description": "Schema for weekly content."
+      },
+      "WeekPlan": {
+        "properties": {
+          "weekNumber": {
+            "type": "integer",
+            "title": "Weeknumber",
+            "description": "Week number (1-indexed)"
+          },
+          "posts": {
+            "items": {
+              "$ref": "#/components/schemas/PostPlan"
+            },
+            "type": "array",
+            "title": "Posts",
+            "description": "Posts for this week"
+          }
+        },
+        "type": "object",
+        "required": [
+          "weekNumber",
+          "posts"
+        ],
+        "title": "WeekPlan",
+        "description": "Week within a content plan."
       },
       "WorkflowRequest": {
         "properties": {
