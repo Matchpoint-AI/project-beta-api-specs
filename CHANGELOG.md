@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.278] - 2025-11-11
+
+### Changes
+- feat: add brand knowledge summary endpoint (#352)
+
+**Source:** project-beta-api@39f4983 "feat: add brand knowledge summary endpoint (#352)"
+
 ## [v0.0.277] - 2025-11-11
 
 ### Changes
