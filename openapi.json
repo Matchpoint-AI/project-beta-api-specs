@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.276"
+    "version": "0.0.277"
   },
   "paths": {
     "/api/v2/brands": {
@@ -510,103 +510,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/knowledge": {
-      "get": {
-        "tags": [
-          "brand-workflow"
-        ],
-        "summary": "Get Brand Knowledge V2",
-        "description": "Get extracted brand knowledge in V2 format.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.",
-        "operationId": "get_brand_knowledge_v2",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Brand knowledge returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/src__schemas__brand_knowledge__BrandKnowledgeV2Response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand knowledge not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "brand-workflow"
-        ],
-        "summary": "Create Brand Knowledge",
-        "description": "Create knowledge resource from crawled pages (RMM-2 compliant).\n\nAnalyzes crawled content to extract and store brand knowledge including\npersonality traits, tone attributes, visual style, products, etc.\nThis endpoint follows RMM Level 2 principles by using POST to create\na knowledge resource rather than using a verb in the URL.\n\nThis is a workflow operation typically triggered by crawling completion.\n\nDesign Pattern (RMM L2):\n- POST creates a knowledge resource (not an RPC \"extract\" action)\n- Returns 201 Created with the knowledge resource\n- Resource-oriented URL: /brands/{id}/knowledge",
-        "operationId": "create_brand_knowledge_api_v2_brands__brand_id__knowledge_post",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExtractKnowledgeRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Knowledge extracted and created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExtractKnowledgeResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Invalid request"
-          },
-          "500": {
-            "description": "Knowledge extraction failed"
           }
         }
       }
@@ -1308,6 +1211,132 @@
           },
           "404": {
             "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/knowledge": {
+      "post": {
+        "tags": [
+          "brand-workflow"
+        ],
+        "summary": "Create Brand Knowledge",
+        "description": "Create knowledge resource from crawled pages (RMM-2 compliant).\n\nAnalyzes crawled content to extract and store brand knowledge including\npersonality traits, tone attributes, visual style, products, etc.\nThis endpoint follows RMM Level 2 principles by using POST to create\na knowledge resource rather than using a verb in the URL.\n\nThis is a workflow operation typically triggered by crawling completion.\n\nDesign Pattern (RMM L2):\n- POST creates a knowledge resource (not an RPC \"extract\" action)\n- Returns 201 Created with the knowledge resource\n- Resource-oriented URL: /brands/{id}/knowledge",
+        "operationId": "create_brand_knowledge_api_v2_brands__brand_id__knowledge_post",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractKnowledgeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Knowledge extracted and created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractKnowledgeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Knowledge extraction failed"
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/knowledge": {
+      "get": {
+        "tags": [
+          "brand-workflow"
+        ],
+        "summary": "Get Brand Knowledge V2",
+        "description": "Get extracted brand knowledge in V2 format with pagination.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.\n\nSupports pagination parameters for future compatibility when multiple\nknowledge entries per brand are supported.",
+        "operationId": "get_brand_knowledge_v2_api_v2_brands__brandId__knowledge_get",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Number of items to return",
+              "default": 10,
+              "title": "Limit"
+            },
+            "description": "Number of items to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of items to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of items to skip"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand knowledge returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandKnowledgeV2ListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand knowledge not found"
           },
           "422": {
             "description": "Validation Error",
@@ -4137,6 +4166,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
@@ -4602,6 +4632,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Health Check Api V2 Health Get"
                 }
@@ -5130,6 +5161,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Root  Get"
                 }
@@ -5861,6 +5893,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5882,7 +5915,7 @@
         "properties": {
           "items": {
             "items": {
-              "$ref": "#/components/schemas/src__schemas__brand_knowledge__BrandKnowledgeV2Response"
+              "$ref": "#/components/schemas/BrandKnowledgeV2Response"
             },
             "type": "array",
             "title": "Items",
@@ -5952,7 +5985,7 @@
           },
           "recentlyUpdated": {
             "items": {
-              "$ref": "#/components/schemas/src__schemas__brand_knowledge__BrandKnowledgeV2Response"
+              "$ref": "#/components/schemas/BrandKnowledgeV2Response"
             },
             "type": "array",
             "title": "Recentlyupdated",
@@ -5970,6 +6003,110 @@
         ],
         "title": "BrandKnowledgeSummaryResponse",
         "description": "Summary statistics for brand knowledge."
+      },
+      "BrandKnowledgeV2ListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BrandKnowledgeV2Response"
+            },
+            "type": "array",
+            "title": "Items",
+            "description": "List of brand knowledge entries"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of knowledge entries for this brand"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "description": "Number of items skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "BrandKnowledgeV2ListResponse",
+        "description": "V2 Paginated response model for brand knowledge list."
+      },
+      "BrandKnowledgeV2Response": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "personalityTraits": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Personalitytraits",
+            "description": "2-5 lowercase adjectives describing brand personality"
+          },
+          "toneAttributes": {
+            "$ref": "#/components/schemas/ToneAttributesV2",
+            "description": "Structured tone characteristics"
+          },
+          "colorPalette": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Colorpalette",
+            "description": "3-5 hex color codes from brand visual identity"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/ProductV2"
+            },
+            "type": "array",
+            "title": "Products",
+            "description": "List of products with name and category"
+          },
+          "brandDescription": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Branddescription",
+            "description": "1-2 sentences describing the brand"
+          },
+          "valueProposition": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Valueproposition",
+            "description": "1-2 sentences describing the value proposition"
+          },
+          "targetAudience": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Targetaudience",
+            "description": "1-2 sentences describing the target audience"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "personalityTraits",
+          "toneAttributes",
+          "colorPalette",
+          "products",
+          "brandDescription",
+          "valueProposition",
+          "targetAudience"
+        ],
+        "title": "BrandKnowledgeV2Response",
+        "description": "V2 Response model for simplified brand knowledge extraction."
       },
       "BrandOnboardingComplete": {
         "properties": {
@@ -6068,6 +6205,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6133,6 +6271,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6630,6 +6769,7 @@
           },
           "arr": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -6685,6 +6825,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6775,6 +6916,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -6935,6 +7077,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7212,6 +7355,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7241,6 +7385,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7384,6 +7529,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7492,6 +7638,7 @@
           "adjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7611,6 +7758,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -7652,6 +7800,7 @@
           "brandGuidelines": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7678,6 +7827,7 @@
           },
           "results": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7827,6 +7977,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7880,6 +8031,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7920,6 +8072,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -7963,6 +8116,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8041,6 +8195,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8241,6 +8396,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8488,6 +8644,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9081,7 +9238,7 @@
             "description": "Per-page extraction results"
           },
           "knowledge": {
-            "$ref": "#/components/schemas/src__schemas__brand_knowledge__BrandKnowledgeV2Response",
+            "$ref": "#/components/schemas/BrandKnowledgeV2Response",
             "description": "Final merged/replaced brand knowledge"
           }
         },
@@ -9157,6 +9314,7 @@
           },
           "crawledPages": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9188,7 +9346,7 @@
             "description": "2-5 personality traits as lowercase adjectives"
           },
           "toneAttributes": {
-            "$ref": "#/components/schemas/src__schemas__brand_crawler__ToneAttributes",
+            "$ref": "#/components/schemas/ToneAttributes",
             "description": "Communication tone attributes"
           },
           "colorPalette": {
@@ -9581,6 +9739,7 @@
           "colorAdjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9648,6 +9807,7 @@
             "description": "Generation timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -9863,6 +10023,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10022,6 +10183,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -10170,7 +10332,6 @@
         "enum": [
           "completed"
         ],
-        "const": "completed",
         "title": "OnboardingStatus",
         "description": "Enum for onboarding completion status."
       },
@@ -10495,6 +10656,27 @@
         ],
         "title": "ProductInfo",
         "description": "Product information schema."
+      },
+      "ProductV2": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Product name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Product category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category"
+        ],
+        "title": "ProductV2",
+        "description": "V2 Product information for brand knowledge."
       },
       "PromptResponse": {
         "properties": {
@@ -10859,6 +11041,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10919,11 +11102,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -10999,11 +11184,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -11104,6 +11291,7 @@
           "frequencyRules": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11115,6 +11303,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11292,6 +11481,7 @@
       "ThreadMetadataUpdate": {
         "properties": {
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Key-value pairs to update in thread metadata",
@@ -11320,6 +11510,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11342,6 +11533,33 @@
         ],
         "title": "ThreadResponse",
         "description": "Response schema for thread information."
+      },
+      "ToneAttributes": {
+        "properties": {
+          "formality": {
+            "type": "string",
+            "title": "Formality",
+            "description": "Formality level: casual, semi-formal, formal"
+          },
+          "enthusiasm": {
+            "type": "string",
+            "title": "Enthusiasm",
+            "description": "Enthusiasm level: low, medium, high"
+          },
+          "expertise": {
+            "type": "string",
+            "title": "Expertise",
+            "description": "Expertise level: beginner, intermediate, authoritative"
+          }
+        },
+        "type": "object",
+        "required": [
+          "formality",
+          "enthusiasm",
+          "expertise"
+        ],
+        "title": "ToneAttributes",
+        "description": "Tone attributes schema."
       },
       "ToneAttributesV2": {
         "properties": {
@@ -11842,6 +12060,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11946,242 +12165,6 @@
         ],
         "title": "CrawlPageRequest",
         "description": "Request for crawling a single page."
-      },
-      "src__schemas__brand_crawler__ToneAttributes": {
-        "properties": {
-          "formality": {
-            "type": "string",
-            "title": "Formality",
-            "description": "Formality level: casual, semi-formal, formal"
-          },
-          "enthusiasm": {
-            "type": "string",
-            "title": "Enthusiasm",
-            "description": "Enthusiasm level: low, medium, high"
-          },
-          "expertise": {
-            "type": "string",
-            "title": "Expertise",
-            "description": "Expertise level: beginner, intermediate, authoritative"
-          }
-        },
-        "type": "object",
-        "required": [
-          "formality",
-          "enthusiasm",
-          "expertise"
-        ],
-        "title": "ToneAttributes",
-        "description": "Tone attributes schema."
-      },
-      "src__schemas__brand_knowledge__BrandKnowledgeV2Response": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "personalityTraits": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Personalitytraits",
-            "description": "2-5 lowercase adjectives describing brand personality"
-          },
-          "toneAttributes": {
-            "$ref": "#/components/schemas/ToneAttributesV2",
-            "description": "Structured tone characteristics"
-          },
-          "colorPalette": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Colorpalette",
-            "description": "3-5 hex color codes from brand visual identity"
-          },
-          "products": {
-            "items": {
-              "$ref": "#/components/schemas/src__schemas__brand_knowledge__ProductV2"
-            },
-            "type": "array",
-            "title": "Products",
-            "description": "List of products with name and category"
-          },
-          "brandDescription": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Branddescription",
-            "description": "1-2 sentences describing the brand"
-          },
-          "valueProposition": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Valueproposition",
-            "description": "1-2 sentences describing the value proposition"
-          },
-          "targetAudience": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Targetaudience",
-            "description": "1-2 sentences describing the target audience"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "personalityTraits",
-          "toneAttributes",
-          "colorPalette",
-          "products",
-          "brandDescription",
-          "valueProposition",
-          "targetAudience"
-        ],
-        "title": "BrandKnowledgeV2Response",
-        "description": "V2 Response model for simplified brand knowledge extraction."
-      },
-      "src__schemas__brand_knowledge__ProductV2": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Product name"
-          },
-          "category": {
-            "type": "string",
-            "title": "Category",
-            "description": "Product category"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "category"
-        ],
-        "title": "ProductV2",
-        "description": "V2 Product information for brand knowledge."
-      },
-      "src__schemas__brands__BrandKnowledgeV2Response": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "personalityTraits": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "maxItems": 5,
-            "minItems": 2,
-            "title": "Personalitytraits",
-            "description": "2-5 lowercase adjectives describing brand personality"
-          },
-          "toneAttributes": {
-            "$ref": "#/components/schemas/src__schemas__brands__ToneAttributes",
-            "description": "Structured tone attributes"
-          },
-          "colorPalette": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "maxItems": 5,
-            "minItems": 3,
-            "title": "Colorpalette",
-            "description": "3-5 hex color codes"
-          },
-          "products": {
-            "items": {
-              "$ref": "#/components/schemas/src__schemas__brands__ProductV2"
-            },
-            "type": "array",
-            "title": "Products",
-            "description": "List of products with name and category"
-          },
-          "brandDescription": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Branddescription",
-            "description": "1-2 sentences describing the brand"
-          },
-          "valueProposition": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Valueproposition",
-            "description": "1-2 sentences describing unique value"
-          },
-          "targetAudience": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Targetaudience",
-            "description": "1-2 sentences describing target audience"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "personalityTraits",
-          "toneAttributes",
-          "colorPalette",
-          "products",
-          "brandDescription",
-          "valueProposition",
-          "targetAudience"
-        ],
-        "title": "BrandKnowledgeV2Response",
-        "description": "V2 API response schema for brand knowledge extraction."
-      },
-      "src__schemas__brands__ProductV2": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Product name"
-          },
-          "category": {
-            "type": "string",
-            "title": "Category",
-            "description": "Product category"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "category"
-        ],
-        "title": "ProductV2",
-        "description": "Product information for brand knowledge."
-      },
-      "src__schemas__brands__ToneAttributes": {
-        "properties": {
-          "formality": {
-            "type": "string",
-            "title": "Formality",
-            "description": "Formality level (formal/semi-formal/casual)"
-          },
-          "enthusiasm": {
-            "type": "string",
-            "title": "Enthusiasm",
-            "description": "Enthusiasm level (low/medium/high)"
-          },
-          "expertise": {
-            "type": "string",
-            "title": "Expertise",
-            "description": "Expertise level (beginner/authoritative/expert)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "formality",
-          "enthusiasm",
-          "expertise"
-        ],
-        "title": "ToneAttributes",
-        "description": "Tone attributes for brand knowledge."
       },
       "src__schemas__campaign_approval__BulkApprovalRequest": {
         "properties": {

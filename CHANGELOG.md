@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.277] - 2025-11-11
+
+### Changes
+- feat: add pagination support to brand knowledge endpoint (#338) (#346)
+
+**Source:** project-beta-api@5d5333b "feat: add pagination support to brand knowledge endpoint (#338) (#346)"
+
 ## [v0.0.276] - 2025-11-10
 
 ### Changes
