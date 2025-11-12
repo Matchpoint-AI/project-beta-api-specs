@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.284] - 2025-11-12
+
+### Changes
+- feat: enable local CI execution with nektos/act (#361)
+
+**Source:** project-beta-api@ad35b35 "feat: enable local CI execution with nektos/act (#361)"
+
 ## [v0.0.283] - 2025-11-12
 
 ### Changes
