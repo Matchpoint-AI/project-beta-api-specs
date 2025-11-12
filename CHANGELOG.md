@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.282] - 2025-11-12
+
+### Changes
+- feat: add error categorization and retry logic for web crawling (#358) (#359)
+
+**Source:** project-beta-api@65fd8e8 "feat: add error categorization and retry logic for web crawling (#358) (#359)"
+
 ## [v0.0.281] - 2025-11-12
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.281"
+    "version": "0.0.282"
   },
   "paths": {
     "/api/v2/brands": {
@@ -8922,6 +8922,30 @@
             ],
             "title": "Errormessage",
             "description": "Error message if crawl failed"
+          },
+          "errorCategory": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errorcategory",
+            "description": "Category of error for retry logic"
+          },
+          "retryCount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retrycount",
+            "description": "Number of retry attempts made"
           }
         },
         "type": "object",
@@ -8987,6 +9011,37 @@
             "title": "Errormessage",
             "description": "Error message if failed"
           },
+          "errorCategory": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errorcategory",
+            "description": "Category of error for retry logic"
+          },
+          "retryCount": {
+            "type": "integer",
+            "title": "Retrycount",
+            "description": "Number of retry attempts",
+            "default": 0
+          },
+          "lastRetryAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastretryat",
+            "description": "Timestamp of last retry"
+          },
           "pageId": {
             "anyOf": [
               {
@@ -9028,7 +9083,6 @@
           "status",
           "priority",
           "discoveredFrom",
-          "errorMessage",
           "pageId",
           "createdAt",
           "updatedAt"
@@ -9053,6 +9107,30 @@
             ],
             "title": "Errormessage",
             "description": "Error message if status is failed"
+          },
+          "errorCategory": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errorcategory",
+            "description": "Category of error for retry logic"
+          },
+          "retryCount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retrycount",
+            "description": "Number of retry attempts"
           },
           "pageId": {
             "anyOf": [
@@ -9081,7 +9159,8 @@
           "crawling",
           "completed",
           "failed",
-          "skipped"
+          "skipped",
+          "rate_limited"
         ],
         "title": "CrawlStatus",
         "description": "Status of a URL in the crawl queue."
