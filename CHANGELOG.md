@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.285] - 2025-11-12
+
+### Changes
+- feat: add Playwright service for JavaScript rendering support
+
+**Source:** project-beta-api@abeb259 "feat: add Playwright service for JavaScript rendering support"
+
 ## [v0.0.284] - 2025-11-12
 
 ### Changes

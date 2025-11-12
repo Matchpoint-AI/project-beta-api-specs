@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.284"
+    "version": "0.0.285"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4099,6 +4099,70 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brandId}/pages/render": {
+      "post": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Render And Crawl Page",
+        "description": "Render a JavaScript-heavy page with Playwright and extract content.\n\nThis endpoint uses Playwright to render modern SPAs (React, Vue, Angular)\nthat require JavaScript execution. It's slower than traditional crawling\nbut enables access to dynamically-generated content.\n\nUse this endpoint when:\n- Static HTML crawling fails or returns incomplete content\n- The website uses client-side rendering\n- Content is loaded via JavaScript after page load\n\nThe endpoint will:\n1. Launch a headless browser\n2. Navigate to the URL and wait for network idle\n3. Optionally wait for a specific selector\n4. Extract the rendered HTML and text content\n5. Discover links on the page\n6. Store the page data\n\nArgs:\n    brand_id: Brand ID for the crawl\n    request: Render request with URL, optional selector, and timeout\n\nReturns:\n    CrawlPageWorkflowResponse with extracted content and discovered URLs",
+        "operationId": "render_and_crawl_page_api_v2_brands__brandId__pages_render_post",
+        "parameters": [
+          {
+            "name": "brandId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brandid"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenderPageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Page rendered and crawled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlPageWorkflowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "500": {
+            "description": "Failed to render page"
           },
           "422": {
             "description": "Validation Error",
@@ -11047,6 +11111,44 @@
         ],
         "title": "RegenerationResponse",
         "description": "Response schema for content regeneration.\n\nThis matches the V1 structure from tag v0.2.46."
+      },
+      "RenderPageRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Url",
+            "description": "URL to render with JavaScript"
+          },
+          "waitForSelector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waitforselector",
+            "description": "Optional CSS selector to wait for before extracting content"
+          },
+          "timeout": {
+            "type": "integer",
+            "maximum": 120000.0,
+            "minimum": 1000.0,
+            "title": "Timeout",
+            "description": "Maximum wait time in milliseconds (default: 30000)",
+            "default": 30000
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "RenderPageRequest",
+        "description": "Request model for rendering a JavaScript-heavy page with Playwright."
       },
       "SceneMixPlanCreate": {
         "properties": {
