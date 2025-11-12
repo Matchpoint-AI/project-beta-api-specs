@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.280"
+    "version": "0.0.281"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1351,23 +1351,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/knowledge/summary": {
+    "/api/v2/brands/{brand_id}/knowledge/summary": {
       "get": {
         "tags": [
           "brand-workflow"
         ],
-        "summary": "Get Brand Knowledge Entry Summary",
-        "description": "Get summary statistics for a specific brand's knowledge.\n\nReturns summary information about the brand's knowledge including\ntotal entries, last updated timestamp, and which fields are populated.\n\nRMM Level 2 Compliance:\n- GET to /brands/{id}/knowledge/summary retrieves summary resource\n- No verbs in URL path\n- HTTP verb (GET) indicates retrieval",
-        "operationId": "get_brand_knowledge_entry_summary_api_v2_brands__brandId__knowledge_summary_get",
+        "summary": "Get Brand Knowledge Summary By Brand",
+        "description": "Get summary statistics for a brand's knowledge entries.\n\nReturns summary statistics including total entries count,\nlast updated timestamp, and category breakdown for the specified brand.\n\nRMM Level 2 Compliance:\n- GET to /brands/{brand_id}/knowledge/summary retrieves summary resource\n- HTTP verb (GET) indicates retrieval\n- No verbs in URL path\n- Resource-oriented URL structure",
+        "operationId": "get_brand_knowledge_summary_by_brand",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -1378,13 +1378,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BrandKnowledgeEntrySummaryResponse"
+                  "$ref": "#/components/schemas/BrandKnowledgeBrandSummaryResponse"
                 }
               }
             }
           },
           "404": {
-            "description": "Brand not found"
+            "description": "No knowledge found for brand"
           },
           "422": {
             "description": "Validation Error",
@@ -5898,87 +5898,38 @@
         "title": "BrandFileUploadResponse",
         "description": "Response schema for brand file upload with LLM extraction."
       },
-      "BrandKnowledgeEntrySummaryResponse": {
+      "BrandKnowledgeBrandSummaryResponse": {
         "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
           "totalEntries": {
             "type": "integer",
             "title": "Totalentries",
             "description": "Total number of knowledge entries for this brand"
           },
           "lastUpdated": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "format": "date-time",
             "title": "Lastupdated",
-            "description": "Timestamp of last knowledge update"
+            "description": "Last update timestamp"
           },
-          "hasMission": {
-            "type": "boolean",
-            "title": "Hasmission",
-            "description": "Whether mission is populated",
-            "default": false
-          },
-          "hasValueProposition": {
-            "type": "boolean",
-            "title": "Hasvalueproposition",
-            "description": "Whether value proposition is populated",
-            "default": false
-          },
-          "hasBrandVoice": {
-            "type": "boolean",
-            "title": "Hasbrandvoice",
-            "description": "Whether brand voice is populated",
-            "default": false
-          },
-          "hasTargetAudience": {
-            "type": "boolean",
-            "title": "Hastargetaudience",
-            "description": "Whether target audience is populated",
-            "default": false
-          },
-          "hasVisualIdentity": {
-            "type": "boolean",
-            "title": "Hasvisualidentity",
-            "description": "Whether visual identity is populated",
-            "default": false
-          },
-          "hasCompetitors": {
-            "type": "boolean",
-            "title": "Hascompetitors",
-            "description": "Whether competitors are populated",
-            "default": false
-          },
-          "hasKeywords": {
-            "type": "boolean",
-            "title": "Haskeywords",
-            "description": "Whether keywords are populated",
-            "default": false
-          },
-          "hasSocialMedia": {
-            "type": "boolean",
-            "title": "Hassocialmedia",
-            "description": "Whether social media handles are populated",
-            "default": false
-          },
-          "populatedFieldsCount": {
-            "type": "integer",
-            "title": "Populatedfieldscount",
-            "description": "Total number of populated knowledge fields"
+          "categoryBreakdown": {
+            "$ref": "#/components/schemas/CategoryBreakdown",
+            "description": "Breakdown by category (traits, products, colors)"
           }
         },
         "type": "object",
         "required": [
+          "brandId",
           "totalEntries",
-          "populatedFieldsCount"
+          "lastUpdated",
+          "categoryBreakdown"
         ],
-        "title": "BrandKnowledgeEntrySummaryResponse",
-        "description": "Summary statistics for a specific brand's knowledge entries."
+        "title": "BrandKnowledgeBrandSummaryResponse",
+        "description": "Summary statistics for a specific brand's knowledge."
       },
       "BrandKnowledgeListResponse": {
         "properties": {
@@ -7919,6 +7870,31 @@
         ],
         "title": "CaptionValidationResponse",
         "description": "Schema for caption validation response."
+      },
+      "CategoryBreakdown": {
+        "properties": {
+          "personalityTraits": {
+            "type": "integer",
+            "title": "Personalitytraits",
+            "description": "Number of personality traits",
+            "default": 0
+          },
+          "products": {
+            "type": "integer",
+            "title": "Products",
+            "description": "Number of products",
+            "default": 0
+          },
+          "colorPalette": {
+            "type": "integer",
+            "title": "Colorpalette",
+            "description": "Number of colors in palette",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "CategoryBreakdown",
+        "description": "Category breakdown for brand knowledge."
       },
       "ColorMapping": {
         "properties": {

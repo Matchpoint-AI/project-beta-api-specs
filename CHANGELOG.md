@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.281] - 2025-11-12
+
+### Changes
+- feat: Add GET /api/v2/brands/{brand_id}/knowledge/summary endpoint (#347)
+
+**Source:** project-beta-api@d41affc "feat: Add GET /api/v2/brands/{brand_id}/knowledge/summary endpoint (#347)"
+
 ## [v0.0.280] - 2025-11-11
 
 ### Changes
