@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.283] - 2025-11-12
+
+### Changes
+- feat: add V2 website content endpoints (issue #354) (#356)
+
+**Source:** project-beta-api@6d8f1ab "feat: add V2 website content endpoints (issue #354) (#356)"
+
 ## [v0.0.282] - 2025-11-12
 
 ### Changes

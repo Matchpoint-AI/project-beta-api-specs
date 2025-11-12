@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.282"
+    "version": "0.0.283"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5137,6 +5137,90 @@
         }
       }
     },
+    "/api/v2/pages": {
+      "post": {
+        "tags": [
+          "v2-resources"
+        ],
+        "summary": "Create Page",
+        "description": "Create a page resource by fetching and analyzing URL content.\n\nThis endpoint creates a page resource from a URL, extracting content\nand metadata. Optionally extracts physical locations using LLM analysis.\n\nArgs:\n    request: Page creation request with URL\n    service: Injected website content service\n\nReturns:\n    Created page resource with content, metadata and optional locations\n\nRaises:\n    HTTPException: If page fetch fails or URL is invalid",
+        "operationId": "create_page_api_v2_pages_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/locations": {
+      "post": {
+        "tags": [
+          "v2-resources"
+        ],
+        "summary": "Create Locations",
+        "description": "Create location resources by analyzing text.\n\nThis endpoint creates location resources from text using LLM to extract\nstructured location data (addresses, cities, states, countries).\n\nArgs:\n    request: Locations creation request with text to analyze\n    service: Injected website content service\n\nReturns:\n    Created location resources\n\nRaises:\n    HTTPException: If location extraction fails",
+        "operationId": "create_locations_api_v2_locations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/": {
       "get": {
         "summary": "Root",
@@ -10236,7 +10320,7 @@
         "properties": {
           "locations": {
             "items": {
-              "$ref": "#/components/schemas/PhysicalLocation"
+              "$ref": "#/components/schemas/src__schemas__locations__PhysicalLocation"
             },
             "type": "array",
             "title": "Locations",
@@ -10246,6 +10330,45 @@
         "type": "object",
         "title": "LocationExtractionResponse",
         "description": "Response containing extracted physical locations.\n\nReturns a list of structured location objects extracted from the provided\ntext or brand knowledge. Empty list if no locations found."
+      },
+      "LocationsRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "Text to analyze for locations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "LocationsRequest",
+        "description": "Request schema for creating location resources from text."
+      },
+      "LocationsResponse": {
+        "properties": {
+          "locations": {
+            "items": {
+              "$ref": "#/components/schemas/src__schemas__website_content__PhysicalLocation"
+            },
+            "type": "array",
+            "title": "Locations",
+            "description": "Location resources extracted from the text"
+          },
+          "text_analyzed": {
+            "type": "string",
+            "title": "Text Analyzed",
+            "description": "The text that was analyzed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locations",
+          "text_analyzed"
+        ],
+        "title": "LocationsResponse",
+        "description": "Response schema for location resources."
       },
       "NextUrlResponse": {
         "properties": {
@@ -10467,72 +10590,70 @@
         "title": "PageMetadata",
         "description": "Metadata for a crawled page."
       },
-      "PhysicalLocation": {
+      "PageRequest": {
         "properties": {
-          "address": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Address",
-            "description": "Street address (e.g., '123 Main St, Suite 100')",
-            "examples": [
-              "123 Main St, Suite 100"
-            ]
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Url",
+            "description": "The URL to fetch and analyze"
           },
-          "city": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "City",
-            "description": "City name",
-            "examples": [
-              "San Francisco"
-            ]
-          },
-          "state": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "State",
-            "description": "State or province (2-letter code preferred)",
-            "examples": [
-              "CA"
-            ]
-          },
-          "country": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Country",
-            "description": "Country name or code",
-            "examples": [
-              "USA"
-            ]
+          "extract_locations": {
+            "type": "boolean",
+            "title": "Extract Locations",
+            "description": "Whether to extract physical locations from the page content",
+            "default": false
           }
         },
         "type": "object",
-        "title": "PhysicalLocation",
-        "description": "A structured physical location with address components.\n\nRepresents a single physical location extracted from text, with individual\ncomponents for address, city, state, and country to enable location-based\nqueries and filtering."
+        "required": [
+          "url"
+        ],
+        "title": "PageRequest",
+        "description": "Request schema for creating a page resource from a URL."
+      },
+      "PageResponse": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "The page URL"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Extracted text content from the page"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/WebsiteMetadata",
+            "description": "Page metadata"
+          },
+          "locations": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/src__schemas__website_content__PhysicalLocation"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locations",
+            "description": "Physical locations extracted from page content (if requested)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url",
+          "content",
+          "metadata"
+        ],
+        "title": "PageResponse",
+        "description": "Response schema for page resource."
       },
       "PostContent": {
         "properties": {
@@ -11970,6 +12091,73 @@
         ],
         "title": "ValidationError"
       },
+      "WebsiteMetadata": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "Page title"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Meta description"
+          },
+          "canonical_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonical Url",
+            "description": "Canonical URL"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language",
+            "description": "Page language"
+          },
+          "author": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Author",
+            "description": "Page author"
+          }
+        },
+        "type": "object",
+        "title": "WebsiteMetadata",
+        "description": "Metadata extracted from website."
+      },
       "WeekContent": {
         "properties": {
           "weekNumber": {
@@ -12381,6 +12569,144 @@
         ],
         "title": "CrawlPageRequest",
         "description": "Request model for crawling a single page via workflow."
+      },
+      "src__schemas__locations__PhysicalLocation": {
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address",
+            "description": "Street address (e.g., '123 Main St, Suite 100')",
+            "examples": [
+              "123 Main St, Suite 100"
+            ]
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City",
+            "description": "City name",
+            "examples": [
+              "San Francisco"
+            ]
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State",
+            "description": "State or province (2-letter code preferred)",
+            "examples": [
+              "CA"
+            ]
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country",
+            "description": "Country name or code",
+            "examples": [
+              "USA"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "PhysicalLocation",
+        "description": "A structured physical location with address components.\n\nRepresents a single physical location extracted from text, with individual\ncomponents for address, city, state, and country to enable location-based\nqueries and filtering."
+      },
+      "src__schemas__website_content__PhysicalLocation": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Name of the location"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address",
+            "description": "Full address if available"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City",
+            "description": "City name"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State",
+            "description": "State or province"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country",
+            "description": "Country name"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "description": "Confidence score (0-1)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "confidence"
+        ],
+        "title": "PhysicalLocation",
+        "description": "A physical location extracted from text."
       }
     }
   }
