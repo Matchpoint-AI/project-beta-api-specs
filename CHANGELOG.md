@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.288] - 2025-11-13
+
+### Changes
+- feat: implement V2 threads API with RMM Level 2 compliance (#363)
+
+**Source:** project-beta-api@87e1ed0 "feat: implement V2 threads API with RMM Level 2 compliance (#363)"
+
 ## [v0.0.287] - 2025-11-13
 
 ### Changes
