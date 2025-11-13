@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.286"
+    "version": "0.0.287"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4113,6 +4113,329 @@
         }
       }
     },
+    "/api/v2/crawls/overview": {
+      "get": {
+        "tags": [
+          "Crawl Analytics"
+        ],
+        "summary": "Get Crawl Overview",
+        "description": "Get overview statistics for crawl monitoring.\n\nProvides key metrics like total brands crawled, average success rate,\naverage crawl time, and total pages crawled in the specified period.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    analytics_service: Injected analytics service\n\nReturns:\n    Overview statistics for crawl operations",
+        "operationId": "get_crawl_overview_api_v2_crawls_overview_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 30,
+              "title": "Days"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlStatsOverview"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/crawls/trends": {
+      "get": {
+        "tags": [
+          "Crawl Analytics"
+        ],
+        "summary": "Get Crawl Trends",
+        "description": "Get time series trends for crawl performance.\n\nProvides daily or hourly aggregated data showing completed vs failed\ncrawls over time with success rate calculations.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    interval: Aggregation interval - \"day\" or \"hour\" (default: \"day\")\n    analytics_service: Injected analytics service\n\nReturns:\n    Time series trends data",
+        "operationId": "get_crawl_trends_api_v2_crawls_trends_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 30,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(day|hour)$",
+              "default": "day",
+              "title": "Interval"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlStatsTrends"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/crawls/errors": {
+      "get": {
+        "tags": [
+          "Crawl Analytics"
+        ],
+        "summary": "Get Crawl Errors",
+        "description": "Get error analysis for crawl failures.\n\nProvides breakdown of most common error types, counts, and last\noccurrences to help identify and fix crawl issues.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of error types to return (1-100, default: 10)\n    analytics_service: Injected analytics service\n\nReturns:\n    Error analysis with top error types",
+        "operationId": "get_crawl_errors_api_v2_crawls_errors_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 30,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlStatsErrors"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/crawls/brands": {
+      "get": {
+        "tags": [
+          "Crawl Analytics"
+        ],
+        "summary": "Get Brand Crawl Stats",
+        "description": "Get brand-level crawl performance statistics.\n\nProvides performance metrics for each brand including total pages,\nsuccess rates, and last crawl timestamps.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of brands to return (1-200, default: 50)\n    analytics_service: Injected analytics service\n\nReturns:\n    Brand-level performance statistics",
+        "operationId": "get_brand_crawl_stats_api_v2_crawls_brands_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 30,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlStatsBrands"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/crawls/domains": {
+      "get": {
+        "tags": [
+          "Crawl Analytics"
+        ],
+        "summary": "Get Domain Crawl Health",
+        "description": "Get domain-level crawl health statistics.\n\nProvides health metrics for each domain including success rates\nand common error patterns for that domain.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of domains to return (1-100, default: 20)\n    analytics_service: Injected analytics service\n\nReturns:\n    Domain-level health statistics",
+        "operationId": "get_domain_crawl_health_api_v2_crawls_domains_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 30,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlStatsDomains"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/crawls/durations": {
+      "get": {
+        "tags": [
+          "Crawl Analytics"
+        ],
+        "summary": "Get Crawl Duration Histogram",
+        "description": "Get crawl duration distribution histogram.\n\nProvides distribution of crawl completion times across buckets\n(0-10s, 10-30s, etc.) with percentages and statistics.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    analytics_service: Injected analytics service\n\nReturns:\n    Duration histogram with buckets and statistics",
+        "operationId": "get_crawl_duration_histogram_api_v2_crawls_durations_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 30,
+              "title": "Days"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlStatsDurationHistogram"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brandId}/pages/render": {
       "post": {
         "tags": [
@@ -5829,6 +6152,82 @@
         ],
         "title": "BrandColorsUpdateResponse",
         "description": "Schema for brand colors update response."
+      },
+      "BrandCrawlPerformance": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id",
+            "description": "Brand identifier"
+          },
+          "brand_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Name",
+            "description": "Brand name if available"
+          },
+          "total_pages": {
+            "type": "integer",
+            "title": "Total Pages",
+            "description": "Total pages crawled for brand"
+          },
+          "successful_pages": {
+            "type": "integer",
+            "title": "Successful Pages",
+            "description": "Successfully crawled pages"
+          },
+          "failed_pages": {
+            "type": "integer",
+            "title": "Failed Pages",
+            "description": "Failed crawl attempts"
+          },
+          "success_rate": {
+            "type": "number",
+            "title": "Success Rate",
+            "description": "Success rate percentage"
+          },
+          "average_duration_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Duration Seconds",
+            "description": "Average crawl duration"
+          },
+          "last_crawl_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Crawl At",
+            "description": "Most recent crawl"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "total_pages",
+          "successful_pages",
+          "failed_pages",
+          "success_rate"
+        ],
+        "title": "BrandCrawlPerformance",
+        "description": "Crawl performance metrics for a single brand."
       },
       "BrandCreate": {
         "properties": {
@@ -8950,6 +9349,52 @@
           "version_id": "version-456"
         }
       },
+      "CrawlErrorSummary": {
+        "properties": {
+          "error_code": {
+            "type": "string",
+            "title": "Error Code",
+            "description": "Error classification code"
+          },
+          "error_count": {
+            "type": "integer",
+            "title": "Error Count",
+            "description": "Number of occurrences"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message",
+            "description": "Sample error message for this type"
+          },
+          "last_occurrence": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Occurrence",
+            "description": "Most recent occurrence of this error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error_code",
+          "error_count"
+        ],
+        "title": "CrawlErrorSummary",
+        "description": "Summary of a specific crawl error type."
+      },
       "CrawlPageResponse": {
         "properties": {
           "url": {
@@ -9300,6 +9745,207 @@
         "title": "CrawlQueueUpdate",
         "description": "Request model for updating crawl queue entry status."
       },
+      "CrawlStatsBrands": {
+        "properties": {
+          "brands": {
+            "items": {
+              "$ref": "#/components/schemas/BrandCrawlPerformance"
+            },
+            "type": "array",
+            "title": "Brands",
+            "description": "Performance metrics per brand"
+          },
+          "period_days": {
+            "type": "integer",
+            "title": "Period Days",
+            "description": "Number of days covered"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brands",
+          "period_days"
+        ],
+        "title": "CrawlStatsBrands",
+        "description": "Brand-level crawl performance statistics."
+      },
+      "CrawlStatsDomains": {
+        "properties": {
+          "domains": {
+            "items": {
+              "$ref": "#/components/schemas/DomainCrawlHealth"
+            },
+            "type": "array",
+            "title": "Domains",
+            "description": "Health metrics per domain"
+          },
+          "period_days": {
+            "type": "integer",
+            "title": "Period Days",
+            "description": "Number of days covered"
+          }
+        },
+        "type": "object",
+        "required": [
+          "domains",
+          "period_days"
+        ],
+        "title": "CrawlStatsDomains",
+        "description": "Domain-level crawl health statistics."
+      },
+      "CrawlStatsDurationHistogram": {
+        "properties": {
+          "buckets": {
+            "items": {
+              "$ref": "#/components/schemas/DurationBucket"
+            },
+            "type": "array",
+            "title": "Buckets",
+            "description": "Duration histogram buckets"
+          },
+          "total_crawls": {
+            "type": "integer",
+            "title": "Total Crawls",
+            "description": "Total crawls included"
+          },
+          "average_duration_seconds": {
+            "type": "number",
+            "title": "Average Duration Seconds",
+            "description": "Overall average duration"
+          },
+          "median_duration_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median Duration Seconds",
+            "description": "Median crawl duration"
+          },
+          "period_days": {
+            "type": "integer",
+            "title": "Period Days",
+            "description": "Number of days covered"
+          }
+        },
+        "type": "object",
+        "required": [
+          "buckets",
+          "total_crawls",
+          "average_duration_seconds",
+          "period_days"
+        ],
+        "title": "CrawlStatsDurationHistogram",
+        "description": "Distribution of crawl durations."
+      },
+      "CrawlStatsErrors": {
+        "properties": {
+          "top_errors": {
+            "items": {
+              "$ref": "#/components/schemas/CrawlErrorSummary"
+            },
+            "type": "array",
+            "title": "Top Errors",
+            "description": "Most common error types"
+          },
+          "total_errors": {
+            "type": "integer",
+            "title": "Total Errors",
+            "description": "Total error count in period"
+          },
+          "period_days": {
+            "type": "integer",
+            "title": "Period Days",
+            "description": "Number of days covered"
+          }
+        },
+        "type": "object",
+        "required": [
+          "top_errors",
+          "total_errors",
+          "period_days"
+        ],
+        "title": "CrawlStatsErrors",
+        "description": "Error analysis for crawl failures."
+      },
+      "CrawlStatsOverview": {
+        "properties": {
+          "total_brands_crawled": {
+            "type": "integer",
+            "title": "Total Brands Crawled",
+            "description": "Total number of brands with crawl activity"
+          },
+          "average_success_rate": {
+            "type": "number",
+            "title": "Average Success Rate",
+            "description": "Overall success rate as percentage (0-100)"
+          },
+          "average_crawl_time_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Crawl Time Seconds",
+            "description": "Average time to complete crawl (seconds)"
+          },
+          "pages_crawled_total": {
+            "type": "integer",
+            "title": "Pages Crawled Total",
+            "description": "Total pages successfully crawled in period"
+          },
+          "period_days": {
+            "type": "integer",
+            "title": "Period Days",
+            "description": "Number of days covered by stats"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_brands_crawled",
+          "average_success_rate",
+          "pages_crawled_total",
+          "period_days"
+        ],
+        "title": "CrawlStatsOverview",
+        "description": "Overview statistics for crawl monitoring."
+      },
+      "CrawlStatsTrends": {
+        "properties": {
+          "data_points": {
+            "items": {
+              "$ref": "#/components/schemas/CrawlTrendDataPoint"
+            },
+            "type": "array",
+            "title": "Data Points",
+            "description": "Time series data points"
+          },
+          "period_days": {
+            "type": "integer",
+            "title": "Period Days",
+            "description": "Number of days covered"
+          },
+          "interval": {
+            "type": "string",
+            "title": "Interval",
+            "description": "Aggregation interval (day, hour)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data_points",
+          "period_days",
+          "interval"
+        ],
+        "title": "CrawlStatsTrends",
+        "description": "Time series trends for crawl performance."
+      },
       "CrawlStatus": {
         "type": "string",
         "enum": [
@@ -9312,6 +9958,39 @@
         ],
         "title": "CrawlStatus",
         "description": "Status of a URL in the crawl queue."
+      },
+      "CrawlTrendDataPoint": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date",
+            "description": "Date in ISO format (YYYY-MM-DD)"
+          },
+          "completed_count": {
+            "type": "integer",
+            "title": "Completed Count",
+            "description": "Crawls completed on this date"
+          },
+          "failed_count": {
+            "type": "integer",
+            "title": "Failed Count",
+            "description": "Crawls failed on this date"
+          },
+          "success_rate": {
+            "type": "number",
+            "title": "Success Rate",
+            "description": "Success rate percentage for date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "completed_count",
+          "failed_count",
+          "success_rate"
+        ],
+        "title": "CrawlTrendDataPoint",
+        "description": "Single data point in crawl trends time series."
       },
       "CrawledPageResponse": {
         "properties": {
@@ -9419,6 +10098,87 @@
         ],
         "title": "DayContent",
         "description": "Schema for daily content."
+      },
+      "DomainCrawlHealth": {
+        "properties": {
+          "domain": {
+            "type": "string",
+            "title": "Domain",
+            "description": "Base domain"
+          },
+          "total_crawls": {
+            "type": "integer",
+            "title": "Total Crawls",
+            "description": "Total crawl attempts for domain"
+          },
+          "successful_crawls": {
+            "type": "integer",
+            "title": "Successful Crawls",
+            "description": "Successful crawls"
+          },
+          "failed_crawls": {
+            "type": "integer",
+            "title": "Failed Crawls",
+            "description": "Failed crawls"
+          },
+          "success_rate": {
+            "type": "number",
+            "title": "Success Rate",
+            "description": "Success rate percentage"
+          },
+          "common_errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Common Errors",
+            "description": "Most common error types"
+          }
+        },
+        "type": "object",
+        "required": [
+          "domain",
+          "total_crawls",
+          "successful_crawls",
+          "failed_crawls",
+          "success_rate",
+          "common_errors"
+        ],
+        "title": "DomainCrawlHealth",
+        "description": "Crawl health metrics for a domain."
+      },
+      "DurationBucket": {
+        "properties": {
+          "min_seconds": {
+            "type": "number",
+            "title": "Min Seconds",
+            "description": "Minimum duration in bucket"
+          },
+          "max_seconds": {
+            "type": "number",
+            "title": "Max Seconds",
+            "description": "Maximum duration in bucket"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "description": "Number of crawls in this bucket"
+          },
+          "percentage": {
+            "type": "number",
+            "title": "Percentage",
+            "description": "Percentage of total crawls"
+          }
+        },
+        "type": "object",
+        "required": [
+          "min_seconds",
+          "max_seconds",
+          "count",
+          "percentage"
+        ],
+        "title": "DurationBucket",
+        "description": "Histogram bucket for crawl duration distribution."
       },
       "ExtractBatchCampaignRequest": {
         "properties": {

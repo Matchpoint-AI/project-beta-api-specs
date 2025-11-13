@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.287] - 2025-11-13
+
+### Changes
+- feat: add crawl analytics endpoints for monitoring dashboard (#492) (#364)
+
+**Source:** project-beta-api@3e92de2 "feat: add crawl analytics endpoints for monitoring dashboard (#492) (#364)"
+
 ## [v0.0.286] - 2025-11-13
 
 ### Changes
