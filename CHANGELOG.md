@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.286] - 2025-11-13
+
+### Changes
+- fix: Enable Playwright browser automation for Cloud Run deployment (issue #365) (#366)
+
+**Source:** project-beta-api@696219e "fix: Enable Playwright browser automation for Cloud Run deployment (issue #365) (#366)"
+
 ## [v0.0.285] - 2025-11-12
 
 ### Changes
