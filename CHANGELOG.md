@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.291] - 2025-11-14
+
+### Changes
+- fix: add missing users table columns (firebase_uid, email_verified, has_brand) (#373)
+
+**Source:** project-beta-api@b37cb69 "fix: add missing users table columns (firebase_uid, email_verified, has_brand) (#373)"
+
 ## [v0.0.290] - 2025-11-14
 
 ### Changes
