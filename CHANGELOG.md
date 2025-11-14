@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.290] - 2025-11-14
+
+### Changes
+- chore: Remove flaky E2E Docker tests from CI (#376)
+
+**Source:** project-beta-api@b71a903 "chore: Remove flaky E2E Docker tests from CI (#376)"
+
 ## [v0.0.289] - 2025-11-14
 
 ### Changes
