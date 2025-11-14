@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.293] - 2025-11-14
+
+### Changes
+- test: add dependency injection validation to container structure tests (#379)
+
+**Source:** project-beta-api@206e4d4 "test: add dependency injection validation to container structure tests (#379)"
+
 ## [v0.0.292] - 2025-11-14
 
 ### Changes
