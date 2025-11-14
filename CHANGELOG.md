@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.289] - 2025-11-14
+
+### Changes
+- feat: Implement V2 threads endpoints (RMM L2 compliant) (#367)
+
+**Source:** project-beta-api@8b92d33 "feat: Implement V2 threads endpoints (RMM L2 compliant) (#367)"
+
 ## [v0.0.288] - 2025-11-13
 
 ### Changes

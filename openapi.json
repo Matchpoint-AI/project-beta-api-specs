@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.288"
+    "version": "0.0.289"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5202,35 +5202,50 @@
         }
       }
     },
-    "/api/v2/threads/{thread_id}/messages": {
-      "get": {
+    "/api/v2/threads": {
+      "post": {
         "tags": [
           "threads"
         ],
-        "summary": "List Thread Messages",
-        "description": "List all messages in a thread.\n\nRetrieves all messages from an OpenAI Assistant thread in chronological order.\n\nArgs:\n    thread_id: OpenAI thread ID\n    service: Thread messages service\n\nReturns:\n    List of all messages in the thread\n\nRaises:\n    HTTPException: If thread retrieval fails (500)",
-        "operationId": "list_thread_messages_api_v2_threads__thread_id__messages_get",
+        "summary": "Create Thread",
+        "description": "Create a new AI conversation thread.\n\nCreates a new thread associated with a campaign for iterative\nAI conversations about content generation.",
+        "operationId": "create_thread_api_v2_threads_post",
         "parameters": [
           {
-            "name": "thread_id",
-            "in": "path",
+            "name": "user_id",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Thread Id"
-            }
+              "description": "User ID creating the thread",
+              "title": "User Id"
+            },
+            "description": "User ID creating the thread"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadCreate"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": "Successful Response",
+          "201": {
+            "description": "Thread created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ThreadMessagesListResponse"
+                  "$ref": "#/components/schemas/ThreadResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request data"
           },
           "422": {
             "description": "Validation Error",
@@ -5244,41 +5259,75 @@
           }
         }
       },
-      "post": {
+      "get": {
         "tags": [
           "threads"
         ],
-        "summary": "Create Thread Message",
-        "description": "Add a user message to a thread and get AI response.\n\nSends a user message to an OpenAI Assistant thread, waits for the assistant\nto process it, and returns the assistant's response.\n\nArgs:\n    thread_id: OpenAI thread ID\n    request: Message request containing user prompt\n    service: Thread messages service\n\nReturns:\n    Assistant's response message\n\nRaises:\n    HTTPException: If message creation fails (500)",
-        "operationId": "create_thread_message_api_v2_threads__thread_id__messages_post",
+        "summary": "List Threads",
+        "description": "List threads for a user.\n\nReturns a list of threads with pagination support.\nCan optionally filter by campaign_id.",
+        "operationId": "list_threads_api_v2_threads_get",
         "parameters": [
           {
-            "name": "thread_id",
-            "in": "path",
+            "name": "user_id",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Thread Id"
-            }
+              "description": "User ID to filter threads",
+              "title": "User Id"
+            },
+            "description": "User ID to filter threads"
+          },
+          {
+            "name": "campaign_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Optional campaign ID filter",
+              "title": "Campaign Id"
+            },
+            "description": "Optional campaign ID filter"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum number of threads",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "Maximum number of threads"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of threads to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of threads to skip"
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ThreadMessageRequest"
-              }
-            }
-          }
-        },
         "responses": {
-          "201": {
-            "description": "Successful Response",
+          "200": {
+            "description": "List of threads returned",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ThreadMessageResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ThreadResponse"
+                  },
+                  "title": "Response List Threads Api V2 Threads Get"
                 }
               }
             }
@@ -5296,38 +5345,41 @@
         }
       }
     },
-    "/api/v2/threads/{thread_id}": {
-      "put": {
+    "/api/v2/threads/{threadId}": {
+      "get": {
         "tags": [
           "threads"
         ],
-        "summary": "Update Thread Metadata",
-        "description": "Update metadata for an OpenAI Assistant thread.\n\nUpdates custom metadata key-value pairs associated with a thread.\nThis is useful for storing application-specific information like\ncampaign IDs, user IDs, or conversation context.\n\nArgs:\n    thread_id: OpenAI thread ID\n    request: Metadata update request containing key-value pairs\n    service: Thread messages service\n\nReturns:\n    Updated thread information with metadata\n\nRaises:\n    HTTPException: If thread doesn't exist (404) or update fails (500)",
-        "operationId": "update_thread_metadata_api_v2_threads__thread_id__put",
+        "summary": "Get Thread",
+        "description": "Get thread information.\n\nReturns the thread details including message count.\nReturns 404 if thread doesn't exist or user doesn't have access.",
+        "operationId": "get_thread_api_v2_threads__threadId__get",
         "parameters": [
           {
-            "name": "thread_id",
+            "name": "threadId",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Thread Id"
-            }
+              "description": "The thread ID",
+              "title": "Threadid"
+            },
+            "description": "The thread ID"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "User ID to verify ownership",
+              "title": "User Id"
+            },
+            "description": "User ID to verify ownership"
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ThreadMetadataUpdate"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Thread information returned",
             "content": {
               "application/json": {
                 "schema": {
@@ -5335,6 +5387,219 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Thread not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Delete Thread",
+        "description": "Delete a thread.\n\nDeletes a thread and all its messages (cascade delete).\nReturns 404 if thread doesn't exist or user doesn't have access.",
+        "operationId": "delete_thread_api_v2_threads__threadId__delete",
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The thread ID",
+              "title": "Threadid"
+            },
+            "description": "The thread ID"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "User ID to verify ownership",
+              "title": "User Id"
+            },
+            "description": "User ID to verify ownership"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Thread deleted successfully"
+          },
+          "404": {
+            "description": "Thread not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/threads/{threadId}/messages": {
+      "post": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Create Message",
+        "description": "Add a message to a thread.\n\nCreates a new message in the conversation thread.\nAutomatically updates the thread's updated_at timestamp.",
+        "operationId": "create_message_api_v2_threads__threadId__messages_post",
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The thread ID",
+              "title": "Threadid"
+            },
+            "description": "The thread ID"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "User ID to verify ownership",
+              "title": "User Id"
+            },
+            "description": "User ID to verify ownership"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadMessageCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Message created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadMessageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "404": {
+            "description": "Thread not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Get Messages",
+        "description": "Get messages for a thread.\n\nReturns messages in chronological order (oldest first).\nSupports pagination for long conversations.",
+        "operationId": "get_messages_api_v2_threads__threadId__messages_get",
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The thread ID",
+              "title": "Threadid"
+            },
+            "description": "The thread ID"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "User ID to verify ownership",
+              "title": "User Id"
+            },
+            "description": "User ID to verify ownership"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "description": "Maximum number of messages",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Maximum number of messages"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of messages to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of messages to skip"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of messages returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ThreadMessageResponse"
+                  },
+                  "title": "Response Get Messages Api V2 Threads  Threadid  Messages Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Thread not found"
           },
           "422": {
             "description": "Validation Error",
@@ -12457,119 +12722,180 @@
         "title": "SignupResponse",
         "description": "Schema for signup responses.\n\nReturned after successful signup creation."
       },
-      "ThreadMessageRequest": {
+      "ThreadCreate": {
         "properties": {
-          "prompt": {
-            "type": "string",
-            "minLength": 1,
-            "title": "Prompt",
-            "description": "User message prompt to send to the thread"
-          }
-        },
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "title": "ThreadMessageRequest",
-        "description": "Request schema for creating a thread message."
-      },
-      "ThreadMessageResponse": {
-        "properties": {
-          "message_id": {
-            "type": "string",
-            "title": "Message Id",
-            "description": "Unique message ID from OpenAI"
+          "campaign_id": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Campaign Id",
+            "description": "Campaign ID"
           },
-          "role": {
-            "type": "string",
-            "title": "Role",
-            "description": "Message role: user or assistant"
-          },
-          "content": {
-            "type": "string",
-            "title": "Content",
-            "description": "Message content text"
-          }
-        },
-        "type": "object",
-        "required": [
-          "message_id",
-          "role",
-          "content"
-        ],
-        "title": "ThreadMessageResponse",
-        "description": "Response schema for thread messages."
-      },
-      "ThreadMessagesListResponse": {
-        "properties": {
-          "messages": {
-            "items": {
-              "$ref": "#/components/schemas/ThreadMessageResponse"
-            },
-            "type": "array",
-            "title": "Messages",
-            "description": "List of messages in the thread"
-          }
-        },
-        "type": "object",
-        "title": "ThreadMessagesListResponse",
-        "description": "Response schema for listing thread messages."
-      },
-      "ThreadMetadataUpdate": {
-        "properties": {
-          "metadata": {
-            "additionalProperties": true,
-            "type": "object",
-            "title": "Metadata",
-            "description": "Key-value pairs to update in thread metadata",
-            "examples": [
-              {
-                "campaign_id": "camp_123",
-                "user_id": "user_456"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "metadata"
-        ],
-        "title": "ThreadMetadataUpdate",
-        "description": "Request schema for updating thread metadata."
-      },
-      "ThreadResponse": {
-        "properties": {
-          "thread_id": {
-            "type": "string",
-            "title": "Thread Id",
-            "description": "OpenAI thread ID"
-          },
-          "metadata": {
+          "title": {
             "anyOf": [
               {
-                "additionalProperties": true,
-                "type": "object"
+                "type": "string",
+                "maxLength": 500
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Metadata",
-            "description": "Thread metadata key-value pairs"
-          },
-          "created_at": {
-            "type": "integer",
-            "title": "Created At",
-            "description": "Unix timestamp of thread creation"
+            "title": "Title",
+            "description": "Thread title"
           }
         },
         "type": "object",
         "required": [
+          "campaign_id"
+        ],
+        "title": "ThreadCreate",
+        "description": "Schema for creating a new thread.",
+        "example": {
+          "campaign_id": 123,
+          "title": "Campaign brainstorming"
+        }
+      },
+      "ThreadMessageCreate": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "Message role: 'user' or 'assistant'"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Content",
+            "description": "Message content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "ThreadMessageCreate",
+        "description": "Schema for creating a new thread message.",
+        "example": {
+          "content": "Help me create content for my campaign",
+          "role": "user"
+        }
+      },
+      "ThreadMessageResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Message UUID"
+          },
+          "thread_id": {
+            "type": "string",
+            "title": "Thread Id",
+            "description": "Thread UUID"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "Message role: 'user' or 'assistant'"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Message content"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Message creation timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
           "thread_id",
+          "role",
+          "content",
           "created_at"
         ],
+        "title": "ThreadMessageResponse",
+        "description": "Schema for thread message response.",
+        "example": {
+          "content": "Help me create content for my campaign",
+          "created_at": "2024-01-15T10:00:00Z",
+          "id": "msg-550e8400-e29b-41d4-a716-446655440000",
+          "role": "user",
+          "thread_id": "thread-550e8400-e29b-41d4-a716-446655440001"
+        }
+      },
+      "ThreadResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Thread UUID"
+          },
+          "campaign_id": {
+            "type": "integer",
+            "title": "Campaign Id",
+            "description": "Campaign ID"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id",
+            "description": "User ID"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "Thread title"
+          },
+          "message_count": {
+            "type": "integer",
+            "title": "Message Count",
+            "description": "Number of messages in thread"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Thread creation timestamp"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At",
+            "description": "Thread last update timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "campaign_id",
+          "user_id",
+          "message_count",
+          "created_at",
+          "updated_at"
+        ],
         "title": "ThreadResponse",
-        "description": "Response schema for thread information."
+        "description": "Schema for thread response.",
+        "example": {
+          "campaign_id": 123,
+          "created_at": "2024-01-15T10:00:00Z",
+          "id": "thread-550e8400-e29b-41d4-a716-446655440001",
+          "message_count": 5,
+          "title": "Campaign brainstorming",
+          "updated_at": "2024-01-15T10:05:00Z",
+          "user_id": "user123"
+        }
       },
       "ToneAttributes": {
         "properties": {
