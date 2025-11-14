@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.292] - 2025-11-14
+
+### Changes
+- refactor: remove dead has_brand field from User model (#374) (#378)
+
+**Source:** project-beta-api@b1f7946 "refactor: remove dead has_brand field from User model (#374) (#378)"
+
 ## [v0.0.291] - 2025-11-14
 
 ### Changes
