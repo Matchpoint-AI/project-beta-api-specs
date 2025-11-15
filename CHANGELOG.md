@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.296] - 2025-11-15
+
+### Changes
+- fix: add UserService->UserServiceImpl binding to DI container (#384) (#385)
+
+**Source:** project-beta-api@5057b57 "fix: add UserService->UserServiceImpl binding to DI container (#384) (#385)"
+
 ## [v0.0.295] - 2025-11-15
 
 ### Changes
