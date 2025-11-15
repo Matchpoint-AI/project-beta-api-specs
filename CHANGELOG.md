@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.303] - 2025-11-15
+
+### Changes
+- docs: complete investigation of OpenAPI spec completeness for SceneMix endpoints (#393)
+
+**Source:** project-beta-api@1098fc3 "docs: complete investigation of OpenAPI spec completeness for SceneMix endpoints (#393)"
+
 ## [v0.0.302] - 2025-11-15
 
 ### Changes
