@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.302] - 2025-11-15
+
+### Changes
+- fix: parse Cloud SQL instance from DATABASE_URL (#392)
+
+**Source:** project-beta-api@5714a24 "fix: parse Cloud SQL instance from DATABASE_URL (#392)"
+
 ## [v0.0.301] - 2025-11-15
 
 ### Changes
