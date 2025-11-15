@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.297] - 2025-11-15
+
+### Changes
+- fix: restore user registration endpoint (#386)
+
+**Source:** project-beta-api@a029c7e "fix: restore user registration endpoint (#386)"
+
 ## [v0.0.296] - 2025-11-15
 
 ### Changes
