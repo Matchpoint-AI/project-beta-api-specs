@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.299] - 2025-11-15
+
+### Changes
+- feat: add missing fields to SceneMixPolicyResponse schema (#390)
+
+**Source:** project-beta-api@a7ce6d7 "feat: add missing fields to SceneMixPolicyResponse schema (#390)"
+
 ## [v0.0.298] - 2025-11-15
 
 ### Changes

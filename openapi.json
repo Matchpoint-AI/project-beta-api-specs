@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.298"
+    "version": "0.0.299"
   },
   "paths": {
     "/api/v2/brands": {
@@ -12511,6 +12511,31 @@
             "description": "Whether policy is active",
             "default": true
           },
+          "scenes": {
+            "items": {
+              "$ref": "#/components/schemas/ScenePolicy"
+            },
+            "type": "array",
+            "title": "Scenes",
+            "description": "Scene-specific policies"
+          },
+          "diversityScore": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Diversityscore",
+            "description": "Content diversity score"
+          },
+          "consistencyLevel": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Consistencylevel",
+            "description": "Consistency enforcement level"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -12532,6 +12557,9 @@
           "contentTypes",
           "platforms",
           "frequencyRules",
+          "scenes",
+          "diversityScore",
+          "consistencyLevel",
           "createdAt",
           "updatedAt"
         ],
@@ -12643,6 +12671,45 @@
         "type": "object",
         "title": "SceneMixPolicyUpdate",
         "description": "Schema for updating a scene mix policy."
+      },
+      "ScenePolicy": {
+        "properties": {
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype",
+            "description": "Type of scene (e.g., 'product', 'lifestyle', 'testimonial')"
+          },
+          "minFrequency": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Minfrequency",
+            "description": "Minimum occurrence frequency"
+          },
+          "maxFrequency": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Maxfrequency",
+            "description": "Maximum occurrence frequency"
+          },
+          "priority": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Priority",
+            "description": "Scene priority (1-10)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sceneType",
+          "minFrequency",
+          "maxFrequency",
+          "priority"
+        ],
+        "title": "ScenePolicy",
+        "description": "Schema for individual scene policy configuration."
       },
       "SignupCreate": {
         "properties": {
