@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.304] - 2025-11-15
+
+### Changes
+- feat: migrate scene-mix endpoints to campaign-based pattern (#371) (#377)
+
+**Source:** project-beta-api@a492956 "feat: migrate scene-mix endpoints to campaign-based pattern (#371) (#377)"
+
 ## [v0.0.303] - 2025-11-15
 
 ### Changes

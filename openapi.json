@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.303"
+    "version": "0.0.304"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2296,6 +2296,346 @@
         }
       }
     },
+    "/api/v2/campaigns/{campaign_id}/policy": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Create Scene Mix Policy",
+        "description": "Create a scene mix policy for a campaign.\n\nCreates content mixing rules and policies for campaign content generation.",
+        "operationId": "create_scene_mix_policy_api_v2_campaigns__campaign_id__policy_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SceneMixPolicyCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Policy created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Scene Mix Policy",
+        "description": "Get scene mix policy for a campaign.\n\nReturns the content mixing policy configuration for the specified campaign.",
+        "operationId": "get_scene_mix_policy_api_v2_campaigns__campaign_id__policy_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Policy not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/policy/{policy_id}": {
+      "put": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Update Scene Mix Policy",
+        "description": "Update a scene mix policy.\n\nUpdates an existing content mixing policy for the campaign.",
+        "operationId": "update_scene_mix_policy_api_v2_campaigns__campaign_id__policy__policy_id__put",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          },
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The policy ID",
+              "title": "Policy Id"
+            },
+            "description": "The policy ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SceneMixPolicyUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Policy updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Policy not found"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/plan": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Create Scene Mix Plan",
+        "description": "Create a scene mix plan for a campaign.\n\nCreates a content generation plan with scheduling and content mix specifications.",
+        "operationId": "create_scene_mix_plan_api_v2_campaigns__campaign_id__plan_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SceneMixPlanCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Plan created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPlanResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Scene Mix Plan",
+        "description": "Get scene mix plan for a campaign.\n\nReturns the content generation plan and schedule for the specified campaign.",
+        "operationId": "get_scene_mix_plan_api_v2_campaigns__campaign_id__plan_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plan returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPlanResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Plan not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/plans": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get All Plans",
+        "description": "Get all scene mix plans.\n\nReturns a paginated list of all content generation plans across campaigns.",
+        "operationId": "get_all_plans_api_v2_plans_get",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plans list returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/campaigns/{campaign_id}/content": {
       "get": {
         "tags": [
@@ -3055,256 +3395,6 @@
           }
         },
         "deprecated": true
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/policy": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Create Scene Mix Policy",
-        "description": "Create a scene mix policy for a campaign.",
-        "operationId": "create_scene_mix_policy_api_v2_campaigns__campaign_id__policy_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SceneMixPolicyCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Scene Mix Policy",
-        "description": "Get scene mix policy for a campaign.",
-        "operationId": "get_scene_mix_policy_api_v2_campaigns__campaign_id__policy_get",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/policy/{policy_id}": {
-      "put": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Update Scene Mix Policy",
-        "description": "Update a scene mix policy.",
-        "operationId": "update_scene_mix_policy_api_v2_campaigns__campaign_id__policy__policy_id__put",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Campaign Id"
-            }
-          },
-          {
-            "name": "policy_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Policy Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SceneMixPolicyUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/plan": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Create Scene Mix Plan",
-        "description": "Create a scene mix plan for a campaign.",
-        "operationId": "create_scene_mix_plan_api_v2_campaigns__campaign_id__plan_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SceneMixPlanCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SceneMixPlanResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Scene Mix Plan",
-        "description": "Get scene mix plan for a campaign.",
-        "operationId": "get_scene_mix_plan_api_v2_campaigns__campaign_id__plan_get",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SceneMixPlanResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/api/v2/images": {
@@ -11805,6 +11895,42 @@
         ],
         "title": "PageResponse",
         "description": "Response schema for page resource."
+      },
+      "PlanListResponse": {
+        "properties": {
+          "plans": {
+            "items": {
+              "$ref": "#/components/schemas/SceneMixPlanResponse"
+            },
+            "type": "array",
+            "title": "Plans",
+            "description": "List of plans"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of plans"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page",
+            "description": "Current page",
+            "default": 1
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Items per page",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "plans",
+          "total"
+        ],
+        "title": "PlanListResponse",
+        "description": "Schema for listing all plans."
       },
       "PostContent": {
         "properties": {
