@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.298] - 2025-11-15
+
+### Changes
+- fix: add CLOUD_SQL_INSTANCE env var fallback for database configuration (#389)
+
+**Source:** project-beta-api@8326a97 "fix: add CLOUD_SQL_INSTANCE env var fallback for database configuration (#389)"
+
 ## [v0.0.297] - 2025-11-15
 
 ### Changes
