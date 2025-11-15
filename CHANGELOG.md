@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.294] - 2025-11-15
+
+### Changes
+- docs: document dependency injection validation pattern (#381)
+
+**Source:** project-beta-api@961c7a6 "docs: document dependency injection validation pattern (#381)"
+
 ## [v0.0.293] - 2025-11-14
 
 ### Changes
