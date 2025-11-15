@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.295] - 2025-11-15
+
+### Changes
+- fix: restore user registration endpoint and configure dependencies (#383)
+
+**Source:** project-beta-api@c495baa "fix: restore user registration endpoint and configure dependencies (#383)"
+
 ## [v0.0.294] - 2025-11-15
 
 ### Changes
