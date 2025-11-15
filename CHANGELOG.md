@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.300] - 2025-11-15
+
+### Changes
+- docs: add API naming conventions to .ai directory (#341) (#391)
+
+**Source:** project-beta-api@7b292d2 "docs: add API naming conventions to .ai directory (#341) (#391)"
+
 ## [v0.0.299] - 2025-11-15
 
 ### Changes
