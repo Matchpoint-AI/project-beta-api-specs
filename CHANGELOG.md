@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.301] - 2025-11-15
+
+### Changes
+- feat: implement POST /api/v2/content/{content_id}/images endpoint (#370) (#388)
+
+**Source:** project-beta-api@10fd595 "feat: implement POST /api/v2/content/{content_id}/images endpoint (#370) (#388)"
+
 ## [v0.0.300] - 2025-11-15
 
 ### Changes

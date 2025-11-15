@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.300"
+    "version": "0.0.301"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4065,9 +4065,9 @@
         "tags": [
           "content-images"
         ],
-        "summary": "Create Content Image",
-        "description": "Generate a new content image.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image generation request\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Generated content image response\n\nRaises:\n    HTTPException: 422 if generation limit reached",
-        "operationId": "create_content_image_api_v2_content__content_id__images_post",
+        "summary": "Upload Content Image",
+        "description": "Upload/associate an image with content.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image upload request with URL and optional caption\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 422 if validation fails",
+        "operationId": "upload_content_image_api_v2_content__content_id__images_post",
         "parameters": [
           {
             "name": "content_id",
@@ -4084,7 +4084,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ContentImageGenerateRequest"
+                "$ref": "#/components/schemas/ContentImageUploadRequest"
               }
             }
           }
@@ -9074,56 +9074,6 @@
         "title": "ContentExportResponse",
         "description": "Schema for content export response.\n\nRMM L2: Response includes the created export resource with its ID."
       },
-      "ContentImageGenerateRequest": {
-        "properties": {
-          "week": {
-            "type": "integer",
-            "minimum": 1.0,
-            "title": "Week",
-            "description": "Week number (1-indexed)"
-          },
-          "day": {
-            "type": "integer",
-            "maximum": 7.0,
-            "minimum": 1.0,
-            "title": "Day",
-            "description": "Day number (1-7)"
-          },
-          "post": {
-            "type": "integer",
-            "minimum": 1.0,
-            "title": "Post",
-            "description": "Post number (1-indexed)"
-          },
-          "prompt": {
-            "type": "string",
-            "title": "Prompt",
-            "description": "Image generation prompt"
-          },
-          "model": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Model",
-            "description": "Image model to use (dall-e-3, flux, etc.)",
-            "default": "dall-e-3"
-          }
-        },
-        "type": "object",
-        "required": [
-          "week",
-          "day",
-          "post",
-          "prompt"
-        ],
-        "title": "ContentImageGenerateRequest",
-        "description": "Schema for generating a new content image."
-      },
       "ContentImageResponse": {
         "properties": {
           "id": {
@@ -9137,37 +9087,91 @@
             "description": "Content ID"
           },
           "week_num": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Week Num",
-            "description": "Week number (1-indexed)"
+            "description": "Week number (1-indexed, optional)"
           },
           "day_num": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Day Num",
-            "description": "Day number (1-7)"
+            "description": "Day number (1-7, optional)"
           },
           "post_num": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Post Num",
-            "description": "Post number (1-indexed)"
+            "description": "Post number (1-indexed, optional)"
           },
           "image_url": {
             "type": "string",
             "title": "Image Url",
-            "description": "URL of the generated image"
+            "description": "URL of the image"
           },
           "image_prompt": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Image Prompt",
             "description": "Prompt used to generate the image"
           },
+          "caption": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Caption",
+            "description": "Image caption or alt text"
+          },
           "generation_count": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Generation Count",
             "description": "Number of times image was generated"
           },
           "model_used": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Model Used",
             "description": "Model used for generation"
           },
@@ -9188,13 +9192,7 @@
         "required": [
           "id",
           "content_id",
-          "week_num",
-          "day_num",
-          "post_num",
           "image_url",
-          "image_prompt",
-          "generation_count",
-          "model_used",
           "created_at",
           "updated_at"
         ],
@@ -9215,6 +9213,70 @@
         ],
         "title": "ContentImageUpdate",
         "description": "Schema for updating a content image."
+      },
+      "ContentImageUploadRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Url",
+            "description": "URL of the image to associate"
+          },
+          "caption": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Caption",
+            "description": "Image caption or alt text"
+          },
+          "alt_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alt Text",
+            "description": "Accessibility alt text"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Width",
+            "description": "Image width in pixels"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Height",
+            "description": "Image height in pixels"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "ContentImageUploadRequest",
+        "description": "Schema for uploading/associating an existing image with content."
       },
       "ContentResponse": {
         "properties": {
