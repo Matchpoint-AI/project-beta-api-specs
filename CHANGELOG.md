@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.308] - 2025-11-17
+
+### Changes
+- fix: validate Cloud SQL proxy configuration at startup (#410)
+
+**Source:** project-beta-api@e1f6532 "fix: validate Cloud SQL proxy configuration at startup (#410)"
+
 ## [v0.0.307] - 2025-11-17
 
 ### Changes
