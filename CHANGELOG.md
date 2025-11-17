@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.305] - 2025-11-17
+
+### Changes
+- fix: add CLOUD_SQL_INSTANCE env var support for database connection (#394)
+
+**Source:** project-beta-api@0d6192d "fix: add CLOUD_SQL_INSTANCE env var support for database connection (#394)"
+
 ## [v0.0.304] - 2025-11-15
 
 ### Changes
