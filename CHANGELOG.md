@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.307] - 2025-11-17
+
+### Changes
+- fix: improve JSON parsing error messages in validation handler (#408)
+
+**Source:** project-beta-api@adaf618 "fix: improve JSON parsing error messages in validation handler (#408)"
+
 ## [v0.0.306] - 2025-11-17
 
 ### Changes
