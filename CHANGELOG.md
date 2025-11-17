@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.306] - 2025-11-17
+
+### Changes
+- docs: add V2 epic blocking workflow guidance to AI agent workflows (#407)
+
+**Source:** project-beta-api@a5cab21 "docs: add V2 epic blocking workflow guidance to AI agent workflows (#407)"
+
 ## [v0.0.305] - 2025-11-17
 
 ### Changes
