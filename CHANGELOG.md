@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.309] - 2025-11-18
+
+### Changes
+- fix: add missing SignupService DI bindings + container structure test (#412)
+
+**Source:** project-beta-api@9891aca "fix: add missing SignupService DI bindings + container structure test (#412)"
+
 ## [v0.0.308] - 2025-11-17
 
 ### Changes
