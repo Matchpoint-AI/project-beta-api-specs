@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.313] - 2025-11-19
+
+### Changes
+- fix: remove has_brand column references after migration 548e5a2dc7a4 (#419)
+
+**Source:** project-beta-api@24e9999 "fix: remove has_brand column references after migration 548e5a2dc7a4 (#419)"
+
 ## [v0.0.312] - 2025-11-19
 
 ### Changes
