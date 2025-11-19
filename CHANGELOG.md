@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.310] - 2025-11-19
+
+### Changes
+- fix: remove duplicate UserService DI binding (#413)
+
+**Source:** project-beta-api@2faef8b "fix: remove duplicate UserService DI binding (#413)"
+
 ## [v0.0.309] - 2025-11-18
 
 ### Changes
