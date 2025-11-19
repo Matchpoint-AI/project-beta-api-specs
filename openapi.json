@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.311"
+    "version": "0.0.312"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3403,7 +3403,7 @@
           "content"
         ],
         "summary": "Create Image",
-        "description": "Generate an image using AI.\n\nRMM-2 compliant endpoint: POST to collection resource.\nCreates a new image resource using AI generation.\n\nArgs:\n    request: Image generation parameters including prompt, model, size, etc.\n    image_service: Injected image generation service\n\nReturns:\n    ImageResponse with generated image URL and metadata\n\nRaises:\n    HTTPException 500: If image generation fails",
+        "description": "Generate an image using AI.\n\nRMM-2 compliant endpoint: POST to collection resource.\nCreates a new image resource using AI generation.\n\nArgs:\n    request: Image generation parameters including prompt, model, size, etc.\n    http_request: FastAPI request object for building Location header\n    http_response: FastAPI response object for adding Location header\n    image_service: Injected image generation service\n\nReturns:\n    ImageResponse with generated image URL and metadata\n\nRaises:\n    HTTPException 500: If image generation fails",
         "operationId": "create_image_api_v2_images_post",
         "requestBody": {
           "content": {
@@ -3437,49 +3437,6 @@
             }
           }
         }
-      }
-    },
-    "/api/v2/images/generate": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Generate Image",
-        "description": "Generate an image using AI.\n\nDEPRECATED: This endpoint is deprecated and will be removed in 6 months.\nPlease use POST /api/v2/images instead.\n\nThis endpoint uses a verb in the URL path which violates RMM-2 principles.\nThe new /images endpoint follows proper REST conventions.\n\nArgs:\n    request: Image generation parameters\n    http_response: FastAPI response object for adding deprecation headers\n    image_service: Injected image generation service\n\nReturns:\n    ImageResponse with generated image URL and metadata",
-        "operationId": "generate_image_api_v2_images_generate_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
       }
     },
     "/api/v2/images/batch": {

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.312] - 2025-11-19
+
+### Changes
+- fix: Fix RMM-2 Violation: Remove POST /api/v2/images/generate endpoint (#418)
+
+**Source:** project-beta-api@2361bb3 "fix: Fix RMM-2 Violation: Remove POST /api/v2/images/generate endpoint (#418)"
+
 ## [v0.0.311] - 2025-11-19
 
 ### Changes
