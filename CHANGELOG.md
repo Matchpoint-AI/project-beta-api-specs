@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.311] - 2025-11-19
+
+### Changes
+- feat: Add RMM Level 2 Compliance Validator Script (#414)
+
+**Source:** project-beta-api@3345525 "feat: Add RMM Level 2 Compliance Validator Script (#414)"
+
 ## [v0.0.310] - 2025-11-19
 
 ### Changes
