@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.316] - 2025-11-19
+
+### Changes
+- 📚 Create Database Migration Safety Guidelines (Phase 0 - P0) (#423)
+
+**Source:** project-beta-api@6c8b624 "📚 Create Database Migration Safety Guidelines (Phase 0 - P0) (#423)"
+
 ## [v0.0.315] - 2025-11-19
 
 ### Changes
