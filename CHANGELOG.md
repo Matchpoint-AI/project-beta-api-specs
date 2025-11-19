@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.315] - 2025-11-19
+
+### Changes
+- 📋 Create V2 API Design Standards (Phase 0 - P0) (#422)
+
+**Source:** project-beta-api@d21b526 "📋 Create V2 API Design Standards (Phase 0 - P0) (#422)"
+
 ## [v0.0.314] - 2025-11-19
 
 ### Changes
