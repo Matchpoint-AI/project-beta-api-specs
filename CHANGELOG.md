@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.314] - 2025-11-19
+
+### Changes
+- 🚨 Add OpenAPI Breaking Change Detector (Phase 0 - P0) (#420)
+
+**Source:** project-beta-api@c939256 "🚨 Add OpenAPI Breaking Change Detector (Phase 0 - P0) (#420)"
+
 ## [v0.0.313] - 2025-11-19
 
 ### Changes
