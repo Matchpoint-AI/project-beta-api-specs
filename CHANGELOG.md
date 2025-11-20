@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.318] - 2025-11-20
+
+### Changes
+- 📋 Add V2 Compliance PR Template (Backend - Phase 0) (#426)
+
+**Source:** project-beta-api@99d7d4f "📋 Add V2 Compliance PR Template (Backend - Phase 0) (#426)"
+
 ## [v0.0.317] - 2025-11-20
 
 ### Changes
