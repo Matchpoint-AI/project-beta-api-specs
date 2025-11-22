@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.319] - 2025-11-22
+
+### Changes
+- fix: add localhost:5173 to CORS allowed origins for Vite dev server (#430)
+
+**Source:** project-beta-api@d8da7e2 "fix: add localhost:5173 to CORS allowed origins for Vite dev server (#430)"
+
 ## [v0.0.318] - 2025-11-20
 
 ### Changes
