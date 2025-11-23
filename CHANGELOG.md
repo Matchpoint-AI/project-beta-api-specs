@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.320] - 2025-11-23
+
+### Changes
+- feat: Implement SendGrid email verification (#434)
+
+**Source:** project-beta-api@d3ba0c0 "feat: Implement SendGrid email verification (#434)"
+
 ## [v0.0.319] - 2025-11-22
 
 ### Changes
