@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.322] - 2025-11-23
+
+### Changes
+- fix: add json_schema_extra for metadata additionalProperties (#439)
+
+**Source:** project-beta-api@4442f06 "fix: add json_schema_extra for metadata additionalProperties (#439)"
+
 ## [v0.0.321] - 2025-11-23
 
 ### Changes
