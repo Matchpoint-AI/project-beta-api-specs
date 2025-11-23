@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.323] - 2025-11-23
+
+### Changes
+- fix: regenerate OpenAPI spec with additionalProperties for metadata fields (#440)
+
+**Source:** project-beta-api@c6f953b "fix: regenerate OpenAPI spec with additionalProperties for metadata fields (#440)"
+
 ## [v0.0.322] - 2025-11-23
 
 ### Changes
