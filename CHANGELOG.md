@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.321] - 2025-11-23
+
+### Changes
+- fix: correct OpenAPI spec generation for metadata fields (#438)
+
+**Source:** project-beta-api@cd60f8d "fix: correct OpenAPI spec generation for metadata fields (#438)"
+
 ## [v0.0.320] - 2025-11-23
 
 ### Changes
