@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.324] - 2025-11-23
+
+### Changes
+- fix: add additionalProperties to campaign_variables field in OpenAPI schema (#441)
+
+**Source:** project-beta-api@317918d "fix: add additionalProperties to campaign_variables field in OpenAPI schema (#441)"
+
 ## [v0.0.323] - 2025-11-23
 
 ### Changes
