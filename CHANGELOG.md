@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.325] - 2025-11-23
+
+### Changes
+- chore: regenerate OpenAPI spec from main branch (#442)
+
+**Source:** project-beta-api@e0b970e "chore: regenerate OpenAPI spec from main branch (#442)"
+
 ## [v0.0.324] - 2025-11-23
 
 ### Changes

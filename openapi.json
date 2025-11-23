@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.324"
+    "version": "0.0.325"
   },
   "paths": {
     "/api/v2/brands": {
@@ -7741,6 +7741,7 @@
                 "type": "null"
               }
             ],
+            "additionalProperties": true,
             "title": "Campaign Variables"
           },
           "userId": {
@@ -7991,6 +7992,7 @@
                 "type": "null"
               }
             ],
+            "additionalProperties": true,
             "title": "Campaign Variables"
           },
           "id": {
@@ -8440,6 +8442,7 @@
                 "type": "null"
               }
             ],
+            "additionalProperties": true,
             "title": "Campaign Variables"
           }
         },
