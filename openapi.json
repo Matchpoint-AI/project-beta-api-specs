@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.325"
+    "version": "0.0.326"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5664,14 +5664,14 @@
         "tags": [
           "users"
         ],
-        "summary": "Register User",
-        "description": "Register a new user with email and password.\n\nCreates a new user account using Firebase Authentication and stores\nuser data in the database. Firebase automatically sends an email\nverification link to the provided email address.\n\nThe user must verify their email before they can fully access the application.\n\nArgs:\n    request: User registration data including email, password, and name\n\nReturns:\n    UserRegistrationResponse with user data and email verification status\n\nRaises:\n    HTTPException 400: If email already exists or data is invalid\n    HTTPException 500: If registration fails due to server error",
-        "operationId": "register_user_api_v2_users_post",
+        "summary": "Register Native User",
+        "description": "Register a new user with native email/password authentication.\n\nCreates a new user account with native authentication (password stored\nsecurely with bcrypt) and sends an email verification link via SendGrid.\n\nThe user must verify their email before they can log in.\n\nRMM Level 2 Compliance:\n- POST to /users collection creates new user resource\n- HTTP verb (POST) indicates create action\n- No verbs in URL path\n- Returns 201 Created with user resource\n\nArgs:\n    request: User registration data including email, password (min 8 chars), and name\n\nReturns:\n    UserRegistrationResponse with user data and email verification status\n\nRaises:\n    HTTPException 400: If email already exists or data is invalid\n    HTTPException 500: If registration fails due to server error",
+        "operationId": "register_native_user_api_v2_users_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserCreate"
+                "$ref": "#/components/schemas/NativeUserCreate"
               }
             }
           },
@@ -5693,6 +5693,105 @@
           },
           "500": {
             "description": "Internal server error during registration"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/verifications": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Verify Email",
+        "description": "Verify user email with verification token.\n\nVerifies the user's email address using the token sent during registration.\nAfter successful verification, the user can log in.\n\nRMM Level 2 Compliance:\n- POST to /verifications creates new verification resource (state change)\n- HTTP verb (POST) indicates create/submit action\n- No verbs in URL path\n\nArgs:\n    request: Email verification request with token\n\nReturns:\n    UserResponse with email_verified=True\n\nRaises:\n    HTTPException 400: If token is invalid or expired\n    HTTPException 500: If verification fails due to server error",
+        "operationId": "verify_email_api_v2_verifications_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailVerificationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Email verified successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired verification token"
+          },
+          "500": {
+            "description": "Internal server error during verification"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/sessions": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Create Session",
+        "description": "Create new authentication session (login).\n\nAuthenticates user with email and password, returns JWT access token if successful.\nUser must have verified their email before logging in.\n\nRMM Level 2 Compliance:\n- POST to /sessions creates new session resource\n- HTTP verb (POST) indicates create action\n- No verbs in URL path (not /login, but /sessions)\n\nArgs:\n    request: Login request with email and password\n\nReturns:\n    LoginResponse with user profile and JWT access token\n\nRaises:\n    HTTPException 400: If email or password is invalid\n    HTTPException 401: If email is not verified\n    HTTPException 500: If login fails due to server error",
+        "operationId": "create_session_api_v2_sessions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful, JWT token returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid email or password"
+          },
+          "401": {
+            "description": "Email not verified"
+          },
+          "500": {
+            "description": "Internal server error during login"
           },
           "422": {
             "description": "Validation Error",
@@ -10573,6 +10672,22 @@
         "title": "DurationBucket",
         "description": "Histogram bucket for crawl duration distribution."
       },
+      "EmailVerificationRequest": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Token",
+            "description": "Verification token from email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "title": "EmailVerificationRequest",
+        "description": "Schema for email verification request.\n\nFor POST /api/v2/verifications endpoint.\nVerifies user email using token from verification email."
+      },
       "ExtractBatchCampaignRequest": {
         "properties": {
           "campaignIds": {
@@ -11581,6 +11696,87 @@
         ],
         "title": "LocationsResponse",
         "description": "Response schema for location resources."
+      },
+      "LoginRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User email address"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Password",
+            "description": "User password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginRequest",
+        "description": "Schema for user login request.\n\nFor POST /api/v2/sessions endpoint.\nCreates a new user session with email and password."
+      },
+      "LoginResponse": {
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserResponse",
+            "description": "User profile"
+          },
+          "accessToken": {
+            "type": "string",
+            "title": "Accesstoken",
+            "description": "JWT access token"
+          },
+          "tokenType": {
+            "type": "string",
+            "title": "Tokentype",
+            "description": "Token type (always 'bearer')",
+            "default": "bearer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user",
+          "accessToken"
+        ],
+        "title": "LoginResponse",
+        "description": "Schema for login response.\n\nReturns user profile and access token after successful login."
+      },
+      "NativeUserCreate": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User email address"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "description": "User full name"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password",
+            "description": "User password (will be hashed with bcrypt)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "name",
+          "password"
+        ],
+        "title": "NativeUserCreate",
+        "description": "Schema for creating a new user via native email/password authentication.\n\nFor POST /api/v2/users endpoint.\nPassword is hashed and stored in our database with bcrypt.\nEmail verification link is sent via SendGrid."
       },
       "NextUrlResponse": {
         "properties": {
@@ -13328,37 +13524,6 @@
         "type": "object",
         "title": "UpdateTextVersionsResponse",
         "description": "Response schema for text versions update.\n\nDirect port from V1 response format."
-      },
-      "UserCreate": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email",
-            "description": "User email address"
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "title": "Name",
-            "description": "User full name"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 8,
-            "title": "Password",
-            "description": "User password (will be sent to Firebase Auth)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email",
-          "name",
-          "password"
-        ],
-        "title": "UserCreate",
-        "description": "Schema for creating a new user (registration).\n\nPassword is handled by Firebase Auth, not stored in our database.\nFirebase will send the email verification link."
       },
       "UserRegistrationResponse": {
         "properties": {

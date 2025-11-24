@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.326] - 2025-11-24
+
+### Changes
+- Merge pull request #444 from Matchpoint-AI/feat/v2-user-authentication
+
+**Source:** project-beta-api@3444813 "Merge pull request #444 from Matchpoint-AI/feat/v2-user-authentication"
+
 ## [v0.0.325] - 2025-11-23
 
 ### Changes
