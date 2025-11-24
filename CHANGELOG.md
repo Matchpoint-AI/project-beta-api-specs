@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.327] - 2025-11-24
+
+### Changes
+- Merge pull request #425 from Matchpoint-AI/feat/add-epic-blocking-workflow
+
+**Source:** project-beta-api@28b4045 "Merge pull request #425 from Matchpoint-AI/feat/add-epic-blocking-workflow"
+
 ## [v0.0.326] - 2025-11-24
 
 ### Changes
