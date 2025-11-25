@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.328] - 2025-11-25
+
+### Changes
+- fix: add localhost:5174 to CORS allowed origins (#445)
+
+**Source:** project-beta-api@74d621a "fix: add localhost:5174 to CORS allowed origins (#445)"
+
 ## [v0.0.327] - 2025-11-24
 
 ### Changes
