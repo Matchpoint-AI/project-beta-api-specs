@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.329] - 2025-11-26
+
+### Changes
+- fix: EmailService DI protocol and CORS origins for local auth testing (#448)
+
+**Source:** project-beta-api@9f6d3c7 "fix: EmailService DI protocol and CORS origins for local auth testing (#448)"
+
 ## [v0.0.328] - 2025-11-25
 
 ### Changes
