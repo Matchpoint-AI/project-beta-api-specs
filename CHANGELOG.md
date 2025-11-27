@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.337] - 2025-11-27
+
+### Changes
+- fix: construct full verification URL in email template (#462)
+
+**Source:** project-beta-api@0e71f99 "fix: construct full verification URL in email template (#462)"
+
 ## [v0.0.336] - 2025-11-27
 
 ### Changes
