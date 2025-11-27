@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.336] - 2025-11-27
+
+### Changes
+- fix: use GKE default credentials instead of WIF for migrations (#458)
+
+**Source:** project-beta-api@3bb2b26 "fix: use GKE default credentials instead of WIF for migrations (#458)"
+
 ## [v0.0.335] - 2025-11-27
 
 ### Changes
