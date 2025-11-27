@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.339] - 2025-11-27
+
+### Changes
+- fix: add Cloud Run frontend URL to CORS allowed origins (#465)
+
+**Source:** project-beta-api@122429b "fix: add Cloud Run frontend URL to CORS allowed origins (#465)"
+
 ## [v0.0.338] - 2025-11-27
 
 ### Changes
