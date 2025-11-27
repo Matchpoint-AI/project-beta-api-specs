@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.335] - 2025-11-27
+
+### Changes
+- perf: optimize CI test run time through test cleanup and parallelization (#455)
+
+**Source:** project-beta-api@c464863 "perf: optimize CI test run time through test cleanup and parallelization (#455)"
+
 ## [v0.0.334] - 2025-11-27
 
 ### Changes
