@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.334] - 2025-11-27
+
+### Changes
+- fix: add OIDC permissions for migration workflow (#457)
+
+**Source:** project-beta-api@5c3b542 "fix: add OIDC permissions for migration workflow (#457)"
+
 ## [v0.0.333] - 2025-11-27
 
 ### Changes
