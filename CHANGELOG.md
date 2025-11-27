@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.338] - 2025-11-27
+
+### Changes
+- test: increase test coverage from 89% to 90% and enforce threshold (#463)
+
+**Source:** project-beta-api@c872545 "test: increase test coverage from 89% to 90% and enforce threshold (#463)"
+
 ## [v0.0.337] - 2025-11-27
 
 ### Changes
