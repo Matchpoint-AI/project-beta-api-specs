@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.330] - 2025-11-27
+
+### Changes
+- chore: remove skipped and obsolete tests from CI (#450)
+
+**Source:** project-beta-api@0d00e46 "chore: remove skipped and obsolete tests from CI (#450)"
+
 ## [v0.0.329] - 2025-11-26
 
 ### Changes
