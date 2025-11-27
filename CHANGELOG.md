@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.332] - 2025-11-27
+
+### Changes
+- Merge pull request #453 from Matchpoint-AI/fix/jwt-custom-tokens
+
+**Source:** project-beta-api@4109ff8 "Merge pull request #453 from Matchpoint-AI/fix/jwt-custom-tokens"
+
 ## [v0.0.331] - 2025-11-27
 
 ### Changes
