@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.333] - 2025-11-27
+
+### Changes
+- fix: add gcloud auth to migration workflow (#456)
+
+**Source:** project-beta-api@d63a217 "fix: add gcloud auth to migration workflow (#456)"
+
 ## [v0.0.332] - 2025-11-27
 
 ### Changes
