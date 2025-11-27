@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.331] - 2025-11-27
+
+### Changes
+- Merge pull request #452 from Matchpoint-AI/ci/add-migration-workflow
+
+**Source:** project-beta-api@7e684f8 "Merge pull request #452 from Matchpoint-AI/ci/add-migration-workflow"
+
 ## [v0.0.330] - 2025-11-27
 
 ### Changes
