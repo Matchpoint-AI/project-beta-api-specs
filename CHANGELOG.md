@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.340] - 2025-11-29
+
+### Changes
+- fix: use correct GCP workflow name for brand onboarding (#470)
+
+**Source:** project-beta-api@92f4ee8 "fix: use correct GCP workflow name for brand onboarding (#470)"
+
 ## [v0.0.339] - 2025-11-27
 
 ### Changes
