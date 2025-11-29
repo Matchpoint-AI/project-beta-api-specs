@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.0.341] - 2025-11-29
+
+### Changes
+- Merge pull request #473 from Matchpoint-AI/fix/custom-token-auth-support
+
+**Source:** project-beta-api@1e3e65b "Merge pull request #473 from Matchpoint-AI/fix/custom-token-auth-support"
+
 ## [v0.0.340] - 2025-11-29
 
 ### Changes
