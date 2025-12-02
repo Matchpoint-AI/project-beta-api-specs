@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.0.341"
+    "version": "0.7.11"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5823,7 +5823,7 @@
           "users"
         ],
         "summary": "Get Current User",
-        "description": "Get current authenticated user profile.\n\nRetrieves the profile of the currently authenticated user based on\ntheir Firebase ID token. The user must be authenticated with a valid\nFirebase token in the Authorization header.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /users/me\n- HTTP method (GET) indicates read action\n- No verbs in URL path\n- Uses /me convention for current authenticated user\n\nArgs:\n    firebase_user: Decoded Firebase token claims (injected by auth dependency)\n    user_service: Injected user service\n\nReturns:\n    UserResponse with user profile data\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 404: If user exists in Firebase but not in database\n    HTTPException 500: If database or server error occurs",
+        "description": "Get current authenticated user profile.\n\nRetrieves the profile of the currently authenticated user based on\ntheir authentication token. Supports both Firebase Auth and native\nemail/password authentication.\n\nFor native auth users:\n- Token contains uid = database user ID\n- Look up user by ID directly\n\nFor Firebase auth users:\n- Token contains uid = Firebase UID\n- Look up user by Firebase UID\n\nRMM Level 2 Compliance:\n- Resource-based URL: /users/me\n- HTTP method (GET) indicates read action\n- No verbs in URL path\n- Uses /me convention for current authenticated user\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    user_service: Injected user service\n\nReturns:\n    UserResponse with user profile data\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 404: If user not found in database\n    HTTPException 500: If database or server error occurs",
         "operationId": "get_current_user_api_v2_users_me_get",
         "responses": {
           "200": {

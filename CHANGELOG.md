@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.11] - 2025-12-02
+
+### Changes
+- Merge pull request #502 from Matchpoint-AI/fix/501-regenerate-di
+
+**Source:** project-beta-api@b803251 "Merge pull request #502 from Matchpoint-AI/fix/501-regenerate-di"
+
 ## [v0.0.341] - 2025-11-29
 
 ### Changes
