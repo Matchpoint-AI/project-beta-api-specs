@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.22] - 2025-12-03
+
+### Changes
+- Merge pull request #526 from Matchpoint-AI/fix/515-connection-pool
+
+**Source:** project-beta-api@f3a5707 "Merge pull request #526 from Matchpoint-AI/fix/515-connection-pool"
+
 ## [v0.7.21] - 2025-12-03
 
 ### Changes
