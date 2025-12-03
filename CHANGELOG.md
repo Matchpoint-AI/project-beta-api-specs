@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.14] - 2025-12-03
+
+### Changes
+- Merge pull request #505 from Matchpoint-AI/fix/504-fal-ai-integration
+
+**Source:** project-beta-api@0915c2a "Merge pull request #505 from Matchpoint-AI/fix/504-fal-ai-integration"
+
 ## [v0.7.11] - 2025-12-02
 
 ### Changes
