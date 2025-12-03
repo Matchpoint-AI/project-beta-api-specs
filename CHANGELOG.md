@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.21] - 2025-12-03
+
+### Changes
+- fix(auth): Replace placeholder user_id with Firebase auth in content regeneration (#521)
+
+**Source:** project-beta-api@24c846c "fix(auth): Replace placeholder user_id with Firebase auth in content regeneration (#521)"
+
 ## [v0.7.20] - 2025-12-03
 
 ### Changes
