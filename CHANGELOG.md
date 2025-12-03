@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.15] - 2025-12-03
+
+### Changes
+- fix: Use fal-client package instead of fal for FAL.ai API (#507)
+
+**Source:** project-beta-api@52ca6f0 "fix: Use fal-client package instead of fal for FAL.ai API (#507)"
+
 ## [v0.7.14] - 2025-12-03
 
 ### Changes
