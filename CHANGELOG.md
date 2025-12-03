@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.16] - 2025-12-03
+
+### Changes
+- fix(fal): Use flux-pro v1.1-ultra model from V1 implementation (#509)
+
+**Source:** project-beta-api@f1635e9 "fix(fal): Use flux-pro v1.1-ultra model from V1 implementation (#509)"
+
 ## [v0.7.15] - 2025-12-03
 
 ### Changes
