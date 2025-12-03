@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.17] - 2025-12-03
+
+### Changes
+- fix(fal): Update remaining services to use flux-pro v1.1-ultra (#510)
+
+**Source:** project-beta-api@ad928b0 "fix(fal): Update remaining services to use flux-pro v1.1-ultra (#510)"
+
 ## [v0.7.16] - 2025-12-03
 
 ### Changes
