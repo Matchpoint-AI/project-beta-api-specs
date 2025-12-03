@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.19] - 2025-12-03
+
+### Changes
+- Merge pull request #516 from Matchpoint-AI/fix/472-local-email-links
+
+**Source:** project-beta-api@e621db5 "Merge pull request #516 from Matchpoint-AI/fix/472-local-email-links"
+
 ## [v0.7.18] - 2025-12-03
 
 ### Changes
