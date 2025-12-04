@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.28"
+    "version": "0.7.29"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2894,10 +2894,9 @@
         "tags": [
           "content"
         ],
-        "summary": "Regenerate Content",
-        "description": "Regenerate image and/or text for content.\n\nDEPRECATED: This endpoint is deprecated and will be removed in 6 months.\nPlease use POST /api/v2/content/{content_id}/versions instead.\n\nDirect port from V1 (tag v0.2.46) regeneration endpoint.\nEnforces plan limits: FREE=3, PRO=10 regenerations per post.\n\nArgs:\n    content_id: Content identifier (from URL path)\n    request: Regeneration request with optional custom prompt\n    http_response: FastAPI response object for adding headers\n\nReturns:\n    RegenerationResponse with new image URL, prompt, remaining generations, and new text\n\nRaises:\n    400 Bad Request: If content not found or generation limit exceeded\n    500 Internal Server Error: If regeneration fails",
-        "operationId": "regenerate_content_api_v2_content__content_id__regenerate_post",
-        "deprecated": true,
+        "summary": "Regenerate content to create new version",
+        "description": "Creates a new version of content through regeneration. RMM Level 2 compliant endpoint.",
+        "operationId": "create_content_version_via_regeneration_api_v2_content__content_id__regenerate_post",
         "parameters": [
           {
             "name": "content_id",
@@ -2914,7 +2913,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegenerationRequest"
+                "$ref": "#/components/schemas/ContentVersionCreate"
               }
             }
           }
@@ -2925,7 +2924,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegenerationResponse"
+                  "$ref": "#/components/schemas/ContentVersionResponse"
                 }
               }
             }
