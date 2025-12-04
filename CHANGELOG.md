@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.31] - 2025-12-04
+
+### Changes
+- Merge pull request #558 from Matchpoint-AI/feat/model-tier-service
+
+**Source:** project-beta-api@ad17602 "Merge pull request #558 from Matchpoint-AI/feat/model-tier-service"
+
 ## [v0.7.30] - 2025-12-04
 
 ### Changes
