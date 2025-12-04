@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.26] - 2025-12-04
+
+### Changes
+- fix: Implement lazy user sync from Firebase Auth to database (#525)
+
+**Source:** project-beta-api@c96cb6a "fix: Implement lazy user sync from Firebase Auth to database (#525)"
+
 ## [v0.7.25] - 2025-12-04
 
 ### Changes
