@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.33] - 2025-12-04
+
+### Changes
+- Merge pull request #560 from Matchpoint-AI/feat/brand-guardrails-migration
+
+**Source:** project-beta-api@fbdf478 "Merge pull request #560 from Matchpoint-AI/feat/brand-guardrails-migration"
+
 ## [v0.7.32] - 2025-12-04
 
 ### Changes
