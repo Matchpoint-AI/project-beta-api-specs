@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.32] - 2025-12-04
+
+### Changes
+- Merge pull request #557 from Matchpoint-AI/feat/brand-attributes-migration
+
+**Source:** project-beta-api@a7134c0 "Merge pull request #557 from Matchpoint-AI/feat/brand-attributes-migration"
+
 ## [v0.7.31] - 2025-12-04
 
 ### Changes
