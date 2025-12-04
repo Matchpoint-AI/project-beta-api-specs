@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.28] - 2025-12-04
+
+### Changes
+- Merge pull request #551 from Matchpoint-AI/feat/ci-conditional-lint
+
+**Source:** project-beta-api@acc829f "Merge pull request #551 from Matchpoint-AI/feat/ci-conditional-lint"
+
 ## [v0.7.27] - 2025-12-04
 
 ### Changes
