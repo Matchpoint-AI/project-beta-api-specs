@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.36] - 2025-12-04
+
+### Changes
+- Merge pull request #564 from Matchpoint-AI/feat/image-client-factory
+
+**Source:** project-beta-api@08c35b4 "Merge pull request #564 from Matchpoint-AI/feat/image-client-factory"
+
 ## [v0.7.35] - 2025-12-04
 
 ### Changes
