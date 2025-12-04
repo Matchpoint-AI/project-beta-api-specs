@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.23] - 2025-12-04
+
+### Changes
+- feat: Add SEMVER keyword support to breaking changes check (#539)
+
+**Source:** project-beta-api@fd000a1 "feat: Add SEMVER keyword support to breaking changes check (#539)"
+
 ## [v0.7.22] - 2025-12-03
 
 ### Changes
