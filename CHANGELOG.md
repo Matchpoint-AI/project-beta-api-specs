@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.27] - 2025-12-04
+
+### Changes
+- Merge pull request #550 from Matchpoint-AI/feat/ci-conditional-typecheck
+
+**Source:** project-beta-api@e058ecd "Merge pull request #550 from Matchpoint-AI/feat/ci-conditional-typecheck"
+
 ## [v0.7.26] - 2025-12-04
 
 ### Changes
