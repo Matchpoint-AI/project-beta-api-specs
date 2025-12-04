@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.35] - 2025-12-04
+
+### Changes
+- ci: Temporarily disable OpenAPI breaking changes check (#562)
+
+**Source:** project-beta-api@f726c94 "ci: Temporarily disable OpenAPI breaking changes check (#562)"
+
 ## [v0.7.34] - 2025-12-04
 
 ### Changes
