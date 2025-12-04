@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.34] - 2025-12-04
+
+### Changes
+- Merge pull request #561 from Matchpoint-AI/feat/image-tiers-endpoint
+
+**Source:** project-beta-api@1b64bce "Merge pull request #561 from Matchpoint-AI/feat/image-tiers-endpoint"
+
 ## [v0.7.33] - 2025-12-04
 
 ### Changes
