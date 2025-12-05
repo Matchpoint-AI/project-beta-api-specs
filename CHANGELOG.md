@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.37] - 2025-12-05
+
+### Changes
+- Merge pull request #566 from Matchpoint-AI/migrate/arc-beta-runners
+
+**Source:** project-beta-api@deab19c "Merge pull request #566 from Matchpoint-AI/migrate/arc-beta-runners"
+
 ## [v0.7.36] - 2025-12-04
 
 ### Changes
