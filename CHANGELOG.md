@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.40] - 2025-12-05
+
+### Changes
+- Merge pull request #563 from Matchpoint-AI/feat/brand-embeddings
+
+**Source:** project-beta-api@f3d585e "Merge pull request #563 from Matchpoint-AI/feat/brand-embeddings"
+
 ## [v0.7.39] - 2025-12-05
 
 ### Changes
