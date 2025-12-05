@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.39] - 2025-12-05
+
+### Changes
+- fix: Disable SendGrid click tracking for verification emails (#570)
+
+**Source:** project-beta-api@5aa5c6e "fix: Disable SendGrid click tracking for verification emails (#570)"
+
 ## [v0.7.38] - 2025-12-05
 
 ### Changes
