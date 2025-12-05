@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.40"
+    "version": "0.7.41"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2889,40 +2889,19 @@
         }
       }
     },
-    "/api/v2/images/tiers": {
-      "get": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Image Tiers",
-        "description": "Get available image generation tiers.\n\nReturns list of available image generation tiers with their features,\ncosts, and descriptions. Tiers are filtered based on user plan.\n\nArgs:\n    tier_service: Injected model tier service\n\nReturns:\n    List of available image tiers\n\nRaises:\n    HTTPException: If tier retrieval fails",
-        "operationId": "get_image_tiers_api_v2_images_tiers_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/ImageTierResponse"
-                  },
-                  "type": "array",
-                  "title": "Response Get Image Tiers Api V2 Images Tiers Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/regenerate": {
+    "/api/v2/content/{content_id}/versions": {
       "post": {
         "tags": [
           "content"
         ],
-        "summary": "Regenerate content to create new version",
-        "description": "Creates a new version of content through regeneration. RMM Level 2 compliant endpoint.",
-        "operationId": "create_content_version_via_regeneration_api_v2_content__content_id__regenerate_post",
+        "summary": "Create Content Version",
+        "description": "Create a new version of content (RMM L2 compliant regeneration).\n\nThis is the REST-compliant version of content regeneration.\nInstead of POST /regenerate (verb), we POST /versions (noun) to create a resource.\n\nDirect port from V1 (tag v0.2.46) with proper REST design:\n- Creates a new version as a resource\n- Maintains parent-child lineage\n- Enforces plan limits: FREE=3, PRO=10 versions per content\n\nArgs:\n    content_id: Content identifier (from URL path)\n    request: Version creation request with parent ID and optional prompt\n\nReturns:\n    ContentVersionResponse with new version details and quota info\n\nRaises:\n    400 Bad Request: If content not found or generation limit exceeded\n    500 Internal Server Error: If version creation fails",
+        "operationId": "create_content_version_api_v2_content__content_id__versions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -2951,64 +2930,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ContentVersionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v2/content/{content_id}/versions": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Update text versions for content (RMM-2 compliant)",
-        "description": "Updates text, text_versions array, and selected image index. RMM-2 compliant endpoint with single-word resource naming.",
-        "operationId": "update_versions_api_v2_content__content_id__versions_post",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Content Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTextVersionsRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UpdateTextVersionsResponse"
                 }
               }
             }
@@ -3438,6 +3359,32 @@
         "deprecated": true
       }
     },
+    "/api/v2/images/tiers": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Image Tiers",
+        "description": "Get available image generation tiers.\n\nReturns list of available image generation tiers with their features,\ncosts, and descriptions. Tiers are filtered based on user plan.\n\nArgs:\n    tier_service: Injected model tier service\n\nReturns:\n    List of available image tiers\n\nRaises:\n    HTTPException: If tier retrieval fails",
+        "operationId": "get_image_tiers_api_v2_images_tiers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ImageTierResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Image Tiers Api V2 Images Tiers Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/images": {
       "post": {
         "tags": [
@@ -3811,6 +3758,59 @@
         "responses": {
           "204": {
             "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/text": {
+      "patch": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Update content text versions (RMM-2 compliant)",
+        "description": "Updates text, text_versions array, and selected image index. RMM-2 compliant with single-word sub-resource 'text'.",
+        "operationId": "update_content_text_api_v2_content__content_id__text_patch",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTextVersionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTextVersionsResponse"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -12512,66 +12512,6 @@
         ],
         "title": "PublishedPostSummary",
         "description": "Summary of a single published post within a publication."
-      },
-      "RegenerationRequest": {
-        "properties": {
-          "contentId": {
-            "type": "string",
-            "title": "Contentid",
-            "description": "ID of the content to regenerate"
-          },
-          "prompt": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Prompt",
-            "description": "Optional custom prompt for regeneration"
-          }
-        },
-        "type": "object",
-        "required": [
-          "contentId"
-        ],
-        "title": "RegenerationRequest",
-        "description": "Request schema for content regeneration.\n\nThis matches the V1 structure from tag v0.2.46."
-      },
-      "RegenerationResponse": {
-        "properties": {
-          "url": {
-            "type": "string",
-            "title": "Url",
-            "description": "URL of the newly generated image"
-          },
-          "prompt": {
-            "type": "string",
-            "title": "Prompt",
-            "description": "The prompt used for generation"
-          },
-          "remainingGenerations": {
-            "type": "integer",
-            "title": "Remaininggenerations",
-            "description": "Number of generations remaining"
-          },
-          "newText": {
-            "type": "string",
-            "title": "Newtext",
-            "description": "New caption text generated"
-          }
-        },
-        "type": "object",
-        "required": [
-          "url",
-          "prompt",
-          "remainingGenerations",
-          "newText"
-        ],
-        "title": "RegenerationResponse",
-        "description": "Response schema for content regeneration.\n\nThis matches the V1 structure from tag v0.2.46."
       },
       "RenderPageRequest": {
         "properties": {

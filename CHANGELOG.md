@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.41] - 2025-12-05
+
+### Changes
+- fix: Resolve duplicate /versions endpoints - RMM-L2 compliance (#554)
+
+**Source:** project-beta-api@3aed8f8 "fix: Resolve duplicate /versions endpoints - RMM-L2 compliance (#554)"
+
 ## [v0.7.40] - 2025-12-05
 
 ### Changes
