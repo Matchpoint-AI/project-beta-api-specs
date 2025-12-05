@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.42] - 2025-12-05
+
+### Changes
+- feat: Add campaign content workflow trigger endpoint (#572)
+
+**Source:** project-beta-api@452de86 "feat: Add campaign content workflow trigger endpoint (#572)"
+
 ## [v0.7.41] - 2025-12-05
 
 ### Changes
