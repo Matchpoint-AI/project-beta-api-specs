@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.38] - 2025-12-05
+
+### Changes
+- Merge pull request #567 from Matchpoint-AI/perf/restore-testcontainers-issue-1522
+
+**Source:** project-beta-api@a303634 "Merge pull request #567 from Matchpoint-AI/perf/restore-testcontainers-issue-1522"
+
 ## [v0.7.37] - 2025-12-05
 
 ### Changes
