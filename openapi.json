@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.59"
+    "version": "0.7.60"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1646,7 +1646,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -2656,6 +2655,359 @@
         }
       }
     },
+    "/api/v2/content/{content_id}/captions": {
+      "post": {
+        "tags": [
+          "captions"
+        ],
+        "summary": "Generate Caption",
+        "description": "Generate captions for content.",
+        "operationId": "generate_caption_api_v2_content__content_id__captions_post",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "captions"
+        ],
+        "summary": "Get Captions",
+        "description": "Get all captions for a content item.",
+        "operationId": "get_captions_api_v2_content__content_id__captions_get",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CaptionResponse"
+                  },
+                  "title": "Response Get Captions Api V2 Content  Content Id  Captions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/captions/{caption_id}/versions": {
+      "post": {
+        "tags": [
+          "captions"
+        ],
+        "summary": "Create Caption Version",
+        "description": "Create a new version of a caption (RMM-2 compliant regeneration).\n\nThis is the REST-compliant version of caption regeneration.\nInstead of POST /regenerate (verb), we POST /versions (noun) to create a resource.\n\nBusiness Context:\n- Creates a new caption version with user feedback and adjustments\n- Maintains caption versioning history for auditing\n- Supports iterative refinement of AI-generated captions\n\nRMM-2 Compliance:\n- Uses resource noun 'versions' instead of verb 'regenerate'\n- Creates a new version resource through POST method\n- Returns 201 Created status code\n- Proper camelCase parameter naming\n\nArgs:\n    content_id: Parent content identifier\n    caption_id: Caption identifier to create new version from\n    request: Regeneration parameters (feedback, adjustments, tone)\n\nReturns:\n    CaptionResponse with the newly generated caption version\n\nRaises:\n    404 Not Found: If content or caption doesn't exist\n    500 Internal Server Error: If caption generation fails",
+        "operationId": "create_caption_version",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          },
+          {
+            "name": "caption_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Caption Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionRegenerateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/captions/{caption_id}/regenerate": {
+      "post": {
+        "tags": [
+          "captions"
+        ],
+        "summary": "Regenerate Caption",
+        "description": "Regenerate a specific caption.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /api/v2/content/{content_id}/captions/{caption_id}/versions instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-07-21).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /content/{content_id}/captions/{caption_id}/regenerate\n- New: POST /content/{content_id}/captions/{caption_id}/versions\n- Request/response format: unchanged (CaptionRegenerateRequest)\n- Status code change: 200 OK → 201 Created\n- Parameter naming: snake_case → camelCase",
+        "operationId": "regenerate_caption_deprecated",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          },
+          {
+            "name": "caption_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Caption Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionRegenerateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/captions/{caption_id}": {
+      "delete": {
+        "tags": [
+          "captions"
+        ],
+        "summary": "Delete Caption",
+        "description": "Delete a specific caption.",
+        "operationId": "delete_caption_api_v2_content__content_id__captions__caption_id__delete",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Content Id"
+            }
+          },
+          {
+            "name": "caption_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Caption Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/captions/validations": {
+      "post": {
+        "tags": [
+          "captions"
+        ],
+        "summary": "Create Caption Validation",
+        "description": "Validate captions against brand guidelines (RMM-2 compliant).\n\nThis endpoint validates multiple captions against platform-specific requirements\nand brand guidelines, returning detailed validation results and suggestions.\n\nRMM-2 Compliance: Uses resource noun 'validations' instead of verb 'validate'.\nCreates a validation resource through POST method.",
+        "operationId": "create_caption_validation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionValidationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionValidationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/captions/validate": {
+      "post": {
+        "tags": [
+          "captions"
+        ],
+        "summary": "Validate Captions",
+        "description": "Validate captions against brand guidelines.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /captions/validations instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-04-20).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /captions/validate\n- New: POST /captions/validations\n- Request/response format: unchanged",
+        "operationId": "validate_captions_deprecated",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptionValidationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptionValidationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
     "/api/v2/content/{content_id}/approvals": {
       "post": {
         "tags": [
@@ -2991,772 +3343,6 @@
           },
           "500": {
             "description": "Failed to start workflow"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/captions": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Generate Caption",
-        "description": "Generate captions for content.",
-        "operationId": "generate_caption_api_v2_content__content_id__captions_post",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Content Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptionCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Captions",
-        "description": "Get all captions for a content item.",
-        "operationId": "get_captions_api_v2_content__content_id__captions_get",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Content Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CaptionResponse"
-                  },
-                  "title": "Response Get Captions Api V2 Content  Content Id  Captions Get"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/captions/{caption_id}/versions": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Create Caption Version",
-        "description": "Create a new version of a caption (RMM-2 compliant regeneration).\n\nThis is the REST-compliant version of caption regeneration.\nInstead of POST /regenerate (verb), we POST /versions (noun) to create a resource.\n\nBusiness Context:\n- Creates a new caption version with user feedback and adjustments\n- Maintains caption versioning history for auditing\n- Supports iterative refinement of AI-generated captions\n\nRMM-2 Compliance:\n- Uses resource noun 'versions' instead of verb 'regenerate'\n- Creates a new version resource through POST method\n- Returns 201 Created status code\n- Proper camelCase parameter naming\n\nArgs:\n    content_id: Parent content identifier\n    caption_id: Caption identifier to create new version from\n    request: Regeneration parameters (feedback, adjustments, tone)\n\nReturns:\n    CaptionResponse with the newly generated caption version\n\nRaises:\n    404 Not Found: If content or caption doesn't exist\n    500 Internal Server Error: If caption generation fails",
-        "operationId": "create_caption_version",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Content Id"
-            }
-          },
-          {
-            "name": "caption_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Caption Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptionRegenerateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/captions/{caption_id}/regenerate": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Regenerate Caption",
-        "description": "Regenerate a specific caption.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /api/v2/content/{content_id}/captions/{caption_id}/versions instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-07-21).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /content/{content_id}/captions/{caption_id}/regenerate\n- New: POST /content/{content_id}/captions/{caption_id}/versions\n- Request/response format: unchanged (CaptionRegenerateRequest)\n- Status code change: 200 OK → 201 Created\n- Parameter naming: snake_case → camelCase",
-        "operationId": "regenerate_caption_deprecated",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Content Id"
-            }
-          },
-          {
-            "name": "caption_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Caption Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptionRegenerateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/captions/{caption_id}": {
-      "delete": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Delete Caption",
-        "description": "Delete a specific caption.",
-        "operationId": "delete_caption_api_v2_content__content_id__captions__caption_id__delete",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Content Id"
-            }
-          },
-          {
-            "name": "caption_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Caption Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/captions/validations": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Create Caption Validation",
-        "description": "Validate captions against brand guidelines (RMM-2 compliant).\n\nThis endpoint validates multiple captions against platform-specific requirements\nand brand guidelines, returning detailed validation results and suggestions.\n\nRMM-2 Compliance: Uses resource noun 'validations' instead of verb 'validate'.\nCreates a validation resource through POST method.",
-        "operationId": "create_caption_validation",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptionValidationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptionValidationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/captions/validate": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Validate Captions",
-        "description": "Validate captions against brand guidelines.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /captions/validations instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-04-20).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /captions/validate\n- New: POST /captions/validations\n- Request/response format: unchanged",
-        "operationId": "validate_captions_deprecated",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptionValidationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptionValidationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/v2/images/tiers": {
-      "get": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Image Tiers",
-        "description": "Get available image generation tiers.\n\nReturns list of available image generation tiers with their features,\ncosts, and descriptions. Tiers are filtered based on user plan.\n\nArgs:\n    tier_service: Injected model tier service\n\nReturns:\n    List of available image tiers\n\nRaises:\n    HTTPException: If tier retrieval fails",
-        "operationId": "get_image_tiers_api_v2_images_tiers_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/ImageTierResponse"
-                  },
-                  "type": "array",
-                  "title": "Response Get Image Tiers Api V2 Images Tiers Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/images": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Create Image",
-        "description": "Generate an image using AI.\n\nRMM-2 compliant endpoint: POST to collection resource.\nCreates a new image resource using AI generation.\n\nArgs:\n    request: Image generation parameters including prompt, model, size, etc.\n    http_request: FastAPI request object for building Location header\n    http_response: FastAPI response object for adding Location header\n    image_service: Injected image generation service\n\nReturns:\n    ImageResponse with generated image URL and metadata\n\nRaises:\n    HTTPException 500: If image generation fails",
-        "operationId": "create_image_api_v2_images_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/images/batch": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Generate Images Batch",
-        "description": "Generate multiple images in batch.",
-        "operationId": "generate_images_batch_api_v2_images_batch_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageBatchRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageBatchResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/images/{imageId}/variants": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Create Image Variant",
-        "description": "Create a new variant of an existing image (RMM-2 compliant).\n\nThis is the REST-compliant version of image remixing.\nInstead of POST /remix (verb), we POST /variants (noun) to create a resource.\n\nBusiness Context:\n- Creates a new image variant with user-specified modifications\n- Maintains variant lineage for tracking and auditing\n- Supports iterative refinement of AI-generated images\n\nRMM-2 Compliance:\n- Uses resource noun 'variants' instead of verb 'remix'\n- Creates a new variant resource through POST method\n- Returns 201 Created status code\n- Proper camelCase parameter naming\n\nArgs:\n    imageId: Original image identifier to create variant from\n    request: Variant creation parameters (modifications, style, etc.)\n\nReturns:\n    ImageResponse with the newly generated image variant\n\nRaises:\n    404 Not Found: If original image doesn't exist\n    500 Internal Server Error: If image generation fails",
-        "operationId": "create_image_variant",
-        "parameters": [
-          {
-            "name": "imageId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Imageid"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageRemixRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/images/remix/{image_id}": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Remix Image",
-        "description": "Remix an existing image.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /api/v2/images/{imageId}/variants instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-10-21).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /images/remix/{image_id}\n- New: POST /images/{imageId}/variants\n- Request/response format: unchanged (ImageRemixRequest)\n- Status code change: 200 OK → 201 Created\n- Parameter naming: snake_case → camelCase",
-        "operationId": "remix_image_deprecated",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "image_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Image Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageRemixRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/integrations/redirects": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Integration Redirects",
-        "description": "Get OAuth redirect URI for platform integration.\n\nThis is the RMM-2 compliant endpoint that replaces /integrations/redirect-uri.\nUses single-word resource name 'redirects' instead of hyphenated 'redirect-uri'.",
-        "operationId": "get_integration_redirects_api_v2_integrations_redirects_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IntegrationRedirectRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IntegrationRedirectResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/integrations/redirect-uri": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Integration Redirect Uri",
-        "description": "Get OAuth redirect URI for platform integration.\n\nDEPRECATED: This endpoint uses a hyphenated resource name which violates RMM-2.\nUse /integrations/redirects instead. This endpoint will be removed in 6 months.\n\nDeprecation date: 2025-10-21\nRemoval date: 2026-04-21\nReplacement: POST /api/v2/integrations/redirects",
-        "operationId": "get_integration_redirect_uri_api_v2_integrations_redirect_uri_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IntegrationRedirectRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IntegrationRedirectResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/v2/integrations": {
-      "get": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Integrations",
-        "description": "Get all configured integrations.",
-        "operationId": "get_integrations_api_v2_integrations_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IntegrationsListResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/integrations/{platform}/auth": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Authenticate Integration",
-        "description": "Authenticate with a platform.",
-        "operationId": "authenticate_integration_api_v2_integrations__platform__auth_post",
-        "parameters": [
-          {
-            "name": "platform",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Platform"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IntegrationAuthRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IntegrationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/integrations/{platform}": {
-      "delete": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Disconnect Integration",
-        "description": "Disconnect a platform integration.",
-        "operationId": "disconnect_integration_api_v2_integrations__platform__delete",
-        "parameters": [
-          {
-            "name": "platform",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Platform"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -4686,7 +4272,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
@@ -5152,9 +4737,421 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Health Check Api V2 Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images/tiers": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Get Image Tiers",
+        "description": "Get available image generation tiers.\n\nReturns list of available image generation tiers with their features,\ncosts, and descriptions. Tiers are filtered based on user plan.\n\nArgs:\n    tier_service: Injected model tier service\n\nReturns:\n    List of available image tiers\n\nRaises:\n    HTTPException: If tier retrieval fails",
+        "operationId": "get_image_tiers_api_v2_images_tiers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ImageTierResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Image Tiers Api V2 Images Tiers Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Create Image",
+        "description": "Generate an image using AI.\n\nRMM-2 compliant endpoint: POST to collection resource.\nCreates a new image resource using AI generation.\n\nArgs:\n    request: Image generation parameters including prompt, model, size, etc.\n    http_request: FastAPI request object for building Location header\n    http_response: FastAPI response object for adding Location header\n    image_service: Injected image generation service\n\nReturns:\n    ImageResponse with generated image URL and metadata\n\nRaises:\n    HTTPException 500: If image generation fails",
+        "operationId": "create_image_api_v2_images_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images/batch": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Generate Images Batch",
+        "description": "Generate multiple images in batch.",
+        "operationId": "generate_images_batch_api_v2_images_batch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageBatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageBatchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images/{imageId}/variants": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Create Image Variant",
+        "description": "Create a new variant of an existing image (RMM-2 compliant).\n\nThis is the REST-compliant version of image remixing.\nInstead of POST /remix (verb), we POST /variants (noun) to create a resource.\n\nBusiness Context:\n- Creates a new image variant with user-specified modifications\n- Maintains variant lineage for tracking and auditing\n- Supports iterative refinement of AI-generated images\n\nRMM-2 Compliance:\n- Uses resource noun 'variants' instead of verb 'remix'\n- Creates a new variant resource through POST method\n- Returns 201 Created status code\n- Proper camelCase parameter naming\n\nArgs:\n    imageId: Original image identifier to create variant from\n    request: Variant creation parameters (modifications, style, etc.)\n\nReturns:\n    ImageResponse with the newly generated image variant\n\nRaises:\n    404 Not Found: If original image doesn't exist\n    500 Internal Server Error: If image generation fails",
+        "operationId": "create_image_variant",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Imageid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageRemixRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/images/remix/{image_id}": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Remix Image",
+        "description": "Remix an existing image.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /api/v2/images/{imageId}/variants instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-10-21).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /images/remix/{image_id}\n- New: POST /images/{imageId}/variants\n- Request/response format: unchanged (ImageRemixRequest)\n- Status code change: 200 OK → 201 Created\n- Parameter naming: snake_case → camelCase",
+        "operationId": "remix_image_deprecated",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageRemixRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations/redirects": {
+      "post": {
+        "tags": [
+          "integrations"
+        ],
+        "summary": "Get Integration Redirects",
+        "description": "Get OAuth redirect URI for platform integration.\n\nThis is the RMM-2 compliant endpoint that replaces /integrations/redirect-uri.\nUses single-word resource name 'redirects' instead of hyphenated 'redirect-uri'.",
+        "operationId": "get_integration_redirects_api_v2_integrations_redirects_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationRedirectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationRedirectResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations/redirect-uri": {
+      "post": {
+        "tags": [
+          "integrations"
+        ],
+        "summary": "Get Integration Redirect Uri",
+        "description": "Get OAuth redirect URI for platform integration.\n\nDEPRECATED: This endpoint uses a hyphenated resource name which violates RMM-2.\nUse /integrations/redirects instead. This endpoint will be removed in 6 months.\n\nDeprecation date: 2025-10-21\nRemoval date: 2026-04-21\nReplacement: POST /api/v2/integrations/redirects",
+        "operationId": "get_integration_redirect_uri_api_v2_integrations_redirect_uri_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationRedirectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationRedirectResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/v2/integrations": {
+      "get": {
+        "tags": [
+          "integrations"
+        ],
+        "summary": "Get Integrations",
+        "description": "Get all configured integrations.",
+        "operationId": "get_integrations_api_v2_integrations_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationsListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations/{platform}/auth": {
+      "post": {
+        "tags": [
+          "integrations"
+        ],
+        "summary": "Authenticate Integration",
+        "description": "Authenticate with a platform.",
+        "operationId": "authenticate_integration_api_v2_integrations__platform__auth_post",
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Platform"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationAuthRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/integrations/{platform}": {
+      "delete": {
+        "tags": [
+          "integrations"
+        ],
+        "summary": "Disconnect Integration",
+        "description": "Disconnect a platform integration.",
+        "operationId": "disconnect_integration_api_v2_integrations__platform__delete",
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Platform"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -5168,7 +5165,7 @@
           "integrations"
         ],
         "summary": "Instagram Oauth",
-        "description": "Handle Instagram OAuth token exchange.\n\nExchanges Instagram authorization code for long-lived access token and\nstores the integration in the database.\n\n**OAuth Flow**:\n1. User authorizes app on Instagram\n2. Instagram redirects with authorization code\n3. This endpoint exchanges code for long-lived token (60 days)\n4. Stores user's Instagram credentials\n\n**RMM Level 2 Compliance**:\n- Resource: /integrations/instagram/oauth (noun-based)\n- HTTP Method: POST (creates new OAuth integration)\n- Status Code: 201 Created (resource creation)\n\nArgs:\n    request: Instagram OAuth request with authorization code\n    instagram_oauth_service: Injected Instagram OAuth service\n    auth_service: Injected authentication service\n\nReturns:\n    Instagram OAuth response with user info and token details\n\nRaises:\n    HTTPException: If OAuth exchange fails",
+        "description": "Exchange Instagram OAuth authorization code for access token.\n\nThis endpoint handles the Instagram OAuth callback by:\n1. Exchanging the authorization code for a short-lived token\n2. Exchanging the short-lived token for a long-lived token (60 days)\n3. Fetching user profile information\n4. Storing the integration in the database\n\nRMM Level 2 Compliance:\n- POST to /integrations/instagram/oauth creates a new OAuth integration\n- HTTP verb (POST) indicates resource creation\n- Returns 201 Created on success\n\nArgs:\n    request: Instagram OAuth request with authorization code and redirect URI\n    instagram_oauth_service: Injected Instagram OAuth service\n\nReturns:\n    Instagram OAuth response with access token and user info\n\nRaises:\n    HTTPException: 400 if OAuth exchange fails (invalid code, etc.)\n    HTTPException: 500 if server error occurs",
         "operationId": "instagram_oauth_api_v2_integrations_instagram_oauth_post",
         "requestBody": {
           "content": {
@@ -6119,7 +6116,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Root  Get"
                 }
@@ -6927,7 +6923,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7272,7 +7267,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7339,7 +7333,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7933,7 +7926,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8018,7 +8010,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -8179,7 +8170,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8458,7 +8448,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8488,7 +8477,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -8632,7 +8620,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8706,7 +8693,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8868,7 +8854,6 @@
           "adjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8988,7 +8973,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -9030,7 +9014,6 @@
           "brandGuidelines": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9057,7 +9040,6 @@
           },
           "results": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9232,7 +9214,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -9293,7 +9274,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9333,7 +9313,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -9377,7 +9356,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9457,7 +9435,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9721,7 +9698,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9969,7 +9945,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10957,7 +10932,6 @@
           },
           "crawledPages": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -11382,7 +11356,6 @@
           "colorAdjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11450,7 +11423,6 @@
             "description": "Generation timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -11708,7 +11680,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11868,7 +11839,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -12137,6 +12107,7 @@
         "enum": [
           "completed"
         ],
+        "const": "completed",
         "title": "OnboardingStatus",
         "description": "Enum for onboarding completion status."
       },
@@ -12926,7 +12897,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12987,13 +12957,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -13069,13 +13037,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -13204,7 +13170,6 @@
           "frequencyRules": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13216,7 +13181,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14127,7 +14091,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {

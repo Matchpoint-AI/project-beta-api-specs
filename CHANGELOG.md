@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.60] - 2025-12-06
+
+### Changes
+- Merge pull request #607 from Matchpoint-AI/refactor/574-split-controller
+
+**Source:** project-beta-api@0cab4f8 "Merge pull request #607 from Matchpoint-AI/refactor/574-split-controller"
+
 ## [v0.7.59] - 2025-12-06
 
 ### Changes
