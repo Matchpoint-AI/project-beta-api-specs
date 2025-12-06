@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.56] - 2025-12-06
+
+### Changes
+- fix: Prevent SQL error leak on large campaign IDs (#609)
+
+**Source:** project-beta-api@81540c6 "fix: Prevent SQL error leak on large campaign IDs (#609)"
+
 ## [v0.7.55] - 2025-12-06
 
 ### Changes
