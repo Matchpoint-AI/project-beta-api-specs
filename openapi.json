@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.51"
+    "version": "0.7.52"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2123,7 +2123,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__schemas__campaign_approval__BulkApprovalRequest"
+                "$ref": "#/components/schemas/BulkApprovalRequest"
               }
             }
           }
@@ -2134,7 +2134,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/src__schemas__campaign_approval__BulkApprovalResponse"
+                  "$ref": "#/components/schemas/BulkApprovalResponse"
                 }
               }
             }
@@ -14171,7 +14171,7 @@
         "title": "CrawlPageRequest",
         "description": "Request for crawling a single page."
       },
-      "src__schemas__campaign_approval__BulkApprovalRequest": {
+      "BulkApprovalRequest": {
         "properties": {
           "weeks": {
             "items": {
@@ -14196,7 +14196,7 @@
         "title": "BulkApprovalRequest",
         "description": "Request schema for bulk approving campaign content.\n\nThis is a V2 replacement for V1's /api/v1/approve-all endpoint.\nAllows bulk approval of content for specified weeks."
       },
-      "src__schemas__campaign_approval__BulkApprovalResponse": {
+      "BulkApprovalResponse": {
         "properties": {
           "approved_count": {
             "type": "integer",
@@ -14231,53 +14231,6 @@
         ],
         "title": "BulkApprovalResponse",
         "description": "Response schema for bulk approval operation.\n\nReturns counts of approved/failed approvals and detailed results."
-      },
-      "src__schemas__content__BulkApprovalRequest": {
-        "properties": {
-          "contentIds": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Contentids"
-          }
-        },
-        "type": "object",
-        "title": "BulkApprovalRequest",
-        "description": "Schema for bulk content approval request."
-      },
-      "src__schemas__content__BulkApprovalResponse": {
-        "properties": {
-          "approvedCount": {
-            "type": "integer",
-            "title": "Approvedcount"
-          },
-          "failedCount": {
-            "type": "integer",
-            "title": "Failedcount"
-          },
-          "failedIds": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Failedids"
-          }
-        },
-        "type": "object",
-        "required": [
-          "approvedCount",
-          "failedCount"
-        ],
-        "title": "BulkApprovalResponse",
-        "description": "Schema for bulk content approval response."
       },
       "src__schemas__crawled_pages__CrawlPageRequest": {
         "properties": {

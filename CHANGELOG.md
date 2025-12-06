@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.52] - 2025-12-06
+
+### Changes
+- Merge pull request #599 from Matchpoint-AI/fix/527-duplicate-endpoint
+
+**Source:** project-beta-api@387b790 "Merge pull request #599 from Matchpoint-AI/fix/527-duplicate-endpoint"
+
 ## [v0.7.51] - 2025-12-06
 
 ### Changes
