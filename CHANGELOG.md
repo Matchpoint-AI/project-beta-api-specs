@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.49] - 2025-12-06
+
+### Changes
+- feat: Improve test coverage to 90% threshold (#592)
+
+**Source:** project-beta-api@51bad5b "feat: Improve test coverage to 90% threshold (#592)"
+
 ## [v0.7.48] - 2025-12-06
 
 ### Changes
