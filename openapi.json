@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.42"
+    "version": "0.7.43"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2647,100 +2647,6 @@
         }
       }
     },
-    "/api/v2/campaigns/{campaign_id}/content": {
-      "get": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Get Campaign Content",
-        "description": "Get content for a campaign.\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.",
-        "operationId": "get_campaign_content_api_v2_campaigns__campaign_id__content_get",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GeneratedContent"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Generate Campaign Content",
-        "description": "Generate content for a campaign.\n\nThis is the RMM Level 2 compliant endpoint for generating content for a specific campaign.\nCreates a new content record associated with the campaign.",
-        "operationId": "generate_campaign_content_api_v2_campaigns__campaign_id__content_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/content/{content_id}/approvals": {
       "post": {
         "tags": [
@@ -2825,6 +2731,100 @@
         },
         "responses": {
           "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/content": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Campaign Content",
+        "description": "Get content for a campaign.\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.",
+        "operationId": "get_campaign_content_api_v2_campaigns__campaign_id__content_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedContent"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Generate Campaign Content",
+        "description": "Generate content for a campaign.\n\nThis is the RMM Level 2 compliant endpoint for generating content for a specific campaign.\nCreates a new content record associated with the campaign.",
+        "operationId": "generate_campaign_content_api_v2_campaigns__campaign_id__content_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -5971,49 +5971,6 @@
         }
       }
     },
-    "/api/v2/utilities/color-names": {
-      "post": {
-        "tags": [
-          "Utilities"
-        ],
-        "summary": "Convert hex codes to color names (DEPRECATED)",
-        "description": "DEPRECATED: Use /utilities/colors instead. This endpoint will be removed after 2025-07-21.",
-        "operationId": "convert_hex_to_color_names_deprecated_api_v2_utilities_color_names_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ColorNameRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ColorNameResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
     "/api/v2/utilities/fetch-url-content": {
       "post": {
         "tags": [
@@ -7857,27 +7814,6 @@
         ],
         "title": "CampaignApprovalStatus",
         "description": "Response schema for campaign approval status.\n\nReturns the overall approval status and counts for a campaign."
-      },
-      "CampaignContentResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "arr": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Arr"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "title": "CampaignContentResponse",
-        "description": "Schema for complete campaign content response.\n\nMatches V1 response format: {id: str, arr: [week1, week2, ...]}.\nThis is the exact structure returned by GET /api/v1/get-content."
       },
       "CampaignCreate": {
         "properties": {

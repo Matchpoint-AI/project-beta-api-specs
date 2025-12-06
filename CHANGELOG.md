@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.43] - 2025-12-06
+
+### Changes
+- fix: Remove duplicate routes, dead code, and past-sunset deprecated endpoints (#577)
+
+**Source:** project-beta-api@b030758 "fix: Remove duplicate routes, dead code, and past-sunset deprecated endpoints (#577)"
+
 ## [v0.7.42] - 2025-12-05
 
 ### Changes
