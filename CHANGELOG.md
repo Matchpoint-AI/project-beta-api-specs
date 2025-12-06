@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.51] - 2025-12-06
+
+### Changes
+- fix: Remove forward reference from AuthService in UserService provider (#555) (#594)
+
+**Source:** project-beta-api@44d5df6 "fix: Remove forward reference from AuthService in UserService provider (#555) (#594)"
+
 ## [v0.7.50] - 2025-12-06
 
 ### Changes
