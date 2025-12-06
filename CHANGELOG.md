@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.48] - 2025-12-06
+
+### Changes
+- Merge pull request #593 from Matchpoint-AI/docs/569-agent-comment-monitoring
+
+**Source:** project-beta-api@e337422 "Merge pull request #593 from Matchpoint-AI/docs/569-agent-comment-monitoring"
+
 ## [v0.7.47] - 2025-12-06
 
 ### Changes
