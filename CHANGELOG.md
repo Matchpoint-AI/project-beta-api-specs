@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.47] - 2025-12-06
+
+### Changes
+- Merge pull request #586 from Matchpoint-AI/ai/github-commenting-guidance
+
+**Source:** project-beta-api@c2fbd98 "Merge pull request #586 from Matchpoint-AI/ai/github-commenting-guidance"
+
 ## [v0.7.46] - 2025-12-06
 
 ### Changes
