@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.44] - 2025-12-06
+
+### Changes
+- Merge pull request #584 from Matchpoint-AI/fix/583-parallel-tests
+
+**Source:** project-beta-api@037f578 "Merge pull request #584 from Matchpoint-AI/fix/583-parallel-tests"
+
 ## [v0.7.43] - 2025-12-06
 
 ### Changes
