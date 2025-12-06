@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.56"
+    "version": "0.7.58"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1570,14 +1570,19 @@
           "campaigns"
         ],
         "summary": "Create Campaign",
-        "description": "Create a new campaign.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.",
+        "description": "Create a new campaign.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.\nUser ID is extracted from the authenticated user's JWT token for security.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Campaign creation request (user_id extracted from JWT, not body)",
         "operationId": "create_campaign_api_v2_campaigns_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CampaignCreate"
+                "$ref": "#/components/schemas/CampaignCreateRequest"
               }
             }
           }
@@ -1595,6 +1600,9 @@
           },
           "400": {
             "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing authentication token"
           },
           "409": {
             "description": "Campaign with this name already exists"
@@ -2997,65 +3005,6 @@
         }
       }
     },
-    "/api/v2/campaigns/{campaign_id}/content/approve-all": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Bulk Approve Campaign Content",
-        "description": "Bulk approve all content for a campaign.\n\nDirect port from V1 POST /api/v1/approve-all endpoint.\nUsed by ExportComponent.tsx for bulk content approval before export.\n\nRMM L2 Rationale:\n- This is a bulk operation on content resources within a campaign\n- POST creates approval state changes for multiple content items\n- Returns counts of successful and failed approvals\n\nThis endpoint:\n- Approves all content items for a campaign\n- Uses database transaction to ensure atomicity\n- Returns counts of approved/failed items and failed IDs\n- Handles partial failures gracefully",
-        "operationId": "bulk_approve_campaign_content_api_v2_campaigns__campaign_id__content_approve_all_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BulkContentApprovalRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Bulk approval completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BulkContentApprovalResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign or content not found"
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/content/{content_id}/captions": {
       "post": {
         "tags": [
@@ -4072,6 +4021,65 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/content/approve-all": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Bulk Approve Campaign Content",
+        "description": "Bulk approve all content for a campaign.\n\nDirect port from V1 POST /api/v1/approve-all endpoint.\nUsed by ExportComponent.tsx for bulk content approval before export.\n\nRMM L2 Rationale:\n- This is a bulk operation on content resources within a campaign\n- POST creates approval state changes for multiple content items\n- Returns counts of successful and failed approvals\n\nThis endpoint:\n- Approves all content items for a campaign\n- Uses database transaction to ensure atomicity\n- Returns counts of approved/failed items and failed IDs\n- Handles partial failures gracefully",
+        "operationId": "bulk_approve_campaign_content_api_v2_campaigns__campaign_id__content_approve_all_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkContentApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bulk approval completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkContentApprovalResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign or content not found"
+          },
+          "400": {
+            "description": "Invalid request data"
           },
           "422": {
             "description": "Validation Error",
@@ -7740,6 +7748,67 @@
         "title": "BrandUpdate",
         "description": "Schema for updating an existing brand."
       },
+      "BulkApprovalRequest": {
+        "properties": {
+          "weeks": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Weeks",
+            "description": "List of week identifiers to approve (e.g., ['week_1', 'week_2'])"
+          },
+          "approve_all": {
+            "type": "boolean",
+            "title": "Approve All",
+            "description": "Whether to approve all content in specified weeks",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "weeks"
+        ],
+        "title": "BulkApprovalRequest",
+        "description": "Request schema for bulk approving campaign content.\n\nThis is a V2 replacement for V1's /api/v1/approve-all endpoint.\nAllows bulk approval of content for specified weeks."
+      },
+      "BulkApprovalResponse": {
+        "properties": {
+          "approved_count": {
+            "type": "integer",
+            "title": "Approved Count",
+            "description": "Number of days successfully approved"
+          },
+          "failed_count": {
+            "type": "integer",
+            "title": "Failed Count",
+            "description": "Number of days that failed to approve"
+          },
+          "skipped_count": {
+            "type": "integer",
+            "title": "Skipped Count",
+            "description": "Number of days skipped (no content or already approved)",
+            "default": 0
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/ApprovalDetail"
+            },
+            "type": "array",
+            "title": "Details",
+            "description": "Detailed results for each day processed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "approved_count",
+          "failed_count",
+          "details"
+        ],
+        "title": "BulkApprovalResponse",
+        "description": "Response schema for bulk approval operation.\n\nReturns counts of approved/failed approvals and detailed results."
+      },
       "BulkContentApprovalRequest": {
         "properties": {
           "content_ids": {
@@ -7822,7 +7891,7 @@
         "title": "CampaignApprovalStatus",
         "description": "Response schema for campaign approval status.\n\nReturns the overall approval status and counts for a campaign."
       },
-      "CampaignCreate": {
+      "CampaignCreateRequest": {
         "properties": {
           "name": {
             "type": "string",
@@ -7873,21 +7942,14 @@
             ],
             "additionalProperties": true,
             "title": "Campaign Variables"
-          },
-          "userId": {
-            "type": "string",
-            "minLength": 1,
-            "title": "User ID",
-            "description": "ID of the user creating the campaign"
           }
         },
         "type": "object",
         "required": [
-          "name",
-          "userId"
+          "name"
         ],
-        "title": "CampaignCreate",
-        "description": "Schema for creating a new campaign."
+        "title": "CampaignCreateRequest",
+        "description": "Schema for API request to create a new campaign.\n\nNote: user_id is extracted from JWT token, not from request body.\nThis prevents users from creating campaigns on behalf of others."
       },
       "CampaignExportApprovalStatus": {
         "properties": {
@@ -14170,67 +14232,6 @@
         ],
         "title": "CrawlPageRequest",
         "description": "Request for crawling a single page."
-      },
-      "BulkApprovalRequest": {
-        "properties": {
-          "weeks": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "minItems": 1,
-            "title": "Weeks",
-            "description": "List of week identifiers to approve (e.g., ['week_1', 'week_2'])"
-          },
-          "approve_all": {
-            "type": "boolean",
-            "title": "Approve All",
-            "description": "Whether to approve all content in specified weeks",
-            "default": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "weeks"
-        ],
-        "title": "BulkApprovalRequest",
-        "description": "Request schema for bulk approving campaign content.\n\nThis is a V2 replacement for V1's /api/v1/approve-all endpoint.\nAllows bulk approval of content for specified weeks."
-      },
-      "BulkApprovalResponse": {
-        "properties": {
-          "approved_count": {
-            "type": "integer",
-            "title": "Approved Count",
-            "description": "Number of days successfully approved"
-          },
-          "failed_count": {
-            "type": "integer",
-            "title": "Failed Count",
-            "description": "Number of days that failed to approve"
-          },
-          "skipped_count": {
-            "type": "integer",
-            "title": "Skipped Count",
-            "description": "Number of days skipped (no content or already approved)",
-            "default": 0
-          },
-          "details": {
-            "items": {
-              "$ref": "#/components/schemas/ApprovalDetail"
-            },
-            "type": "array",
-            "title": "Details",
-            "description": "Detailed results for each day processed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "approved_count",
-          "failed_count",
-          "details"
-        ],
-        "title": "BulkApprovalResponse",
-        "description": "Response schema for bulk approval operation.\n\nReturns counts of approved/failed approvals and detailed results."
       },
       "src__schemas__crawled_pages__CrawlPageRequest": {
         "properties": {
