@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.46] - 2025-12-06
+
+### Changes
+- Merge pull request #589 from Matchpoint-AI/fix/588-ci-skipped-checks
+
+**Source:** project-beta-api@62b5ade "Merge pull request #589 from Matchpoint-AI/fix/588-ci-skipped-checks"
+
 ## [v0.7.45] - 2025-12-06
 
 ### Changes
