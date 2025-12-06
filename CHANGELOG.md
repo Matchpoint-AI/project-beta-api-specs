@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.45] - 2025-12-06
+
+### Changes
+- feat: Integrate ContentService into generate_campaign_content endpoint (#582)
+
+**Source:** project-beta-api@3ae59e2 "feat: Integrate ContentService into generate_campaign_content endpoint (#582)"
+
 ## [v0.7.44] - 2025-12-06
 
 ### Changes
