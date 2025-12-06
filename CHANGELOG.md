@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.50] - 2025-12-06
+
+### Changes
+- fix(content): make user_id optional in ContentCreate schema (#597)
+
+**Source:** project-beta-api@4ebf1e1 "fix(content): make user_id optional in ContentCreate schema (#597)"
+
 ## [v0.7.49] - 2025-12-06
 
 ### Changes

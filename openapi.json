@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.49"
+    "version": "0.7.50"
   },
   "paths": {
     "/api/v2/brands": {
@@ -9193,7 +9193,14 @@
             "title": "Campaignid"
           },
           "userId": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Userid"
           },
           "readyForReview": {
@@ -9236,8 +9243,7 @@
         },
         "type": "object",
         "required": [
-          "campaignId",
-          "userId"
+          "campaignId"
         ],
         "title": "ContentCreate",
         "description": "Schema for creating content."
