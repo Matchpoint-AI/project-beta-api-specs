@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.68] - 2025-12-07
+
+### Changes
+- Merge pull request #634 from Matchpoint-AI/test/ci-filtering
+
+**Source:** project-beta-api@6983798 "Merge pull request #634 from Matchpoint-AI/test/ci-filtering"
+
 ## [v0.7.67] - 2025-12-07
 
 ### Changes
