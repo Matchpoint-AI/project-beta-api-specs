@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.70] - 2025-12-07
+
+### Changes
+- ci: Migrate Docker builds to GitHub Actions (#636)
+
+**Source:** project-beta-api@d98dd55 "ci: Migrate Docker builds to GitHub Actions (#636)"
+
 ## [v0.7.69] - 2025-12-07
 
 ### Changes
