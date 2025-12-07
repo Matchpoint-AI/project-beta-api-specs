@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.64] - 2025-12-07
+
+### Changes
+- Merge pull request #623 from Matchpoint-AI/docs/537-ci-filtering-patterns
+
+**Source:** project-beta-api@5edfd31 "Merge pull request #623 from Matchpoint-AI/docs/537-ci-filtering-patterns"
+
 ## [v0.7.63] - 2025-12-06
 
 ### Changes
