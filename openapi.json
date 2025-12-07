@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.68"
+    "version": "0.7.69"
   },
   "paths": {
     "/api/v2/brands": {
@@ -235,116 +235,6 @@
         }
       }
     },
-    "/api/v2/brands/with-files": {
-      "post": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Create Brand With Files",
-        "description": "[DEPRECATED] Create a new brand with file uploads.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use POST /brands for JSON-based brand creation with URLs\n- For file uploads, consider using separate file upload endpoints\n- Hyphenated path segments violate RMM Level 2 principles\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (hyphenated segment)\n\nCreates a new brand with server-generated ID and handles file uploads for\nbrand guidelines (PDF) and logo (PNG/JPEG/JPG). Files are uploaded to\nGoogle Cloud Storage and URLs are stored in the brand record.",
-        "operationId": "create_brand_with_files_api_v2_brands_with_files_post",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_create_brand_with_files_api_v2_brands_with_files_post"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Brand created successfully with file uploads",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data or file validation failed"
-          },
-          "409": {
-            "description": "Brand with this name already exists"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/v2/brands/{brand_id}/with-files": {
-      "put": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Update Brand With Files",
-        "description": "[DEPRECATED] Update an existing brand with file uploads.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use PUT /brands/{brand_id} for JSON-based brand updates\n- Use PUT /brands/{brand_id}/files for file-specific updates\n- Hyphenated path segments violate RMM Level 2 principles\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (hyphenated segment)\n\nUpdates an existing brand and handles file uploads for brand guidelines (PDF)\nand logo (PNG/JPEG/JPG). New files replace existing ones. Returns 404 if the\nbrand doesn't exist. Only provided fields will be updated (partial update).",
-        "operationId": "update_brand_with_files_api_v2_brands__brand_id__with_files_put",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_update_brand_with_files_api_v2_brands__brand_id__with_files_put"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Brand updated successfully with file uploads",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "400": {
-            "description": "Invalid request data or file validation failed"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/brands/{brand_id}/colors": {
       "put": {
         "tags": [
@@ -465,55 +355,6 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/extraction/progress": {
-      "get": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Get Extraction Progress",
-        "description": "Real-time progress updates during brand data extraction.\n\n**DEPRECATED**: Use GET /brands/{brand_id}/workflows/{workflow_id} instead.\nThis endpoint will be removed after 2025-04-20 (6-month deprecation period).\n\nReturns detailed progress information for the brand extraction workflow.\nSupports polling for real-time updates.",
-        "operationId": "get_extraction_progress_api_v2_brands__brand_id__extraction_progress_get",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Progress data retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandExtractionProgressResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand or extraction job not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/brands/{brand_id}/onboarding/progress": {
       "patch": {
         "tags": [
@@ -609,68 +450,6 @@
         "responses": {
           "200": {
             "description": "Brand onboarding status updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandOnboardingCompleteResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Required approvals missing"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/complete": {
-      "post": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Complete Brand Onboarding",
-        "description": "[DEPRECATED] Mark brand onboarding as complete and finalize brand profile.\n\n**This endpoint is deprecated and will be removed in 6 months.**\n\n**Migration Guide:**\n- Use PATCH /brands/{brand_id}/status instead for RMM Level 2 compliance\n- Verb in path violates Richardson Maturity Model Level 2 principles\n- Same request/response format as new endpoint\n\n**Deprecation Details:**\n- Deprecated: 2025-10-19\n- Planned Removal: 2026-04-19\n- Reason: Non-compliant with Richardson Maturity Model Level 2 (verb in path)\n\nValidates that all required approvals have been given and marks\nthe brand onboarding process as completed.",
-        "operationId": "complete_brand_onboarding_api_v2_brands__brand_id__complete_post",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BrandOnboardingComplete"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Brand onboarding completed successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -2815,69 +2594,6 @@
         }
       }
     },
-    "/api/v2/content/{content_id}/captions/{caption_id}/regenerate": {
-      "post": {
-        "tags": [
-          "captions"
-        ],
-        "summary": "Regenerate Caption",
-        "description": "Regenerate a specific caption.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /api/v2/content/{content_id}/captions/{caption_id}/versions instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-07-21).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /content/{content_id}/captions/{caption_id}/regenerate\n- New: POST /content/{content_id}/captions/{caption_id}/versions\n- Request/response format: unchanged (CaptionRegenerateRequest)\n- Status code change: 200 OK → 201 Created\n- Parameter naming: snake_case → camelCase",
-        "operationId": "regenerate_caption_deprecated",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Content Id"
-            }
-          },
-          {
-            "name": "caption_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Caption Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptionRegenerateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/content/{content_id}/captions/{caption_id}": {
       "delete": {
         "tags": [
@@ -2963,49 +2679,6 @@
             }
           }
         }
-      }
-    },
-    "/api/v2/captions/validate": {
-      "post": {
-        "tags": [
-          "captions"
-        ],
-        "summary": "Validate Captions",
-        "description": "Validate captions against brand guidelines.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /captions/validations instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-04-20).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /captions/validate\n- New: POST /captions/validations\n- Request/response format: unchanged",
-        "operationId": "validate_captions_deprecated",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptionValidationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptionValidationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
       }
     },
     "/api/v2/content/{content_id}/approvals": {
@@ -3388,60 +3061,6 @@
         },
         "responses": {
           "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UpdateTextVersionsResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/text-versions": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Update text versions for content (DEPRECATED)",
-        "description": "DEPRECATED: Use /content/{content_id}/versions instead. This endpoint will be removed after 6 months (2025-04-20).",
-        "operationId": "update_text_versions_api_v2_content__content_id__text_versions_post",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Content Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTextVersionsRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -4909,60 +4528,6 @@
         }
       }
     },
-    "/api/v2/images/remix/{image_id}": {
-      "post": {
-        "tags": [
-          "images"
-        ],
-        "summary": "Remix Image",
-        "description": "Remix an existing image.\n\n**DEPRECATED**: This endpoint is deprecated. Use POST /api/v2/images/{imageId}/variants instead.\n\nThis endpoint will be removed after a 6-month deprecation period (2025-10-21).\n\nDeprecation Reason: RMM-2 compliance - endpoint URLs should use nouns (resources)\nnot verbs (actions). Use HTTP methods to express actions instead.\n\nMigration Guide:\n- Old: POST /images/remix/{image_id}\n- New: POST /images/{imageId}/variants\n- Request/response format: unchanged (ImageRemixRequest)\n- Status code change: 200 OK → 201 Created\n- Parameter naming: snake_case → camelCase",
-        "operationId": "remix_image_deprecated",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "image_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Image Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageRemixRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/integrations/redirects": {
       "post": {
         "tags": [
@@ -6210,86 +5775,6 @@
           ]
         }
       },
-      "Body_create_brand_with_files_api_v2_brands_with_files_post": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Brand name"
-          },
-          "website": {
-            "type": "string",
-            "title": "Website",
-            "description": "Brand website URL"
-          },
-          "brand_colors": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Brand Colors",
-            "description": "JSON array of RGB hex codes"
-          },
-          "industry": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Industry",
-            "description": "Brand industry"
-          },
-          "target_audience": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Audience",
-            "description": "Target audience description"
-          },
-          "brand_guidelines": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "binary"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Brand Guidelines"
-          },
-          "logo": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "binary"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Logo"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "website"
-        ],
-        "title": "Body_create_brand_with_files_api_v2_brands_with_files_post"
-      },
       "Body_update_brand_files_api_v2_brands__brand_id__files_put": {
         "properties": {
           "name": {
@@ -6379,96 +5864,6 @@
         },
         "type": "object",
         "title": "Body_update_brand_files_api_v2_brands__brand_id__files_put"
-      },
-      "Body_update_brand_with_files_api_v2_brands__brand_id__with_files_put": {
-        "properties": {
-          "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name",
-            "description": "Brand name"
-          },
-          "website": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Website",
-            "description": "Brand website URL"
-          },
-          "brand_colors": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Brand Colors",
-            "description": "JSON array of RGB hex codes"
-          },
-          "industry": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Industry",
-            "description": "Brand industry"
-          },
-          "target_audience": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Audience",
-            "description": "Target audience"
-          },
-          "brand_guidelines": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "binary"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Brand Guidelines"
-          },
-          "logo": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "binary"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Logo"
-          }
-        },
-        "type": "object",
-        "title": "Body_update_brand_with_files_api_v2_brands__brand_id__with_files_put"
       },
       "Body_upload_brand_files_api_v2_brands__brand_id__files_post": {
         "properties": {

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.69] - 2025-12-07
+
+### Changes
+- feat: Remove deprecated endpoints after frontend migration (#629)
+
+**Source:** project-beta-api@dfb9e41 "feat: Remove deprecated endpoints after frontend migration (#629)"
+
 ## [v0.7.68] - 2025-12-07
 
 ### Changes
