@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.73] - 2025-12-08
+
+### Changes
+- Merge pull request #644 from Matchpoint-AI/fix/642-db-singleton-proper
+
+**Source:** project-beta-api@48a8b3f "Merge pull request #644 from Matchpoint-AI/fix/642-db-singleton-proper"
+
 ## [v0.7.72] - 2025-12-08
 
 ### Changes
