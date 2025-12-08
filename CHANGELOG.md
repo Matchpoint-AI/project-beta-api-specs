@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.76] - 2025-12-08
+
+### Changes
+- Merge pull request #658 from Matchpoint-AI/fix/646-add-fal-api-key-env
+
+**Source:** project-beta-api@e0cda11 "Merge pull request #658 from Matchpoint-AI/fix/646-add-fal-api-key-env"
+
 ## [v0.7.75] - 2025-12-08
 
 ### Changes
