@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.77"
+    "version": "0.7.78"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5614,6 +5614,42 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required or token invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/users/me/verifications": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Resend Verification Email",
+        "description": "Resend email verification email to current user.\n\nResends the email verification email with a new verification token\nto the currently authenticated user. Only works for native auth users\nwho have not yet verified their email.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /users/me/verifications\n- HTTP method (POST) indicates create action\n- No verbs in URL path\n- Uses /me convention for current authenticated user\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    user_service: Injected user service\n\nReturns:\n    ResendVerificationResponse with success status and message\n\nRaises:\n    HTTPException 400: If email already verified or user not eligible\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 500: If email send fails or server error occurs",
+        "operationId": "resend_verification_email_api_v2_users_me_verifications_post",
+        "responses": {
+          "200": {
+            "description": "Verification email resent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResendVerificationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email already verified or user not eligible"
           },
           "401": {
             "description": "Authentication required or token invalid"
@@ -12320,6 +12356,27 @@
         ],
         "title": "RenderPageRequest",
         "description": "Request model for rendering a JavaScript-heavy page with Playwright."
+      },
+      "ResendVerificationResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "User-friendly message"
+          },
+          "emailSent": {
+            "type": "boolean",
+            "title": "Emailsent",
+            "description": "Whether email was sent successfully"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "emailSent"
+        ],
+        "title": "ResendVerificationResponse",
+        "description": "Schema for resend verification email response.\n\nReturned after resending verification email."
       },
       "ResetPasswordRequest": {
         "properties": {

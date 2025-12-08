@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.78] - 2025-12-08
+
+### Changes
+- Merge pull request #660 from Matchpoint-AI/fix/645-email-resend
+
+**Source:** project-beta-api@f0cf207 "Merge pull request #660 from Matchpoint-AI/fix/645-email-resend"
+
 ## [v0.7.77] - 2025-12-08
 
 ### Changes
