@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.75] - 2025-12-08
+
+### Changes
+- feat: Add password reset flow (forgot password) (#653)
+
+**Source:** project-beta-api@0cf2ecc "feat: Add password reset flow (forgot password) (#653)"
+
 ## [v0.7.74] - 2025-12-08
 
 ### Changes

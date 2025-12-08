@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.74"
+    "version": "0.7.75"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5503,6 +5503,99 @@
         ]
       }
     },
+    "/api/v2/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Forgot Password",
+        "description": "Initiate password reset flow by sending email with reset token.\n\nSecurity consideration: Always returns success message regardless of whether\nemail exists, to prevent email enumeration attacks.\n\nRMM Level 2 Compliance:\n- POST to /auth/forgot-password initiates password reset\n- HTTP verb (POST) indicates action\n- Returns generic success message for security\n\nArgs:\n    request: Forgot password request with email\n\nReturns:\n    ForgotPasswordResponse with generic success message",
+        "operationId": "forgot_password_api_v2_auth_forgot_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset email sent (if email exists)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForgotPasswordResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/auth/reset-password": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Reset Password",
+        "description": "Reset password using reset token from email.\n\nRMM Level 2 Compliance:\n- POST to /auth/reset-password resets password\n- HTTP verb (POST) indicates action\n- Returns success message after password reset\n\nArgs:\n    request: Reset password request with token and new password\n\nReturns:\n    ResetPasswordResponse with success message\n\nRaises:\n    HTTPException 400: If reset token is invalid or expired\n    HTTPException 500: If password reset fails",
+        "operationId": "reset_password_api_v2_auth_reset_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired reset token"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/users/me": {
       "get": {
         "tags": [
@@ -10464,6 +10557,35 @@
         "title": "ExtractKnowledgeResponse",
         "description": "Response from brand knowledge extraction."
       },
+      "ForgotPasswordRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User email address"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "title": "ForgotPasswordRequest",
+        "description": "Schema for forgot password request.\n\nFor POST /api/v2/auth/forgot-password endpoint.\nInitiates password reset flow by sending email with reset token."
+      },
+      "ForgotPasswordResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Generic success message",
+            "default": "If the email exists, a password reset link has been sent."
+          }
+        },
+        "type": "object",
+        "title": "ForgotPasswordResponse",
+        "description": "Schema for forgot password response.\n\nReturns confirmation message without revealing if email exists."
+      },
       "GeneratedContent": {
         "properties": {
           "id": {
@@ -12198,6 +12320,43 @@
         ],
         "title": "RenderPageRequest",
         "description": "Request model for rendering a JavaScript-heavy page with Playwright."
+      },
+      "ResetPasswordRequest": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Token",
+            "description": "Password reset token from email"
+          },
+          "newPassword": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Newpassword",
+            "description": "New password (min 8 characters)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "newPassword"
+        ],
+        "title": "ResetPasswordRequest",
+        "description": "Schema for reset password request.\n\nFor POST /api/v2/auth/reset-password endpoint.\nResets password using token from reset email."
+      },
+      "ResetPasswordResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success message",
+            "default": "Password reset successful. You can now log in with your new password."
+          }
+        },
+        "type": "object",
+        "title": "ResetPasswordResponse",
+        "description": "Schema for reset password response.\n\nReturns success message after password reset."
       },
       "SceneMixPlanCreate": {
         "properties": {
