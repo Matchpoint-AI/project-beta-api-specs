@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.79] - 2025-12-08
+
+### Changes
+- fix(#655): Add dual-format parsing for content_data in GeneratedContent (#661)
+
+**Source:** project-beta-api@faba4c6 "fix(#655): Add dual-format parsing for content_data in GeneratedContent (#661)"
+
 ## [v0.7.78] - 2025-12-08
 
 ### Changes
