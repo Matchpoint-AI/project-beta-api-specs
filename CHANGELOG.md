@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.77] - 2025-12-08
+
+### Changes
+- Merge pull request #659 from Matchpoint-AI/fix/647-email-tracking-password-reset
+
+**Source:** project-beta-api@094fbd5 "Merge pull request #659 from Matchpoint-AI/fix/647-email-tracking-password-reset"
+
 ## [v0.7.76] - 2025-12-08
 
 ### Changes
