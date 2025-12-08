@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.80] - 2025-12-08
+
+### Changes
+- Merge pull request #657 from Matchpoint-AI/fix/638-database-connection-singleton
+
+**Source:** project-beta-api@f1a0aed "Merge pull request #657 from Matchpoint-AI/fix/638-database-connection-singleton"
+
 ## [v0.7.79] - 2025-12-08
 
 ### Changes
