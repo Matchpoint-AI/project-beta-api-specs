@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.74] - 2025-12-08
+
+### Changes
+- [P1] Add server-side session invalidation endpoint (DELETE /sessions) (#652)
+
+**Source:** project-beta-api@5b333a6 "[P1] Add server-side session invalidation endpoint (DELETE /sessions) (#652)"
+
 ## [v0.7.73] - 2025-12-08
 
 ### Changes
