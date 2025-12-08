@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.72] - 2025-12-08
+
+### Changes
+- Merge pull request #643 from Matchpoint-AI/fix/639-unique-brand-names
+
+**Source:** project-beta-api@bdbc758 "Merge pull request #643 from Matchpoint-AI/fix/639-unique-brand-names"
+
 ## [v0.7.71] - 2025-12-07
 
 ### Changes
