@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.81"
+    "version": "0.7.82"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1425,7 +1425,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -3892,7 +3891,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
@@ -4358,7 +4356,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Health Check Api V2 Health Get"
                 }
@@ -4820,6 +4817,52 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "prompts"
+        ],
+        "summary": "Create Prompt",
+        "description": "Create a new prompt.\n\nBusiness Context:\nCreates a new AI prompt template that can be used for content generation.\nThe prompt ID must be unique across all prompts.\n\nRMM Level 2:\n- HTTP POST for resource creation\n- POST to collection endpoint (/prompts)\n- Returns 201 Created with new resource\n- Location header would point to new resource (best practice)\n\nArgs:\n    request: Prompt creation data\n    prompts_service: Injected prompts service\n\nReturns:\n    Created prompt with all fields\n\nRaises:\n    HTTPException: 409 if prompt ID already exists\n    HTTPException: 400 if validation fails\n\nExample:\n    POST /api/v2/prompts\n    {\n      \"id\": \"content_variation_v1\",\n      \"category\": \"content\",\n      \"template\": \"Generate variations...\",\n      \"variables\": [\"brand_name\"],\n      \"version\": \"1.0.0\",\n      \"description\": \"Content variation generator\"\n    }",
+        "operationId": "create_prompt_api_v2_prompts_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromptCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Prompt created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromptResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "409": {
+            "description": "Prompt with this ID already exists"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/prompts/{prompt_id}": {
@@ -4837,8 +4880,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "The prompt ID",
               "title": "Prompt Id"
-            }
+            },
+            "description": "The prompt ID"
           }
         ],
         "responses": {
@@ -4851,6 +4896,104 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "prompts"
+        ],
+        "summary": "Update Prompt",
+        "description": "Update an existing prompt.\n\nBusiness Context:\nUpdates an existing prompt template. Only provided fields will be updated\n(partial update). Useful for versioning prompts or refining templates.\n\nRMM Level 2:\n- HTTP PUT for resource update\n- Resource ID in URL path\n- Returns 200 OK with updated resource\n- Returns 404 Not Found if prompt doesn't exist\n\nArgs:\n    prompt_id: Unique prompt identifier\n    request: Prompt update data (partial)\n    prompts_service: Injected prompts service\n\nReturns:\n    Updated prompt\n\nRaises:\n    HTTPException: 404 if prompt not found\n    HTTPException: 400 if validation fails\n\nExample:\n    PUT /api/v2/prompts/brand_summary_v1\n    {\n      \"template\": \"Updated template text...\",\n      \"version\": \"1.1.0\"\n    }",
+        "operationId": "update_prompt_api_v2_prompts__prompt_id__put",
+        "parameters": [
+          {
+            "name": "prompt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The prompt ID",
+              "title": "Prompt Id"
+            },
+            "description": "The prompt ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromptUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Prompt updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromptResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Prompt not found"
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "prompts"
+        ],
+        "summary": "Delete Prompt",
+        "description": "Delete a prompt.\n\nBusiness Context:\nRemoves a prompt from the system. Use with caution as this operation\ncannot be undone. Consider versioning or deactivation instead for\nproduction prompts.\n\nRMM Level 2:\n- HTTP DELETE for resource removal\n- Resource ID in URL path\n- Returns 204 No Content on success\n- Returns 404 Not Found if prompt doesn't exist\n\nArgs:\n    prompt_id: Unique prompt identifier\n    prompts_service: Injected prompts service\n\nReturns:\n    None (204 No Content)\n\nRaises:\n    HTTPException: 404 if prompt not found\n\nExample:\n    DELETE /api/v2/prompts/old_prompt_v1",
+        "operationId": "delete_prompt_api_v2_prompts__prompt_id__delete",
+        "parameters": [
+          {
+            "name": "prompt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The prompt ID",
+              "title": "Prompt Id"
+            },
+            "description": "The prompt ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Prompt deleted successfully"
+          },
+          "404": {
+            "description": "Prompt not found"
           },
           "422": {
             "description": "Validation Error",
@@ -5844,7 +5987,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Root  Get"
                 }
@@ -6482,7 +6624,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6827,7 +6968,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6894,7 +7034,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7488,7 +7627,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7573,7 +7711,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7734,7 +7871,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8013,7 +8149,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8043,7 +8178,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -8187,7 +8321,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8261,7 +8394,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8423,7 +8555,6 @@
           "adjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8543,7 +8674,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8585,7 +8715,6 @@
           "brandGuidelines": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8612,7 +8741,6 @@
           },
           "results": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -8787,7 +8915,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8848,7 +8975,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8888,7 +9014,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8932,7 +9057,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9012,7 +9136,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9276,7 +9399,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9524,7 +9646,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10512,7 +10633,6 @@
           },
           "crawledPages": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -10966,7 +11086,6 @@
           "colorAdjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11034,7 +11153,6 @@
             "description": "Generation timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -11292,7 +11410,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11452,7 +11569,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11736,6 +11852,7 @@
         "enum": [
           "completed"
         ],
+        "const": "completed",
         "title": "OnboardingStatus",
         "description": "Enum for onboarding completion status."
       },
@@ -12176,6 +12293,71 @@
         "title": "ProductV2",
         "description": "V2 Product information for brand knowledge."
       },
+      "PromptCreate": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique prompt identifier"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Prompt category (brand, content, campaign)"
+          },
+          "template": {
+            "type": "string",
+            "title": "Template",
+            "description": "Prompt template with {variable} placeholders"
+          },
+          "variables": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Variables",
+            "description": "List of variable names used in template"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "description": "Semantic version (major.minor.patch)",
+            "default": "1.0.0"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Human-readable description of prompt purpose"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "template"
+        ],
+        "title": "PromptCreate",
+        "description": "Schema for creating a new prompt.\n\nAttributes:\n    id: Unique prompt identifier (e.g., \"brand_summary_v2\")\n    category: Prompt category for filtering (e.g., \"brand\", \"content\", \"campaign\")\n    template: The actual prompt template with variable placeholders\n    variables: List of variable names that can be substituted in the template\n    version: Semantic version of the prompt (e.g., \"1.0.0\")\n    description: Human-readable description of what this prompt does",
+        "example": {
+          "category": "content",
+          "description": "Generate content variations for A/B testing",
+          "id": "content_variation_v1",
+          "template": "Generate {count} variations of {content_type} for {brand_name}",
+          "variables": [
+            "count",
+            "content_type",
+            "brand_name"
+          ],
+          "version": "1.0.0"
+        }
+      },
       "PromptResponse": {
         "properties": {
           "id": {
@@ -12238,6 +12420,84 @@
             "attributes"
           ],
           "version": "1.0.0"
+        }
+      },
+      "PromptUpdate": {
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Prompt category"
+          },
+          "template": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Template",
+            "description": "Prompt template"
+          },
+          "variables": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variables",
+            "description": "Variable names"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version",
+            "description": "Semantic version"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Prompt description"
+          }
+        },
+        "type": "object",
+        "title": "PromptUpdate",
+        "description": "Schema for updating an existing prompt.\n\nAll fields are optional to support partial updates.\n\nAttributes:\n    category: Prompt category for filtering\n    template: The actual prompt template with variable placeholders\n    variables: List of variable names that can be substituted in the template\n    version: Semantic version of the prompt\n    description: Human-readable description of what this prompt does",
+        "example": {
+          "template": "Updated template with {brand_name} and {attributes}",
+          "variables": [
+            "brand_name",
+            "attributes"
+          ],
+          "version": "1.1.0"
         }
       },
       "PromptsListResponse": {
@@ -12583,7 +12843,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12644,13 +12903,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -12726,13 +12983,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -12861,7 +13116,6 @@
           "frequencyRules": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12873,7 +13127,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13784,7 +14037,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {

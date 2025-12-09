@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.82] - 2025-12-09
+
+### Changes
+- Merge pull request #667 from Matchpoint-AI/fix/662-prompt-crud
+
+**Source:** project-beta-api@f08c2f3 "Merge pull request #667 from Matchpoint-AI/fix/662-prompt-crud"
+
 ## [v0.7.81] - 2025-12-09
 
 ### Changes
