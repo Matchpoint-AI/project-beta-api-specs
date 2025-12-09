@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.85] - 2025-12-09
+
+### Changes
+- fix: add stamp support to migration workflow for state drift fixes (#674)
+
+**Source:** project-beta-api@b373988 "fix: add stamp support to migration workflow for state drift fixes (#674)"
+
 ## [v0.7.84] - 2025-12-09
 
 ### Changes
