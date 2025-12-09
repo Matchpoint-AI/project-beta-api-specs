@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.87] - 2025-12-09
+
+### Changes
+- fix: Add idempotent migration to fix reset_token state drift (#679)
+
+**Source:** project-beta-api@192eaa5 "fix: Add idempotent migration to fix reset_token state drift (#679)"
+
 ## [v0.7.86] - 2025-12-09
 
 ### Changes
