@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.81] - 2025-12-09
+
+### Changes
+- Merge pull request #666 from Matchpoint-AI/fix/640-batch-parallel
+
+**Source:** project-beta-api@d27096b "Merge pull request #666 from Matchpoint-AI/fix/640-batch-parallel"
+
 ## [v0.7.80] - 2025-12-08
 
 ### Changes
