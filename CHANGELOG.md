@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.84] - 2025-12-09
+
+### Changes
+- Merge pull request #673 from Matchpoint-AI/fix/1567-wif-config-mismatch
+
+**Source:** project-beta-api@685972d "Merge pull request #673 from Matchpoint-AI/fix/1567-wif-config-mismatch"
+
 ## [v0.7.83] - 2025-12-09
 
 ### Changes
