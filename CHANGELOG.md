@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.83] - 2025-12-09
+
+### Changes
+- Merge pull request #670 from Matchpoint-AI/fix/1567-wif-auth
+
+**Source:** project-beta-api@50107bb "Merge pull request #670 from Matchpoint-AI/fix/1567-wif-auth"
+
 ## [v0.7.82] - 2025-12-09
 
 ### Changes
