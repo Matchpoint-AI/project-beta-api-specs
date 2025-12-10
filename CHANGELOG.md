@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.95] - 2025-12-10
+
+### Changes
+- fix: Add ApiConfig DI binding for campaign creation endpoint (#712)
+
+**Source:** project-beta-api@eca0ee9 "fix: Add ApiConfig DI binding for campaign creation endpoint (#712)"
+
 ## [v0.7.94] - 2025-12-10
 
 ### Changes
