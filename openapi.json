@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.95"
+    "version": "0.7.96"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2848,6 +2848,64 @@
           },
           "500": {
             "description": "Failed to start workflow"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/content/workflows/{workflow_id}": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Campaign Content Workflow Status",
+        "description": "Get the status of a content generation workflow.\n\nThis endpoint retrieves the current status of a workflow execution,\nincluding progress, current step, and completion status.\n\nUse this endpoint to poll for workflow completion after starting\na workflow with POST /campaigns/{campaign_id}/content/workflows.\n\nRMM Level 2 Compliance:\n- GET retrieves workflow resource by ID\n- Resource-oriented URL structure\n- Returns workflow state representation\n\nArgs:\n    campaign_id: Campaign ID the workflow belongs to\n    workflow_id: Workflow execution ID (from start_campaign_content_workflow)\n    workflow_service: Injected workflow service\n\nReturns:\n    CampaignWorkflowResponse with current workflow status\n\nRaises:\n    HTTPException: 404 if workflow not found, 500 on service errors",
+        "operationId": "get_campaign_content_workflow_status_api_v2_campaigns__campaign_id__content_workflows__workflow_id__get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          },
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workflow Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workflow status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignWorkflowResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workflow not found"
+          },
+          "500": {
+            "description": "Failed to retrieve workflow status"
           },
           "422": {
             "description": "Validation Error",
