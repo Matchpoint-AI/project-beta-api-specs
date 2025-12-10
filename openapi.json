@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.91"
+    "version": "0.7.92"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5062,19 +5062,11 @@
           "threads"
         ],
         "summary": "Create Thread",
-        "description": "Create a new AI conversation thread.\n\nCreates a new thread associated with a campaign for iterative\nAI conversations about content generation.",
+        "description": "Create a new AI conversation thread.\n\nCreates a new thread associated with a campaign for iterative\nAI conversations about content generation.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only create threads for themselves",
         "operationId": "create_thread_api_v2_threads_post",
-        "parameters": [
+        "security": [
           {
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "User ID creating the thread",
-              "title": "User Id"
-            },
-            "description": "User ID creating the thread"
+            "HTTPBearer": []
           }
         ],
         "requestBody": {
@@ -5101,6 +5093,9 @@
           "400": {
             "description": "Invalid request data"
           },
+          "401": {
+            "description": "Authentication required"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -5118,20 +5113,14 @@
           "threads"
         ],
         "summary": "List Threads",
-        "description": "List threads for a user.\n\nReturns a list of threads with pagination support.\nCan optionally filter by campaign_id.",
+        "description": "List threads for a user.\n\nReturns a list of threads with pagination support.\nCan optionally filter by campaign_id.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only see their own threads",
         "operationId": "list_threads_api_v2_threads_get",
-        "parameters": [
+        "security": [
           {
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "User ID to filter threads",
-              "title": "User Id"
-            },
-            "description": "User ID to filter threads"
-          },
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
           {
             "name": "campaign_id",
             "in": "query",
@@ -5186,6 +5175,9 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -5205,8 +5197,13 @@
           "threads"
         ],
         "summary": "Get Thread",
-        "description": "Get thread information.\n\nReturns the thread details including message count.\nReturns 404 if thread doesn't exist or user doesn't have access.",
+        "description": "Get thread information.\n\nReturns the thread details including message count.\nReturns 404 if thread doesn't exist or user doesn't have access.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only access their own threads",
         "operationId": "get_thread_api_v2_threads__threadId__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "threadId",
@@ -5218,17 +5215,6 @@
               "title": "Threadid"
             },
             "description": "The thread ID"
-          },
-          {
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "User ID to verify ownership",
-              "title": "User Id"
-            },
-            "description": "User ID to verify ownership"
           }
         ],
         "responses": {
@@ -5241,6 +5227,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
           },
           "404": {
             "description": "Thread not found"
@@ -5262,8 +5251,13 @@
           "threads"
         ],
         "summary": "Delete Thread",
-        "description": "Delete a thread.\n\nDeletes a thread and all its messages (cascade delete).\nReturns 404 if thread doesn't exist or user doesn't have access.",
+        "description": "Delete a thread.\n\nDeletes a thread and all its messages (cascade delete).\nReturns 404 if thread doesn't exist or user doesn't have access.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only delete their own threads",
         "operationId": "delete_thread_api_v2_threads__threadId__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "threadId",
@@ -5275,22 +5269,14 @@
               "title": "Threadid"
             },
             "description": "The thread ID"
-          },
-          {
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "User ID to verify ownership",
-              "title": "User Id"
-            },
-            "description": "User ID to verify ownership"
           }
         ],
         "responses": {
           "204": {
             "description": "Thread deleted successfully"
+          },
+          "401": {
+            "description": "Authentication required"
           },
           "404": {
             "description": "Thread not found"
@@ -5314,8 +5300,13 @@
           "threads"
         ],
         "summary": "Create Message",
-        "description": "Add a message to a thread.\n\nCreates a new message in the conversation thread.\nAutomatically updates the thread's updated_at timestamp.",
+        "description": "Add a message to a thread.\n\nCreates a new message in the conversation thread.\nAutomatically updates the thread's updated_at timestamp.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only add messages to their own threads",
         "operationId": "create_message_api_v2_threads__threadId__messages_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "threadId",
@@ -5327,17 +5318,6 @@
               "title": "Threadid"
             },
             "description": "The thread ID"
-          },
-          {
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "User ID to verify ownership",
-              "title": "User Id"
-            },
-            "description": "User ID to verify ownership"
           }
         ],
         "requestBody": {
@@ -5364,6 +5344,9 @@
           "400": {
             "description": "Invalid request data"
           },
+          "401": {
+            "description": "Authentication required"
+          },
           "404": {
             "description": "Thread not found"
           },
@@ -5384,8 +5367,13 @@
           "threads"
         ],
         "summary": "Get Messages",
-        "description": "Get messages for a thread.\n\nReturns messages in chronological order (oldest first).\nSupports pagination for long conversations.",
+        "description": "Get messages for a thread.\n\nReturns messages in chronological order (oldest first).\nSupports pagination for long conversations.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only see messages from their own threads",
         "operationId": "get_messages_api_v2_threads__threadId__messages_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "threadId",
@@ -5397,17 +5385,6 @@
               "title": "Threadid"
             },
             "description": "The thread ID"
-          },
-          {
-            "name": "user_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "User ID to verify ownership",
-              "title": "User Id"
-            },
-            "description": "User ID to verify ownership"
           },
           {
             "name": "limit",
@@ -5451,6 +5428,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
           },
           "404": {
             "description": "Thread not found"

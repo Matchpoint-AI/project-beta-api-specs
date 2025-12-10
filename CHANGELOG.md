@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.92] - 2025-12-10
+
+### Changes
+- Merge pull request #705 from Matchpoint-AI/fix/688-thread-auth
+
+**Source:** project-beta-api@72866f6 "Merge pull request #705 from Matchpoint-AI/fix/688-thread-auth"
+
 ## [v0.7.91] - 2025-12-10
 
 ### Changes
