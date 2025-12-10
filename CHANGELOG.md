@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.91] - 2025-12-10
+
+### Changes
+- fix: TokenBlacklistRepository use async_sessionmaker pattern (#701)
+
+**Source:** project-beta-api@b19ce04 "fix: TokenBlacklistRepository use async_sessionmaker pattern (#701)"
+
 ## [v0.7.90] - 2025-12-10
 
 ### Changes
