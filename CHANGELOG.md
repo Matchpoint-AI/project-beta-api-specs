@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.89] - 2025-12-10
+
+### Changes
+- Merge pull request #703 from Matchpoint-AI/fix/690-brand-update
+
+**Source:** project-beta-api@70a0ea9 "Merge pull request #703 from Matchpoint-AI/fix/690-brand-update"
+
 ## [v0.7.88] - 2025-12-10
 
 ### Changes
