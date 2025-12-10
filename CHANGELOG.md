@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.99] - 2025-12-10
+
+### Changes
+- Merge pull request #722 from Matchpoint-AI/fix/720-brand-id
+
+**Source:** project-beta-api@da8ae93 "Merge pull request #722 from Matchpoint-AI/fix/720-brand-id"
+
 ## [v0.7.98] - 2025-12-10
 
 ### Changes
