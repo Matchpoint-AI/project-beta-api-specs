@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.105"
+    "version": "0.7.106"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1728,6 +1728,11 @@
         "summary": "Bulk Approve Campaign Content",
         "description": "Bulk approve campaign content for specified weeks.\n\nDirect port from V1 POST /api/v1/approve-all endpoint.\nUsed by ExportComponent.tsx line 302 for bulk content approval.\n\nRMM L2 Rationale:\n- Approvals are resources being created in bulk\n- POST creates multiple approval resources at once\n- Returns detailed results for each approval operation\n\nThis endpoint:\n- Validates campaign exists and has content\n- Iterates through specified weeks (e.g., [\"week_1\", \"week_2\"])\n- Approves all days (1-7) within each week\n- Returns counts of approved/failed/skipped approvals\n- Supports selective week approval for flexible workflows",
         "operationId": "bulk_approve_campaign_content_api_v2_campaigns__campaign_id__approvals_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -1789,6 +1794,11 @@
         "summary": "Get Campaign Approval Status",
         "description": "Get approval status for a campaign.\n\nDirect port from V1 /api/v1/check-approved endpoint used by TabItems.tsx.\n\nReturns whether all campaign content is approved for export, along with\napproval counts. This endpoint is used to enable/disable the export button\nin the UI.\n\nRMM L2 Rationale:\n- approval-status is a computed sub-resource of campaign\n- GET retrieves the current approval state (not a state change)\n- Returns structured data: {approved, approvedCount, totalCount}\n\nReturns:\n    - approved: true if all content is approved, false otherwise\n    - approved_count: number of approved posts\n    - total_count: total number of posts in campaign",
         "operationId": "get_campaign_approval_status_api_v2_campaigns__campaign_id__approval_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -1840,6 +1850,11 @@
         "summary": "Get Campaign Export Approval Status",
         "description": "Get detailed export approval status for a campaign.\n\nDirect port from V1 /api/v1/check-approved endpoint used by TabItems.tsx:34.\n\nReturns detailed approval status for the export workflow including:\n- Whether all content is approved\n- Count of approved posts\n- Total count of posts\n- List of unapproved content IDs (for UI to show what needs approval)\n\nRMM L2 Rationale:\n- export/approval-status is a computed sub-resource of campaign\n- GET retrieves the current export-ready state (not a state change)\n- Returns structured data with additional unapproved_content_ids field\n- Separates general approval-status from export-specific approval-status\n\nUsed by export functionality to:\n- Enable/disable export button\n- Show which content items need approval before export\n- Provide detailed feedback to user\n\nReturns:\n    - approved: true if all content is approved, false otherwise\n    - approved_content: number of approved posts\n    - total_content: total number of posts in campaign\n    - unapproved_content_ids: list of content IDs that are not approved",
         "operationId": "get_campaign_export_approval_status_api_v2_campaigns__campaign_id__export_approval_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -2524,8 +2539,13 @@
           "content-approval"
         ],
         "summary": "Approve Content",
-        "description": "Approve or unapprove content for a specific day.\n\nThis endpoint allows users to approve/reject content for a specific day.\nUpdates approval status in database and manages approval counters.\nDirect port from V1 tag v0.2.46.\n\nArgs:\n    content_id: ID of the content to approve\n    request: Approval request with week, day, and post data\n    content_approval_service: Injected service\n\nReturns:\n    Updated day data with approval status\n\nRaises:\n    HTTPException: 404 if content not found, 400 if request invalid",
+        "description": "Approve or unapprove content for a specific day.\n\nThis endpoint allows users to approve/reject content for a specific day.\nUpdates approval status in database and manages approval counters.\nDirect port from V1 tag v0.2.46.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    content_id: ID of the content to approve\n    request: Approval request with week, day, and post data\n    content_approval_service: Injected service\n\nReturns:\n    Updated day data with approval status\n\nRaises:\n    HTTPException: 404 if content not found, 400 if request invalid",
         "operationId": "approve_content_api_v2_content__content_id__approvals_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -2533,8 +2553,10 @@
             "required": true,
             "schema": {
               "type": "integer",
+              "description": "ID of the content to approve",
               "title": "Content Id"
-            }
+            },
+            "description": "ID of the content to approve"
           }
         ],
         "requestBody": {
@@ -2542,7 +2564,8 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ContentApprovalRequest"
+                "$ref": "#/components/schemas/ContentApprovalRequest",
+                "description": "Approval request"
               }
             }
           }
@@ -2933,6 +2956,11 @@
         "summary": "Update content text versions (RMM-2 compliant)",
         "description": "Updates text, text_versions array, and selected image index. RMM-2 compliant with single-word sub-resource 'text'.",
         "operationId": "update_content_text_api_v2_content__content_id__text_patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -2940,8 +2968,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "Content ID",
               "title": "Content Id"
-            }
+            },
+            "description": "Content ID"
           }
         ],
         "requestBody": {
@@ -2949,7 +2979,8 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTextVersionsRequest"
+                "$ref": "#/components/schemas/UpdateTextVersionsRequest",
+                "description": "Text versions update request"
               }
             }
           }
@@ -2984,8 +3015,13 @@
           "content"
         ],
         "summary": "Update Content Status",
-        "description": "Update content approval status.\n\nRMM L2 Compliance: Status is a field on the content resource (not /approve action).\nThis replaces the V1 POST /api/v1/contentgen/approve endpoint.\n\nArgs:\n    content_id: UUID of the content to update\n    status_update: New status and optional metadata\n    user_id: ID of user making the change (from auth)\n    content_status_service: Injected status service\n\nReturns:\n    ContentStatusResponse with updated status and metadata\n\nRaises:\n    HTTPException: 400 for invalid transition, 404 if content not found",
+        "description": "Update content approval status.\n\nRMM L2 Compliance: Status is a field on the content resource (not /approve action).\nThis replaces the V1 POST /api/v1/contentgen/approve endpoint.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    content_id: UUID of the content to update\n    status_update: New status and optional metadata\n    content_status_service: Injected status service\n\nReturns:\n    ContentStatusResponse with updated status and metadata\n\nRaises:\n    HTTPException: 400 for invalid transition, 404 if content not found",
         "operationId": "update_content_status_api_v2_content__content_id__status_patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -2993,18 +3029,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "Content ID",
               "title": "Content Id"
-            }
-          },
-          {
-            "name": "user_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": "placeholder-user-id",
-              "title": "User Id"
-            }
+            },
+            "description": "Content ID"
           }
         ],
         "requestBody": {
@@ -3012,7 +3040,8 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ContentStatusUpdate"
+                "$ref": "#/components/schemas/ContentStatusUpdate",
+                "description": "Status update request"
               }
             }
           }
@@ -3143,6 +3172,11 @@
         "summary": "Bulk Approve Campaign Content",
         "description": "Bulk approve all content for a campaign.\n\nDirect port from V1 POST /api/v1/approve-all endpoint.\nUsed by ExportComponent.tsx for bulk content approval before export.\n\nRMM L2 Rationale:\n- This is a bulk operation on content resources within a campaign\n- POST creates approval state changes for multiple content items\n- Returns counts of successful and failed approvals\n\nThis endpoint:\n- Approves all content items for a campaign\n- Uses database transaction to ensure atomicity\n- Returns counts of approved/failed items and failed IDs\n- Handles partial failures gracefully",
         "operationId": "bulk_approve_campaign_content_api_v2_campaigns__campaign_id__content_approve_all_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -3150,8 +3184,10 @@
             "required": true,
             "schema": {
               "type": "integer",
+              "description": "Campaign ID",
               "title": "Campaign Id"
-            }
+            },
+            "description": "Campaign ID"
           }
         ],
         "requestBody": {
@@ -3159,7 +3195,8 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BulkContentApprovalRequest"
+                "$ref": "#/components/schemas/BulkContentApprovalRequest",
+                "description": "Bulk approval request"
               }
             }
           }
@@ -4798,13 +4835,14 @@
           "integrations"
         ],
         "summary": "Instagram Oauth",
-        "description": "Exchange Instagram OAuth authorization code for access token.\n\nThis endpoint handles the Instagram OAuth callback by:\n1. Exchanging the authorization code for a short-lived token\n2. Exchanging the short-lived token for a long-lived token (60 days)\n3. Fetching user profile information\n4. Storing the integration in the database\n\nRMM Level 2 Compliance:\n- POST to /integrations/instagram/oauth creates a new OAuth integration\n- HTTP verb (POST) indicates resource creation\n- Returns 201 Created on success\n\nArgs:\n    request: Instagram OAuth request with authorization code and redirect URI\n    instagram_oauth_service: Injected Instagram OAuth service\n\nReturns:\n    Instagram OAuth response with access token and user info\n\nRaises:\n    HTTPException: 400 if OAuth exchange fails (invalid code, etc.)\n    HTTPException: 500 if server error occurs",
+        "description": "Exchange Instagram OAuth authorization code for access token.\n\nThis endpoint handles the Instagram OAuth callback by:\n1. Exchanging the authorization code for a short-lived token\n2. Exchanging the short-lived token for a long-lived token (60 days)\n3. Fetching user profile information\n4. Storing the integration in the database\n\nRMM Level 2 Compliance:\n- POST to /integrations/instagram/oauth creates a new OAuth integration\n- HTTP verb (POST) indicates resource creation\n- Returns 201 Created on success\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Instagram OAuth request with authorization code and redirect URI\n    instagram_oauth_service: Injected Instagram OAuth service\n\nReturns:\n    Instagram OAuth response with access token and user info\n\nRaises:\n    HTTPException: 400 if OAuth exchange fails (invalid code, etc.)\n    HTTPException: 500 if server error occurs",
         "operationId": "instagram_oauth_api_v2_integrations_instagram_oauth_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/InstagramOAuthRequest"
+                "$ref": "#/components/schemas/InstagramOAuthRequest",
+                "description": "Instagram OAuth request"
               }
             }
           },
@@ -4831,7 +4869,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/prompts": {
