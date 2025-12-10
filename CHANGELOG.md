@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.98] - 2025-12-10
+
+### Changes
+- fix: correct workflow name computation in start_campaign_content_workflow (#721)
+
+**Source:** project-beta-api@a3fd776 "fix: correct workflow name computation in start_campaign_content_workflow (#721)"
+
 ## [v0.7.97] - 2025-12-10
 
 ### Changes
