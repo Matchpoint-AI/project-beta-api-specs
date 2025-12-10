@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.94] - 2025-12-10
+
+### Changes
+- feat: Auto-trigger content generation workflow on campaign creation (#707)
+
+**Source:** project-beta-api@a7994da "feat: Auto-trigger content generation workflow on campaign creation (#707)"
+
 ## [v0.7.93] - 2025-12-10
 
 ### Changes
