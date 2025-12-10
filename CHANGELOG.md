@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.90] - 2025-12-10
+
+### Changes
+- fix: Implement stub methods in ContentServiceImpl (#704)
+
+**Source:** project-beta-api@a2b0448 "fix: Implement stub methods in ContentServiceImpl (#704)"
+
 ## [v0.7.89] - 2025-12-10
 
 ### Changes
