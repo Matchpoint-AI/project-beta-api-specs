@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.101] - 2025-12-10
+
+### Changes
+- Merge pull request #724 from Matchpoint-AI/fix/716-image-tier
+
+**Source:** project-beta-api@6912941 "Merge pull request #724 from Matchpoint-AI/fix/716-image-tier"
+
 ## [v0.7.100] - 2025-12-10
 
 ### Changes
