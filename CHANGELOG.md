@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.88] - 2025-12-10
+
+### Changes
+- fix: Add 'from __future__ import annotations' to resolve AsyncEngine NameError (#700)
+
+**Source:** project-beta-api@fb2ee9e "fix: Add 'from __future__ import annotations' to resolve AsyncEngine NameError (#700)"
+
 ## [v0.7.87] - 2025-12-09
 
 ### Changes
