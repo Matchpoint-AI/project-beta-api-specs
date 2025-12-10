@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.104"
+    "version": "0.7.105"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4434,7 +4434,7 @@
           "images"
         ],
         "summary": "Get Image Tiers",
-        "description": "Get available image generation tiers.\n\nReturns list of available image generation tiers with their features,\ncosts, and descriptions. Tiers are filtered based on user plan.\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    tier_service: Injected model tier service\n    user_service: Injected user service\n\nReturns:\n    List of available image tiers\n\nRaises:\n    HTTPException: If tier retrieval fails",
+        "description": "Get available image generation tiers.\n\nReturns list of available image generation tiers with their features,\ncosts, and descriptions. Tiers are filtered based on user plan.\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    tier_service: Injected model tier service\n    user_service: Injected user service for retrieving user data\n\nReturns:\n    List of available image tiers\n\nRaises:\n    HTTPException: If tier retrieval fails",
         "operationId": "get_image_tiers_api_v2_images_tiers_get",
         "responses": {
           "200": {
