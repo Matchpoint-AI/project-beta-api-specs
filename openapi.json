@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.92"
+    "version": "0.7.93"
   },
   "paths": {
     "/api/v2/brands": {
@@ -822,174 +822,6 @@
           },
           "404": {
             "description": "No workflow found for this brand"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/pages": {
-      "post": {
-        "tags": [
-          "crawled-pages"
-        ],
-        "summary": "Crawl Single Page",
-        "description": "Crawl a single page for workflow-driven crawling.\n\nThis endpoint is designed to be called by Google Cloud Workflows\nfor each individual page. The workflow handles iteration and\norchestrates the overall crawling process.",
-        "operationId": "crawl_single_page_api_v2_brands__brand_id__pages_post",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/src__schemas__crawled_pages__CrawlPageRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Page crawled successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CrawlPageWorkflowResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "crawled-pages"
-        ],
-        "summary": "List Brand Pages",
-        "description": "List crawled pages for a brand.\n\nCan optionally filter by website URL to get pages from a specific website.",
-        "operationId": "list_brand_pages_api_v2_brands__brand_id__pages_get",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          },
-          {
-            "name": "website_url",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Filter by website URL (can be domain or full URL)",
-              "title": "Website Url"
-            },
-            "description": "Filter by website URL (can be domain or full URL)"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 1000,
-              "minimum": 1,
-              "description": "Maximum number of pages",
-              "default": 100,
-              "title": "Limit"
-            },
-            "description": "Maximum number of pages"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "description": "Number of pages to skip",
-              "default": 0,
-              "title": "Offset"
-            },
-            "description": "Number of pages to skip"
-          },
-          {
-            "name": "processed_only",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Only return processed pages",
-              "default": false,
-              "title": "Processed Only"
-            },
-            "description": "Only return processed pages"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of crawled pages",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CrawledPageResponse"
-                  },
-                  "title": "Response List Brand Pages Api V2 Brands  Brand Id  Pages Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
@@ -3787,6 +3619,174 @@
         }
       }
     },
+    "/api/v2/brands/{brand_id}/pages": {
+      "post": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Crawl Single Page",
+        "description": "Crawl a single page for workflow-driven crawling.\n\nThis endpoint is designed to be called by Google Cloud Workflows\nfor each individual page. The workflow handles iteration and\norchestrates the overall crawling process.",
+        "operationId": "crawl_single_page_api_v2_brands__brand_id__pages_post",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrawlPageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Page crawled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlPageWorkflowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "List Brand Pages",
+        "description": "List crawled pages for a brand.\n\nCan optionally filter by website URL to get pages from a specific website.",
+        "operationId": "list_brand_pages_api_v2_brands__brand_id__pages_get",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "website_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by website URL (can be domain or full URL)",
+              "title": "Website Url"
+            },
+            "description": "Filter by website URL (can be domain or full URL)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of pages",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum number of pages"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of pages to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of pages to skip"
+          },
+          {
+            "name": "processed_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only return processed pages",
+              "default": false,
+              "title": "Processed Only"
+            },
+            "description": "Only return processed pages"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of crawled pages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CrawledPageResponse"
+                  },
+                  "title": "Response List Brand Pages Api V2 Brands  Brand Id  Pages Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brandId}/pages/render": {
       "post": {
         "tags": [
@@ -3837,67 +3837,6 @@
           },
           "500": {
             "description": "Failed to render page"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/pages/count": {
-      "get": {
-        "tags": [
-          "crawled-pages"
-        ],
-        "summary": "Count Brand Pages",
-        "description": "Get the count of crawled pages for a brand.",
-        "operationId": "count_brand_pages_api_v2_brands__brand_id__pages_count_get",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          },
-          {
-            "name": "processed_only",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "Only count processed pages",
-              "default": false,
-              "title": "Processed Only"
-            },
-            "description": "Only count processed pages"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Page count for brand",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
@@ -4217,14 +4156,14 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/pages/{page_id}": {
+    "/api/v2/brands/{brand_id}/pages/count": {
       "get": {
         "tags": [
           "crawled-pages"
         ],
-        "summary": "Get Page",
-        "description": "Get a specific crawled page by ID.",
-        "operationId": "get_page_api_v2_brands__brand_id__pages__page_id__get",
+        "summary": "Count Brand Pages",
+        "description": "Get the count of crawled pages for a brand.",
+        "operationId": "count_brand_pages_api_v2_brands__brand_id__pages_count_get",
         "parameters": [
           {
             "name": "brand_id",
@@ -4238,30 +4177,32 @@
             "description": "The brand ID"
           },
           {
-            "name": "page_id",
-            "in": "path",
-            "required": true,
+            "name": "processed_only",
+            "in": "query",
+            "required": false,
             "schema": {
-              "type": "integer",
-              "description": "The page ID",
-              "title": "Page Id"
+              "type": "boolean",
+              "description": "Only count processed pages",
+              "default": false,
+              "title": "Processed Only"
             },
-            "description": "The page ID"
+            "description": "Only count processed pages"
           }
         ],
         "responses": {
           "200": {
-            "description": "Crawled page details",
+            "description": "Page count for brand",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CrawledPageResponse"
+                  "type": "object",
+                  "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
             }
           },
           "404": {
-            "description": "Page not found"
+            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
@@ -4328,6 +4269,65 @@
           },
           "404": {
             "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/pages/{page_id}": {
+      "get": {
+        "tags": [
+          "crawled-pages"
+        ],
+        "summary": "Get Page",
+        "description": "Get a specific crawled page by ID.",
+        "operationId": "get_page_api_v2_brands__brand_id__pages__page_id__get",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "page_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The page ID",
+              "title": "Page Id"
+            },
+            "description": "The page ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Crawled page details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawledPageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Page not found"
           },
           "422": {
             "description": "Validation Error",
@@ -9784,14 +9784,17 @@
         "title": "CrawlErrorSummary",
         "description": "Summary of a specific crawl error type."
       },
-      "CrawlPageResponse": {
+      "CrawlPageRequest": {
         "properties": {
           "url": {
             "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
             "title": "Url",
-            "description": "The crawled URL"
+            "description": "URL to crawl"
           },
-          "title": {
+          "baseDomain": {
             "anyOf": [
               {
                 "type": "string"
@@ -9800,66 +9803,16 @@
                 "type": "null"
               }
             ],
-            "title": "Title",
-            "description": "Page title"
-          },
-          "textContent": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Textcontent",
-            "description": "Extracted text content"
-          },
-          "metaDescription": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Metadescription",
-            "description": "Meta description"
-          },
-          "discoveredUrls": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Discoveredurls",
-            "description": "URLs found on page"
-          },
-          "statusCode": {
-            "type": "integer",
-            "title": "Statuscode",
-            "description": "HTTP status code",
-            "default": 200
-          },
-          "error": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Error",
-            "description": "Error message if failed"
+            "title": "Basedomain",
+            "description": "Base domain for link filtering (auto-detected if not provided)"
           }
         },
         "type": "object",
         "required": [
           "url"
         ],
-        "title": "CrawlPageResponse",
-        "description": "Response from crawling a page."
+        "title": "CrawlPageRequest",
+        "description": "Request model for crawling a single page via workflow."
       },
       "CrawlPageWorkflowResponse": {
         "properties": {
@@ -14082,75 +14035,6 @@
         ],
         "title": "WorkflowStep",
         "description": "Schema for workflow step tracking."
-      },
-      "src__schemas__brand_crawler__CrawlPageRequest": {
-        "properties": {
-          "url": {
-            "type": "string",
-            "title": "Url",
-            "description": "URL to crawl"
-          },
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID for domain filtering"
-          },
-          "extractLinks": {
-            "type": "boolean",
-            "title": "Extractlinks",
-            "description": "Whether to extract links",
-            "default": true
-          },
-          "waitForSelector": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Waitforselector",
-            "description": "CSS selector to wait for"
-          }
-        },
-        "type": "object",
-        "required": [
-          "url",
-          "brandId"
-        ],
-        "title": "CrawlPageRequest",
-        "description": "Request for crawling a single page."
-      },
-      "src__schemas__crawled_pages__CrawlPageRequest": {
-        "properties": {
-          "url": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "title": "Url",
-            "description": "URL to crawl"
-          },
-          "baseDomain": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Basedomain",
-            "description": "Base domain for link filtering (auto-detected if not provided)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "url"
-        ],
-        "title": "CrawlPageRequest",
-        "description": "Request model for crawling a single page via workflow."
       },
       "src__schemas__locations__PhysicalLocation": {
         "properties": {

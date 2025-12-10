@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.93] - 2025-12-10
+
+### Changes
+- fix: Remove duplicate endpoint definitions (#689) (#702)
+
+**Source:** project-beta-api@28b8035 "fix: Remove duplicate endpoint definitions (#689) (#702)"
+
 ## [v0.7.92] - 2025-12-10
 
 ### Changes
