@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.118] - 2025-12-11
+
+### Changes
+- docs: Add worktree-to-merge development lifecycle skill (#759)
+
+**Source:** project-beta-api@4a326822 "docs: Add worktree-to-merge development lifecycle skill (#759)"
+
 ## [v0.7.117] - 2025-12-11
 
 ### Changes
