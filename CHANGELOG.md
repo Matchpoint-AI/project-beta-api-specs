@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.109] - 2025-12-11
+
+### Changes
+- Merge pull request #733 from Matchpoint-AI/fix/brand-onboarding-status-696
+
+**Source:** project-beta-api@31399408 "Merge pull request #733 from Matchpoint-AI/fix/brand-onboarding-status-696"
+
 ## [v0.7.108] - 2025-12-11
 
 ### Changes
