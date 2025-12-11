@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.113] - 2025-12-11
+
+### Changes
+- Merge pull request #745 from Matchpoint-AI/test/issue-680-integration-tests
+
+**Source:** project-beta-api@32092c40 "Merge pull request #745 from Matchpoint-AI/test/issue-680-integration-tests"
+
 ## [v0.7.112] - 2025-12-11
 
 ### Changes
