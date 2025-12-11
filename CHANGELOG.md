@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.108] - 2025-12-11
+
+### Changes
+- Merge pull request #732 from Matchpoint-AI/fix/651-650-firebase-local-jwt
+
+**Source:** project-beta-api@694ef804 "Merge pull request #732 from Matchpoint-AI/fix/651-650-firebase-local-jwt"
+
 ## [v0.7.107] - 2025-12-11
 
 ### Changes
