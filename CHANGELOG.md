@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.116] - 2025-12-11
+
+### Changes
+- feat: Add Claude Code skills for API development (#754)
+
+**Source:** project-beta-api@40471f1c "feat: Add Claude Code skills for API development (#754)"
+
 ## [v0.7.115] - 2025-12-11
 
 ### Changes
