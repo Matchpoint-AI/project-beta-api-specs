@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.110] - 2025-12-11
+
+### Changes
+- Merge pull request #735 from Matchpoint-AI/chore/coverage-92
+
+**Source:** project-beta-api@18a8a91a "Merge pull request #735 from Matchpoint-AI/chore/coverage-92"
+
 ## [v0.7.109] - 2025-12-11
 
 ### Changes
