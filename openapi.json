@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.116"
+    "version": "0.7.117"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1262,7 +1262,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -4297,7 +4296,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
@@ -4458,7 +4456,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Health Check Api V2 Health Get"
                 }
@@ -4727,7 +4724,7 @@
           "integrations"
         ],
         "summary": "Get Integrations",
-        "description": "Get all configured integrations.",
+        "description": "Get all configured integrations for the authenticated user.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    integration_repo: Injected integration repository\n\nReturns:\n    List of integrations with total count\n\nRaises:\n    HTTPException: 401 if authentication fails\n    HTTPException: 500 if database query fails",
         "operationId": "get_integrations_api_v2_integrations_get",
         "responses": {
           "200": {
@@ -4740,7 +4737,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/integrations/{platform}/auth": {
@@ -4749,8 +4751,13 @@
           "integrations"
         ],
         "summary": "Authenticate Integration",
-        "description": "Authenticate with a platform.",
+        "description": "Authenticate with a platform and store integration.\n\nArgs:\n    platform: Platform name (instagram, facebook, linkedin, twitter)\n    request: Integration authentication request with tokens/code\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    integration_repo: Injected integration repository\n\nReturns:\n    Created integration with ID\n\nRaises:\n    HTTPException: 400 if integration already exists or validation fails\n    HTTPException: 401 if authentication fails\n    HTTPException: 500 if database operation fails",
         "operationId": "authenticate_integration_api_v2_integrations__platform__auth_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "platform",
@@ -4802,8 +4809,13 @@
           "integrations"
         ],
         "summary": "Disconnect Integration",
-        "description": "Disconnect a platform integration.",
+        "description": "Disconnect a platform integration.\n\nArgs:\n    platform: Platform name (instagram, facebook, linkedin, twitter)\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    integration_repo: Injected integration repository\n\nReturns:\n    None (204 No Content)\n\nRaises:\n    HTTPException: 401 if authentication fails\n    HTTPException: 404 if integration not found\n    HTTPException: 500 if database operation fails",
         "operationId": "disconnect_integration_api_v2_integrations__platform__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "platform",
@@ -6081,7 +6093,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Root  Get"
                 }
@@ -6719,7 +6730,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7064,7 +7074,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7131,7 +7140,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7726,7 +7734,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7811,7 +7818,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7972,7 +7978,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8251,7 +8256,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8281,7 +8285,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -8425,7 +8428,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8499,7 +8501,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8661,7 +8662,6 @@
           "adjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8781,7 +8781,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8823,7 +8822,6 @@
           "brandGuidelines": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8850,7 +8848,6 @@
           },
           "results": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9025,7 +9022,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -9091,7 +9087,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9131,7 +9126,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -9175,7 +9169,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9255,7 +9248,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9524,7 +9516,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9783,7 +9774,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10724,7 +10714,6 @@
           },
           "crawledPages": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -11178,7 +11167,6 @@
           "colorAdjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11246,7 +11234,6 @@
             "description": "Generation timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -11504,7 +11491,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11664,7 +11650,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11948,6 +11933,7 @@
         "enum": [
           "completed"
         ],
+        "const": "completed",
         "title": "OnboardingStatus",
         "description": "Enum for onboarding completion status."
       },
@@ -12938,7 +12924,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12999,13 +12984,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -13081,7 +13064,6 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -13089,7 +13071,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13260,7 +13241,6 @@
           "frequencyRules": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13272,7 +13252,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14183,7 +14162,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
