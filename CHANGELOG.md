@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.112] - 2025-12-11
+
+### Changes
+- Merge pull request #737 from Matchpoint-AI/fix/scene-mix-policies-731
+
+**Source:** project-beta-api@86f1d9ed "Merge pull request #737 from Matchpoint-AI/fix/scene-mix-policies-731"
+
 ## [v0.7.111] - 2025-12-11
 
 ### Changes

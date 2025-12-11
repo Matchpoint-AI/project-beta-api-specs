@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.111"
+    "version": "0.7.112"
   },
   "paths": {
     "/api/v2/brands": {
@@ -13087,16 +13087,30 @@
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
-            "type": "object",
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Diversitysettings",
             "description": "Content diversity settings"
           },
           "qualityThresholds": {
-            "additionalProperties": {
-              "type": "number"
-            },
-            "type": "object",
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Qualitythresholds",
             "description": "Quality thresholds"
           },
@@ -13107,39 +13121,74 @@
             "default": true
           },
           "scenes": {
-            "items": {
-              "$ref": "#/components/schemas/ScenePolicy"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ScenePolicy"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Scenes",
             "description": "Scene-specific policies"
           },
           "diversityScore": {
-            "type": "integer",
-            "maximum": 100.0,
-            "minimum": 0.0,
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Diversityscore",
             "description": "Content diversity score"
           },
           "consistencyLevel": {
-            "type": "string",
-            "enum": [
-              "low",
-              "medium",
-              "high"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
             "title": "Consistencylevel",
             "description": "Consistency enforcement level"
           },
           "createdAt": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Createdat",
             "description": "Creation timestamp"
           },
           "updatedAt": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Updatedat",
             "description": "Last update timestamp"
           }
@@ -13151,12 +13200,7 @@
           "name",
           "contentTypes",
           "platforms",
-          "frequencyRules",
-          "scenes",
-          "diversityScore",
-          "consistencyLevel",
-          "createdAt",
-          "updatedAt"
+          "frequencyRules"
         ],
         "title": "SceneMixPolicyResponse",
         "description": "Schema for scene mix policy response."
