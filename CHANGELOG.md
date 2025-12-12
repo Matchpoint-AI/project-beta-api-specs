@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.125] - 2025-12-12
+
+### Changes
+- Merge pull request #777 from Matchpoint-AI/fix/771-firebase-sync
+
+**Source:** project-beta-api@902a8667 "Merge pull request #777 from Matchpoint-AI/fix/771-firebase-sync"
+
 ## [v0.7.124] - 2025-12-12
 
 ### Changes
