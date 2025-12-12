@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.126] - 2025-12-12
+
+### Changes
+- fix: Make database migrations idempotent with IF NOT EXISTS checks (#784)
+
+**Source:** project-beta-api@c8bef7ac "fix: Make database migrations idempotent with IF NOT EXISTS checks (#784)"
+
 ## [v0.7.125] - 2025-12-12
 
 ### Changes
