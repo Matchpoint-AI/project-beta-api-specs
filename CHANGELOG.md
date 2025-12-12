@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.122] - 2025-12-12
+
+### Changes
+- chore: Remove redundant GITHUB_COMMENTING.md files (Issue #765) (#766)
+
+**Source:** project-beta-api@f78d24bb "chore: Remove redundant GITHUB_COMMENTING.md files (Issue #765) (#766)"
+
 ## [v0.7.121] - 2025-12-12
 
 ### Changes
