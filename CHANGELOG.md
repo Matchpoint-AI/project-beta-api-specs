@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.139] - 2025-12-12
+
+### Changes
+- Merge pull request #798 from Matchpoint-AI/fix/89-update-runner-labels
+
+**Source:** project-beta-api@8d6e66f3 "Merge pull request #798 from Matchpoint-AI/fix/89-update-runner-labels"
+
 ## [v0.7.138] - 2025-12-12
 
 ### Changes
