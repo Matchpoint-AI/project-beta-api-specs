@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.132] - 2025-12-12
+
+### Changes
+- feat: Implement LocalWorkflowService for local development (#787) (#788)
+
+**Source:** project-beta-api@d1317f3a "feat: Implement LocalWorkflowService for local development (#787) (#788)"
+
 ## [v0.7.131] - 2025-12-12
 
 ### Changes
