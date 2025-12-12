@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.127"
+    "version": "0.7.128"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2752,7 +2752,7 @@
           "content"
         ],
         "summary": "Create Content",
-        "description": "Create new content or regenerate existing content.\n\nThis is the RMM Level 2 compliant endpoint for content creation/regeneration.\nInstead of POST /content/{id}/regenerate, we POST to /content to create a new version.\n\nThe client can include metadata indicating this is a regeneration of existing content.",
+        "description": "Create new content or regenerate existing content.\n\nThis is the RMM Level 2 compliant endpoint for content creation/regeneration.\nInstead of POST /content/{id}/regenerate, we POST to /content to create a new version.\n\nThe client can include metadata indicating this is a regeneration of existing content.\n\nSecurity: user_id is extracted from the JWT token and cannot be manipulated by the client.",
         "operationId": "create_content_api_v2_content_post",
         "requestBody": {
           "content": {
@@ -2785,7 +2785,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/content/{content_id}/versions": {
@@ -9106,7 +9111,7 @@
           "campaignId"
         ],
         "title": "ContentCreate",
-        "description": "Schema for creating content."
+        "description": "Schema for creating content.\n\nSecurity Note (Issue #773):\n- user_id field is ignored by POST /content endpoint (extracted from JWT token)\n- Other endpoints may derive user_id from campaign or set it explicitly"
       },
       "ContentExport": {
         "properties": {

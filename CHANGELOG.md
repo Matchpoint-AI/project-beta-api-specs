@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.128] - 2025-12-12
+
+### Changes
+- fix: Extract user_id from JWT token in POST /api/v2/content (#775)
+
+**Source:** project-beta-api@1fc51e90 "fix: Extract user_id from JWT token in POST /api/v2/content (#775)"
+
 ## [v0.7.127] - 2025-12-12
 
 ### Changes
