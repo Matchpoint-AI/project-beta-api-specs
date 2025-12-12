@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.124] - 2025-12-12
+
+### Changes
+- Merge pull request #770 from Matchpoint-AI/fix/769-ai-skill-migration
+
+**Source:** project-beta-api@0dc3a7fc "Merge pull request #770 from Matchpoint-AI/fix/769-ai-skill-migration"
+
 ## [v0.7.123] - 2025-12-12
 
 ### Changes
