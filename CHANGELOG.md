@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.129] - 2025-12-12
+
+### Changes
+- Merge pull request #778 from Matchpoint-AI/fix/772-security-brands
+
+**Source:** project-beta-api@602b05a0 "Merge pull request #778 from Matchpoint-AI/fix/772-security-brands"
+
 ## [v0.7.128] - 2025-12-12
 
 ### Changes
