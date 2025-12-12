@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.142] - 2025-12-12
+
+### Changes
+- Merge pull request #811 from Matchpoint-AI/fix/678-e2e-content-workflow
+
+**Source:** project-beta-api@ddd29192 "Merge pull request #811 from Matchpoint-AI/fix/678-e2e-content-workflow"
+
 ## [v0.7.141] - 2025-12-12
 
 ### Changes
