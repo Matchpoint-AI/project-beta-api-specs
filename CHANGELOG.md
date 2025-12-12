@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.145] - 2025-12-12
+
+### Changes
+- Merge pull request #819 from Matchpoint-AI/fix/818-fal-image-bug
+
+**Source:** project-beta-api@5e92e088 "Merge pull request #819 from Matchpoint-AI/fix/818-fal-image-bug"
+
 ## [v0.7.144] - 2025-12-12
 
 ### Changes
