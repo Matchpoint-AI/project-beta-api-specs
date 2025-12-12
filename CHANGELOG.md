@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.141] - 2025-12-12
+
+### Changes
+- Remove Firebase Auth from project-beta-api (Issue #804) (#807)
+
+**Source:** project-beta-api@27386de4 "Remove Firebase Auth from project-beta-api (Issue #804) (#807)"
+
 ## [v0.7.140] - 2025-12-12
 
 ### Changes
