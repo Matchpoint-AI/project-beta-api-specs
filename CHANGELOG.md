@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.143] - 2025-12-12
+
+### Changes
+- fix: Make migration 548e5a2dc7a4 idempotent with IF EXISTS check (#815)
+
+**Source:** project-beta-api@ec3e1a57 "fix: Make migration 548e5a2dc7a4 idempotent with IF EXISTS check (#815)"
+
 ## [v0.7.142] - 2025-12-12
 
 ### Changes
