@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.131] - 2025-12-12
+
+### Changes
+- docs: Add comprehensive local development patterns skill (#795)
+
+**Source:** project-beta-api@22c79960 "docs: Add comprehensive local development patterns skill (#795)"
+
 ## [v0.7.130] - 2025-12-12
 
 ### Changes
