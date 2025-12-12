@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.121] - 2025-12-12
+
+### Changes
+- Merge pull request #764 from Matchpoint-AI/fix/758-issue-grooming-skill
+
+**Source:** project-beta-api@f59b0360 "Merge pull request #764 from Matchpoint-AI/fix/758-issue-grooming-skill"
+
 ## [v0.7.120] - 2025-12-12
 
 ### Changes
