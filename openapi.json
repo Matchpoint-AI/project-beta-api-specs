@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.118"
+    "version": "0.7.119"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2294,6 +2294,11 @@
         "summary": "Generate Caption",
         "description": "Generate captions for content.",
         "operationId": "generate_caption_api_v2_content__content_id__captions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
