@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.134] - 2025-12-12
+
+### Changes
+- Merge pull request #800 from Matchpoint-AI/fix/796-db-migration
+
+**Source:** project-beta-api@15fc054f "Merge pull request #800 from Matchpoint-AI/fix/796-db-migration"
+
 ## [v0.7.133] - 2025-12-12
 
 ### Changes
