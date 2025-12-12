@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.130] - 2025-12-12
+
+### Changes
+- Merge pull request #793 from Matchpoint-AI/fix/791-ci-runner-docs
+
+**Source:** project-beta-api@a0abc97c "Merge pull request #793 from Matchpoint-AI/fix/791-ci-runner-docs"
+
 ## [v0.7.129] - 2025-12-12
 
 ### Changes
