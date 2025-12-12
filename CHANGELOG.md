@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.123] - 2025-12-12
+
+### Changes
+- docs: Move investigation notes from .ai to GitHub issues (#768)
+
+**Source:** project-beta-api@f91f3737 "docs: Move investigation notes from .ai to GitHub issues (#768)"
+
 ## [v0.7.122] - 2025-12-12
 
 ### Changes
