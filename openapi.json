@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.145"
+    "version": "0.7.146"
   },
   "paths": {
     "/api/v2/brands": {
@@ -12197,12 +12197,19 @@
       "PostContent": {
         "properties": {
           "selected_image": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "title": "Selected Image",
-            "description": "URL of the selected image"
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2083,
+                "minLength": 1,
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "URL of the selected image (optional - can be set later)",
+            "title": "Selected Image"
           },
           "text": {
             "type": "string",
@@ -12213,7 +12220,6 @@
         },
         "type": "object",
         "required": [
-          "selected_image",
           "text"
         ],
         "title": "PostContent",
