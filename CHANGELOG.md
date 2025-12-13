@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.160] - 2025-12-13
+
+### Changes
+- Merge pull request #854 from Matchpoint-AI/feat/649-token-refresh
+
+**Source:** project-beta-api@3fd05d0a "Merge pull request #854 from Matchpoint-AI/feat/649-token-refresh"
+
 ## [v0.7.159] - 2025-12-13
 
 ### Changes

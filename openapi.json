@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.159"
+    "version": "0.7.160"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5856,6 +5856,39 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/auth/refresh": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Refresh Token",
+        "description": "Refresh an expiring or expired JWT token.\n\nThis endpoint allows native auth users to refresh their JWT tokens\nwithout requiring re-authentication. The endpoint accepts expired tokens\n(within a reasonable grace period) and issues a new token with fresh\nexpiration.\n\nSecurity considerations:\n- Validates token signature and structure\n- Checks if token is blacklisted (logged out)\n- Preserves original token claims in new token\n- Does not extend refresh capability indefinitely\n\nRMM Level 2 Compliance:\n- POST to /auth/refresh refreshes authentication token\n- HTTP verb (POST) indicates action\n- Returns new token with fresh expiration\n\nArgs:\n    credentials: HTTP Bearer token credentials from request header\n    auth_service: Injected authentication service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    TokenRefreshResponse with new access token and expiration time\n\nRaises:\n    HTTPException 401: If token is invalid, malformed, or blacklisted\n    HTTPException 500: If token refresh fails due to server error",
+        "operationId": "refresh_token_api_v2_auth_refresh_post",
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenRefreshResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or malformed token"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/users/me": {
@@ -13714,6 +13747,33 @@
           "updated_at": "2024-01-15T10:05:00Z",
           "user_id": "user123"
         }
+      },
+      "TokenRefreshResponse": {
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "title": "Accesstoken",
+            "description": "New JWT access token"
+          },
+          "tokenType": {
+            "type": "string",
+            "title": "Tokentype",
+            "description": "Token type (always 'bearer')",
+            "default": "bearer"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "title": "Expiresin",
+            "description": "Token expiration time in seconds from now"
+          }
+        },
+        "type": "object",
+        "required": [
+          "accessToken",
+          "expiresIn"
+        ],
+        "title": "TokenRefreshResponse",
+        "description": "Schema for token refresh response.\n\nReturns new access token with fresh expiration."
       },
       "ToneAttributes": {
         "properties": {
