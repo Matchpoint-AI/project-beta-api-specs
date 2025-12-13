@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.149] - 2025-12-13
+
+### Changes
+- Merge pull request #824 from Matchpoint-AI/fix/654-e2e-content-generation
+
+**Source:** project-beta-api@60c6b8b9 "Merge pull request #824 from Matchpoint-AI/fix/654-e2e-content-generation"
+
 ## [v0.7.148] - 2025-12-13
 
 ### Changes
