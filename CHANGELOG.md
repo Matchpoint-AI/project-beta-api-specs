@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.155] - 2025-12-13
+
+### Changes
+- Merge pull request #841 from Matchpoint-AI/fix/16-remove-ai-dir
+
+**Source:** project-beta-api@c738df03 "Merge pull request #841 from Matchpoint-AI/fix/16-remove-ai-dir"
+
 ## [v0.7.154] - 2025-12-13
 
 ### Changes
