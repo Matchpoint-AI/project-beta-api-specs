@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.157] - 2025-12-13
+
+### Changes
+- fix: Add ADDITIONAL_CORS_ORIGINS environment variable for flexible CORS configuration (#853)
+
+**Source:** project-beta-api@f6020d79 "fix: Add ADDITIONAL_CORS_ORIGINS environment variable for flexible CORS configuration (#853)"
+
 ## [v0.7.156] - 2025-12-13
 
 ### Changes
