@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.148] - 2025-12-13
+
+### Changes
+- Merge pull request #826 from Matchpoint-AI/feat/1431-automated-migrations
+
+**Source:** project-beta-api@6f854327 "Merge pull request #826 from Matchpoint-AI/feat/1431-automated-migrations"
+
 ## [v0.7.147] - 2025-12-13
 
 ### Changes

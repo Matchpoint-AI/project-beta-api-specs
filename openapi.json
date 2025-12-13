@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.147"
+    "version": "0.7.148"
   },
   "paths": {
     "/api/v2/brands": {
