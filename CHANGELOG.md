@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.156] - 2025-12-13
+
+### Changes
+- Merge pull request #838 from Matchpoint-AI/fix/513-dynamic-prompt
+
+**Source:** project-beta-api@49f3f691 "Merge pull request #838 from Matchpoint-AI/fix/513-dynamic-prompt"
+
 ## [v0.7.155] - 2025-12-13
 
 ### Changes
