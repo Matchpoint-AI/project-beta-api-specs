@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.151] - 2025-12-13
+
+### Changes
+- Merge pull request #830 from Matchpoint-AI/delete-e2e-workflow
+
+**Source:** project-beta-api@68acbf20 "Merge pull request #830 from Matchpoint-AI/delete-e2e-workflow"
+
 ## [v0.7.150] - 2025-12-13
 
 ### Changes
