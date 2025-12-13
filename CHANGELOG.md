@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.147] - 2025-12-13
+
+### Changes
+- Merge pull request #823 from Matchpoint-AI/fix/746-silent-workflow-failure
+
+**Source:** project-beta-api@0b6b1ba1 "Merge pull request #823 from Matchpoint-AI/fix/746-silent-workflow-failure"
+
 ## [v0.7.146] - 2025-12-13
 
 ### Changes
