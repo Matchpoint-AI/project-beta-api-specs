@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.164] - 2025-12-14
+
+### Changes
+- Merge pull request #859 from Matchpoint-AI/fix/856-bulk-approval-v2
+
+**Source:** project-beta-api@12edadb9 "Merge pull request #859 from Matchpoint-AI/fix/856-bulk-approval-v2"
+
 ## [v0.7.163] - 2025-12-14
 
 ### Changes
