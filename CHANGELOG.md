@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.167] - 2025-12-14
+
+### Changes
+- Merge pull request #866 from Matchpoint-AI/test/685-thread-api
+
+**Source:** project-beta-api@8020ef43 "Merge pull request #866 from Matchpoint-AI/test/685-thread-api"
+
 ## [v0.7.166] - 2025-12-14
 
 ### Changes
