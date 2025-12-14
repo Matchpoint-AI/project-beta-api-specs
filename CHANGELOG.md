@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.163] - 2025-12-14
+
+### Changes
+- Merge pull request #862 from Matchpoint-AI/feat/855-calendar-reliability
+
+**Source:** project-beta-api@0472ab3d "Merge pull request #862 from Matchpoint-AI/feat/855-calendar-reliability"
+
 ## [v0.7.162] - 2025-12-14
 
 ### Changes
