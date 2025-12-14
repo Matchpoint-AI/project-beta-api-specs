@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.166] - 2025-12-14
+
+### Changes
+- Merge pull request #865 from Matchpoint-AI/docs/529-database-adr
+
+**Source:** project-beta-api@92f64512 "Merge pull request #865 from Matchpoint-AI/docs/529-database-adr"
+
 ## [v0.7.165] - 2025-12-14
 
 ### Changes
