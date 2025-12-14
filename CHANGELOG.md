@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.171] - 2025-12-14
+
+### Changes
+- Merge pull request #836 from Matchpoint-AI/fix/471-config-validation
+
+**Source:** project-beta-api@98ec7fb1 "Merge pull request #836 from Matchpoint-AI/fix/471-config-validation"
+
 ## [v0.7.170] - 2025-12-14
 
 ### Changes
