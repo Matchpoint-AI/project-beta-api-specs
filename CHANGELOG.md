@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.170] - 2025-12-14
+
+### Changes
+- Merge pull request #870 from Matchpoint-AI/fix/868-single-prompt-per-post
+
+**Source:** project-beta-api@b97ccef3 "Merge pull request #870 from Matchpoint-AI/fix/868-single-prompt-per-post"
+
 ## [v0.7.169] - 2025-12-14
 
 ### Changes
