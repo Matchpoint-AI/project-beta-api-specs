@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.161] - 2025-12-14
+
+### Changes
+- Merge pull request #861 from Matchpoint-AI/fix/860-schema-drift
+
+**Source:** project-beta-api@3df07081 "Merge pull request #861 from Matchpoint-AI/fix/860-schema-drift"
+
 ## [v0.7.160] - 2025-12-13
 
 ### Changes
