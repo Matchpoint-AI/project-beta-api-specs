@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.168] - 2025-12-14
+
+### Changes
+- Merge pull request #867 from Matchpoint-AI/fix/docker-dind-race-condition
+
+**Source:** project-beta-api@21d1cd32 "Merge pull request #867 from Matchpoint-AI/fix/docker-dind-race-condition"
+
 ## [v0.7.167] - 2025-12-14
 
 ### Changes
