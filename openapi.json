@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.172"
+    "version": "0.7.173"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5897,7 +5897,7 @@
           "users"
         ],
         "summary": "Get Current User",
-        "description": "Get current authenticated user profile.\n\nRetrieves the profile of the currently authenticated user based on\ntheir authentication token. Supports both Firebase Auth and native\nemail/password authentication.\n\nFor native auth users:\n- Token contains uid = database user ID\n- Look up user by ID directly\n\nFor Firebase auth users:\n- Token contains uid = Firebase UID\n- Look up user by Firebase UID, or create if first login (lazy sync)\n\nThis endpoint implements lazy user creation for Firebase Auth users.\nIf a user authenticates via Firebase but doesn't have a database record,\none is created automatically using data from the Firebase token.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /users/me\n- HTTP method (GET) indicates read action\n- No verbs in URL path\n- Uses /me convention for current authenticated user\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    user_service: Injected user service\n\nReturns:\n    UserResponse with user profile data\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 500: If database or server error occurs",
+        "description": "Get current authenticated user profile.\n\nRetrieves the profile of the currently authenticated user based on\ntheir authentication token. Supports both Firebase Auth and native\nemail/password authentication.\n\nFor native auth users:\n- Token contains uid = database user ID\n- Look up user by ID directly\n\nFor Firebase auth users:\n- Token contains uid = Firebase UID\n- Look up user by Firebase UID, or create if first login (lazy sync)\n\nThis endpoint implements lazy user creation for Firebase Auth users.\nIf a user authenticates via Firebase but doesn't have a database record,\none is created automatically using data from the Firebase token.\n\nThe response includes a has_brand field indicating whether the user\nhas any associated brands in the system.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /users/me\n- HTTP method (GET) indicates read action\n- No verbs in URL path\n- Uses /me convention for current authenticated user\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    user_service: Injected user service\n\nReturns:\n    UserResponse with user profile data including has_brand field\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 500: If database or server error occurs",
         "operationId": "get_current_user_api_v2_users_me_get",
         "responses": {
           "200": {
@@ -14060,6 +14060,12 @@
             "type": "boolean",
             "title": "Isadmin",
             "description": "Whether user has admin privileges",
+            "default": false
+          },
+          "hasBrand": {
+            "type": "boolean",
+            "title": "Hasbrand",
+            "description": "Whether user has any associated brands",
             "default": false
           },
           "createdAt": {
