@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.165] - 2025-12-14
+
+### Changes
+- test: Add comprehensive tests for health controller endpoint (#863)
+
+**Source:** project-beta-api@232c9e57 "test: Add comprehensive tests for health controller endpoint (#863)"
+
 ## [v0.7.164] - 2025-12-14
 
 ### Changes
