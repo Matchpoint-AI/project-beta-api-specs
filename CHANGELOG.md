@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.176] - 2025-12-15
+
+### Changes
+- Merge pull request #878 from Matchpoint-AI/fix/876-empty-image-url
+
+**Source:** project-beta-api@d42e9302 "Merge pull request #878 from Matchpoint-AI/fix/876-empty-image-url"
+
 ## [v0.7.175] - 2025-12-15
 
 ### Changes
