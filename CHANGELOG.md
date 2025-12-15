@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.180] - 2025-12-15
+
+### Changes
+- Merge pull request #889 from Matchpoint-AI/fix/888-flaky-port-test
+
+**Source:** project-beta-api@05ef8e45 "Merge pull request #889 from Matchpoint-AI/fix/888-flaky-port-test"
+
 ## [v0.7.179] - 2025-12-15
 
 ### Changes
