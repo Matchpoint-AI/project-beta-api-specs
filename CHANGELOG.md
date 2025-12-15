@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.174] - 2025-12-15
+
+### Changes
+- Merge pull request #851 from Matchpoint-AI/test/503-e2e-golden-path
+
+**Source:** project-beta-api@a49dc5aa "Merge pull request #851 from Matchpoint-AI/test/503-e2e-golden-path"
+
 ## [v0.7.173] - 2025-12-14
 
 ### Changes
