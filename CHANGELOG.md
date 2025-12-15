@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.177] - 2025-12-15
+
+### Changes
+- Merge pull request #880 from Matchpoint-AI/fix/879-color-extraction
+
+**Source:** project-beta-api@d40e30b0 "Merge pull request #880 from Matchpoint-AI/fix/879-color-extraction"
+
 ## [v0.7.176] - 2025-12-15
 
 ### Changes
