@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.175] - 2025-12-15
+
+### Changes
+- fix: increment approval count instead of overwriting (#877)
+
+**Source:** project-beta-api@63b46021 "fix: increment approval count instead of overwriting (#877)"
+
 ## [v0.7.174] - 2025-12-15
 
 ### Changes
