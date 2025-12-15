@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.179] - 2025-12-15
+
+### Changes
+- Merge pull request #887 from Matchpoint-AI/skill/api-design-auditing
+
+**Source:** project-beta-api@7dc041e5 "Merge pull request #887 from Matchpoint-AI/skill/api-design-auditing"
+
 ## [v0.7.178] - 2025-12-15
 
 ### Changes
