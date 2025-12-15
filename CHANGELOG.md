@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.178] - 2025-12-15
+
+### Changes
+- Merge pull request #842 from Matchpoint-AI/fix/839-openai-retry
+
+**Source:** project-beta-api@9bbf73f6 "Merge pull request #842 from Matchpoint-AI/fix/839-openai-retry"
+
 ## [v0.7.177] - 2025-12-15
 
 ### Changes
