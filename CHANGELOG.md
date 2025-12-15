@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.181] - 2025-12-15
+
+### Changes
+- Merge pull request #890 from Matchpoint-AI/feat/881-api-linting
+
+**Source:** project-beta-api@7d3f9ad1 "Merge pull request #890 from Matchpoint-AI/feat/881-api-linting"
+
 ## [v0.7.180] - 2025-12-15
 
 ### Changes
