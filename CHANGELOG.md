@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.183] - 2025-12-16
+
+### Changes
+- Merge pull request #892 from Matchpoint-AI/feat/1009-brand-colors
+
+**Source:** project-beta-api@14304ed6 "Merge pull request #892 from Matchpoint-AI/feat/1009-brand-colors"
+
 ## [v0.7.182] - 2025-12-16
 
 ### Changes
