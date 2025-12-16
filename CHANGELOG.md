@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.185] - 2025-12-16
+
+### Changes
+- Merge pull request #896 from Matchpoint-AI/fix/895-brandstatus-enum
+
+**Source:** project-beta-api@ec8b8f86 "Merge pull request #896 from Matchpoint-AI/fix/895-brandstatus-enum"
+
 ## [v0.7.184] - 2025-12-16
 
 ### Changes
