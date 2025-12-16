@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.187] - 2025-12-16
+
+### Changes
+- Merge pull request #901 from Matchpoint-AI/fix/900-remove-firebase
+
+**Source:** project-beta-api@92dd549a "Merge pull request #901 from Matchpoint-AI/fix/900-remove-firebase"
+
 ## [v0.7.186] - 2025-12-16
 
 ### Changes
