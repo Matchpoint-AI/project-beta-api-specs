@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.184] - 2025-12-16
+
+### Changes
+- Merge pull request #894 from Matchpoint-AI/fix/893-login-token
+
+**Source:** project-beta-api@fc0bd594 "Merge pull request #894 from Matchpoint-AI/fix/893-login-token"
+
 ## [v0.7.183] - 2025-12-16
 
 ### Changes
