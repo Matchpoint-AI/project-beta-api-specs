@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.186] - 2025-12-16
+
+### Changes
+- chore: Remove orphaned cloudbuild.yaml and update docs to GitHub Actions (#899)
+
+**Source:** project-beta-api@05da5927 "chore: Remove orphaned cloudbuild.yaml and update docs to GitHub Actions (#899)"
+
 ## [v0.7.185] - 2025-12-16
 
 ### Changes
