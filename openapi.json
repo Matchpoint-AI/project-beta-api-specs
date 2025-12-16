@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.181"
+    "version": "0.7.182"
   },
   "paths": {
     "/api/v2/brands": {
@@ -489,7 +489,7 @@
         ],
         "summary": "Upload Brand Files",
         "description": "Upload brand files (guidelines PDF and logo) with LLM extraction.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines using LLM processing.",
-        "operationId": "upload_brand_files_api_v2_brands__brand_id__files_post",
+        "operationId": "upload_brand_files",
         "parameters": [
           {
             "name": "brand_id",
@@ -507,7 +507,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_upload_brand_files_api_v2_brands__brand_id__files_post"
+                "$ref": "#/components/schemas/Body_upload_brand_files"
               }
             }
           }
@@ -550,7 +550,7 @@
         ],
         "summary": "Update Brand Files",
         "description": "Update brand files (guidelines PDF and logo).\n\nProper REST endpoint for updating brand files.\nReplaces the non-RESTful /with-files endpoint.",
-        "operationId": "update_brand_files_api_v2_brands__brand_id__files_put",
+        "operationId": "update_brand_files",
         "parameters": [
           {
             "name": "brand_id",
@@ -568,7 +568,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_update_brand_files_api_v2_brands__brand_id__files_put"
+                "$ref": "#/components/schemas/Body_update_brand_files"
               }
             }
           }
@@ -890,25 +890,23 @@
             "description": "Knowledge extraction failed"
           }
         }
-      }
-    },
-    "/api/v2/brands/{brandId}/knowledge": {
+      },
       "get": {
         "tags": [
           "brand-workflow"
         ],
         "summary": "Get Brand Knowledge V2",
         "description": "Get extracted brand knowledge in V2 format with pagination.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.\n\nSupports pagination parameters for future compatibility when multiple\nknowledge entries per brand are supported.",
-        "operationId": "get_brand_knowledge_v2_api_v2_brands__brandId__knowledge_get",
+        "operationId": "get_brand_knowledge_v2_api_v2_brands__brand_id__knowledge_get",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           },
@@ -3410,7 +3408,7 @@
     "/api/v2/crawls/overview": {
       "get": {
         "tags": [
-          "Crawl Analytics"
+          "crawl-analytics"
         ],
         "summary": "Get Crawl Overview",
         "description": "Get overview statistics for crawl monitoring.\n\nProvides key metrics like total brands crawled, average success rate,\naverage crawl time, and total pages crawled in the specified period.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    analytics_service: Injected analytics service\n\nReturns:\n    Overview statistics for crawl operations",
@@ -3456,7 +3454,7 @@
     "/api/v2/crawls/trends": {
       "get": {
         "tags": [
-          "Crawl Analytics"
+          "crawl-analytics"
         ],
         "summary": "Get Crawl Trends",
         "description": "Get time series trends for crawl performance.\n\nProvides daily or hourly aggregated data showing completed vs failed\ncrawls over time with success rate calculations.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    interval: Aggregation interval - \"day\" or \"hour\" (default: \"day\")\n    analytics_service: Injected analytics service\n\nReturns:\n    Time series trends data",
@@ -3513,7 +3511,7 @@
     "/api/v2/crawls/errors": {
       "get": {
         "tags": [
-          "Crawl Analytics"
+          "crawl-analytics"
         ],
         "summary": "Get Crawl Errors",
         "description": "Get error analysis for crawl failures.\n\nProvides breakdown of most common error types, counts, and last\noccurrences to help identify and fix crawl issues.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of error types to return (1-100, default: 10)\n    analytics_service: Injected analytics service\n\nReturns:\n    Error analysis with top error types",
@@ -3571,7 +3569,7 @@
     "/api/v2/crawls/brands": {
       "get": {
         "tags": [
-          "Crawl Analytics"
+          "crawl-analytics"
         ],
         "summary": "Get Brand Crawl Stats",
         "description": "Get brand-level crawl performance statistics.\n\nProvides performance metrics for each brand including total pages,\nsuccess rates, and last crawl timestamps.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of brands to return (1-200, default: 50)\n    analytics_service: Injected analytics service\n\nReturns:\n    Brand-level performance statistics",
@@ -3629,7 +3627,7 @@
     "/api/v2/crawls/domains": {
       "get": {
         "tags": [
-          "Crawl Analytics"
+          "crawl-analytics"
         ],
         "summary": "Get Domain Crawl Health",
         "description": "Get domain-level crawl health statistics.\n\nProvides health metrics for each domain including success rates\nand common error patterns for that domain.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of domains to return (1-100, default: 20)\n    analytics_service: Injected analytics service\n\nReturns:\n    Domain-level health statistics",
@@ -3687,7 +3685,7 @@
     "/api/v2/crawls/durations": {
       "get": {
         "tags": [
-          "Crawl Analytics"
+          "crawl-analytics"
         ],
         "summary": "Get Crawl Duration Histogram",
         "description": "Get crawl duration distribution histogram.\n\nProvides distribution of crawl completion times across buckets\n(0-10s, 10-30s, etc.) with percentages and statistics.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    analytics_service: Injected analytics service\n\nReturns:\n    Duration histogram with buckets and statistics",
@@ -3898,23 +3896,23 @@
         }
       }
     },
-    "/api/v2/brands/{brandId}/pages/render": {
+    "/api/v2/brands/{brand_id}/pages/render": {
       "post": {
         "tags": [
           "crawled-pages"
         ],
         "summary": "Render And Crawl Page",
         "description": "Render a JavaScript-heavy page with Playwright and extract content.\n\nThis endpoint uses Playwright to render modern SPAs (React, Vue, Angular)\nthat require JavaScript execution. It's slower than traditional crawling\nbut enables access to dynamically-generated content.\n\nUse this endpoint when:\n- Static HTML crawling fails or returns incomplete content\n- The website uses client-side rendering\n- Content is loaded via JavaScript after page load\n\nThe endpoint will:\n1. Launch a headless browser\n2. Navigate to the URL and wait for network idle\n3. Optionally wait for a specific selector\n4. Extract the rendered HTML and text content\n5. Discover links on the page\n6. Store the page data\n\nArgs:\n    brand_id: Brand ID for the crawl\n    request: Render request with URL, optional selector, and timeout\n\nReturns:\n    CrawlPageWorkflowResponse with extracted content and discovered URLs",
-        "operationId": "render_and_crawl_page_api_v2_brands__brandId__pages_render_post",
+        "operationId": "render_and_crawl_page_api_v2_brands__brand_id__pages_render_post",
         "parameters": [
           {
-            "name": "brandId",
+            "name": "brand_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The brand ID",
-              "title": "Brandid"
+              "title": "Brand Id"
             },
             "description": "The brand ID"
           }
@@ -4457,7 +4455,7 @@
     "/api/v2/health": {
       "get": {
         "tags": [
-          "Health"
+          "health"
         ],
         "summary": "Health Check",
         "description": "Health check endpoint.",
@@ -4593,22 +4591,22 @@
         }
       }
     },
-    "/api/v2/images/{imageId}/variants": {
+    "/api/v2/images/{image_id}/variants": {
       "post": {
         "tags": [
           "images"
         ],
         "summary": "Create Image Variant",
-        "description": "Create a new variant of an existing image (RMM-2 compliant).\n\nThis is the REST-compliant version of image remixing.\nInstead of POST /remix (verb), we POST /variants (noun) to create a resource.\n\nBusiness Context:\n- Creates a new image variant with user-specified modifications\n- Maintains variant lineage for tracking and auditing\n- Supports iterative refinement of AI-generated images\n\nRMM-2 Compliance:\n- Uses resource noun 'variants' instead of verb 'remix'\n- Creates a new variant resource through POST method\n- Returns 201 Created status code\n- Proper camelCase parameter naming\n\nArgs:\n    imageId: Original image identifier to create variant from\n    request: Variant creation parameters (modifications, style, etc.)\n\nReturns:\n    ImageResponse with the newly generated image variant\n\nRaises:\n    404 Not Found: If original image doesn't exist\n    500 Internal Server Error: If image generation fails",
+        "description": "Create a new variant of an existing image (RMM-2 compliant).\n\nThis is the REST-compliant version of image remixing.\nInstead of POST /remix (verb), we POST /variants (noun) to create a resource.\n\nBusiness Context:\n- Creates a new image variant with user-specified modifications\n- Maintains variant lineage for tracking and auditing\n- Supports iterative refinement of AI-generated images\n\nRMM-2 Compliance:\n- Uses resource noun 'variants' instead of verb 'remix'\n- Creates a new variant resource through POST method\n- Returns 201 Created status code\n- Proper snake_case parameter naming\n\nArgs:\n    image_id: Original image identifier to create variant from\n    request: Variant creation parameters (modifications, style, etc.)\n\nReturns:\n    ImageResponse with the newly generated image variant\n\nRaises:\n    404 Not Found: If original image doesn't exist\n    500 Internal Server Error: If image generation fails",
         "operationId": "create_image_variant",
         "parameters": [
           {
-            "name": "imageId",
+            "name": "image_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Imageid"
+              "title": "Image Id"
             }
           }
         ],
@@ -5330,14 +5328,14 @@
         }
       }
     },
-    "/api/v2/threads/{threadId}": {
+    "/api/v2/threads/{thread_id}": {
       "get": {
         "tags": [
           "threads"
         ],
         "summary": "Get Thread",
         "description": "Get thread information.\n\nReturns the thread details including message count.\nReturns 404 if thread doesn't exist or user doesn't have access.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only access their own threads",
-        "operationId": "get_thread_api_v2_threads__threadId__get",
+        "operationId": "get_thread_api_v2_threads__thread_id__get",
         "security": [
           {
             "HTTPBearer": []
@@ -5345,13 +5343,13 @@
         ],
         "parameters": [
           {
-            "name": "threadId",
+            "name": "thread_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The thread ID",
-              "title": "Threadid"
+              "title": "Thread Id"
             },
             "description": "The thread ID"
           }
@@ -5391,7 +5389,7 @@
         ],
         "summary": "Delete Thread",
         "description": "Delete a thread.\n\nDeletes a thread and all its messages (cascade delete).\nReturns 404 if thread doesn't exist or user doesn't have access.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only delete their own threads",
-        "operationId": "delete_thread_api_v2_threads__threadId__delete",
+        "operationId": "delete_thread_api_v2_threads__thread_id__delete",
         "security": [
           {
             "HTTPBearer": []
@@ -5399,13 +5397,13 @@
         ],
         "parameters": [
           {
-            "name": "threadId",
+            "name": "thread_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The thread ID",
-              "title": "Threadid"
+              "title": "Thread Id"
             },
             "description": "The thread ID"
           }
@@ -5433,14 +5431,14 @@
         }
       }
     },
-    "/api/v2/threads/{threadId}/messages": {
+    "/api/v2/threads/{thread_id}/messages": {
       "post": {
         "tags": [
           "threads"
         ],
         "summary": "Create Message",
         "description": "Add a message to a thread.\n\nCreates a new message in the conversation thread.\nAutomatically updates the thread's updated_at timestamp.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only add messages to their own threads",
-        "operationId": "create_message_api_v2_threads__threadId__messages_post",
+        "operationId": "create_message_api_v2_threads__thread_id__messages_post",
         "security": [
           {
             "HTTPBearer": []
@@ -5448,13 +5446,13 @@
         ],
         "parameters": [
           {
-            "name": "threadId",
+            "name": "thread_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The thread ID",
-              "title": "Threadid"
+              "title": "Thread Id"
             },
             "description": "The thread ID"
           }
@@ -5507,7 +5505,7 @@
         ],
         "summary": "Get Messages",
         "description": "Get messages for a thread.\n\nReturns messages in chronological order (oldest first).\nSupports pagination for long conversations.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only see messages from their own threads",
-        "operationId": "get_messages_api_v2_threads__threadId__messages_get",
+        "operationId": "get_messages_api_v2_threads__thread_id__messages_get",
         "security": [
           {
             "HTTPBearer": []
@@ -5515,13 +5513,13 @@
         ],
         "parameters": [
           {
-            "name": "threadId",
+            "name": "thread_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
               "description": "The thread ID",
-              "title": "Threadid"
+              "title": "Thread Id"
             },
             "description": "The thread ID"
           },
@@ -5563,7 +5561,7 @@
                   "items": {
                     "$ref": "#/components/schemas/ThreadMessageResponse"
                   },
-                  "title": "Response Get Messages Api V2 Threads  Threadid  Messages Get"
+                  "title": "Response Get Messages Api V2 Threads  Thread Id  Messages Get"
                 }
               }
             }
@@ -5963,7 +5961,7 @@
     "/api/v2/utilities/colors": {
       "post": {
         "tags": [
-          "Utilities"
+          "utilities"
         ],
         "summary": "Convert hex codes to color names",
         "description": "Convert a list of hex color codes to human-readable, creative color names using LLM",
@@ -6005,7 +6003,7 @@
     "/api/v2/utilities/fetch-url-content": {
       "post": {
         "tags": [
-          "Utilities"
+          "utilities"
         ],
         "summary": "Fetch content from URL",
         "description": "Fetch and extract text content, metadata, and optionally images from a URL",
@@ -6047,7 +6045,7 @@
     "/api/v2/pages": {
       "post": {
         "tags": [
-          "v2-resources"
+          "website-content"
         ],
         "summary": "Create Page",
         "description": "Create a page resource by fetching and analyzing URL content.\n\nThis endpoint creates a page resource from a URL, extracting content\nand metadata. Optionally extracts physical locations using LLM analysis.\n\nArgs:\n    request: Page creation request with URL\n    service: Injected website content service\n\nReturns:\n    Created page resource with content, metadata and optional locations\n\nRaises:\n    HTTPException: If page fetch fails or URL is invalid",
@@ -6089,7 +6087,7 @@
     "/api/v2/locations": {
       "post": {
         "tags": [
-          "v2-resources"
+          "website-content"
         ],
         "summary": "Create Locations",
         "description": "Create location resources by analyzing text.\n\nThis endpoint creates location resources from text using LLM to extract\nstructured location data (addresses, cities, states, countries).\n\nArgs:\n    request: Locations creation request with text to analyze\n    service: Injected website content service\n\nReturns:\n    Created location resources\n\nRaises:\n    HTTPException: If location extraction fails",
@@ -6121,27 +6119,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/": {
-      "get": {
-        "summary": "Root",
-        "description": "Root endpoint returning API information.",
-        "operationId": "root__get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
-                  "title": "Response Root  Get"
                 }
               }
             }
@@ -6234,7 +6211,7 @@
           ]
         }
       },
-      "Body_update_brand_files_api_v2_brands__brand_id__files_put": {
+      "Body_update_brand_files": {
         "properties": {
           "name": {
             "anyOf": [
@@ -6322,9 +6299,9 @@
           }
         },
         "type": "object",
-        "title": "Body_update_brand_files_api_v2_brands__brand_id__files_put"
+        "title": "Body_update_brand_files"
       },
-      "Body_upload_brand_files_api_v2_brands__brand_id__files_post": {
+      "Body_upload_brand_files": {
         "properties": {
           "name": {
             "anyOf": [
@@ -6412,7 +6389,7 @@
           }
         },
         "type": "object",
-        "title": "Body_upload_brand_files_api_v2_brands__brand_id__files_post"
+        "title": "Body_upload_brand_files"
       },
       "BrandColor": {
         "properties": {
