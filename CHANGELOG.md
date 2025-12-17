@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.190] - 2025-12-17
+
+### Changes
+- Merge pull request #908 from Matchpoint-AI/fix/906-hasbrand-bug
+
+**Source:** project-beta-api@15aa8018 "Merge pull request #908 from Matchpoint-AI/fix/906-hasbrand-bug"
+
 ## [v0.7.189] - 2025-12-17
 
 ### Changes
