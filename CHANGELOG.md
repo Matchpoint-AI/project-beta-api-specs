@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.191] - 2025-12-17
+
+### Changes
+- Merge pull request #911 from Matchpoint-AI/fix/910-docker-gcp-auth
+
+**Source:** project-beta-api@f61877bc "Merge pull request #911 from Matchpoint-AI/fix/910-docker-gcp-auth"
+
 ## [v0.7.190] - 2025-12-17
 
 ### Changes
