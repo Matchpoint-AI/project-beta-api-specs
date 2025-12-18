@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.195] - 2025-12-18
+
+### Changes
+- Merge pull request #919 from Matchpoint-AI/fix/docker-copy-config
+
+**Source:** project-beta-api@2efe3097 "Merge pull request #919 from Matchpoint-AI/fix/docker-copy-config"
+
 ## [v0.7.194] - 2025-12-18
 
 ### Changes
