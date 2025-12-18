@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.194] - 2025-12-18
+
+### Changes
+- Merge pull request #916 from Matchpoint-AI/fix/idempotent-firebase-uid-migration
+
+**Source:** project-beta-api@6b74bb1e "Merge pull request #916 from Matchpoint-AI/fix/idempotent-firebase-uid-migration"
+
 ## [v0.7.193] - 2025-12-18
 
 ### Changes
