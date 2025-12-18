@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.201] - 2025-12-18
+
+### Changes
+- Merge pull request #925 from Matchpoint-AI/fix/922-export-approval
+
+**Source:** project-beta-api@f57cee99 "Merge pull request #925 from Matchpoint-AI/fix/922-export-approval"
+
 ## [v0.7.200] - 2025-12-18
 
 ### Changes
