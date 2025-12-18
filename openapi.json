@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.201"
+    "version": "0.7.202"
   },
   "paths": {
     "/api/v2/brands": {
@@ -8073,6 +8073,18 @@
           "status": {
             "$ref": "#/components/schemas/CampaignStatus"
           },
+          "workflowId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workflow ID",
+            "description": "ID of the content generation workflow execution"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -8538,6 +8550,18 @@
             ],
             "additionalProperties": true,
             "title": "Campaign Variables"
+          },
+          "workflowId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workflow ID",
+            "description": "ID of the content generation workflow execution"
           }
         },
         "type": "object",

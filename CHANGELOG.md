@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.202] - 2025-12-18
+
+### Changes
+- Merge pull request #926 from Matchpoint-AI/fix/924-campaign-autotrigger
+
+**Source:** project-beta-api@23314adf "Merge pull request #926 from Matchpoint-AI/fix/924-campaign-autotrigger"
+
 ## [v0.7.201] - 2025-12-18
 
 ### Changes
