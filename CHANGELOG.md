@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.193] - 2025-12-18
+
+### Changes
+- Merge pull request #915 from Matchpoint-AI/fix/idempotent-migration-860
+
+**Source:** project-beta-api@95d8ee81 "Merge pull request #915 from Matchpoint-AI/fix/idempotent-migration-860"
+
 ## [v0.7.191] - 2025-12-17
 
 ### Changes
