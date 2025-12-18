@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.198] - 2025-12-18
+
+### Changes
+- Merge pull request #921 from Matchpoint-AI/fix/idempotent-generation-count-migration
+
+**Source:** project-beta-api@35e47c94 "Merge pull request #921 from Matchpoint-AI/fix/idempotent-generation-count-migration"
+
 ## [v0.7.197] - 2025-12-18
 
 ### Changes
