@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.206] - 2025-12-20
+
+### Changes
+- Merge pull request #935 from Matchpoint-AI/fix/934-fal-image-generation-404
+
+**Source:** project-beta-api@1aaff35a "Merge pull request #935 from Matchpoint-AI/fix/934-fal-image-generation-404"
+
 ## [v0.7.205] - 2025-12-19
 
 ### Changes

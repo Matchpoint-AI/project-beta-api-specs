@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.205"
+    "version": "0.7.206"
   },
   "paths": {
     "/api/v2/brands": {
@@ -11134,8 +11134,7 @@
               }
             ],
             "title": "Model",
-            "description": "Model to use",
-            "default": "dall-e-3"
+            "description": "Model to use (fal-ai/flux-pro/v1.1-ultra, dall-e-3). If not specified, uses tier-based selection."
           },
           "size": {
             "anyOf": [
@@ -11275,8 +11274,7 @@
               }
             ],
             "title": "Model",
-            "description": "Model to use (dall-e-3, midjourney, stable-diffusion)",
-            "default": "dall-e-3"
+            "description": "Model to use (fal-ai/flux-pro/v1.1-ultra, dall-e-3). If not specified, uses tier-based selection."
           },
           "size": {
             "anyOf": [
