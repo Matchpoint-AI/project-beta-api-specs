@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.214] - 2025-12-21
+
+### Changes
+- Merge pull request #950 from Matchpoint-AI/feat/1806-quick-extract
+
+**Source:** project-beta-api@9cc181f4
+
 ## [v0.7.213] - 2025-12-21
 
 ### Changes
