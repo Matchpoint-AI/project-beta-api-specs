@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.211] - 2025-12-21
+
+### Changes
+- Merge pull request #947 from Matchpoint-AI/refactor/consolidate-release-workflow
+
+**Source:** project-beta-api@fa57607a
+
 ## [v0.7.210] - 2025-12-21
 
 ### Changes
