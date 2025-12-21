@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.210] - 2025-12-21
+
+### Changes
+- Merge pull request #939 from Matchpoint-AI/fix/937-scene-mix-constraint
+
+**Source:** project-beta-api@93cb6940 "Merge pull request #939 from Matchpoint-AI/fix/937-scene-mix-constraint"
+
 ## [v0.7.209] - 2025-12-20
 
 ### Changes
