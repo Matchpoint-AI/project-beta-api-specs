@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.214"
+    "version": "0.7.215"
   },
   "paths": {
     "/api/v2/brands": {
@@ -658,6 +658,54 @@
           },
           "500": {
             "description": "Failed to generate summary"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/knowledge/status": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Get Brand Knowledge Status",
+        "description": "Get the status of brand knowledge extraction (Phase 1: Progressive Brand Knowledge).\n\nReturns the current status and progress of the brand's knowledge extraction workflow,\nincluding whether quick extraction and deep crawl phases are complete.\n\nThis endpoint enables the frontend to:\n- Show instant brand creation feedback\n- Display real-time progress of knowledge extraction\n- Determine when to enable features that require knowledge data\n- Poll for updates during background processing\n\nPhase Architecture:\n- Phase 1 (Instant): Brand created in < 1 second with status \"not_started\"\n- Phase 2 (Quick): Quick extraction adds colors/industry in < 3 seconds\n- Phase 3 (Deep): Deep crawl runs in background (minutes to hours)\n- Phase 4 (Enhancement): Campaigns improve as brand knowledge grows\n\nRMM Level 2 Compliance:\n- GET to /brands/{brand_id}/knowledge/status retrieves status resource\n- Resource-oriented URL structure\n- No verbs in URL path",
+        "operationId": "get_brand_knowledge_status_api_v2_brands__brand_id__knowledge_status_get",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Knowledge extraction status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandKnowledgeStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
@@ -6931,6 +6979,68 @@
         "title": "BrandKnowledgeListResponse",
         "description": "Paginated response for brand knowledge list."
       },
+      "BrandKnowledgeStatusResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current knowledge extraction status (not_started, quick_extract_pending, quick_extract_complete, deep_crawl_pending, deep_crawl_running, deep_crawl_complete, failed)"
+          },
+          "progress": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progress",
+            "description": "Overall progress percentage (0-100)"
+          },
+          "quickExtractComplete": {
+            "type": "boolean",
+            "title": "Quickextractcomplete",
+            "description": "Whether quick extraction phase is complete"
+          },
+          "deepCrawlComplete": {
+            "type": "boolean",
+            "title": "Deepcrawlcomplete",
+            "description": "Whether deep crawl phase is complete"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Lastupdated",
+            "description": "When the knowledge status was last updated"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "additionalProperties": true,
+            "title": "Metadata",
+            "description": "Additional metadata about knowledge extraction (pages crawled, etc.)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "status",
+          "progress",
+          "quickExtractComplete",
+          "deepCrawlComplete",
+          "lastUpdated"
+        ],
+        "title": "BrandKnowledgeStatusResponse",
+        "description": "Response schema for brand knowledge extraction status (Phase 1: Progressive Brand Knowledge)."
+      },
       "BrandKnowledgeSummaryResponse": {
         "properties": {
           "totalBrands": {
@@ -7495,6 +7605,20 @@
             ],
             "title": "Workflowid",
             "description": "ID of the associated brand extraction workflow"
+          },
+          "knowledgeStatus": {
+            "type": "string",
+            "title": "Knowledgestatus",
+            "description": "Status of knowledge extraction (not_started, quick_extract_pending, quick_extract_complete, deep_crawl_pending, deep_crawl_running, deep_crawl_complete, failed)",
+            "default": "not_started"
+          },
+          "knowledgeProgress": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Knowledgeprogress",
+            "description": "Knowledge extraction progress percentage (0-100)",
+            "default": 0
           },
           "createdAt": {
             "type": "string",

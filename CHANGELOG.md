@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.215] - 2025-12-21
+
+### Changes
+- Merge pull request #949 from Matchpoint-AI/feat/1807-progressive-brand
+
+**Source:** project-beta-api@a7d45332
+
 ## [v0.7.214] - 2025-12-21
 
 ### Changes
