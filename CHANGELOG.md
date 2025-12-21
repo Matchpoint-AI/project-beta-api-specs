@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.216] - 2025-12-21
+
+### Changes
+- Merge pull request #953 from Matchpoint-AI/skill/api-validation-agents
+
+**Source:** project-beta-api@a6308a75
+
 ## [v0.7.215] - 2025-12-21
 
 ### Changes
