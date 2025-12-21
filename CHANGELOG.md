@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.212] - 2025-12-21
+
+### Changes
+- Merge pull request #945 from Matchpoint-AI/fix/944-brands-user-filter
+
+**Source:** project-beta-api@6ee79ca7
+
 ## [v0.7.211] - 2025-12-21
 
 ### Changes
