@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.213] - 2025-12-21
+
+### Changes
+- Merge pull request #948 from Matchpoint-AI/fix/1805-nonblocking-workflow
+
+**Source:** project-beta-api@fd5ff714
+
 ## [v0.7.212] - 2025-12-21
 
 ### Changes
