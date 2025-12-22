@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.223] - 2025-12-22
+
+### Changes
+- Merge pull request #968 from Matchpoint-AI/fix/962-observability
+
+**Source:** project-beta-api@40c568da
+
 ## [v0.7.222] - 2025-12-22
 
 ### Changes
