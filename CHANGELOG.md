@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.225] - 2025-12-22
+
+### Changes
+- Merge pull request #973 from Matchpoint-AI/fix/972-response-model-by-alias
+
+**Source:** project-beta-api@4a2e2c6b
+
 ## [v0.7.224] - 2025-12-22
 
 ### Changes
