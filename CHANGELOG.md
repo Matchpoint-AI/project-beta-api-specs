@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.218] - 2025-12-22
+
+### Changes
+- Merge pull request #957 from Matchpoint-AI/fix/1326-brand-scraping
+
+**Source:** project-beta-api@d2d45b7c
+
 ## [v0.7.217] - 2025-12-22
 
 ### Changes
