@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.220] - 2025-12-22
+
+### Changes
+- Merge pull request #960 from Matchpoint-AI/fix/959-content-status-tracking
+
+**Source:** project-beta-api@7b2c7c68
+
 ## [v0.7.219] - 2025-12-22
 
 ### Changes
