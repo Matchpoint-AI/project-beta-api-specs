@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.221] - 2025-12-22
+
+### Changes
+- Merge pull request #963 from Matchpoint-AI/feat/961-content-integration-test
+
+**Source:** project-beta-api@7bc7bd1b
+
 ## [v0.7.220] - 2025-12-22
 
 ### Changes
