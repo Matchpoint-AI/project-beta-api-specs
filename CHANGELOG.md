@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.217] - 2025-12-22
+
+### Changes
+- Merge pull request #955 from Matchpoint-AI/fix/954-content-prompt-endpoint
+
+**Source:** project-beta-api@c4c9861e
+
 ## [v0.7.216] - 2025-12-21
 
 ### Changes
