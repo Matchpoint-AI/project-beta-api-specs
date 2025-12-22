@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.222] - 2025-12-22
+
+### Changes
+- Merge pull request #965 from Matchpoint-AI/fix/964-workflow-api-base
+
+**Source:** project-beta-api@c63d1367
+
 ## [v0.7.221] - 2025-12-22
 
 ### Changes
