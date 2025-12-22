@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.224] - 2025-12-22
+
+### Changes
+- Merge pull request #970 from Matchpoint-AI/perf/fast-image-generation
+
+**Source:** project-beta-api@6c1dc126
+
 ## [v0.7.223] - 2025-12-22
 
 ### Changes
