@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.232] - 2025-12-23
+
+### Changes
+- Merge pull request #988 from Matchpoint-AI/fix/workflow-dot-notation
+
+**Source:** project-beta-api@9f3fbc20
+
 ## [v0.7.231] - 2025-12-23
 
 ### Changes
