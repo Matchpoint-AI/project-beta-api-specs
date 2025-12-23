@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.231] - 2025-12-23
+
+### Changes
+- Merge pull request #989 from Matchpoint-AI/feat/987-increase-test-coverage
+
+**Source:** project-beta-api@e7c5bcd9
+
 ## [v0.7.230] - 2025-12-23
 
 ### Changes
