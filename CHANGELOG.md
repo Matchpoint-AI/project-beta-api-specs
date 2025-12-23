@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.227] - 2025-12-23
+
+### Changes
+- Merge pull request #975 from Matchpoint-AI/fix/fal-model-id-format
+
+**Source:** project-beta-api@8fd842e7
+
 ## [v0.7.226] - 2025-12-23
 
 ### Changes
