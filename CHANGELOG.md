@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.228] - 2025-12-23
+
+### Changes
+- Merge pull request #984 from Matchpoint-AI/fix/982-email-verification
+
+**Source:** project-beta-api@4ea90b06
+
 ## [v0.7.227] - 2025-12-23
 
 ### Changes
