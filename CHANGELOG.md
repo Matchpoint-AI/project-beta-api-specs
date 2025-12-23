@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.230] - 2025-12-23
+
+### Changes
+- Merge pull request #981 from Matchpoint-AI/feat/1807-phase3-background-crawl
+
+**Source:** project-beta-api@3e661682
+
 ## [v0.7.229] - 2025-12-23
 
 ### Changes

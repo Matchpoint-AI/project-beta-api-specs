@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.229"
+    "version": "0.7.230"
   },
   "paths": {
     "/api/v2/brands": {
@@ -706,6 +706,65 @@
           },
           "404": {
             "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Update Brand Knowledge Status",
+        "description": "Update brand knowledge extraction status (Phase 3: Background Crawl Webhooks).\n\nThis endpoint is called by GCP Workflows to report progress during background crawling\nand knowledge extraction. It allows the workflow to progressively update the brand's\nknowledge status as the deep crawl proceeds.\n\nWebhook Security:\n- Called by GCP Workflows using OIDC authentication\n- Only authenticated workflow service accounts can update status\n\nUse Cases:\n- Workflow starts deep crawl: status=\"deep_crawl_running\", progress=10\n- Workflow crawls pages: status=\"deep_crawl_running\", progress=50, metadata={pages_crawled: 25}\n- Workflow completes: status=\"deep_crawl_complete\", progress=100\n- Workflow fails: status=\"failed\", metadata={error: \"...\"}\n\nRMM Level 2 Compliance:\n- PATCH to /brands/{brand_id}/knowledge/status updates the status resource\n- Resource-oriented URL structure\n- No verbs in URL path",
+        "operationId": "update_brand_knowledge_status_api_v2_brands__brand_id__knowledge_status_patch",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandKnowledgeStatusUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Knowledge status updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandKnowledgeStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "400": {
+            "description": "Invalid status update data"
           },
           "422": {
             "description": "Validation Error",
@@ -7199,6 +7258,43 @@
         ],
         "title": "BrandKnowledgeStatusResponse",
         "description": "Response schema for brand knowledge extraction status (Phase 1: Progressive Brand Knowledge)."
+      },
+      "BrandKnowledgeStatusUpdate": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current knowledge extraction status (quick_extract_pending, quick_extract_complete, deep_crawl_pending, deep_crawl_running, deep_crawl_complete, failed)"
+          },
+          "progress": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progress",
+            "description": "Overall progress percentage (0-100)"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "additionalProperties": true,
+            "title": "Metadata",
+            "description": "Additional metadata about knowledge extraction (pages_crawled, pages_processed, total_pages, error details, etc.)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "progress"
+        ],
+        "title": "BrandKnowledgeStatusUpdate",
+        "description": "Request schema for updating brand knowledge status (Phase 3: Background Crawl Webhooks)."
       },
       "BrandKnowledgeSummaryResponse": {
         "properties": {
