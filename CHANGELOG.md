@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.226] - 2025-12-23
+
+### Changes
+- Merge pull request #974 from Matchpoint-AI/feat/local-workflow-gcp-parity
+
+**Source:** project-beta-api@da2ccd98
+
 ## [v0.7.225] - 2025-12-22
 
 ### Changes
