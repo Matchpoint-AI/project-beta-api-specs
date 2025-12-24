@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.236] - 2025-12-24
+
+### Changes
+- Merge pull request #996 from Matchpoint-AI/fix/array-expression-before-concat
+
+**Source:** project-beta-api@a5828cc1
+
 ## [v0.7.235] - 2025-12-24
 
 ### Changes
