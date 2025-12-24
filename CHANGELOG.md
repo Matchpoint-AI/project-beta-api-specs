@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.238] - 2025-12-24
+
+### Changes
+- Merge pull request #998 from Matchpoint-AI/fix/978-db-constraint
+
+**Source:** project-beta-api@c178566a
+
 ## [v0.7.237] - 2025-12-24
 
 ### Changes
