@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.241] - 2025-12-24
+
+### Changes
+- fix: return 204 instead of 404 when campaign has no content yet (#1005)
+
+**Source:** project-beta-api@e3ef403c
+
 ## [v0.7.240] - 2025-12-24
 
 ### Changes
