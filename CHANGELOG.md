@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.237] - 2025-12-24
+
+### Changes
+- Merge pull request #997 from Matchpoint-AI/fix/content-parsing-platform-posts
+
+**Source:** project-beta-api@ee0cd11e
+
 ## [v0.7.236] - 2025-12-24
 
 ### Changes
