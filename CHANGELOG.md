@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.240] - 2025-12-24
+
+### Changes
+- feat: remove hasBrand field from API responses (#1004)
+
+**Source:** project-beta-api@3350cbe0
+
 ## [v0.7.239] - 2025-12-24
 
 ### Changes
