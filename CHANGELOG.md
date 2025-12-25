@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.243] - 2025-12-25
+
+### Changes
+- fix(#1010): use atomic UPSERT for scene_mix_plan creation (#1011)
+
+**Source:** project-beta-api@d54123eb
+
 ## [v0.7.242] - 2025-12-25
 
 ### Changes
