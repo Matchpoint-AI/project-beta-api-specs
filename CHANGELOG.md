@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.242] - 2025-12-25
+
+### Changes
+- fix(#1007): add diagnostic logging for content parsing (#1008)
+
+**Source:** project-beta-api@c5f3697f
+
 ## [v0.7.241] - 2025-12-24
 
 ### Changes
