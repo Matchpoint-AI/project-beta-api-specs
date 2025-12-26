@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.256"
+    "version": "0.7.257"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1382,7 +1382,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -2845,7 +2844,6 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": true,
                 "description": "Content creation data",
                 "title": "Request"
               }
@@ -2859,7 +2857,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Create Campaign Content Api V2 Campaigns  Campaign Id  Content Post"
                 }
               }
@@ -3412,7 +3409,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Create Campaign Post Api V2 Campaigns  Campaign Id  Posts Post"
                 }
               }
@@ -4661,7 +4657,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
@@ -4822,7 +4817,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Health Check Api V2 Health Get"
                 }
@@ -6119,6 +6113,39 @@
         ]
       }
     },
+    "/api/v2/sessions/refresh": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Refresh Session",
+        "description": "Refresh an expiring or expired JWT token (session-based endpoint).\n\nThis endpoint allows native auth users to refresh their JWT tokens\nwithout requiring re-authentication. The endpoint accepts expired tokens\n(within a reasonable grace period) and issues a new token with fresh\nexpiration.\n\nThis is the preferred endpoint for token refresh, following REST conventions\nwhere /sessions manages authentication state. The /auth/refresh endpoint\nis maintained for backwards compatibility.\n\nSecurity considerations:\n- Validates token signature and structure\n- Checks if token is blacklisted (logged out)\n- Preserves original token claims in new token\n- Does not extend refresh capability indefinitely\n\nRMM Level 2 Compliance:\n- POST to /sessions/refresh refreshes the session token\n- HTTP verb (POST) indicates action\n- Follows /sessions pattern for auth state management\n- Returns new token with fresh expiration\n\nArgs:\n    credentials: HTTP Bearer token credentials from request header\n    auth_service: Injected authentication service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    TokenRefreshResponse with new access token and expiration time\n\nRaises:\n    HTTPException 401: If token is invalid, malformed, or blacklisted\n    HTTPException 500: If token refresh fails due to server error",
+        "operationId": "refresh_session_api_v2_sessions_refresh_post",
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenRefreshResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or malformed token"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/api/v2/auth/forgot-password": {
       "post": {
         "tags": [
@@ -7110,7 +7137,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7241,7 +7267,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7282,7 +7307,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7554,7 +7578,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7621,7 +7644,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8257,7 +8279,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8342,7 +8363,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -8530,7 +8550,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8821,7 +8840,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8851,7 +8869,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9022,7 +9039,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9108,7 +9124,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9270,7 +9285,6 @@
           "adjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9390,7 +9404,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -9432,7 +9445,6 @@
           "brandGuidelines": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9459,7 +9471,6 @@
           },
           "results": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9634,7 +9645,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -9700,7 +9710,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9740,7 +9749,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -9784,7 +9792,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9864,7 +9871,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10249,7 +10255,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10508,7 +10513,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11449,7 +11453,6 @@
           },
           "crawledPages": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -11901,7 +11904,6 @@
           "colorAdjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11969,7 +11971,6 @@
             "description": "Generation timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -12227,7 +12228,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12387,7 +12387,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -12671,6 +12670,7 @@
         "enum": [
           "completed"
         ],
+        "const": "completed",
         "title": "OnboardingStatus",
         "description": "Enum for onboarding completion status."
       },
@@ -13699,7 +13699,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13799,13 +13798,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -13881,7 +13878,6 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -13889,7 +13885,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14060,7 +14055,6 @@
           "frequencyRules": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14072,7 +14066,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -15010,7 +15003,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
