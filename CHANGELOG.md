@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.254] - 2025-12-26
+
+### Changes
+- Merge pull request #1062 from Matchpoint-AI/fix/1041-retry-logic
+
+**Source:** project-beta-api@13d12032
+
 ## [v0.7.253] - 2025-12-26
 
 ### Changes
