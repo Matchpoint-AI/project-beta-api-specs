@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.250"
+    "version": "0.7.251"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3443,7 +3443,7 @@
           "content"
         ],
         "summary": "Get Content Prompt",
-        "description": "Get image prompt data for a content item.\n\nThis endpoint retrieves image_prompt data from content.\nUsed by frontend to display/edit image generation prompts.\n\nCan filter by week/day/post_id to get specific prompt.\n\nArgs:\n    content_id: Content ID (string, converted to int internally)\n    week: Optional week number filter\n    day: Optional day number filter\n    post_id: Optional post ID filter\n    content_repository: Injected repository\n\nReturns:\n    ContentPromptResponse with image_prompt data\n\nRaises:\n    HTTPException: 404 if content not found",
+        "description": "Get image prompt data for a content item.\n\nThis endpoint retrieves image_prompt data from content.\nUsed by frontend to display/edit image generation prompts.\n\nCan filter by week/day/post_id to get specific prompt.\n\nArgs:\n    content_id: Content ID (string, converted to int internally)\n    week: Optional week number filter\n    day: Optional day number filter\n    post_id: Optional post ID filter\n    content_service: Injected content service\n\nReturns:\n    ContentPromptResponse with image_prompt data\n\nRaises:\n    HTTPException: 404 if content not found",
         "operationId": "get_content_prompt_api_v2_content__content_id__prompt_get",
         "parameters": [
           {
@@ -3543,7 +3543,7 @@
           "content"
         ],
         "summary": "Update Content Prompt",
-        "description": "Update image prompt for a content item.\n\nThis endpoint updates image_prompt data in content.\nUsed by frontend to edit image generation prompts.\n\nArgs:\n    content_id: Content ID\n    request: Prompt update request with new image_prompt\n    content_repository: Injected repository\n\nReturns:\n    ContentPromptResponse with updated prompt data\n\nRaises:\n    HTTPException: 404 if content not found",
+        "description": "Update image prompt for a content item.\n\nThis endpoint updates image_prompt data in content.\nUsed by frontend to edit image generation prompts.\n\nArgs:\n    content_id: Content ID\n    request: Prompt update request with new image_prompt\n    content_service: Injected content service\n\nReturns:\n    ContentPromptResponse with updated prompt data\n\nRaises:\n    HTTPException: 404 if content not found",
         "operationId": "update_content_prompt_api_v2_content__content_id__prompt_put",
         "parameters": [
           {

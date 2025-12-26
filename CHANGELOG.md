@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.251] - 2025-12-26
+
+### Changes
+- Merge pull request #1036 from Matchpoint-AI/fix/1020-layering
+
+**Source:** project-beta-api@3ae95f22
+
 ## [v0.7.250] - 2025-12-26
 
 ### Changes
