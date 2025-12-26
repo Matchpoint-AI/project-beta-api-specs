@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.247] - 2025-12-26
+
+### Changes
+- Merge pull request #1032 from Matchpoint-AI/fix/1016-posts-persistence
+
+**Source:** project-beta-api@b668d917
+
 ## [v0.7.246] - 2025-12-26
 
 ### Changes
