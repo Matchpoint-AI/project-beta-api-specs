@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.244] - 2025-12-26
+
+### Changes
+- Fix #1014: Add missing campaign plan fields (mix_goal, subtype_weights, rationale)
+
+**Source:** project-beta-api@6687d0cf
+
 ## [v0.7.243] - 2025-12-25
 
 ### Changes

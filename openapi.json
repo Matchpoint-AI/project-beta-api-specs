@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.243"
+    "version": "0.7.244"
   },
   "paths": {
     "/api/v2/brands": {
@@ -13565,6 +13565,30 @@
             "title": "Autogenerate",
             "description": "Auto-generate content on approval",
             "default": false
+          },
+          "mixGoal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mixgoal",
+            "description": "Goal/objective for the content mix strategy"
+          },
+          "rationale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rationale",
+            "description": "Explanation for the content mix decisions"
           }
         },
         "type": "object",
@@ -13684,6 +13708,45 @@
             ],
             "title": "Executionstats",
             "description": "Execution statistics"
+          },
+          "mixGoal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mixgoal",
+            "description": "Goal/objective for the content mix strategy"
+          },
+          "subtypeWeights": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtypeweights",
+            "description": "Weights for content subtypes (alias for content_mix)"
+          },
+          "rationale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rationale",
+            "description": "Explanation for the content mix decisions"
           }
         },
         "type": "object",
