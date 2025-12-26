@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.258] - 2025-12-26
+
+### Changes
+- Merge pull request #1059 from Matchpoint-AI/fix/1039-timeouts
+
+**Source:** project-beta-api@99bc5bec
+
 ## [v0.7.257] - 2025-12-26
 
 ### Changes
