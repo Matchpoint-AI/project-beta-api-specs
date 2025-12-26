@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.248] - 2025-12-26
+
+### Changes
+- Merge pull request #1034 from Matchpoint-AI/fix/1019-image-failure
+
+**Source:** project-beta-api@be64d453
+
 ## [v0.7.247] - 2025-12-26
 
 ### Changes
