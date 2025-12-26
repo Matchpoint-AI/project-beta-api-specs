@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.255] - 2025-12-26
+
+### Changes
+- Merge pull request #1061 from Matchpoint-AI/fix/1040-circuit-breaker
+
+**Source:** project-beta-api@b309d2eb
+
 ## [v0.7.254] - 2025-12-26
 
 ### Changes
