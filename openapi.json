@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.258"
+    "version": "0.7.259"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4809,17 +4809,14 @@
           "health"
         ],
         "summary": "Health Check",
-        "description": "Health check endpoint.",
+        "description": "Health check endpoint with database write verification.\n\nPerforms comprehensive database health check:\n1. Writes a test record to verify DB accepts writes\n2. Reads it back to verify data persistence\n3. Deletes it to clean up\n\nReturns:\n    200 OK with {\"status\": \"healthy\", \"database\": {...}} if all checks pass\n    503 Service Unavailable with error details if any check fails",
         "operationId": "health_check_api_v2_health_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Response Health Check Api V2 Health Get"
-                }
+                "schema": {}
               }
             }
           }

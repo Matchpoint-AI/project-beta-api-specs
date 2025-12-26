@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.259] - 2025-12-26
+
+### Changes
+- Merge pull request #1058 from Matchpoint-AI/fix/1029-health-check
+
+**Source:** project-beta-api@16fa7256
+
 ## [v0.7.258] - 2025-12-26
 
 ### Changes
