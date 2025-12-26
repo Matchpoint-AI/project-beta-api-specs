@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.253] - 2025-12-26
+
+### Changes
+- Merge pull request #1035 from Matchpoint-AI/fix/1022-exception-handling
+
+**Source:** project-beta-api@23ab4dae
+
 ## [v0.7.252] - 2025-12-26
 
 ### Changes
