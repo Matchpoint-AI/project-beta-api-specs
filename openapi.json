@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.265"
+    "version": "0.7.266"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3379,7 +3379,7 @@
           "content"
         ],
         "summary": "Create Campaign Post",
-        "description": "Generate a single post for a campaign (called by workflow).\n\nThis endpoint is called by the campaign-generator workflow to generate\nindividual posts in parallel. The workflow provides week, day, and platform\nparameters.\n\nNote: GCP Workflows may send the request body as either a dict or a\nsingle-element list containing a dict. This endpoint handles both cases.\n\nArgs:\n    campaign_id: Campaign ID\n    request: Post generation parameters (week, day, platform)\n\nReturns:\n    Generated post data\n\nRaises:\n    HTTPException: 404 if campaign not found, 400 for invalid data",
+        "description": "Generate a single post for a campaign (called by workflow).\n\nThis endpoint is called by the campaign-generator workflow to generate\nindividual posts in parallel. The workflow provides week, day, and platform\nparameters.\n\nArchitecture Note (Issue #1025):\nThis controller orchestrates ContentService (text) and ImageService (images)\nper AGENTS.md guidelines. Controllers handle service orchestration, not\nservice-to-service calls.\n\nNote: GCP Workflows may send the request body as either a dict or a\nsingle-element list containing a dict. This endpoint handles both cases.\n\nArgs:\n    campaign_id: Campaign ID\n    request: Post generation parameters (week, day, platform)\n\nReturns:\n    Generated post data with text and images\n\nRaises:\n    HTTPException: 404 if campaign not found, 400 for invalid data",
         "operationId": "create_campaign_post_api_v2_campaigns__campaign_id__posts_post",
         "parameters": [
           {
@@ -5253,6 +5253,24 @@
             "HTTPBearer": []
           }
         ]
+      }
+    },
+    "/api/v2/metrics": {
+      "get": {
+        "tags": [
+          "metrics"
+        ],
+        "summary": "Prometheus Metrics",
+        "description": "Returns Prometheus-compatible metrics for monitoring.",
+        "operationId": "get_metrics_api_v2_metrics_get",
+        "responses": {
+          "200": {
+            "description": "Prometheus metrics in text format",
+            "content": {
+              "text/plain": {}
+            }
+          }
+        }
       }
     },
     "/api/v2/prompts": {

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.266] - 2025-12-27
+
+### Changes
+- feat: add /metrics endpoint for content generation success rate visibility (#1073)
+
+**Source:** project-beta-api@141e84ea
+
 ## [v0.7.265] - 2025-12-27
 
 ### Changes
