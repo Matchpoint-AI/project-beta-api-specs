@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.264] - 2025-12-27
+
+### Changes
+- Merge pull request #1069 from Matchpoint-AI/feat/1054-rate-limiting
+
+**Source:** project-beta-api@78e62e63
+
 ## [v0.7.263] - 2025-12-26
 
 ### Changes
