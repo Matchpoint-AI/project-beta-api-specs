@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.265] - 2025-12-27
+
+### Changes
+- feat: add correlation ID (trace_id) for end-to-end request tracing (#1056)
+
+**Source:** project-beta-api@c3eb146f
+
 ## [v0.7.264] - 2025-12-27
 
 ### Changes
