@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.267] - 2025-12-27
+
+### Changes
+- fix: use upsert pattern for content creation to prevent duplicate key errors (#1075)
+
+**Source:** project-beta-api@d1df8cbb
+
 ## [v0.7.266] - 2025-12-27
 
 ### Changes
