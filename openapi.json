@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.277"
+    "version": "0.7.278"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3281,6 +3281,59 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ContentImageUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/images/generations": {
+      "post": {
+        "tags": [
+          "content-images"
+        ],
+        "summary": "Generate Content Image",
+        "description": "Generate a new AI image for content.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\nThe endpoint uses '/generations' (noun) instead of '/generate' (verb)\nto comply with RMM L2 no-verbs-in-urls rule.\n\nThis endpoint generates a new image using AI based on the provided prompt\nand associates it with the specified content at the given week/day/post\nlocation.\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image generation request with prompt, week, day, post\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Created content image response with generated image URL\n\nRaises:\n    HTTPException: 400 if generation limit exceeded\n    HTTPException: 500 if image generation fails",
+        "operationId": "generate_content_image_api_v2_content__content_id__images_generations_post",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentImageGenerateRequest"
               }
             }
           }
@@ -9907,6 +9960,56 @@
         ],
         "title": "ContentExportResponse",
         "description": "Schema for content export response.\n\nRMM L2: Response includes the created export resource with its ID."
+      },
+      "ContentImageGenerateRequest": {
+        "properties": {
+          "week": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Week",
+            "description": "Week number (1-indexed)"
+          },
+          "day": {
+            "type": "integer",
+            "maximum": 7.0,
+            "minimum": 1.0,
+            "title": "Day",
+            "description": "Day number (1-7)"
+          },
+          "post": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Post",
+            "description": "Post number (1-indexed)"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "description": "Image generation prompt"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model",
+            "description": "Image model to use (dall-e-3, flux, etc.)",
+            "default": "dall-e-3"
+          }
+        },
+        "type": "object",
+        "required": [
+          "week",
+          "day",
+          "post",
+          "prompt"
+        ],
+        "title": "ContentImageGenerateRequest",
+        "description": "Schema for generating a new content image."
       },
       "ContentImageResponse": {
         "properties": {
