@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.271] - 2025-12-27
+
+### Changes
+- feat: add alerting infrastructure for content generation failures (#1078)
+
+**Source:** project-beta-api@ae16a385
+
 ## [v0.7.270] - 2025-12-27
 
 ### Changes
