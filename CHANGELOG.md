@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.277] - 2025-12-27
+
+### Changes
+- Merge pull request #1127 from Matchpoint-AI/fix/1121-prompt-campaign-data
+
+**Source:** project-beta-api@11be8991
+
 ## [v0.7.276] - 2025-12-27
 
 ### Changes
