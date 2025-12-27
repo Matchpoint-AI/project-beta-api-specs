@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.278"
+    "version": "0.7.279"
   },
   "paths": {
     "/api/v2/brands": {
@@ -6085,6 +6085,51 @@
           },
           "500": {
             "description": "Internal server error during verification"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/verifications/resend": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Resend Verification Email Public",
+        "description": "Resend email verification email (public endpoint, no auth required).\n\nThis endpoint allows unauthenticated users to request a new verification\nemail. This is necessary because users cannot authenticate until their\nemail is verified, but they may need to request a new verification email\nif the original one expired or was lost.\n\nSecurity consideration: Always returns success message regardless of\nwhether the email exists or was sent, to prevent email enumeration attacks.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /verifications/resend\n- HTTP method (POST) indicates action\n- No verbs in URL path (resend is a sub-resource, not a verb)\n- Returns generic response for security\n\nArgs:\n    request: Request containing user email address\n\nReturns:\n    ResendVerificationResponse with generic success message",
+        "operationId": "resend_verification_email_public_api_v2_verifications_resend_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResendVerificationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request processed (email sent if user exists and is unverified)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResendVerificationResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
           },
           "422": {
             "description": "Validation Error",
@@ -13579,26 +13624,40 @@
         "title": "RenderPageRequest",
         "description": "Request model for rendering a JavaScript-heavy page with Playwright."
       },
+      "ResendVerificationRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "User email address"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "title": "ResendVerificationRequest",
+        "description": "Schema for resend verification email request.\n\nFor POST /api/v2/verifications/resend endpoint.\nAllows unauthenticated users to request a new verification email.\nSimilar to forgot-password flow - accepts email, returns generic response."
+      },
       "ResendVerificationResponse": {
         "properties": {
           "message": {
             "type": "string",
             "title": "Message",
-            "description": "User-friendly message"
+            "description": "User-friendly message (generic for security)",
+            "default": "If the email exists and is not yet verified, a verification email has been sent."
           },
           "emailSent": {
             "type": "boolean",
             "title": "Emailsent",
-            "description": "Whether email was sent successfully"
+            "description": "Whether email was sent successfully (always True for security)",
+            "default": true
           }
         },
         "type": "object",
-        "required": [
-          "message",
-          "emailSent"
-        ],
         "title": "ResendVerificationResponse",
-        "description": "Schema for resend verification email response.\n\nReturned after resending verification email."
+        "description": "Schema for resend verification email response.\n\nReturned after resending verification email.\nReturns generic message to prevent email enumeration attacks."
       },
       "ResetPasswordRequest": {
         "properties": {
