@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.273] - 2025-12-27
+
+### Changes
+- Merge pull request #1083 from Matchpoint-AI/refactor/1021-content-controller
+
+**Source:** project-beta-api@86694da0
+
 ## [v0.7.272] - 2025-12-27
 
 ### Changes
