@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.276] - 2025-12-27
+
+### Changes
+- Merge pull request #1130 from Matchpoint-AI/docs/skill-progressive-enhancement
+
+**Source:** project-beta-api@23f030ae
+
 ## [v0.7.275] - 2025-12-27
 
 ### Changes
