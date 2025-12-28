@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.291] - 2025-12-28
+
+### Changes
+- Merge pull request #1139 from Matchpoint-AI/fix/1114-dead-code-images
+
+**Source:** project-beta-api@bc4c2095
+
 ## [v0.7.290] - 2025-12-28
 
 ### Changes
