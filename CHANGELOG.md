@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.283] - 2025-12-28
+
+### Changes
+- Merge pull request #1141 from Matchpoint-AI/fix/1118-dead-session
+
+**Source:** project-beta-api@3c9dc724
+
 ## [v0.7.282] - 2025-12-28
 
 ### Changes

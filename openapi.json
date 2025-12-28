@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.282"
+    "version": "0.7.283"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1382,6 +1382,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -2911,6 +2912,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "additionalProperties": true,
                 "description": "Content creation data",
                 "title": "Request"
               }
@@ -2924,6 +2926,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Campaign Content Api V2 Campaigns  Campaign Id  Content Post"
                 }
               }
@@ -3786,6 +3789,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Campaign Post Api V2 Campaigns  Campaign Id  Posts Post"
                 }
               }
@@ -4710,6 +4714,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Count Brand Pages Api V2 Brands  Brand Id  Pages Count Get"
                 }
               }
@@ -5611,244 +5616,6 @@
         }
       }
     },
-    "/api/v2/threads": {
-      "post": {
-        "tags": [
-          "threads"
-        ],
-        "summary": "Create Thread",
-        "description": "Create a new AI conversation thread.\n\nCreates a new thread associated with a campaign for iterative\nAI conversations about content generation.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only create threads for themselves",
-        "operationId": "create_thread_api_v2_threads_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ThreadCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Thread created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThreadResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "threads"
-        ],
-        "summary": "List Threads",
-        "description": "List threads for a user.\n\nReturns a list of threads with pagination support.\nCan optionally filter by campaign_id.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only see their own threads",
-        "operationId": "list_threads_api_v2_threads_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "description": "Optional campaign ID filter",
-              "title": "Campaign Id"
-            },
-            "description": "Optional campaign ID filter"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "description": "Maximum number of threads",
-              "default": 20,
-              "title": "Limit"
-            },
-            "description": "Maximum number of threads"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "description": "Number of threads to skip",
-              "default": 0,
-              "title": "Offset"
-            },
-            "description": "Number of threads to skip"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of threads returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ThreadResponse"
-                  },
-                  "title": "Response List Threads Api V2 Threads Get"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/threads/{thread_id}": {
-      "get": {
-        "tags": [
-          "threads"
-        ],
-        "summary": "Get Thread",
-        "description": "Get thread information.\n\nReturns the thread details including message count.\nReturns 404 if thread doesn't exist or user doesn't have access.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only access their own threads",
-        "operationId": "get_thread_api_v2_threads__thread_id__get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "thread_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The thread ID",
-              "title": "Thread Id"
-            },
-            "description": "The thread ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Thread information returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThreadResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "404": {
-            "description": "Thread not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "threads"
-        ],
-        "summary": "Delete Thread",
-        "description": "Delete a thread.\n\nDeletes a thread and all its messages (cascade delete).\nReturns 404 if thread doesn't exist or user doesn't have access.\n\nSecurity:\n- Requires Firebase authentication\n- User ID extracted from authenticated token\n- Users can only delete their own threads",
-        "operationId": "delete_thread_api_v2_threads__thread_id__delete",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "thread_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The thread ID",
-              "title": "Thread Id"
-            },
-            "description": "The thread ID"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Thread deleted successfully"
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "404": {
-            "description": "Thread not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/threads/{thread_id}/messages": {
       "post": {
         "tags": [
@@ -6217,39 +5984,6 @@
           },
           "500": {
             "description": "Internal server error during logout"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v2/sessions/refresh": {
-      "post": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Refresh Session",
-        "description": "Refresh an expiring or expired JWT token (session-based endpoint).\n\nThis endpoint allows native auth users to refresh their JWT tokens\nwithout requiring re-authentication. The endpoint accepts expired tokens\n(within a reasonable grace period) and issues a new token with fresh\nexpiration.\n\nThis is the preferred endpoint for token refresh, following REST conventions\nwhere /sessions manages authentication state. The /auth/refresh endpoint\nis maintained for backwards compatibility.\n\nSecurity considerations:\n- Validates token signature and structure\n- Checks if token is blacklisted (logged out)\n- Preserves original token claims in new token\n- Does not extend refresh capability indefinitely\n\nRMM Level 2 Compliance:\n- POST to /sessions/refresh refreshes the session token\n- HTTP verb (POST) indicates action\n- Follows /sessions pattern for auth state management\n- Returns new token with fresh expiration\n\nArgs:\n    credentials: HTTP Bearer token credentials from request header\n    auth_service: Injected authentication service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    TokenRefreshResponse with new access token and expiration time\n\nRaises:\n    HTTPException 401: If token is invalid, malformed, or blacklisted\n    HTTPException 500: If token refresh fails due to server error",
-        "operationId": "refresh_session_api_v2_sessions_refresh_post",
-        "responses": {
-          "200": {
-            "description": "Token refreshed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TokenRefreshResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid or malformed token"
-          },
-          "500": {
-            "description": "Internal server error"
           }
         },
         "security": [
@@ -7250,6 +6984,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7380,6 +7115,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7420,6 +7156,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7691,6 +7428,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7757,6 +7495,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8392,6 +8131,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8476,6 +8216,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -8663,6 +8404,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8953,6 +8695,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8982,6 +8725,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9152,6 +8896,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9237,6 +8982,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9398,6 +9144,7 @@
           "adjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9517,6 +9264,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -9558,6 +9306,7 @@
           "brandGuidelines": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9584,6 +9333,7 @@
           },
           "results": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9758,6 +9508,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -9823,6 +9574,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9862,6 +9614,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -9905,6 +9658,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9984,6 +9738,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10418,6 +10173,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10676,6 +10432,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11616,6 +11373,7 @@
           },
           "crawledPages": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -12067,6 +11825,7 @@
           "colorAdjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12134,6 +11893,7 @@
             "description": "Generation timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -12391,6 +12151,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12550,6 +12311,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -12833,7 +12595,6 @@
         "enum": [
           "completed"
         ],
-        "const": "completed",
         "title": "OnboardingStatus",
         "description": "Enum for onboarding completion status."
       },
@@ -13888,6 +13649,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13987,11 +13749,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -14067,6 +13831,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -14074,6 +13839,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14244,6 +14010,7 @@
           "frequencyRules": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14255,6 +14022,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14410,39 +14178,6 @@
         "title": "SignupResponse",
         "description": "Schema for signup responses.\n\nReturned after successful signup creation."
       },
-      "ThreadCreate": {
-        "properties": {
-          "campaign_id": {
-            "type": "integer",
-            "exclusiveMinimum": 0.0,
-            "title": "Campaign Id",
-            "description": "Campaign ID"
-          },
-          "title": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 500
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Title",
-            "description": "Thread title"
-          }
-        },
-        "type": "object",
-        "required": [
-          "campaign_id"
-        ],
-        "title": "ThreadCreate",
-        "description": "Schema for creating a new thread.",
-        "example": {
-          "campaign_id": 123,
-          "title": "Campaign brainstorming"
-        }
-      },
       "ThreadMessageCreate": {
         "properties": {
           "role": {
@@ -14515,74 +14250,6 @@
           "id": "msg-550e8400-e29b-41d4-a716-446655440000",
           "role": "user",
           "thread_id": "thread-550e8400-e29b-41d4-a716-446655440001"
-        }
-      },
-      "ThreadResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "description": "Thread UUID"
-          },
-          "campaign_id": {
-            "type": "integer",
-            "title": "Campaign Id",
-            "description": "Campaign ID"
-          },
-          "user_id": {
-            "type": "string",
-            "title": "User Id",
-            "description": "User ID"
-          },
-          "title": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Title",
-            "description": "Thread title"
-          },
-          "message_count": {
-            "type": "integer",
-            "title": "Message Count",
-            "description": "Number of messages in thread"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At",
-            "description": "Thread creation timestamp"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Updated At",
-            "description": "Thread last update timestamp"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "campaign_id",
-          "user_id",
-          "message_count",
-          "created_at",
-          "updated_at"
-        ],
-        "title": "ThreadResponse",
-        "description": "Schema for thread response.",
-        "example": {
-          "campaign_id": 123,
-          "created_at": "2024-01-15T10:00:00Z",
-          "id": "thread-550e8400-e29b-41d4-a716-446655440001",
-          "message_count": 5,
-          "title": "Campaign brainstorming",
-          "updated_at": "2024-01-15T10:05:00Z",
-          "user_id": "user123"
         }
       },
       "TokenRefreshResponse": {
@@ -15198,6 +14865,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
