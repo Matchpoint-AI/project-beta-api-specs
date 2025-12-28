@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.314] - 2025-12-28
+
+### Changes
+- Merge pull request #1193 from Matchpoint-AI/fix/256-switch-support
+
+**Source:** project-beta-api@48e5c269
+
 ## [v0.7.313] - 2025-12-28
 
 ### Changes
