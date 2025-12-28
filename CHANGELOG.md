@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.308] - 2025-12-28
+
+### Changes
+- Update pytest.ini (#1184)
+
+**Source:** project-beta-api@dd3cd285
+
 ## [v0.7.307] - 2025-12-28
 
 ### Changes
