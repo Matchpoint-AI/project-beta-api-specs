@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.307] - 2025-12-28
+
+### Changes
+- Merge pull request #1181 from Matchpoint-AI/feat/1086-e2e-gate-expansion
+
+**Source:** project-beta-api@762c1d95
+
 ## [v0.7.306] - 2025-12-28
 
 ### Changes
