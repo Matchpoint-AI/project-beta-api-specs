@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.295"
+    "version": "0.7.296"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4028,110 +4028,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CrawlStatsBrands"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/crawls/domains": {
-      "get": {
-        "tags": [
-          "crawl-analytics"
-        ],
-        "summary": "Get Domain Crawl Health",
-        "description": "Get domain-level crawl health statistics.\n\nProvides health metrics for each domain including success rates\nand common error patterns for that domain.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of domains to return (1-100, default: 20)\n    analytics_service: Injected analytics service\n\nReturns:\n    Domain-level health statistics",
-        "operationId": "get_domain_crawl_health_api_v2_crawls_domains_get",
-        "parameters": [
-          {
-            "name": "days",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 365,
-              "minimum": 1,
-              "default": 30,
-              "title": "Days"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "default": 20,
-              "title": "Limit"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CrawlStatsDomains"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/crawls/durations": {
-      "get": {
-        "tags": [
-          "crawl-analytics"
-        ],
-        "summary": "Get Crawl Duration Histogram",
-        "description": "Get crawl duration distribution histogram.\n\nProvides distribution of crawl completion times across buckets\n(0-10s, 10-30s, etc.) with percentages and statistics.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    analytics_service: Injected analytics service\n\nReturns:\n    Duration histogram with buckets and statistics",
-        "operationId": "get_crawl_duration_histogram_api_v2_crawls_durations_get",
-        "parameters": [
-          {
-            "name": "days",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 365,
-              "minimum": 1,
-              "default": 30,
-              "title": "Days"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CrawlStatsDurationHistogram"
                 }
               }
             }
@@ -10234,78 +10130,6 @@
         "title": "CrawlStatsBrands",
         "description": "Brand-level crawl performance statistics."
       },
-      "CrawlStatsDomains": {
-        "properties": {
-          "domains": {
-            "items": {
-              "$ref": "#/components/schemas/DomainCrawlHealth"
-            },
-            "type": "array",
-            "title": "Domains",
-            "description": "Health metrics per domain"
-          },
-          "period_days": {
-            "type": "integer",
-            "title": "Period Days",
-            "description": "Number of days covered"
-          }
-        },
-        "type": "object",
-        "required": [
-          "domains",
-          "period_days"
-        ],
-        "title": "CrawlStatsDomains",
-        "description": "Domain-level crawl health statistics."
-      },
-      "CrawlStatsDurationHistogram": {
-        "properties": {
-          "buckets": {
-            "items": {
-              "$ref": "#/components/schemas/DurationBucket"
-            },
-            "type": "array",
-            "title": "Buckets",
-            "description": "Duration histogram buckets"
-          },
-          "total_crawls": {
-            "type": "integer",
-            "title": "Total Crawls",
-            "description": "Total crawls included"
-          },
-          "average_duration_seconds": {
-            "type": "number",
-            "title": "Average Duration Seconds",
-            "description": "Overall average duration"
-          },
-          "median_duration_seconds": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Median Duration Seconds",
-            "description": "Median crawl duration"
-          },
-          "period_days": {
-            "type": "integer",
-            "title": "Period Days",
-            "description": "Number of days covered"
-          }
-        },
-        "type": "object",
-        "required": [
-          "buckets",
-          "total_crawls",
-          "average_duration_seconds",
-          "period_days"
-        ],
-        "title": "CrawlStatsDurationHistogram",
-        "description": "Distribution of crawl durations."
-      },
       "CrawlStatsErrors": {
         "properties": {
           "top_errors": {
@@ -10550,87 +10374,6 @@
         ],
         "title": "DayContent",
         "description": "Schema for daily content."
-      },
-      "DomainCrawlHealth": {
-        "properties": {
-          "domain": {
-            "type": "string",
-            "title": "Domain",
-            "description": "Base domain"
-          },
-          "total_crawls": {
-            "type": "integer",
-            "title": "Total Crawls",
-            "description": "Total crawl attempts for domain"
-          },
-          "successful_crawls": {
-            "type": "integer",
-            "title": "Successful Crawls",
-            "description": "Successful crawls"
-          },
-          "failed_crawls": {
-            "type": "integer",
-            "title": "Failed Crawls",
-            "description": "Failed crawls"
-          },
-          "success_rate": {
-            "type": "number",
-            "title": "Success Rate",
-            "description": "Success rate percentage"
-          },
-          "common_errors": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Common Errors",
-            "description": "Most common error types"
-          }
-        },
-        "type": "object",
-        "required": [
-          "domain",
-          "total_crawls",
-          "successful_crawls",
-          "failed_crawls",
-          "success_rate",
-          "common_errors"
-        ],
-        "title": "DomainCrawlHealth",
-        "description": "Crawl health metrics for a domain."
-      },
-      "DurationBucket": {
-        "properties": {
-          "min_seconds": {
-            "type": "number",
-            "title": "Min Seconds",
-            "description": "Minimum duration in bucket"
-          },
-          "max_seconds": {
-            "type": "number",
-            "title": "Max Seconds",
-            "description": "Maximum duration in bucket"
-          },
-          "count": {
-            "type": "integer",
-            "title": "Count",
-            "description": "Number of crawls in this bucket"
-          },
-          "percentage": {
-            "type": "number",
-            "title": "Percentage",
-            "description": "Percentage of total crawls"
-          }
-        },
-        "type": "object",
-        "required": [
-          "min_seconds",
-          "max_seconds",
-          "count",
-          "percentage"
-        ],
-        "title": "DurationBucket",
-        "description": "Histogram bucket for crawl duration distribution."
       },
       "EmailVerificationRequest": {
         "properties": {

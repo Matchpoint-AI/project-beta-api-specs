@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.296] - 2025-12-28
+
+### Changes
+- Merge pull request #1175 from Matchpoint-AI/fix/1115-dead-crawls
+
+**Source:** project-beta-api@fad9699c
+
 ## [v0.7.295] - 2025-12-28
 
 ### Changes
