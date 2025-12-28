@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.308"
+    "version": "0.7.309"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1799,6 +1799,168 @@
           },
           "404": {
             "description": "Plan not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Update Scene Mix Plan",
+        "description": "Update a scene mix plan for a campaign.\n\nUpdates an existing content generation plan. Increments the policy version\nwhen significant changes are made.",
+        "operationId": "update_scene_mix_plan_api_v2_campaigns__campaign_id__plan_put",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SceneMixPlanUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plan updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPlanResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Plan not found"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Delete Scene Mix Plan",
+        "description": "Delete a scene mix plan for a campaign.\n\nRemoves the content generation plan from the specified campaign.",
+        "operationId": "delete_scene_mix_plan_api_v2_campaigns__campaign_id__plan_delete",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Plan deleted successfully"
+          },
+          "404": {
+            "description": "Plan not found"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/plan/preview": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Preview Scene Mix Plan",
+        "description": "Preview a scene mix plan with diversity metrics.\n\nGenerates a preview of the content plan with diversity metrics without\npersisting to the database. Use this endpoint during planning to evaluate\ndifferent configurations before committing.\n\nReturns:\n    Policy preview with mix_goal, subtype_weights, rationale, and\n    diversity_metrics for the proposed plan configuration.",
+        "operationId": "preview_scene_mix_plan_api_v2_campaigns__campaign_id__plan_preview_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SceneMixPlanPreviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Preview generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixPlanPreviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "500": {
+            "description": "Server error"
           },
           "422": {
             "description": "Validation Error",
@@ -9034,6 +9196,47 @@
         "title": "DayContent",
         "description": "Schema for daily content."
       },
+      "DiversityMetrics": {
+        "properties": {
+          "contentTypeDiversity": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Contenttypediversity",
+            "description": "Diversity score for content types (0-1)"
+          },
+          "themeCoverage": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Themecoverage",
+            "description": "Theme coverage score (0-1)"
+          },
+          "temporalDistribution": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Temporaldistribution",
+            "description": "How evenly content is distributed over time (0-1)"
+          },
+          "overallScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Overallscore",
+            "description": "Overall diversity score (0-1)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contentTypeDiversity",
+          "themeCoverage",
+          "temporalDistribution",
+          "overallScore"
+        ],
+        "title": "DiversityMetrics",
+        "description": "Diversity metrics for plan preview."
+      },
       "DiversityMetricsResponse": {
         "properties": {
           "campaignId": {
@@ -10621,6 +10824,169 @@
         "title": "SceneMixPlanCreate",
         "description": "Schema for creating a scene mix plan."
       },
+      "SceneMixPlanPreviewRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Plan name"
+          },
+          "policyId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policyid",
+            "description": "Associated policy ID"
+          },
+          "durationDays": {
+            "type": "integer",
+            "title": "Durationdays",
+            "description": "Plan duration in days"
+          },
+          "postsPerDay": {
+            "type": "integer",
+            "title": "Postsperday",
+            "description": "Number of posts per day"
+          },
+          "contentMix": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Contentmix",
+            "description": "Content type distribution percentages"
+          },
+          "themes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Themes",
+            "description": "Content themes"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords",
+            "description": "Target keywords"
+          },
+          "mixGoal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mixgoal",
+            "description": "Goal/objective for the content mix strategy"
+          },
+          "rationale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rationale",
+            "description": "Explanation for the content mix decisions"
+          },
+          "explorationRate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Explorationrate",
+            "description": "Exploration rate for policy adjustments",
+            "default": 0.15
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "durationDays",
+          "postsPerDay",
+          "contentMix"
+        ],
+        "title": "SceneMixPlanPreviewRequest",
+        "description": "Schema for previewing a scene mix plan."
+      },
+      "SceneMixPlanPreviewResponse": {
+        "properties": {
+          "policyVersion": {
+            "type": "string",
+            "title": "Policyversion",
+            "description": "Policy version",
+            "default": "v1"
+          },
+          "mixGoal": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Mixgoal",
+            "description": "Mix goal distribution (human, product, ingredient)"
+          },
+          "subtypeWeights": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Subtypeweights",
+            "description": "Subtype weights for each content category"
+          },
+          "rationale": {
+            "type": "string",
+            "title": "Rationale",
+            "description": "Explanation for the selected mix"
+          },
+          "explorationRate": {
+            "type": "number",
+            "title": "Explorationrate",
+            "description": "Exploration rate for policy adjustments",
+            "default": 0.15
+          },
+          "diversityMetrics": {
+            "$ref": "#/components/schemas/DiversityMetrics",
+            "description": "Diversity metrics for the plan"
+          },
+          "estimatedPosts": {
+            "type": "integer",
+            "title": "Estimatedposts",
+            "description": "Estimated total posts for the plan duration"
+          },
+          "weeksPreview": {
+            "items": {
+              "$ref": "#/components/schemas/WeekPlan"
+            },
+            "type": "array",
+            "title": "Weekspreview",
+            "description": "Preview of week-by-week post planning"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mixGoal",
+          "subtypeWeights",
+          "rationale",
+          "diversityMetrics",
+          "estimatedPosts"
+        ],
+        "title": "SceneMixPlanPreviewResponse",
+        "description": "Schema for scene mix plan preview response with diversity metrics."
+      },
       "SceneMixPlanResponse": {
         "properties": {
           "id": {
@@ -10782,6 +11148,154 @@
         ],
         "title": "SceneMixPlanResponse",
         "description": "Schema for scene mix plan response."
+      },
+      "SceneMixPlanUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Plan name"
+          },
+          "policyId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policyid",
+            "description": "Associated policy ID"
+          },
+          "durationDays": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Durationdays",
+            "description": "Plan duration in days"
+          },
+          "postsPerDay": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postsperday",
+            "description": "Number of posts per day"
+          },
+          "contentMix": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentmix",
+            "description": "Content type distribution percentages"
+          },
+          "themes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Themes",
+            "description": "Content themes"
+          },
+          "keywords": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keywords",
+            "description": "Target keywords"
+          },
+          "autoGenerate": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Autogenerate",
+            "description": "Auto-generate content on approval"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status",
+            "description": "Plan status"
+          },
+          "mixGoal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mixgoal",
+            "description": "Goal/objective for the content mix strategy"
+          },
+          "rationale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rationale",
+            "description": "Explanation for the content mix decisions"
+          }
+        },
+        "type": "object",
+        "title": "SceneMixPlanUpdate",
+        "description": "Schema for updating a scene mix plan."
       },
       "SceneMixPolicyCreate": {
         "properties": {
