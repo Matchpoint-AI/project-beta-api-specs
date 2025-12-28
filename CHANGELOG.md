@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.315] - 2025-12-28
+
+### Changes
+- Merge pull request #1194 from Matchpoint-AI/fix/1192-brand-kb-mock
+
+**Source:** project-beta-api@d60dae1a
+
 ## [v0.7.314] - 2025-12-28
 
 ### Changes
