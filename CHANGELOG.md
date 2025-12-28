@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.289] - 2025-12-28
+
+### Changes
+- chore: centralize coverage threshold config and raise to 92% (#1161)
+
+**Source:** project-beta-api@3cfc2d28
+
 ## [v0.7.288] - 2025-12-28
 
 ### Changes
