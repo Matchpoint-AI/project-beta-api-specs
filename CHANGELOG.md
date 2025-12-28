@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.306] - 2025-12-28
+
+### Changes
+- fix: include campaign demographics in post generation prompt (#1183)
+
+**Source:** project-beta-api@b9bbbe49
+
 ## [v0.7.305] - 2025-12-28
 
 ### Changes
