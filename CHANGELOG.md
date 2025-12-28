@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.293] - 2025-12-28
+
+### Changes
+- Merge pull request #1168 from Matchpoint-AI/feat/1151-rag-service
+
+**Source:** project-beta-api@2bdb547d
+
 ## [v0.7.292] - 2025-12-28
 
 ### Changes
