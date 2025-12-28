@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.300] - 2025-12-28
+
+### Changes
+- Merge pull request #1167 from Matchpoint-AI/fix/1108-dead-brand-pages
+
+**Source:** project-beta-api@1e00c838
+
 ## [v0.7.299] - 2025-12-28
 
 ### Changes
