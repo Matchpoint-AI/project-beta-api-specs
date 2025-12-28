@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.294"
+    "version": "0.7.295"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1792,62 +1792,6 @@
           },
           "400": {
             "description": "Invalid request data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/approval-status": {
-      "get": {
-        "tags": [
-          "campaigns"
-        ],
-        "summary": "Get Campaign Approval Status",
-        "description": "Get approval status for a campaign.\n\nDirect port from V1 /api/v1/check-approved endpoint used by TabItems.tsx.\n\nReturns whether all campaign content is approved for export, along with\napproval counts. This endpoint is used to enable/disable the export button\nin the UI.\n\nRMM L2 Rationale:\n- approval-status is a computed sub-resource of campaign\n- GET retrieves the current approval state (not a state change)\n- Returns structured data: {approved, approvedCount, totalCount}\n\nReturns:\n    - approved: true if all content is approved, false otherwise\n    - approved_count: number of approved posts\n    - total_count: total number of posts in campaign",
-        "operationId": "get_campaign_approval_status_api_v2_campaigns__campaign_id__approval_status_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Approval status returned successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CampaignApprovalStatus"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign content not found"
-          },
-          "500": {
-            "description": "Failed to get approval status"
           },
           "422": {
             "description": "Validation Error",
@@ -7395,35 +7339,6 @@
         ],
         "title": "BulkContentApprovalResponse",
         "description": "Response schema for bulk content approval operation.\n\nReturns counts and any failed IDs."
-      },
-      "CampaignApprovalStatus": {
-        "properties": {
-          "approved": {
-            "type": "boolean",
-            "title": "Approved",
-            "description": "Whether all content is approved for export"
-          },
-          "approved_count": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Approved Count",
-            "description": "Number of approved posts"
-          },
-          "total_count": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Total Count",
-            "description": "Total number of posts"
-          }
-        },
-        "type": "object",
-        "required": [
-          "approved",
-          "approved_count",
-          "total_count"
-        ],
-        "title": "CampaignApprovalStatus",
-        "description": "Response schema for campaign approval status.\n\nReturns the overall approval status and counts for a campaign."
       },
       "CampaignCreateRequest": {
         "properties": {

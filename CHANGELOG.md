@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.295] - 2025-12-28
+
+### Changes
+- Merge pull request #1171 from Matchpoint-AI/fix/1111-dead-workflow
+
+**Source:** project-beta-api@7c81ed46
+
 ## [v0.7.294] - 2025-12-28
 
 ### Changes
