@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.296"
+    "version": "0.7.297"
   },
   "paths": {
     "/api/v2/brands": {
@@ -255,126 +255,6 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/colors": {
-      "put": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Update Brand Colors",
-        "description": "Update selected brand colors (including custom colors).\n\nUpdates the brand colors with enhanced metadata including color names,\nusage roles (primary/secondary/accent), and custom status.",
-        "operationId": "update_brand_colors_api_v2_brands__brand_id__colors_put",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BrandColorsUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Brand colors updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandColorsUpdateResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "400": {
-            "description": "Invalid color data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/workflows/{workflow_id}": {
-      "get": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Get Workflow Progress",
-        "description": "Get progress for a brand workflow (RMM-2 compliant).\n\nReturns detailed progress information for the brand workflow.\nSupports polling for real-time updates.\n\nThis endpoint replaces the deprecated /brands/{brand_id}/extraction/progress endpoint.\nThe workflowId parameter represents the type of workflow (e.g., 'extraction').",
-        "operationId": "get_workflow_progress_api_v2_brands__brand_id__workflows__workflow_id__get",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          },
-          {
-            "name": "workflow_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The workflow ID (currently 'extraction')",
-              "title": "Workflow Id"
-            },
-            "description": "The workflow ID (currently 'extraction')"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Workflow progress retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandExtractionProgressResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand or workflow not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/brands/{brand_id}/onboarding/progress": {
       "patch": {
         "tags": [
@@ -419,67 +299,6 @@
           },
           "400": {
             "description": "Invalid progress data"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/status": {
-      "patch": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Update Brand Status",
-        "description": "Update brand onboarding status (RMM-2 compliant).\n\nRichardson Maturity Model Level 2 compliant endpoint using PATCH to update\nthe status resource of a brand. Validates that all required approvals have\nbeen given and marks the brand onboarding process as completed.\n\nThis endpoint replaces the deprecated POST /brands/{brand_id}/complete endpoint.",
-        "operationId": "update_brand_status_api_v2_brands__brand_id__status_patch",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BrandOnboardingComplete"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Brand onboarding status updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandOnboardingCompleteResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Required approvals missing"
           },
           "404": {
             "description": "Brand not found"
@@ -1121,70 +940,6 @@
           },
           "404": {
             "description": "No knowledge found for brand"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/knowledge/batches": {
-      "post": {
-        "tags": [
-          "brand-workflow"
-        ],
-        "summary": "Extract Knowledge From Campaigns",
-        "description": "Extract and merge knowledge from multiple campaigns (RMM-2 compliant).\n\nThis endpoint implements controller orchestration pattern where the controller\ncoordinates multiple services (campaign_service and brand_knowledge_service)\nto extract knowledge from campaign content and merge it into brand knowledge.\n\nThe controller:\n1. Gets campaigns using campaign_service\n2. Extracts content from each campaign\n3. Merges knowledge using brand_knowledge_service\n4. Returns combined knowledge\n\nRMM Level 2 Compliance:\n- POST creates a knowledge resource (not an RPC \"extract\" action)\n- Returns 201 Created with the knowledge resource\n- Resource-oriented URL: /brands/{id}/knowledge/batches\n- Controller handles orchestration, services handle business logic\n\nArgs:\n    brand_id: The brand ID\n    request: Request containing campaign IDs to extract knowledge from\n    campaign_service: Injected campaign service for retrieving campaigns\n    brand_knowledge_service: Injected knowledge service for extraction\n\nReturns:\n    Combined brand knowledge extracted from all campaigns\n\nRaises:\n    HTTPException: If extraction fails or campaigns not found",
-        "operationId": "extract_knowledge_from_campaigns_api_v2_brands__brand_id__knowledge_batches_post",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExtractBatchCampaignRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Knowledge extracted and merged from campaigns",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExtractKnowledgeResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "404": {
-            "description": "Brand or campaign not found"
-          },
-          "500": {
-            "description": "Knowledge extraction failed"
           },
           "422": {
             "description": "Validation Error",
@@ -5917,95 +5672,6 @@
         "type": "object",
         "title": "Body_upload_brand_files"
       },
-      "BrandColor": {
-        "properties": {
-          "colorHex": {
-            "type": "string",
-            "pattern": "^#[0-9A-Fa-f]{6}$",
-            "title": "Colorhex",
-            "description": "Color in hex format (e.g., #FF0000)"
-          },
-          "colorName": {
-            "type": "string",
-            "maxLength": 50,
-            "minLength": 1,
-            "title": "Colorname",
-            "description": "Human-readable name for the color"
-          },
-          "usage": {
-            "type": "string",
-            "enum": [
-              "primary",
-              "secondary",
-              "accent"
-            ],
-            "title": "Usage",
-            "description": "Role of color in brand palette"
-          },
-          "isCustom": {
-            "type": "boolean",
-            "title": "Iscustom",
-            "description": "Whether this color was custom-added by user",
-            "default": false
-          }
-        },
-        "type": "object",
-        "required": [
-          "colorHex",
-          "colorName",
-          "usage"
-        ],
-        "title": "BrandColor",
-        "description": "Brand color schema with metadata."
-      },
-      "BrandColorsUpdate": {
-        "properties": {
-          "brandColors": {
-            "items": {
-              "$ref": "#/components/schemas/BrandColor"
-            },
-            "type": "array",
-            "maxItems": 10,
-            "minItems": 1,
-            "title": "Brandcolors",
-            "description": "Updated brand colors with metadata"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandColors"
-        ],
-        "title": "BrandColorsUpdate",
-        "description": "Schema for updating brand colors."
-      },
-      "BrandColorsUpdateResponse": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "colorsUpdated": {
-            "type": "integer",
-            "title": "Colorsupdated",
-            "description": "Number of colors updated"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Updatedat",
-            "description": "Timestamp when colors were updated"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "colorsUpdated",
-          "updatedAt"
-        ],
-        "title": "BrandColorsUpdateResponse",
-        "description": "Schema for brand colors update response."
-      },
       "BrandCrawlPerformance": {
         "properties": {
           "brand_id": {
@@ -6144,107 +5810,6 @@
         ],
         "title": "BrandCreate",
         "description": "Schema for creating a new brand."
-      },
-      "BrandExtractionProgress": {
-        "properties": {
-          "percentage": {
-            "type": "integer",
-            "maximum": 100.0,
-            "minimum": 0.0,
-            "title": "Percentage",
-            "description": "Progress percentage (0-100)"
-          },
-          "currentStep": {
-            "type": "string",
-            "title": "Currentstep",
-            "description": "Current step being processed"
-          },
-          "stepsCompleted": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Stepscompleted",
-            "description": "Number of steps completed"
-          },
-          "totalSteps": {
-            "type": "integer",
-            "exclusiveMinimum": 0.0,
-            "title": "Totalsteps",
-            "description": "Total number of steps in the process"
-          },
-          "itemsCrawled": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Itemscrawled",
-            "description": "Number of items crawled so far",
-            "default": 0
-          },
-          "estimatedTimeRemaining": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Estimatedtimeremaining",
-            "description": "Estimated time remaining in seconds"
-          }
-        },
-        "type": "object",
-        "required": [
-          "percentage",
-          "currentStep",
-          "stepsCompleted",
-          "totalSteps"
-        ],
-        "title": "BrandExtractionProgress",
-        "description": "Schema for brand extraction progress information."
-      },
-      "BrandExtractionProgressResponse": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "extractionJobId": {
-            "type": "string",
-            "title": "Extractionjobid",
-            "description": "Extraction job ID"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "processing",
-              "completed",
-              "failed"
-            ],
-            "title": "Status",
-            "description": "Current extraction status"
-          },
-          "progress": {
-            "$ref": "#/components/schemas/BrandExtractionProgress",
-            "description": "Detailed progress information"
-          },
-          "lastUpdated": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Lastupdated",
-            "description": "When the progress was last updated"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "extractionJobId",
-          "status",
-          "progress",
-          "lastUpdated"
-        ],
-        "title": "BrandExtractionProgressResponse",
-        "description": "Schema for brand extraction progress response."
       },
       "BrandFileUploadResponse": {
         "properties": {
@@ -6534,72 +6099,6 @@
         "title": "BrandKnowledgeV2Response",
         "description": "V2 Response model for simplified brand knowledge extraction."
       },
-      "BrandOnboardingComplete": {
-        "properties": {
-          "reviewedData": {
-            "$ref": "#/components/schemas/BrandOnboardingReview",
-            "description": "Review status of all onboarding data"
-          },
-          "additionalNotes": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 1000
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Additionalnotes",
-            "description": "Additional notes about the onboarding completion"
-          }
-        },
-        "type": "object",
-        "required": [
-          "reviewedData"
-        ],
-        "title": "BrandOnboardingComplete",
-        "description": "Schema for completing brand onboarding."
-      },
-      "BrandOnboardingCompleteResponse": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "status": {
-            "$ref": "#/components/schemas/OnboardingStatus",
-            "description": "Status after completion",
-            "default": "completed"
-          },
-          "completedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Completedat",
-            "description": "Timestamp when onboarding was completed"
-          },
-          "profileUrl": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Profileurl",
-            "description": "URL to the completed brand profile"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "completedAt"
-        ],
-        "title": "BrandOnboardingCompleteResponse",
-        "description": "Schema for brand onboarding completion response."
-      },
       "BrandOnboardingProgressResponse": {
         "properties": {
           "brandId": {
@@ -6716,33 +6215,6 @@
         ],
         "title": "BrandOnboardingProgressUpdate",
         "description": "Schema for updating brand onboarding progress step."
-      },
-      "BrandOnboardingReview": {
-        "properties": {
-          "knowledgeApproved": {
-            "type": "boolean",
-            "title": "Knowledgeapproved",
-            "description": "Whether the extracted brand knowledge has been approved"
-          },
-          "assetsApproved": {
-            "type": "boolean",
-            "title": "Assetsapproved",
-            "description": "Whether the uploaded brand assets have been approved"
-          },
-          "colorsApproved": {
-            "type": "boolean",
-            "title": "Colorsapproved",
-            "description": "Whether the brand colors have been approved"
-          }
-        },
-        "type": "object",
-        "required": [
-          "knowledgeApproved",
-          "assetsApproved",
-          "colorsApproved"
-        ],
-        "title": "BrandOnboardingReview",
-        "description": "Schema for reviewing brand onboarding data."
       },
       "BrandProfileExport": {
         "properties": {
@@ -10391,25 +9863,6 @@
         "title": "EmailVerificationRequest",
         "description": "Schema for email verification request.\n\nFor POST /api/v2/verifications endpoint.\nVerifies user email using token from verification email."
       },
-      "ExtractBatchCampaignRequest": {
-        "properties": {
-          "campaignIds": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "minItems": 1,
-            "title": "Campaignids",
-            "description": "List of campaign IDs to extract knowledge from"
-          }
-        },
-        "type": "object",
-        "required": [
-          "campaignIds"
-        ],
-        "title": "ExtractBatchCampaignRequest",
-        "description": "Request for extracting knowledge from multiple campaigns."
-      },
       "ExtractKnowledgeRequest": {
         "properties": {
           "workflowId": {
@@ -11127,14 +10580,6 @@
         ],
         "title": "NativeUserCreate",
         "description": "Schema for creating a new user via native email/password authentication.\n\nFor POST /api/v2/users endpoint.\nPassword is hashed and stored in our database with bcrypt.\nEmail verification link is sent via SendGrid."
-      },
-      "OnboardingStatus": {
-        "type": "string",
-        "enum": [
-          "completed"
-        ],
-        "title": "OnboardingStatus",
-        "description": "Enum for onboarding completion status."
       },
       "PageMetadata": {
         "properties": {

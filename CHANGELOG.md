@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.297] - 2025-12-28
+
+### Changes
+- fix: remove unused brand misc endpoints as dead code (#1172)
+
+**Source:** project-beta-api@d7b9569b
+
 ## [v0.7.296] - 2025-12-28
 
 ### Changes
