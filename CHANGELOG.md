@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.298] - 2025-12-28
+
+### Changes
+- fix: remove unused content endpoints (Issue #1113) (#1174)
+
+**Source:** project-beta-api@402811f6
+
 ## [v0.7.297] - 2025-12-28
 
 ### Changes

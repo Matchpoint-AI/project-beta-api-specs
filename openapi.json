@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.297"
+    "version": "0.7.298"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2501,53 +2501,6 @@
         }
       }
     },
-    "/api/v2/content": {
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Create Content",
-        "description": "Create new content or regenerate existing content.\n\nThis is the RMM Level 2 compliant endpoint for content creation/regeneration.\nInstead of POST /content/{id}/regenerate, we POST to /content to create a new version.\n\nThe client can include metadata indicating this is a regeneration of existing content.\n\nSecurity: user_id is extracted from the JWT token and cannot be manipulated by the client.",
-        "operationId": "create_content_api_v2_content_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
     "/api/v2/content/{content_id}/status": {
       "patch": {
         "tags": [
@@ -2914,118 +2867,6 @@
         ]
       }
     },
-    "/api/v2/content/{content_id}/images/{image_id}": {
-      "get": {
-        "tags": [
-          "content-images"
-        ],
-        "summary": "Get Content Image",
-        "description": "Get a specific content image.\n\nRMM L2: Resource retrieval via GET with proper 404 handling.\n\nArgs:\n    content_id: Content ID (path parameter)\n    image_id: Image ID (path parameter)\n    service: Injected content image service\n\nReturns:\n    Content image response\n\nRaises:\n    HTTPException: 404 if image not found",
-        "operationId": "get_content_image_api_v2_content__content_id__images__image_id__get",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Content Id"
-            }
-          },
-          {
-            "name": "image_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Image Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "content-images"
-        ],
-        "summary": "Update Content Image",
-        "description": "Update content image prompt.\n\nRMM L2: Resource update via PUT with proper error handling.\n\nArgs:\n    content_id: Content ID (path parameter)\n    image_id: Image ID (path parameter)\n    request: Image update request\n    service: Injected content image service\n\nReturns:\n    Updated content image response\n\nRaises:\n    HTTPException: 404 if image not found, 422 if update fails",
-        "operationId": "update_content_image_api_v2_content__content_id__images__image_id__put",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Content Id"
-            }
-          },
-          {
-            "name": "image_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Image Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentImageUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/content/{content_id}/images": {
       "post": {
         "tags": [
@@ -3332,67 +3173,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ContentVersionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/text": {
-      "patch": {
-        "tags": [
-          "content-versions"
-        ],
-        "summary": "Update content text versions (RMM-2 compliant)",
-        "description": "Updates text, text_versions array, and selected image index. RMM-2 compliant with single-word sub-resource 'text'.",
-        "operationId": "update_content_text_api_v2_content__content_id__text_patch",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Content ID",
-              "title": "Content Id"
-            },
-            "description": "Content ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTextVersionsRequest",
-                "description": "Text versions update request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UpdateTextVersionsResponse"
                 }
               }
             }
@@ -8094,73 +7874,6 @@
         "title": "ContentApprovalResponse",
         "description": "Response schema for content approval.\n\nReturns the updated day data after approval/unapproval."
       },
-      "ContentCreate": {
-        "properties": {
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid"
-          },
-          "userId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Userid"
-          },
-          "readyForReview": {
-            "type": "integer",
-            "title": "Readyforreview",
-            "default": 0
-          },
-          "approved": {
-            "type": "integer",
-            "title": "Approved",
-            "default": 0
-          },
-          "exported": {
-            "type": "integer",
-            "title": "Exported",
-            "default": 0
-          },
-          "published": {
-            "type": "boolean",
-            "title": "Published",
-            "default": false
-          },
-          "totalPosts": {
-            "type": "integer",
-            "title": "Totalposts",
-            "default": 0
-          },
-          "generationCount": {
-            "type": "integer",
-            "title": "Generationcount",
-            "default": 1
-          },
-          "contentData": {
-            "anyOf": [
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Contentdata"
-          }
-        },
-        "type": "object",
-        "required": [
-          "campaignId"
-        ],
-        "title": "ContentCreate",
-        "description": "Schema for creating content.\n\nSecurity Note (Issue #773):\n- user_id field is ignored by POST /content endpoint (extracted from JWT token)\n- Other endpoints may derive user_id from campaign or set it explicitly"
-      },
       "ContentExport": {
         "properties": {
           "id": {
@@ -8815,21 +8528,6 @@
         ],
         "title": "ContentImageResponse",
         "description": "Schema for content image response."
-      },
-      "ContentImageUpdate": {
-        "properties": {
-          "image_prompt": {
-            "type": "string",
-            "title": "Image Prompt",
-            "description": "New prompt for image regeneration"
-          }
-        },
-        "type": "object",
-        "required": [
-          "image_prompt"
-        ],
-        "title": "ContentImageUpdate",
-        "description": "Schema for updating a content image."
       },
       "ContentImageUploadRequest": {
         "properties": {
@@ -12330,79 +12028,6 @@
         ],
         "title": "URLMetadata",
         "description": "Metadata extracted from URL."
-      },
-      "UpdateTextVersionsRequest": {
-        "properties": {
-          "content_id": {
-            "type": "string",
-            "title": "Content Id",
-            "description": "Content ID to update"
-          },
-          "week_num": {
-            "type": "integer",
-            "title": "Week Num",
-            "description": "Week number in campaign"
-          },
-          "day_num": {
-            "type": "integer",
-            "title": "Day Num",
-            "description": "Day number in week"
-          },
-          "post_num": {
-            "type": "integer",
-            "title": "Post Num",
-            "description": "Post number in day"
-          },
-          "text": {
-            "type": "string",
-            "title": "Text",
-            "description": "Currently selected text"
-          },
-          "text_versions": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Text Versions",
-            "description": "Array of text versions"
-          },
-          "selected_image_index": {
-            "type": "integer",
-            "title": "Selected Image Index",
-            "description": "Currently selected image index"
-          }
-        },
-        "type": "object",
-        "required": [
-          "content_id",
-          "week_num",
-          "day_num",
-          "post_num",
-          "text",
-          "text_versions",
-          "selected_image_index"
-        ],
-        "title": "UpdateTextVersionsRequest",
-        "description": "Request schema for updating text versions.\n\nDirect port from V1 UpdateTextVersionsRequest model."
-      },
-      "UpdateTextVersionsResponse": {
-        "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Operation status",
-            "default": "success"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Success message",
-            "default": "Text versions updated successfully"
-          }
-        },
-        "type": "object",
-        "title": "UpdateTextVersionsResponse",
-        "description": "Response schema for text versions update.\n\nDirect port from V1 response format."
       },
       "UserRegistrationResponse": {
         "properties": {
