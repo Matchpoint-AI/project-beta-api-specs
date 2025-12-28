@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.293"
+    "version": "0.7.294"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1128,107 +1128,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/knowledge": {
-      "get": {
-        "tags": [
-          "brand-workflow"
-        ],
-        "summary": "List Brand Knowledge",
-        "description": "List brand knowledge entries with pagination.\n\nReturns a paginated list of brand knowledge entries across all brands\nor filtered by a specific brand ID. This endpoint is useful for\ndashboard views and admin interfaces.\n\nRMM Level 2 Compliance:\n- GET to /knowledge collection retrieves resources\n- Pagination via query parameters (page, page_size)\n- No verbs in URL path",
-        "operationId": "list_brand_knowledge",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "description": "Page number (1-indexed)",
-              "default": 1,
-              "title": "Page"
-            },
-            "description": "Page number (1-indexed)"
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "description": "Number of items per page",
-              "default": 20,
-              "title": "Page Size"
-            },
-            "description": "Number of items per page"
-          },
-          {
-            "name": "brand_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Filter by specific brand ID",
-              "title": "Brand Id"
-            },
-            "description": "Filter by specific brand ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of brand knowledge entries returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandKnowledgeListResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/knowledge/summary": {
-      "get": {
-        "tags": [
-          "brand-workflow"
-        ],
-        "summary": "Get Knowledge Summary",
-        "description": "Get summary statistics for brand knowledge.\n\nReturns aggregated statistics across all brands including\ntotal brands, average traits, most common traits, and recently\nupdated entries.\n\nRMM Level 2 Compliance:\n- GET to /knowledge/summary retrieves aggregate resource\n- No verbs in URL path\n- HTTP verb (GET) indicates retrieval",
-        "operationId": "get_brand_knowledge_summary",
-        "responses": {
-          "200": {
-            "description": "Summary statistics returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandKnowledgeSummaryResponse"
                 }
               }
             }
@@ -2603,48 +2502,6 @@
         "responses": {
           "204": {
             "description": "Successful Response"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/captions/validations": {
-      "post": {
-        "tags": [
-          "captions"
-        ],
-        "summary": "Create Caption Validation",
-        "description": "Validate captions against brand guidelines (RMM-2 compliant).\n\nThis endpoint validates multiple captions against platform-specific requirements\nand brand guidelines, returning detailed validation results and suggestions.\n\nRMM-2 Compliance: Uses resource noun 'validations' instead of verb 'validate'.\nCreates a validation resource through POST method.",
-        "operationId": "create_caption_validation",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CaptionValidationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CaptionValidationResponse"
-                }
-              }
-            }
           },
           "422": {
             "description": "Validation Error",
@@ -6634,48 +6491,6 @@
         "title": "BrandKnowledgeBrandSummaryResponse",
         "description": "Summary statistics for a specific brand's knowledge."
       },
-      "BrandKnowledgeListResponse": {
-        "properties": {
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/BrandKnowledgeV2Response"
-            },
-            "type": "array",
-            "title": "Items",
-            "description": "List of brand knowledge entries"
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total",
-            "description": "Total number of items"
-          },
-          "page": {
-            "type": "integer",
-            "title": "Page",
-            "description": "Current page number"
-          },
-          "pageSize": {
-            "type": "integer",
-            "title": "Pagesize",
-            "description": "Items per page"
-          },
-          "totalPages": {
-            "type": "integer",
-            "title": "Totalpages",
-            "description": "Total number of pages"
-          }
-        },
-        "type": "object",
-        "required": [
-          "items",
-          "total",
-          "page",
-          "pageSize",
-          "totalPages"
-        ],
-        "title": "BrandKnowledgeListResponse",
-        "description": "Paginated response for brand knowledge list."
-      },
       "BrandKnowledgeStatusResponse": {
         "properties": {
           "brandId": {
@@ -6774,57 +6589,6 @@
         ],
         "title": "BrandKnowledgeStatusUpdate",
         "description": "Request schema for updating brand knowledge status (Phase 3: Background Crawl Webhooks)."
-      },
-      "BrandKnowledgeSummaryResponse": {
-        "properties": {
-          "totalBrands": {
-            "type": "integer",
-            "title": "Totalbrands",
-            "description": "Total number of brands with knowledge"
-          },
-          "totalPagesCrawled": {
-            "type": "integer",
-            "title": "Totalpagescrawled",
-            "description": "Total pages crawled across all brands"
-          },
-          "averageTraitsPerBrand": {
-            "type": "number",
-            "title": "Averagetraitsperbrand",
-            "description": "Average personality traits per brand"
-          },
-          "averageProductsPerBrand": {
-            "type": "number",
-            "title": "Averageproductsperbrand",
-            "description": "Average products per brand"
-          },
-          "mostCommonTraits": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Mostcommontraits",
-            "description": "Top 10 most common personality traits"
-          },
-          "recentlyUpdated": {
-            "items": {
-              "$ref": "#/components/schemas/BrandKnowledgeV2Response"
-            },
-            "type": "array",
-            "title": "Recentlyupdated",
-            "description": "5 most recently updated brand knowledge entries"
-          }
-        },
-        "type": "object",
-        "required": [
-          "totalBrands",
-          "totalPagesCrawled",
-          "averageTraitsPerBrand",
-          "averageProductsPerBrand",
-          "mostCommonTraits",
-          "recentlyUpdated"
-        ],
-        "title": "BrandKnowledgeSummaryResponse",
-        "description": "Summary statistics for brand knowledge."
       },
       "BrandKnowledgeV2ListResponse": {
         "properties": {
@@ -8879,82 +8643,6 @@
         ],
         "title": "CaptionResponse",
         "description": "Schema for caption response."
-      },
-      "CaptionValidationRequest": {
-        "properties": {
-          "captions": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Captions",
-            "description": "List of captions to validate"
-          },
-          "platform": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Platform",
-            "description": "Platform-specific validation rules"
-          },
-          "brandGuidelines": {
-            "anyOf": [
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Brandguidelines",
-            "description": "Brand guidelines to check against"
-          }
-        },
-        "type": "object",
-        "required": [
-          "captions"
-        ],
-        "title": "CaptionValidationRequest",
-        "description": "Schema for validating captions."
-      },
-      "CaptionValidationResponse": {
-        "properties": {
-          "valid": {
-            "type": "boolean",
-            "title": "Valid",
-            "description": "Overall validation result"
-          },
-          "results": {
-            "items": {
-              "additionalProperties": true,
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Results",
-            "description": "Individual caption validation results"
-          },
-          "suggestions": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Suggestions",
-            "description": "Improvement suggestions"
-          }
-        },
-        "type": "object",
-        "required": [
-          "valid",
-          "results"
-        ],
-        "title": "CaptionValidationResponse",
-        "description": "Schema for caption validation response."
       },
       "CategoryBreakdown": {
         "properties": {
