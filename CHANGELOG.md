@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.288] - 2025-12-28
+
+### Changes
+- Merge pull request #1162 from Matchpoint-AI/test/auth-coverage-gaps
+
+**Source:** project-beta-api@22b2f928
+
 ## [v0.7.287] - 2025-12-28
 
 ### Changes
