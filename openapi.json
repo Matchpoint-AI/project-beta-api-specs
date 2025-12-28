@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.310"
+    "version": "0.7.311"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4405,6 +4405,48 @@
         }
       }
     },
+    "/api/v2/url/content/fetches": {
+      "post": {
+        "tags": [
+          "url-content-fetches"
+        ],
+        "summary": "Create a URL content fetch",
+        "description": "Create a URL content fetch operation to extract text content, metadata, and optionally images from a URL. This is the RMM Level 2 compliant replacement for /utilities/fetch-url-content.",
+        "operationId": "create_url_content_fetch_api_v2_url_content_fetches_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/URLContentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/URLContentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/users": {
       "post": {
         "tags": [
@@ -4870,8 +4912,8 @@
         "tags": [
           "utilities"
         ],
-        "summary": "Fetch content from URL",
-        "description": "Fetch and extract text content, metadata, and optionally images from a URL",
+        "summary": "Fetch content from URL (DEPRECATED)",
+        "description": "DEPRECATED: This endpoint will be removed in a future version. Use POST /url/content/fetches instead. Fetch and extract text content, metadata, and optionally images from a URL.",
         "operationId": "fetch_url_content_api_v2_utilities_fetch_url_content_post",
         "requestBody": {
           "content": {
@@ -4904,7 +4946,8 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     }
   },

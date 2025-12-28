@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.311] - 2025-12-28
+
+### Changes
+- feat: add RMM L2 compliant POST /url-content-fetches endpoint (#1185)
+
+**Source:** project-beta-api@697a88d9
+
 ## [v0.7.310] - 2025-12-28
 
 ### Changes
