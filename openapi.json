@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.291"
+    "version": "0.7.292"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5224,149 +5224,6 @@
         }
       }
     },
-    "/api/v2/prompts/{prompt_id}": {
-      "get": {
-        "tags": [
-          "prompts"
-        ],
-        "summary": "Get Prompt",
-        "description": "Get a specific prompt by ID.\n\nBusiness Context:\nRetrieves a single prompt by its unique identifier.\nUseful when frontend needs a specific prompt template.\n\nRMM Level 2:\n- HTTP GET for resource retrieval\n- Resource ID in URL path\n- Returns 200 OK if found, 404 Not Found if missing\n\nArgs:\n    prompt_id: Unique prompt identifier\n    response: FastAPI response object for setting headers\n    prompts_service: Injected prompts service\n\nReturns:\n    PromptResponse with prompt details\n\nRaises:\n    HTTPException: 404 if prompt not found\n\nExample:\n    GET /api/v2/prompts/brand_summary_v1\n\nResponse:\n    {\n      \"id\": \"brand_summary_v1\",\n      \"category\": \"brand\",\n      \"template\": \"Create a summary...\",\n      \"variables\": [\"brand_name\"],\n      \"version\": \"1.0.0\",\n      \"description\": \"Brand summary generation\"\n    }",
-        "operationId": "get_prompt_api_v2_prompts__prompt_id__get",
-        "parameters": [
-          {
-            "name": "prompt_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The prompt ID",
-              "title": "Prompt Id"
-            },
-            "description": "The prompt ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PromptResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "prompts"
-        ],
-        "summary": "Update Prompt",
-        "description": "Update an existing prompt.\n\nBusiness Context:\nUpdates an existing prompt template. Only provided fields will be updated\n(partial update). Useful for versioning prompts or refining templates.\n\nRMM Level 2:\n- HTTP PUT for resource update\n- Resource ID in URL path\n- Returns 200 OK with updated resource\n- Returns 404 Not Found if prompt doesn't exist\n\nArgs:\n    prompt_id: Unique prompt identifier\n    request: Prompt update data (partial)\n    prompts_service: Injected prompts service\n\nReturns:\n    Updated prompt\n\nRaises:\n    HTTPException: 404 if prompt not found\n    HTTPException: 400 if validation fails\n\nExample:\n    PUT /api/v2/prompts/brand_summary_v1\n    {\n      \"template\": \"Updated template text...\",\n      \"version\": \"1.1.0\"\n    }",
-        "operationId": "update_prompt_api_v2_prompts__prompt_id__put",
-        "parameters": [
-          {
-            "name": "prompt_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The prompt ID",
-              "title": "Prompt Id"
-            },
-            "description": "The prompt ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PromptUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Prompt updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PromptResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Prompt not found"
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "prompts"
-        ],
-        "summary": "Delete Prompt",
-        "description": "Delete a prompt.\n\nBusiness Context:\nRemoves a prompt from the system. Use with caution as this operation\ncannot be undone. Consider versioning or deactivation instead for\nproduction prompts.\n\nRMM Level 2:\n- HTTP DELETE for resource removal\n- Resource ID in URL path\n- Returns 204 No Content on success\n- Returns 404 Not Found if prompt doesn't exist\n\nArgs:\n    prompt_id: Unique prompt identifier\n    prompts_service: Injected prompts service\n\nReturns:\n    None (204 No Content)\n\nRaises:\n    HTTPException: 404 if prompt not found\n\nExample:\n    DELETE /api/v2/prompts/old_prompt_v1",
-        "operationId": "delete_prompt_api_v2_prompts__prompt_id__delete",
-        "parameters": [
-          {
-            "name": "prompt_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The prompt ID",
-              "title": "Prompt Id"
-            },
-            "description": "The prompt ID"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Prompt deleted successfully"
-          },
-          "404": {
-            "description": "Prompt not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/signups": {
       "post": {
         "tags": [
@@ -6054,90 +5911,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/URLContentResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/pages": {
-      "post": {
-        "tags": [
-          "website-content"
-        ],
-        "summary": "Create Page",
-        "description": "Create a page resource by fetching and analyzing URL content.\n\nThis endpoint creates a page resource from a URL, extracting content\nand metadata. Optionally extracts physical locations using LLM analysis.\n\nArgs:\n    request: Page creation request with URL\n    service: Injected website content service\n\nReturns:\n    Created page resource with content, metadata and optional locations\n\nRaises:\n    HTTPException: If page fetch fails or URL is invalid",
-        "operationId": "create_page_api_v2_pages_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PageRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/locations": {
-      "post": {
-        "tags": [
-          "website-content"
-        ],
-        "summary": "Create Locations",
-        "description": "Create location resources by analyzing text.\n\nThis endpoint creates location resources from text using LLM to extract\nstructured location data (addresses, cities, states, countries).\n\nArgs:\n    request: Locations creation request with text to analyze\n    service: Injected website content service\n\nReturns:\n    Created location resources\n\nRaises:\n    HTTPException: If location extraction fails",
-        "operationId": "create_locations_api_v2_locations_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LocationsRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationsResponse"
                 }
               }
             }
@@ -11902,7 +11675,7 @@
         "properties": {
           "locations": {
             "items": {
-              "$ref": "#/components/schemas/src__schemas__locations__PhysicalLocation"
+              "$ref": "#/components/schemas/PhysicalLocation"
             },
             "type": "array",
             "title": "Locations",
@@ -11912,45 +11685,6 @@
         "type": "object",
         "title": "LocationExtractionResponse",
         "description": "Response containing extracted physical locations.\n\nReturns a list of structured location objects extracted from the provided\ntext or brand knowledge. Empty list if no locations found."
-      },
-      "LocationsRequest": {
-        "properties": {
-          "text": {
-            "type": "string",
-            "title": "Text",
-            "description": "Text to analyze for locations"
-          }
-        },
-        "type": "object",
-        "required": [
-          "text"
-        ],
-        "title": "LocationsRequest",
-        "description": "Request schema for creating location resources from text."
-      },
-      "LocationsResponse": {
-        "properties": {
-          "locations": {
-            "items": {
-              "$ref": "#/components/schemas/src__schemas__website_content__PhysicalLocation"
-            },
-            "type": "array",
-            "title": "Locations",
-            "description": "Location resources extracted from the text"
-          },
-          "text_analyzed": {
-            "type": "string",
-            "title": "Text Analyzed",
-            "description": "The text that was analyzed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "locations",
-          "text_analyzed"
-        ],
-        "title": "LocationsResponse",
-        "description": "Response schema for location resources."
       },
       "LoginRequest": {
         "properties": {
@@ -12210,70 +11944,72 @@
         "title": "PageMetadata",
         "description": "Metadata for a crawled page."
       },
-      "PageRequest": {
+      "PhysicalLocation": {
         "properties": {
-          "url": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "title": "Url",
-            "description": "The URL to fetch and analyze"
-          },
-          "extract_locations": {
-            "type": "boolean",
-            "title": "Extract Locations",
-            "description": "Whether to extract physical locations from the page content",
-            "default": false
-          }
-        },
-        "type": "object",
-        "required": [
-          "url"
-        ],
-        "title": "PageRequest",
-        "description": "Request schema for creating a page resource from a URL."
-      },
-      "PageResponse": {
-        "properties": {
-          "url": {
-            "type": "string",
-            "title": "Url",
-            "description": "The page URL"
-          },
-          "content": {
-            "type": "string",
-            "title": "Content",
-            "description": "Extracted text content from the page"
-          },
-          "metadata": {
-            "$ref": "#/components/schemas/WebsiteMetadata",
-            "description": "Page metadata"
-          },
-          "locations": {
+          "address": {
             "anyOf": [
               {
-                "items": {
-                  "$ref": "#/components/schemas/src__schemas__website_content__PhysicalLocation"
-                },
-                "type": "array"
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Locations",
-            "description": "Physical locations extracted from page content (if requested)"
+            "title": "Address",
+            "description": "Street address (e.g., '123 Main St, Suite 100')",
+            "examples": [
+              "123 Main St, Suite 100"
+            ]
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City",
+            "description": "City name",
+            "examples": [
+              "San Francisco"
+            ]
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State",
+            "description": "State or province (2-letter code preferred)",
+            "examples": [
+              "CA"
+            ]
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country",
+            "description": "Country name or code",
+            "examples": [
+              "USA"
+            ]
           }
         },
         "type": "object",
-        "required": [
-          "url",
-          "content",
-          "metadata"
-        ],
-        "title": "PageResponse",
-        "description": "Response schema for page resource."
+        "title": "PhysicalLocation",
+        "description": "A structured physical location with address components.\n\nRepresents a single physical location extracted from text, with individual\ncomponents for address, city, state, and country to enable location-based\nqueries and filtering."
       },
       "PlanListResponse": {
         "properties": {
@@ -12646,84 +12382,6 @@
             "attributes"
           ],
           "version": "1.0.0"
-        }
-      },
-      "PromptUpdate": {
-        "properties": {
-          "category": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Category",
-            "description": "Prompt category"
-          },
-          "template": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Template",
-            "description": "Prompt template"
-          },
-          "variables": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Variables",
-            "description": "Variable names"
-          },
-          "version": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Version",
-            "description": "Semantic version"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Prompt description"
-          }
-        },
-        "type": "object",
-        "title": "PromptUpdate",
-        "description": "Schema for updating an existing prompt.\n\nAll fields are optional to support partial updates.\n\nAttributes:\n    category: Prompt category for filtering\n    template: The actual prompt template with variable placeholders\n    variables: List of variable names that can be substituted in the template\n    version: Semantic version of the prompt\n    description: Human-readable description of what this prompt does",
-        "example": {
-          "template": "Updated template with {brand_name} and {attributes}",
-          "variables": [
-            "brand_name",
-            "attributes"
-          ],
-          "version": "1.1.0"
         }
       },
       "PromptsListResponse": {
@@ -14088,73 +13746,6 @@
         ],
         "title": "ValidationError"
       },
-      "WebsiteMetadata": {
-        "properties": {
-          "title": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Title",
-            "description": "Page title"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Meta description"
-          },
-          "canonical_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Canonical Url",
-            "description": "Canonical URL"
-          },
-          "language": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Language",
-            "description": "Page language"
-          },
-          "author": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Author",
-            "description": "Page author"
-          }
-        },
-        "type": "object",
-        "title": "WebsiteMetadata",
-        "description": "Metadata extracted from website."
-      },
       "WeekContent": {
         "properties": {
           "weekNumber": {
@@ -14389,144 +13980,6 @@
         ],
         "title": "WorkflowStep",
         "description": "Schema for workflow step tracking."
-      },
-      "src__schemas__locations__PhysicalLocation": {
-        "properties": {
-          "address": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Address",
-            "description": "Street address (e.g., '123 Main St, Suite 100')",
-            "examples": [
-              "123 Main St, Suite 100"
-            ]
-          },
-          "city": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "City",
-            "description": "City name",
-            "examples": [
-              "San Francisco"
-            ]
-          },
-          "state": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "State",
-            "description": "State or province (2-letter code preferred)",
-            "examples": [
-              "CA"
-            ]
-          },
-          "country": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Country",
-            "description": "Country name or code",
-            "examples": [
-              "USA"
-            ]
-          }
-        },
-        "type": "object",
-        "title": "PhysicalLocation",
-        "description": "A structured physical location with address components.\n\nRepresents a single physical location extracted from text, with individual\ncomponents for address, city, state, and country to enable location-based\nqueries and filtering."
-      },
-      "src__schemas__website_content__PhysicalLocation": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Name of the location"
-          },
-          "address": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Address",
-            "description": "Full address if available"
-          },
-          "city": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "City",
-            "description": "City name"
-          },
-          "state": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "State",
-            "description": "State or province"
-          },
-          "country": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Country",
-            "description": "Country name"
-          },
-          "confidence": {
-            "type": "number",
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Confidence",
-            "description": "Confidence score (0-1)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "confidence"
-        ],
-        "title": "PhysicalLocation",
-        "description": "A physical location extracted from text."
       }
     },
     "securitySchemes": {
