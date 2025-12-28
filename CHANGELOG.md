@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.290] - 2025-12-28
+
+### Changes
+- Merge pull request #1163 from Matchpoint-AI/feat/1150-feedback-system
+
+**Source:** project-beta-api@6a8a9a91
+
 ## [v0.7.289] - 2025-12-28
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.289"
+    "version": "0.7.290"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3147,6 +3147,217 @@
         }
       }
     },
+    "/api/v2/outputs/{pair_id}/feedback": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Submit feedback for content",
+        "description": "Submit user feedback (thumbs up/down, tags, ratings, comments) for a specific content/post pair. Feeds online learning system.",
+        "operationId": "submit_feedback_api_v2_outputs__pair_id__feedback_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pair_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Content/Post ID to provide feedback for",
+              "title": "Pair Id"
+            },
+            "description": "Content/Post ID to provide feedback for"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentFeedbackCreate",
+                "description": "Feedback submission data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentFeedbackResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Get feedback for content",
+        "description": "Retrieve all feedback submissions for a specific content/post pair.",
+        "operationId": "get_feedback_for_pair_api_v2_outputs__pair_id__feedback_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pair_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Content/Post ID to get feedback for",
+              "title": "Pair Id"
+            },
+            "description": "Content/Post ID to get feedback for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContentFeedbackResponse"
+                  },
+                  "title": "Response Get Feedback For Pair Api V2 Outputs  Pair Id  Feedback Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/feedback/aggregates": {
+      "get": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Get feedback aggregates",
+        "description": "Get aggregated feedback statistics for a campaign including thumbs up/down counts, average ratings, tag distribution, and accuracy metrics.",
+        "operationId": "get_feedback_aggregates_api_v2_feedback_aggregates_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Campaign ID to get aggregates for",
+              "title": "Campaignid"
+            },
+            "description": "Campaign ID to get aggregates for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentFeedbackAggregates"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/feedback/batch/collect": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Submit batch feedback",
+        "description": "Submit multiple feedback items in a single request for bulk processing.",
+        "operationId": "submit_batch_feedback_api_v2_feedback_batch_collect_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentFeedbackBatchCreate",
+                "description": "Batch of feedback items to submit"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchFeedbackResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/api/v2/content/{content_id}/images/{image_id}": {
       "get": {
         "tags": [
@@ -6196,6 +6407,33 @@
             "sustainability"
           ]
         }
+      },
+      "BatchFeedbackResponse": {
+        "properties": {
+          "submittedCount": {
+            "type": "integer",
+            "title": "Submittedcount",
+            "description": "Number of feedback items successfully submitted",
+            "default": 0
+          },
+          "failedCount": {
+            "type": "integer",
+            "title": "Failedcount",
+            "description": "Number of feedback items that failed to submit",
+            "default": 0
+          },
+          "feedbackIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Feedbackids",
+            "description": "IDs of successfully submitted feedback"
+          }
+        },
+        "type": "object",
+        "title": "BatchFeedbackResponse",
+        "description": "Schema for batch feedback submission response."
       },
       "Body_update_brand_files": {
         "properties": {
@@ -9516,6 +9754,316 @@
         ],
         "title": "ContentExportResponse",
         "description": "Schema for content export response.\n\nRMM L2: Response includes the created export resource with its ID."
+      },
+      "ContentFeedbackAggregates": {
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid"
+          },
+          "totalFeedbackCount": {
+            "type": "integer",
+            "title": "Totalfeedbackcount",
+            "description": "Total number of feedback submissions",
+            "default": 0
+          },
+          "thumbsUpCount": {
+            "type": "integer",
+            "title": "Thumbsupcount",
+            "description": "Number of thumbs up ratings",
+            "default": 0
+          },
+          "thumbsDownCount": {
+            "type": "integer",
+            "title": "Thumbsdowncount",
+            "description": "Number of thumbs down ratings",
+            "default": 0
+          },
+          "averageQualityRating": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Averagequalityrating",
+            "description": "Average quality rating (1-5)"
+          },
+          "averageDiversityRating": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Averagediversityrating",
+            "description": "Average diversity rating (1-5)"
+          },
+          "tagDistribution": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tagdistribution",
+            "description": "Count of each tag used"
+          },
+          "sceneTypeAccuracy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenetypeaccuracy",
+            "description": "Percentage of correct scene type classifications"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId"
+        ],
+        "title": "ContentFeedbackAggregates",
+        "description": "Schema for aggregated feedback statistics.\n\nUsed for GET /feedback/aggregates endpoint."
+      },
+      "ContentFeedbackBatchCreate": {
+        "properties": {
+          "feedbackItems": {
+            "items": {
+              "$ref": "#/components/schemas/ContentFeedbackCreate"
+            },
+            "type": "array",
+            "title": "Feedbackitems",
+            "description": "List of feedback items to submit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "feedbackItems"
+        ],
+        "title": "ContentFeedbackBatchCreate",
+        "description": "Schema for batch feedback submission.\n\nUsed for POST /feedback/batch/collect endpoint."
+      },
+      "ContentFeedbackCreate": {
+        "properties": {
+          "pairId": {
+            "type": "string",
+            "title": "Pairid",
+            "description": "Content/Post ID being reviewed"
+          },
+          "thumbs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "up",
+                  "down"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbs",
+            "description": "Thumbs up/down rating"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags",
+            "description": "Feedback tags like 'diversity', 'on-brand', 'low-quality'"
+          },
+          "qualityRating": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 5.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualityrating",
+            "description": "1-5 star quality rating"
+          },
+          "diversityRating": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 5.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diversityrating",
+            "description": "1-5 star diversity rating"
+          },
+          "comments": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comments",
+            "description": "Free-form text feedback"
+          },
+          "sceneTypeCorrect": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenetypecorrect",
+            "description": "Whether scene type classification was correct"
+          },
+          "subtypeMatch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtypematch",
+            "description": "Subtype match feedback"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pairId"
+        ],
+        "title": "ContentFeedbackCreate",
+        "description": "Schema for creating content feedback.\n\nUsed for POST /outputs/{pair_id}/feedback endpoint."
+      },
+      "ContentFeedbackResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "pairId": {
+            "type": "string",
+            "title": "Pairid"
+          },
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          },
+          "thumbs": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbs"
+          },
+          "tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tags"
+          },
+          "qualityRating": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualityrating"
+          },
+          "diversityRating": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diversityrating"
+          },
+          "comments": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comments"
+          },
+          "sceneTypeCorrect": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenetypecorrect"
+          },
+          "subtypeMatch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtypematch"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "pairId",
+          "campaignId",
+          "userId",
+          "createdAt"
+        ],
+        "title": "ContentFeedbackResponse",
+        "description": "Schema for content feedback response."
       },
       "ContentImageGenerateRequest": {
         "properties": {
