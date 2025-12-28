@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.304] - 2025-12-28
+
+### Changes
+- Merge pull request #1180 from Matchpoint-AI/fix/1177-audience-columns
+
+**Source:** project-beta-api@78b81bf8
+
 ## [v0.7.303] - 2025-12-28
 
 ### Changes
