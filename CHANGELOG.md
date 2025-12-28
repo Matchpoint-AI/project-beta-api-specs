@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.285] - 2025-12-28
+
+### Changes
+- fix: correct Black formatting in middleware and workflow modules (#1148)
+
+**Source:** project-beta-api@474c67f7
+
 ## [v0.7.284] - 2025-12-28
 
 ### Changes
