@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.311"
+    "version": "0.7.312"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2442,14 +2442,82 @@
         }
       }
     },
+    "/api/v2/campaigns/{campaign_id}/content/approvals": {
+      "post": {
+        "tags": [
+          "content-approval"
+        ],
+        "summary": "Create bulk content approvals",
+        "description": "Bulk approve all content for a campaign. Creates approval records for multiple content items atomically.",
+        "operationId": "create_content_approvals_api_v2_campaigns__campaign_id__content_approvals_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkContentApprovalRequest",
+                "description": "Bulk approval request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Bulk approval completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkContentApprovalResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign or content not found"
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/campaigns/{campaign_id}/content/approve-all": {
       "post": {
         "tags": [
           "content-approval"
         ],
-        "summary": "Bulk Approve Campaign Content",
-        "description": "Bulk approve all content for a campaign.\n\nDirect port from V1 POST /api/v1/approve-all endpoint.\nUsed by ExportComponent.tsx for bulk content approval before export.\n\nRMM L2 Rationale:\n- This is a bulk operation on content resources within a campaign\n- POST creates approval state changes for multiple content items\n- Returns counts of successful and failed approvals\n\nThis endpoint:\n- Approves all content items for a campaign\n- Uses database transaction to ensure atomicity\n- Returns counts of approved/failed items and failed IDs\n- Handles partial failures gracefully",
+        "summary": "[DEPRECATED] Bulk approve campaign content",
+        "description": "DEPRECATED: Use POST /campaigns/{id}/content-approvals instead. This endpoint will be removed in a future version.",
         "operationId": "bulk_approve_campaign_content_api_v2_campaigns__campaign_id__content_approve_all_post",
+        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
