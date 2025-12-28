@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.282] - 2025-12-28
+
+### Changes
+- ci: add concurrency limits to prevent runner exhaustion (#1142)
+
+**Source:** project-beta-api@daee6e0e
+
 ## [v0.7.281] - 2025-12-28
 
 ### Changes
