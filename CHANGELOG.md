@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.284] - 2025-12-28
+
+### Changes
+- Merge pull request #1138 from Matchpoint-AI/fix/1109-dead-code-queue
+
+**Source:** project-beta-api@832f4f74
+
 ## [v0.7.283] - 2025-12-28
 
 ### Changes
