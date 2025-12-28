@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.310] - 2025-12-28
+
+### Changes
+- Merge pull request #1182 from Matchpoint-AI/refactor/1140-instagram-integration
+
+**Source:** project-beta-api@c65d6cfc
+
 ## [v0.7.309] - 2025-12-28
 
 ### Changes
