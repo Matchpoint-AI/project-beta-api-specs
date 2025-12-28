@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.301"
+    "version": "0.7.302"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1281,7 +1281,7 @@
           "campaigns"
         ],
         "summary": "Get Campaign Statistics",
-        "description": "Get campaign statistics.\n\nReturns detailed statistics for a specific campaign including engagement metrics,\nplatform breakdown, content performance, and campaign progress.",
+        "description": "Get campaign statistics.\n\nReturns detailed statistics for a specific campaign including engagement metrics,\nplatform breakdown, content performance, content status breakdown, and campaign progress.",
         "operationId": "get_campaign_statistics_api_v2_campaigns__campaign_id__statistics_get",
         "parameters": [
           {
@@ -6520,6 +6520,26 @@
           "postsRemaining": {
             "type": "integer",
             "title": "Posts Remaining",
+            "default": 0
+          },
+          "approvedCount": {
+            "type": "integer",
+            "title": "Approved Content Count",
+            "default": 0
+          },
+          "pendingReviewCount": {
+            "type": "integer",
+            "title": "Pending Review Content Count",
+            "default": 0
+          },
+          "generatingCount": {
+            "type": "integer",
+            "title": "Generating Content Count",
+            "default": 0
+          },
+          "exportedCount": {
+            "type": "integer",
+            "title": "Exported Content Count",
             "default": 0
           },
           "lastUpdated": {

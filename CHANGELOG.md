@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.302] - 2025-12-28
+
+### Changes
+- Merge pull request #1178 from Matchpoint-AI/fix/1173-campaign-stats-fields
+
+**Source:** project-beta-api@f3792373
+
 ## [v0.7.301] - 2025-12-28
 
 ### Changes
