@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.280] - 2025-12-28
+
+### Changes
+- fix: rename execution_id to job_id in workflow args (#1133)
+
+**Source:** project-beta-api@3d9f0342
+
 ## [v0.7.279] - 2025-12-27
 
 ### Changes
