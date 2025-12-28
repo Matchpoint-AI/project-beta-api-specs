@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.304"
+    "version": "0.7.305"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1853,6 +1853,148 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/diversity/metrics": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Diversity Metrics",
+        "description": "Get diversity metrics for a campaign's generated content.\n\nCalculates diversity scores across multiple dimensions:\n- Scene type distribution (human, product, ingredient)\n- Subtype variety within scene types\n- Shot diversity (angles, backdrops, lens, lighting)\n\nAlso validates content against the campaign's scene mix policy.\n\nReturns:\n    DiversityMetricsResponse with overall score, breakdowns, and recommendations",
+        "operationId": "get_diversity_metrics_api_v2_campaigns__campaign_id__diversity_metrics_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          },
+          {
+            "name": "threshold",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "description": "Minimum diversity threshold (0-1)",
+              "default": 0.7,
+              "title": "Threshold"
+            },
+            "description": "Minimum diversity threshold (0-1)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Diversity metrics returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiversityMetricsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/diversity/validations": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Validate Content Diversity",
+        "description": "Validate content diversity against policy and calculate scores.\n\nUse this endpoint to validate content diversity before generation\nor to analyze a specific set of content items.\n\nArgs:\n    campaign_id: Campaign ID\n    content_items: List of content items to analyze\n    threshold: Minimum diversity threshold\n\nReturns:\n    DiversityMetricsResponse with validation results and recommendations",
+        "operationId": "validate_content_diversity_api_v2_campaigns__campaign_id__diversity_validations_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          },
+          {
+            "name": "threshold",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "description": "Minimum diversity threshold (0-1)",
+              "default": 0.7,
+              "title": "Threshold"
+            },
+            "description": "Minimum diversity threshold (0-1)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContentItemForScoring"
+                },
+                "description": "Content items to validate",
+                "title": "Content Items"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diversity validation completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiversityMetricsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid content data"
+          },
+          "404": {
+            "description": "Campaign not found"
           },
           "422": {
             "description": "Validation Error",
@@ -8028,6 +8170,101 @@
         "title": "ContentImageUploadRequest",
         "description": "Schema for uploading/associating an existing image with content."
       },
+      "ContentItemForScoring": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Content item ID"
+          },
+          "sceneType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenetype",
+            "description": "Scene type (human, product, ingredient)"
+          },
+          "sceneSubtype": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenesubtype",
+            "description": "Scene subtype (solo, group, hero, macro, etc.)"
+          },
+          "shotAngle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shotangle",
+            "description": "Shot angle (wide, medium, close, top-down)"
+          },
+          "backdrop": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Backdrop",
+            "description": "Backdrop type (studio, in-home, outdoor, retail)"
+          },
+          "lens": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lens",
+            "description": "Lens type (35mm, 50mm, 85mm, macro)"
+          },
+          "lighting": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lighting",
+            "description": "Lighting style (natural, studio, dramatic, soft)"
+          },
+          "diversityTags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Diversitytags",
+            "description": "Additional diversity tags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "ContentItemForScoring",
+        "description": "Content item structure for diversity scoring.\n\nThis represents the minimal fields needed from content items\nto calculate diversity scores."
+      },
       "ContentPromptResponse": {
         "properties": {
           "contentId": {
@@ -8796,6 +9033,118 @@
         ],
         "title": "DayContent",
         "description": "Schema for daily content."
+      },
+      "DiversityMetricsResponse": {
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "diversityScore": {
+            "$ref": "#/components/schemas/DiversityScore",
+            "description": "Overall diversity score and breakdown"
+          },
+          "shotDiversity": {
+            "$ref": "#/components/schemas/ShotDiversityMetrics",
+            "description": "Detailed shot diversity metrics"
+          },
+          "sceneMixValidation": {
+            "$ref": "#/components/schemas/SceneMixValidationResult",
+            "description": "Scene mix validation results"
+          },
+          "recommendations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Recommendations",
+            "description": "Recommendations for improving diversity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId",
+          "diversityScore",
+          "shotDiversity",
+          "sceneMixValidation"
+        ],
+        "title": "DiversityMetricsResponse",
+        "description": "Full diversity metrics response for API endpoint."
+      },
+      "DiversityScore": {
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "overallScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Overallscore",
+            "description": "Overall diversity score (0-1)",
+            "default": 0.0
+          },
+          "sceneTypeScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Scenetypescore",
+            "description": "Scene type distribution score (0-1)",
+            "default": 0.0
+          },
+          "subtypeVarietyScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Subtypevarietyscore",
+            "description": "Subtype variety score (0-1)",
+            "default": 0.0
+          },
+          "shotDiversityScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Shotdiversityscore",
+            "description": "Shot diversity score (0-1)",
+            "default": 0.0
+          },
+          "meetsThreshold": {
+            "type": "boolean",
+            "title": "Meetsthreshold",
+            "description": "Whether score meets configured threshold",
+            "default": true
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold",
+            "description": "Configured diversity threshold",
+            "default": 0.7
+          },
+          "contentCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Contentcount",
+            "description": "Number of content items analyzed",
+            "default": 0
+          },
+          "calculatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Calculatedat",
+            "description": "When the score was calculated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId"
+        ],
+        "title": "DiversityScore",
+        "description": "Complete diversity score for a content set."
       },
       "EmailVerificationRequest": {
         "properties": {
@@ -9633,6 +9982,62 @@
         ],
         "title": "PlanListResponse",
         "description": "Schema for listing all plans."
+      },
+      "PolicyViolation": {
+        "properties": {
+          "violationType": {
+            "type": "string",
+            "enum": [
+              "scene_type_under",
+              "scene_type_over",
+              "subtype_missing",
+              "shot_diversity_low",
+              "diversity_threshold"
+            ],
+            "title": "Violationtype",
+            "description": "Type of violation"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "warning",
+              "error"
+            ],
+            "title": "Severity",
+            "description": "Severity level",
+            "default": "warning"
+          },
+          "field": {
+            "type": "string",
+            "title": "Field",
+            "description": "Field or dimension that violated policy"
+          },
+          "expected": {
+            "type": "string",
+            "title": "Expected",
+            "description": "Expected value or range"
+          },
+          "actual": {
+            "type": "string",
+            "title": "Actual",
+            "description": "Actual value found"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable violation message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "violationType",
+          "field",
+          "expected",
+          "actual",
+          "message"
+        ],
+        "title": "PolicyViolation",
+        "description": "Details of a policy violation."
       },
       "PostContent": {
         "properties": {
@@ -10620,6 +11025,57 @@
         "title": "SceneMixPolicyResponse",
         "description": "Schema for scene mix policy response."
       },
+      "SceneMixValidationResult": {
+        "properties": {
+          "isValid": {
+            "type": "boolean",
+            "title": "Isvalid",
+            "description": "Whether content passes all validation checks",
+            "default": true
+          },
+          "sceneTypeDistribution": {
+            "items": {
+              "$ref": "#/components/schemas/SceneTypeDistribution"
+            },
+            "type": "array",
+            "title": "Scenetypedistribution",
+            "description": "Distribution by scene type"
+          },
+          "subtypeMetrics": {
+            "items": {
+              "$ref": "#/components/schemas/SubtypeVarietyMetrics"
+            },
+            "type": "array",
+            "title": "Subtypemetrics",
+            "description": "Variety metrics per scene type"
+          },
+          "violations": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyViolation"
+            },
+            "type": "array",
+            "title": "Violations",
+            "description": "List of policy violations"
+          },
+          "warningCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Warningcount",
+            "description": "Number of warnings",
+            "default": 0
+          },
+          "errorCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Errorcount",
+            "description": "Number of errors",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "SceneMixValidationResult",
+        "description": "Result of scene mix validation against policy."
+      },
       "ScenePolicy": {
         "properties": {
           "sceneType": {
@@ -10658,6 +11114,141 @@
         ],
         "title": "ScenePolicy",
         "description": "Schema for individual scene policy configuration."
+      },
+      "SceneTypeDistribution": {
+        "properties": {
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype",
+            "description": "Scene type (human, product, ingredient)"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Count",
+            "description": "Number of items with this scene type",
+            "default": 0
+          },
+          "percentage": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Percentage",
+            "description": "Percentage of total content",
+            "default": 0.0
+          },
+          "targetPercentage": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Targetpercentage",
+            "description": "Target percentage from policy"
+          },
+          "variance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variance",
+            "description": "Variance from target (positive = over, negative = under)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sceneType"
+        ],
+        "title": "SceneTypeDistribution",
+        "description": "Distribution of scene types in content."
+      },
+      "ShotDiversityMetrics": {
+        "properties": {
+          "angleDistribution": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Angledistribution",
+            "description": "Distribution of shot angles (wide, medium, close, top-down)"
+          },
+          "angleVarietyScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Anglevarietyscore",
+            "description": "Variety score for angles (0-1)",
+            "default": 0.0
+          },
+          "backdropDistribution": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Backdropdistribution",
+            "description": "Distribution of backdrops (studio, in-home, outdoor, retail)"
+          },
+          "backdropVarietyScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Backdropvarietyscore",
+            "description": "Variety score for backdrops (0-1)",
+            "default": 0.0
+          },
+          "lensDistribution": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Lensdistribution",
+            "description": "Distribution of lens types (35mm, 50mm, 85mm, macro)"
+          },
+          "lensVarietyScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Lensvarietyscore",
+            "description": "Variety score for lens types (0-1)",
+            "default": 0.0
+          },
+          "lightingDistribution": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Lightingdistribution",
+            "description": "Distribution of lighting styles (natural, studio, dramatic, soft)"
+          },
+          "lightingVarietyScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Lightingvarietyscore",
+            "description": "Variety score for lighting (0-1)",
+            "default": 0.0
+          },
+          "overallShotDiversity": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Overallshotdiversity",
+            "description": "Combined shot diversity score (0-1)",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "title": "ShotDiversityMetrics",
+        "description": "Metrics for shot diversity across content."
       },
       "SignupCreate": {
         "properties": {
@@ -10736,6 +11327,44 @@
         ],
         "title": "SignupResponse",
         "description": "Schema for signup responses.\n\nReturned after successful signup creation."
+      },
+      "SubtypeVarietyMetrics": {
+        "properties": {
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype",
+            "description": "Parent scene type"
+          },
+          "subtypes": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Subtypes",
+            "description": "Count per subtype"
+          },
+          "uniqueSubtypes": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Uniquesubtypes",
+            "description": "Number of unique subtypes used",
+            "default": 0
+          },
+          "varietyScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Varietyscore",
+            "description": "Subtype variety score (0-1)",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "sceneType"
+        ],
+        "title": "SubtypeVarietyMetrics",
+        "description": "Metrics for subtype variety within scene types."
       },
       "ThreadMessageCreate": {
         "properties": {

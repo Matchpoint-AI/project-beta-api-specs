@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.305] - 2025-12-28
+
+### Changes
+- Merge pull request #1165 from Matchpoint-AI/feat/1152-diversity-scoring
+
+**Source:** project-beta-api@a2e63212
+
 ## [v0.7.304] - 2025-12-28
 
 ### Changes
