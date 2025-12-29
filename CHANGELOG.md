@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.335] - 2025-12-29
+
+### Changes
+- fix: Support multiple posts per day with postNumber parameter (#1224)
+
+**Source:** project-beta-api@19e1d672
+
 ## [v0.7.334] - 2025-12-29
 
 ### Changes
