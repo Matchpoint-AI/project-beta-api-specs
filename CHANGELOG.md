@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.323] - 2025-12-29
+
+### Changes
+- Merge pull request #1204 from Matchpoint-AI/fix/267-knowledge-extraction
+
+**Source:** project-beta-api@498998a7
+
 ## [v0.7.322] - 2025-12-29
 
 ### Changes
