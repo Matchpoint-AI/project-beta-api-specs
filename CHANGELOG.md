@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.322] - 2025-12-29
+
+### Changes
+- Merge pull request #1206 from Matchpoint-AI/fix/268-campaign-validation
+
+**Source:** project-beta-api@edea3070
+
 ## [v0.7.321] - 2025-12-29
 
 ### Changes
