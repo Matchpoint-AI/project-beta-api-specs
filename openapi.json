@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.341"
+    "version": "0.7.342"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1370,6 +1370,54 @@
           },
           "404": {
             "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/workflow/status": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Campaign Workflow Status",
+        "description": "Get workflow status for a campaign's content generation.\n\nReturns the current status of the campaign's content generation workflow.\nUsed by the frontend to poll for progress during content generation.\n\nIssue #1227: Missing workflow-status endpoint for campaigns.\n\nThe workflow status includes:\n- status: pending, running, completed, or failed\n- progress: completion percentage (0-100)\n- message: human-readable progress message (e.g., \"Generating post 10 of 21\")\n- current_step: the currently executing workflow step\n\nArgs:\n    campaign_id: The campaign ID\n    campaign_service: Service for campaign CRUD operations\n    workflow_service: Service for workflow status retrieval\n    content_repository: Repository for content data (to get post counts)\n\nReturns:\n    WorkflowStatusResponse with status, progress, and message\n\nRaises:\n    HTTPException: 404 if campaign not found or no workflow started",
+        "operationId": "get_campaign_workflow_status_api_v2_campaigns__campaign_id__workflow_status_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workflow status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found or no workflow started"
           },
           "422": {
             "description": "Validation Error",
@@ -12983,6 +13031,59 @@
         ],
         "title": "WorkflowResponse",
         "description": "Response from workflow operations with detailed progress tracking."
+      },
+      "WorkflowStatusResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Workflow Status",
+            "description": "Current workflow status: pending, running, completed, or failed"
+          },
+          "progress": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progress Percentage",
+            "description": "Workflow completion percentage (0-100)",
+            "default": 0
+          },
+          "message": {
+            "type": "string",
+            "title": "Status Message",
+            "description": "Human-readable status message (e.g., 'Generating post 10 of 21')",
+            "default": ""
+          },
+          "currentStep": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Step",
+            "description": "Name of the currently executing workflow step"
+          },
+          "workflowId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workflow ID",
+            "description": "GCP Workflow execution ID for tracking"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "WorkflowStatusResponse",
+        "description": "Schema for workflow status response.\n\nProvides a simplified view of workflow execution status for polling.\nUsed by the frontend to monitor content generation progress.\n\nIssue #1227: Missing workflow-status endpoint for campaigns"
       },
       "WorkflowStep": {
         "properties": {
