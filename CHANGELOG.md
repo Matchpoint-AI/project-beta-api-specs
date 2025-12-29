@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.316] - 2025-12-29
+
+### Changes
+- Merge pull request #1196 from Matchpoint-AI/fix/content-generation-persistence
+
+**Source:** project-beta-api@bc2b5e7b
+
 ## [v0.7.315] - 2025-12-28
 
 ### Changes
