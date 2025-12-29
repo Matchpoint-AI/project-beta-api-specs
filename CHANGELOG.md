@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.343] - 2025-12-29
+
+### Changes
+- fix: add fallback for API_BASE_URL env var reading (Issue #1236) (#1241)
+
+**Source:** project-beta-api@794b6ebf
+
 ## [v0.7.342] - 2025-12-29
 
 ### Changes
