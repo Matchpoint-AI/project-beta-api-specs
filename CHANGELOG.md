@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.326] - 2025-12-29
+
+### Changes
+- Merge pull request #1213 from Matchpoint-AI/fix/1212-campaign-brand-context
+
+**Source:** project-beta-api@7909bab5
+
 ## [v0.7.325] - 2025-12-29
 
 ### Changes
