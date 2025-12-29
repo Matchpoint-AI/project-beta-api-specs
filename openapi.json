@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.317"
+    "version": "0.7.318"
   },
   "paths": {
     "/api/v2/brands": {
@@ -6328,26 +6328,32 @@
           "audienceGender": {
             "anyOf": [
               {
-                "type": "string"
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "title": "Audience Gender",
-            "description": "Target audience gender (e.g., 'female', 'male', 'diverse')"
+            "description": "Target audience gender list (e.g., ['female'], ['male', 'female'], ['diverse'])"
           },
           "audienceAgeRange": {
             "anyOf": [
               {
-                "type": "string"
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "title": "Audience Age Range",
-            "description": "Target audience age range (e.g., '18-24', '25-34', '35-44')"
+            "description": "Target audience age ranges (e.g., ['18-24'], ['25-34', '35-44'])"
           }
         },
         "type": "object",
@@ -6625,26 +6631,32 @@
           "audienceGender": {
             "anyOf": [
               {
-                "type": "string"
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "title": "Audience Gender",
-            "description": "Target audience gender (e.g., 'female', 'male', 'diverse')"
+            "description": "Target audience gender list (e.g., ['female'], ['male', 'female'], ['diverse'])"
           },
           "audienceAgeRange": {
             "anyOf": [
               {
-                "type": "string"
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "title": "Audience Age Range",
-            "description": "Target audience age range (e.g., '18-24', '25-34', '35-44')"
+            "description": "Target audience age ranges (e.g., ['18-24'], ['25-34', '35-44'])"
           },
           "id": {
             "type": "integer",
@@ -7161,26 +7173,32 @@
           "audienceGender": {
             "anyOf": [
               {
-                "type": "string"
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "title": "Audience Gender",
-            "description": "Target audience gender (e.g., 'female', 'male', 'diverse')"
+            "description": "Target audience gender list (e.g., ['female'], ['male', 'female'], ['diverse'])"
           },
           "audienceAgeRange": {
             "anyOf": [
               {
-                "type": "string"
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "title": "Audience Age Range",
-            "description": "Target audience age range (e.g., '18-24', '25-34', '35-44')"
+            "description": "Target audience age ranges (e.g., ['18-24'], ['25-34', '35-44'])"
           },
           "workflowId": {
             "anyOf": [
