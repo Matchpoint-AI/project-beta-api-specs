@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.331] - 2025-12-29
+
+### Changes
+- fix: add GCP Workflows default() and map.get() to expression evaluator (#1219)
+
+**Source:** project-beta-api@2bec7f8e
+
 ## [v0.7.330] - 2025-12-29
 
 ### Changes
