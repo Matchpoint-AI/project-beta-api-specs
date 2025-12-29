@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.339] - 2025-12-29
+
+### Changes
+- Merge pull request #1229 from Matchpoint-AI/fix/1101-consolidate-auth-refresh
+
+**Source:** project-beta-api@f0595020
+
 ## [v0.7.338] - 2025-12-29
 
 ### Changes

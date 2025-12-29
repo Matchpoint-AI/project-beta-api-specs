@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.338"
+    "version": "0.7.339"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4956,13 +4956,13 @@
           "users"
         ],
         "summary": "Create Session",
-        "description": "Create new authentication session (login).\n\nAuthenticates user with email and password, returns JWT access token if successful.\nUser must have verified their email before logging in.\n\nRMM Level 2 Compliance:\n- POST to /sessions creates new session resource\n- HTTP verb (POST) indicates create action\n- No verbs in URL path (not /login, but /sessions)\n\nArgs:\n    request: Login request with email and password\n\nReturns:\n    LoginResponse with user profile and JWT access token\n\nRaises:\n    HTTPException 400: If email or password is invalid\n    HTTPException 401: If email is not verified\n    HTTPException 500: If login fails due to server error",
+        "description": "Create or refresh an authentication session (RMM L2 compliant).\n\nThis unified endpoint handles both login and token refresh operations\nbased on the grant_type parameter in the request body.\n\nSupported grant types:\n- \"password\": Login with email and password\n- \"refresh_token\": Refresh an existing session using refresh token\n\nRMM Level 2 Compliance:\n- POST to /sessions creates/refreshes session resource\n- HTTP verb (POST) indicates create action\n- No verbs in URL path\n- Grant type differentiates operation (OAuth2 pattern)\n\nArgs:\n    request: Session request with grant_type and appropriate fields\n\nReturns:\n    SessionResponse with tokens and optionally user profile\n\nRaises:\n    HTTPException 400: If required fields are missing or invalid\n    HTTPException 401: If authentication/refresh fails\n    HTTPException 500: If server error occurs",
         "operationId": "create_session_api_v2_sessions_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
+                "$ref": "#/components/schemas/SessionRequest"
               }
             }
           },
@@ -4970,23 +4970,23 @@
         },
         "responses": {
           "200": {
-            "description": "Login successful, JWT token returned",
+            "description": "Session created/refreshed successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/SessionResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid email or password"
+            "description": "Invalid request (missing fields or invalid grant_type)"
           },
           "401": {
-            "description": "Email not verified"
+            "description": "Authentication failed or token invalid"
           },
           "500": {
-            "description": "Internal server error during login"
+            "description": "Internal server error"
           },
           "422": {
             "description": "Validation Error",
@@ -4998,7 +4998,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -5240,7 +5245,7 @@
           "users"
         ],
         "summary": "Refresh Token",
-        "description": "Refresh an expiring or expired JWT token.\n\nThis endpoint allows native auth users to refresh their JWT tokens\nwithout requiring re-authentication. The endpoint accepts expired tokens\n(within a reasonable grace period) and issues a new token with fresh\nexpiration.\n\nSecurity considerations:\n- Validates token signature and structure\n- Checks if token is blacklisted (logged out)\n- Preserves original token claims in new token\n- Does not extend refresh capability indefinitely\n\nRMM Level 2 Compliance:\n- POST to /auth/refresh refreshes authentication token\n- HTTP verb (POST) indicates action\n- Returns new token with fresh expiration\n\nArgs:\n    credentials: HTTP Bearer token credentials from request header\n    auth_service: Injected authentication service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    TokenRefreshResponse with new access token and expiration time\n\nRaises:\n    HTTPException 401: If token is invalid, malformed, or blacklisted\n    HTTPException 500: If token refresh fails due to server error",
+        "description": "Refresh an expiring or expired JWT token.\n\nDEPRECATED: This endpoint uses a verb in the path which violates RMM Level 2.\nUse POST /sessions with grant_type=refresh_token instead.\nThis endpoint will be removed in 6 months.\n\nDeprecation date: 2025-12-29\nRemoval date: 2026-06-29\nReplacement: POST /api/v2/sessions with body {\"grant_type\": \"refresh_token\", \"refresh_token\": \"...\"}\n\nThis endpoint allows native auth users to refresh their JWT tokens\nwithout requiring re-authentication. The endpoint accepts expired tokens\n(within a reasonable grace period) and issues a new token with fresh\nexpiration.\n\nSecurity considerations:\n- Validates token signature and structure\n- Checks if token is blacklisted (logged out)\n- Preserves original token claims in new token\n- Does not extend refresh capability indefinitely\n\nArgs:\n    response: FastAPI Response object for adding headers\n    credentials: HTTP Bearer token credentials from request header\n    auth_service: Injected authentication service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    TokenRefreshResponse with new access token and expiration time\n\nRaises:\n    HTTPException 401: If token is invalid, malformed, or blacklisted\n    HTTPException 500: If token refresh fails due to server error",
         "operationId": "refresh_token_api_v2_auth_refresh_post",
         "responses": {
           "200": {
@@ -5260,6 +5265,7 @@
             "description": "Internal server error"
           }
         },
+        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
@@ -10400,55 +10406,6 @@
         "title": "LocationExtractionResponse",
         "description": "Response containing extracted physical locations.\n\nReturns a list of structured location objects extracted from the provided\ntext or brand knowledge. Empty list if no locations found."
       },
-      "LoginRequest": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email",
-            "description": "User email address"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 1,
-            "title": "Password",
-            "description": "User password"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email",
-          "password"
-        ],
-        "title": "LoginRequest",
-        "description": "Schema for user login request.\n\nFor POST /api/v2/sessions endpoint.\nCreates a new user session with email and password."
-      },
-      "LoginResponse": {
-        "properties": {
-          "user": {
-            "$ref": "#/components/schemas/UserResponse",
-            "description": "User profile"
-          },
-          "accessToken": {
-            "type": "string",
-            "title": "Accesstoken",
-            "description": "JWT access token"
-          },
-          "tokenType": {
-            "type": "string",
-            "title": "Tokentype",
-            "description": "Token type (always 'bearer')",
-            "default": "bearer"
-          }
-        },
-        "type": "object",
-        "required": [
-          "user",
-          "accessToken"
-        ],
-        "title": "LoginResponse",
-        "description": "Schema for login response.\n\nReturns user profile and access token after successful login."
-      },
       "LogoutResponse": {
         "properties": {
           "message": {
@@ -12163,6 +12120,102 @@
         ],
         "title": "SceneTypeDistribution",
         "description": "Distribution of scene types in content."
+      },
+      "SessionRequest": {
+        "properties": {
+          "grantType": {
+            "type": "string",
+            "pattern": "^(password|refresh_token)$",
+            "title": "Granttype",
+            "description": "Grant type: 'password' for login, 'refresh_token' for token refresh",
+            "default": "password"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "User email address (required for password grant)"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Password",
+            "description": "User password (required for password grant)"
+          },
+          "refreshToken": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Refreshtoken",
+            "description": "Refresh token from previous session (required for refresh_token grant)"
+          }
+        },
+        "type": "object",
+        "title": "SessionRequest",
+        "description": "Schema for unified session management (RMM L2 compliant).\n\nFor POST /api/v2/sessions endpoint.\nSupports multiple grant types following OAuth2 patterns:\n- grant_type: \"password\" - Login with email/password (default)\n- grant_type: \"refresh_token\" - Refresh an existing session\n\nRMM Level 2 Compliance:\n- Single resource-based URL: /sessions\n- HTTP method (POST) indicates create/update action\n- Grant type in body differentiates login vs refresh\n- No verbs in URL path\n\nExamples:\n    Login: {\"grant_type\": \"password\", \"email\": \"user@example.com\", \"password\": \"secret\"}\n    Refresh: {\"grant_type\": \"refresh_token\", \"refresh_token\": \"eyJ...\"}"
+      },
+      "SessionResponse": {
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "title": "Accesstoken",
+            "description": "JWT access token"
+          },
+          "refreshToken": {
+            "type": "string",
+            "title": "Refreshtoken",
+            "description": "Refresh token for next refresh"
+          },
+          "tokenType": {
+            "type": "string",
+            "title": "Tokentype",
+            "description": "Token type (always 'bearer')",
+            "default": "bearer"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "title": "Expiresin",
+            "description": "Token expiration time in seconds from now"
+          },
+          "user": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "User profile (included for password grant, optional for refresh)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "accessToken",
+          "refreshToken",
+          "expiresIn"
+        ],
+        "title": "SessionResponse",
+        "description": "Unified session response for RMM L2 compliant sessions endpoint.\n\nUsed by POST /api/v2/sessions for both login and token refresh.\nContains all fields needed for both use cases.\n\nFor password grant (login):\n- user: User profile data\n- access_token: JWT access token\n- refresh_token: Token for refreshing session\n- token_type: Always \"bearer\"\n- expires_in: Token expiration in seconds\n\nFor refresh_token grant:\n- access_token: New JWT access token\n- refresh_token: New refresh token\n- token_type: Always \"bearer\"\n- expires_in: Token expiration in seconds\n- user: Optional (may be omitted for refresh)"
       },
       "ShotDiversityMetrics": {
         "properties": {
