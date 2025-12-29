@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.324] - 2025-12-29
+
+### Changes
+- Merge pull request #1207 from Matchpoint-AI/fix/1205-json-serialization
+
+**Source:** project-beta-api@9ff9fddd
+
 ## [v0.7.323] - 2025-12-29
 
 ### Changes
