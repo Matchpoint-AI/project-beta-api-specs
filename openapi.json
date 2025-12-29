@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.335"
+    "version": "0.7.336"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1098,7 +1098,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -1613,14 +1612,78 @@
         }
       }
     },
+    "/api/v2/campaigns/{campaign_id}/export": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Campaign Export Data",
+        "description": "Get campaign export data with content negotiation (RMM L2 compliant).\n\nUses the Accept header for format selection instead of path-based format.\nCurrently supports: application/pdf\n\nRMM L2 Rationale:\n- Export data is a computed sub-resource of campaign\n- Format is requested via Accept header (content negotiation)\n- Follows HTTP specification for representation selection\n\nThis endpoint:\n- Returns all data needed for export generation\n- Includes campaign, brand, and content information\n- Supports content negotiation via Accept header\n- Performance target: <2s response time\n\nArgs:\n    response: FastAPI response object for setting headers\n    campaign_id: The campaign ID\n    accept: Accept header specifying desired format (default: application/pdf)\n    campaign_export_repo: Repository for export data\n\nReturns:\n    CampaignExportData with campaign, brand, and content information\n\nRaises:\n    404: Campaign not found\n    406: Requested format not acceptable",
+        "operationId": "get_campaign_export_data_api_v2_campaigns__campaign_id__export_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          },
+          {
+            "name": "accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Content type for export format (e.g., application/pdf)",
+              "default": "application/pdf",
+              "title": "Accept"
+            },
+            "description": "Content type for export format (e.g., application/pdf)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Export data returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignExportData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "406": {
+            "description": "Requested format not supported"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/campaigns/{campaign_id}/export/pdf": {
       "get": {
         "tags": [
           "campaigns"
         ],
         "summary": "Get Campaign Pdf Export Data",
-        "description": "Get campaign PDF export data (RMM L2: export is a sub-resource).\n\nDirect port from V1 GET /api/v1/getPdfData?campaign_id={id} endpoint.\nUsed by frontend src/shared/utils/exportUtils.ts:51 for PDF generation.\n\nRMM L2 Rationale:\n- Export data is a computed sub-resource of campaign\n- GET returns pre-formatted data for PDF generation\n- Includes campaign metadata, brand profile, and content\n\nThis endpoint:\n- Returns all data needed for PDF generation\n- Includes campaign, brand, and content information\n- Optimized for frontend PDF rendering\n- Performance target: <2s response time\n\nFrontend usage: fetchAndCreatePDF() calls this to get:\n- client_request (campaign variables and metadata)\n- brand_profile (brand identity and styling)\n- campaign_brief (campaign details and content)",
+        "description": "Get campaign PDF export data.\n\nDEPRECATED: Use GET /campaigns/{campaign_id}/export with Accept header.\n\nThis endpoint is deprecated and will be removed on 2026-06-28.\nPlease migrate to the new content-negotiation endpoint:\n- New endpoint: GET /api/v2/campaigns/{campaign_id}/export\n- Use Accept header: Accept: application/pdf\n\nDirect port from V1 GET /api/v1/getPdfData?campaign_id={id} endpoint.\nUsed by frontend src/shared/utils/exportUtils.ts:51 for PDF generation.\n\nRMM L2 Note:\n- This endpoint violates RMM L2 by specifying format in the URL path\n- Format should be requested using the Accept HTTP header\n- See Issue #1097 for migration details",
         "operationId": "get_campaign_pdf_export_data_api_v2_campaigns__campaign_id__export_pdf_get",
+        "deprecated": true,
         "parameters": [
           {
             "name": "campaign_id",
@@ -2764,7 +2827,6 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": true,
                 "description": "Content creation data",
                 "title": "Request"
               }
@@ -2778,7 +2840,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Create Campaign Content Api V2 Campaigns  Campaign Id  Content Post"
                 }
               }
@@ -3632,7 +3693,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Create Campaign Post Api V2 Campaigns  Campaign Id  Posts Post"
                 }
               }
@@ -5632,7 +5692,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5721,7 +5780,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5762,7 +5820,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5917,7 +5974,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5984,7 +6040,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6503,7 +6558,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6618,7 +6672,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -6806,7 +6859,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7127,7 +7179,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7157,7 +7208,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7348,7 +7398,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7464,7 +7513,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7626,7 +7674,6 @@
           "adjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7746,7 +7793,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -7850,7 +7896,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7889,7 +7934,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -7933,7 +7977,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8013,7 +8056,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8085,7 +8127,6 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -8838,7 +8879,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9097,7 +9137,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9627,7 +9666,6 @@
           },
           "crawledPages": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -10002,7 +10040,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10162,7 +10199,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11409,7 +11445,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11657,13 +11692,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -11739,7 +11772,6 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -11747,7 +11779,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12751,7 +12782,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {

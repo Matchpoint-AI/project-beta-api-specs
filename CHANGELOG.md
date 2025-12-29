@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.336] - 2025-12-29
+
+### Changes
+- Merge pull request #1230 from Matchpoint-AI/fix/1097-export-content-negotiation
+
+**Source:** project-beta-api@1c65a2cb
+
 ## [v0.7.335] - 2025-12-29
 
 ### Changes
