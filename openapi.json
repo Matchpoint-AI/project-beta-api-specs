@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.318"
+    "version": "0.7.319"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4933,48 +4933,6 @@
         ]
       }
     },
-    "/api/v2/utilities/colors": {
-      "post": {
-        "tags": [
-          "utilities"
-        ],
-        "summary": "Convert hex codes to color names",
-        "description": "Convert a list of hex color codes to human-readable, creative color names using LLM",
-        "operationId": "convert_hex_to_color_names_v2_api_v2_utilities_colors_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ColorNameRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ColorNameResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/utilities/fetch-url-content": {
       "post": {
         "tags": [
@@ -7599,70 +7557,6 @@
         "type": "object",
         "title": "CategoryBreakdown",
         "description": "Category breakdown for brand knowledge."
-      },
-      "ColorMapping": {
-        "properties": {
-          "hex": {
-            "type": "string",
-            "title": "Hex",
-            "description": "Hex color code (e.g., #FF5733)"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Human-readable color name (e.g., Sunset Orange)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "hex",
-          "name"
-        ],
-        "title": "ColorMapping",
-        "description": "Single color hex to name mapping."
-      },
-      "ColorNameRequest": {
-        "properties": {
-          "hex_codes": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "maxItems": 20,
-            "minItems": 1,
-            "title": "Hex Codes",
-            "description": "List of hex color codes to convert",
-            "example": [
-              "#FF5733",
-              "#C70039",
-              "#900C3F"
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "hex_codes"
-        ],
-        "title": "ColorNameRequest",
-        "description": "Request schema for color name conversion."
-      },
-      "ColorNameResponse": {
-        "properties": {
-          "colors": {
-            "items": {
-              "$ref": "#/components/schemas/ColorMapping"
-            },
-            "type": "array",
-            "title": "Colors",
-            "description": "List of color mappings with hex codes and names"
-          }
-        },
-        "type": "object",
-        "required": [
-          "colors"
-        ],
-        "title": "ColorNameResponse",
-        "description": "Response schema for color name conversion."
       },
       "ContentApprovalRequest": {
         "properties": {

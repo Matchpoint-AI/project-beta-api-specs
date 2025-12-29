@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.319] - 2025-12-29
+
+### Changes
+- Merge pull request #1202 from Matchpoint-AI/fix/rmm-l2-dead-code
+
+**Source:** project-beta-api@345f3576
+
 ## [v0.7.318] - 2025-12-29
 
 ### Changes
