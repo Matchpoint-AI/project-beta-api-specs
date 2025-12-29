@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.327] - 2025-12-29
+
+### Changes
+- Merge pull request #1214 from Matchpoint-AI/fix/1210-posts-per-day
+
+**Source:** project-beta-api@f906cd5a
+
 ## [v0.7.326] - 2025-12-29
 
 ### Changes
