@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.340"
+    "version": "0.7.341"
   },
   "paths": {
     "/api/v2/brands": {
@@ -6632,14 +6632,14 @@
             "maximum": 52.0,
             "minimum": 1.0,
             "title": "Duration Weeks",
-            "default": 1
+            "description": "Campaign duration in weeks. Required to calculate total content count."
           },
           "postsPerDay": {
             "type": "integer",
             "maximum": 10.0,
             "minimum": 1.0,
             "title": "Posts Per Day",
-            "default": 3
+            "description": "Number of posts per day. Required to calculate total content count."
           },
           "campaignType": {
             "$ref": "#/components/schemas/CampaignType",
@@ -6719,7 +6719,9 @@
         },
         "type": "object",
         "required": [
-          "name"
+          "name",
+          "durationWeeks",
+          "postsPerDay"
         ],
         "title": "CampaignCreateRequest",
         "description": "Schema for API request to create a new campaign.\n\nNote: user_id is extracted from JWT token, not from request body.\nThis prevents users from creating campaigns on behalf of others."
@@ -6933,14 +6935,14 @@
             "maximum": 52.0,
             "minimum": 1.0,
             "title": "Duration Weeks",
-            "default": 1
+            "description": "Campaign duration in weeks. Required to calculate total content count."
           },
           "postsPerDay": {
             "type": "integer",
             "maximum": 10.0,
             "minimum": 1.0,
             "title": "Posts Per Day",
-            "default": 3
+            "description": "Number of posts per day. Required to calculate total content count."
           },
           "campaignType": {
             "$ref": "#/components/schemas/CampaignType",
@@ -7212,6 +7214,8 @@
         "type": "object",
         "required": [
           "name",
+          "durationWeeks",
+          "postsPerDay",
           "id",
           "userId",
           "status",

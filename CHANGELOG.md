@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.341] - 2025-12-29
+
+### Changes
+- fix: make duration_weeks and posts_per_day required in campaign schema (#1235)
+
+**Source:** project-beta-api@b661d155
+
 ## [v0.7.340] - 2025-12-29
 
 ### Changes
