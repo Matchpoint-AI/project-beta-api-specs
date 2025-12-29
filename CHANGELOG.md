@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.338] - 2025-12-29
+
+### Changes
+- Merge pull request #1228 from Matchpoint-AI/fix/1098-crawls-resource
+
+**Source:** project-beta-api@b0162309
+
 ## [v0.7.337] - 2025-12-29
 
 ### Changes

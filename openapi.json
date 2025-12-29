@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.337"
+    "version": "0.7.338"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3717,14 +3717,124 @@
         }
       }
     },
+    "/api/v2/crawls": {
+      "get": {
+        "tags": [
+          "crawl-analytics"
+        ],
+        "summary": "Get Crawl Stats",
+        "description": "Get crawl statistics with flexible query parameters.\n\nThis unified endpoint replaces the individual report-style endpoints\nfor RMM L2 compliance. Use the 'view' parameter to select the type\nof statistics to retrieve.\n\nArgs:\n    view: Type of statistics view (overview, trends, errors, brands)\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum results for errors (1-100) or brands (1-200)\n    interval: Aggregation interval for trends (\"day\" or \"hour\")\n    analytics_service: Injected analytics service\n\nReturns:\n    Statistics based on the selected view type",
+        "operationId": "get_crawl_stats_api_v2_crawls_get",
+        "parameters": [
+          {
+            "name": "view",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CrawlStatsView",
+              "description": "View type: overview, trends, errors, or brands"
+            },
+            "description": "View type: overview, trends, errors, or brands"
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 30,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 200,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Max results (errors/brands)",
+              "title": "Limit"
+            },
+            "description": "Max results (errors/brands)"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(day|hour)$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Interval for trends view",
+              "title": "Interval"
+            },
+            "description": "Interval for trends view"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/CrawlStatsOverview"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CrawlStatsTrends"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CrawlStatsErrors"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CrawlStatsBrands"
+                    }
+                  ],
+                  "title": "Response Get Crawl Stats Api V2 Crawls Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/crawls/overview": {
       "get": {
         "tags": [
           "crawl-analytics"
         ],
         "summary": "Get Crawl Overview",
-        "description": "Get overview statistics for crawl monitoring.\n\nProvides key metrics like total brands crawled, average success rate,\naverage crawl time, and total pages crawled in the specified period.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    analytics_service: Injected analytics service\n\nReturns:\n    Overview statistics for crawl operations",
+        "description": "Get overview statistics for crawl monitoring.\n\nDEPRECATED: Use GET /crawls?view=overview instead.\n\nProvides key metrics like total brands crawled, average success rate,\naverage crawl time, and total pages crawled in the specified period.\n\nArgs:\n    response: FastAPI response for adding deprecation headers\n    days: Number of days to analyze (1-365, default: 30)\n    analytics_service: Injected analytics service\n\nReturns:\n    Overview statistics for crawl operations",
         "operationId": "get_crawl_overview_api_v2_crawls_overview_get",
+        "deprecated": true,
         "parameters": [
           {
             "name": "days",
@@ -3769,8 +3879,9 @@
           "crawl-analytics"
         ],
         "summary": "Get Crawl Trends",
-        "description": "Get time series trends for crawl performance.\n\nProvides daily or hourly aggregated data showing completed vs failed\ncrawls over time with success rate calculations.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    interval: Aggregation interval - \"day\" or \"hour\" (default: \"day\")\n    analytics_service: Injected analytics service\n\nReturns:\n    Time series trends data",
+        "description": "Get time series trends for crawl performance.\n\nDEPRECATED: Use GET /crawls?view=trends instead.\n\nProvides daily or hourly aggregated data showing completed vs failed\ncrawls over time with success rate calculations.\n\nArgs:\n    response: FastAPI response for adding deprecation headers\n    days: Number of days to analyze (1-365, default: 30)\n    interval: Aggregation interval - \"day\" or \"hour\" (default: \"day\")\n    analytics_service: Injected analytics service\n\nReturns:\n    Time series trends data",
         "operationId": "get_crawl_trends_api_v2_crawls_trends_get",
+        "deprecated": true,
         "parameters": [
           {
             "name": "days",
@@ -3826,8 +3937,9 @@
           "crawl-analytics"
         ],
         "summary": "Get Crawl Errors",
-        "description": "Get error analysis for crawl failures.\n\nProvides breakdown of most common error types, counts, and last\noccurrences to help identify and fix crawl issues.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of error types to return (1-100, default: 10)\n    analytics_service: Injected analytics service\n\nReturns:\n    Error analysis with top error types",
+        "description": "Get error analysis for crawl failures.\n\nDEPRECATED: Use GET /crawls?view=errors instead.\n\nProvides breakdown of most common error types, counts, and last\noccurrences to help identify and fix crawl issues.\n\nArgs:\n    response: FastAPI response for adding deprecation headers\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of error types to return (1-100, default: 10)\n    analytics_service: Injected analytics service\n\nReturns:\n    Error analysis with top error types",
         "operationId": "get_crawl_errors_api_v2_crawls_errors_get",
+        "deprecated": true,
         "parameters": [
           {
             "name": "days",
@@ -3884,8 +3996,9 @@
           "crawl-analytics"
         ],
         "summary": "Get Brand Crawl Stats",
-        "description": "Get brand-level crawl performance statistics.\n\nProvides performance metrics for each brand including total pages,\nsuccess rates, and last crawl timestamps.\n\nArgs:\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of brands to return (1-200, default: 50)\n    analytics_service: Injected analytics service\n\nReturns:\n    Brand-level performance statistics",
+        "description": "Get brand-level crawl performance statistics.\n\nDEPRECATED: Use GET /crawls?view=brands instead.\n\nProvides performance metrics for each brand including total pages,\nsuccess rates, and last crawl timestamps.\n\nArgs:\n    response: FastAPI response for adding deprecation headers\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum number of brands to return (1-200, default: 50)\n    analytics_service: Injected analytics service\n\nReturns:\n    Brand-level performance statistics",
         "operationId": "get_brand_crawl_stats_api_v2_crawls_brands_get",
+        "deprecated": true,
         "parameters": [
           {
             "name": "days",
@@ -9423,6 +9536,17 @@
         ],
         "title": "CrawlStatsTrends",
         "description": "Time series trends for crawl performance."
+      },
+      "CrawlStatsView": {
+        "type": "string",
+        "enum": [
+          "overview",
+          "trends",
+          "errors",
+          "brands"
+        ],
+        "title": "CrawlStatsView",
+        "description": "View types for unified crawl stats endpoint."
       },
       "CrawlTrendDataPoint": {
         "properties": {
