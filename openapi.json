@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.328"
+    "version": "0.7.329"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1022,7 +1022,7 @@
           "campaigns"
         ],
         "summary": "Create Campaign",
-        "description": "Create a new campaign and auto-trigger content generation workflow.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.\nUser ID is extracted from the authenticated user's JWT token for security.\n\nAfter successful campaign creation, automatically triggers the content generation\nworkflow. If workflow fails to start, the campaign is still created successfully\nbut without an associated workflow_id. This allows users to retry content generation\nlater via the frontend.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Campaign creation request (user_id extracted from JWT, not body)\n    brand_repository: Repository for brand data access\n    campaign_service: Service for campaign CRUD operations\n    workflow_service: Service for triggering GCP Workflows\n    api_config: API configuration with base URL\n\nReturns:\n    CampaignResponse: The created campaign (workflow_id may be None if workflow\n                    failed to start)\n\nRaises:\n    HTTPException: 401 if authentication fails, 400 for invalid data",
+        "description": "Create a new campaign and auto-trigger content generation workflow.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.\nUser ID is extracted from the authenticated user's JWT token for security.\n\nAfter successful campaign creation, automatically triggers the content generation\nworkflow in the background using FastAPI BackgroundTasks. This ensures the API\nreturns immediately (< 1 second) while the workflow runs asynchronously.\n\nArchitecture Note (Issue #1209):\n- Frontend NEVER waits for workflow completion\n- Workflow triggers happen in background tasks\n- Frontend polls /campaigns/{id}/content/workflows/{workflow_id} for status\n- This decouples campaign creation from workflow execution for better UX\n\nArgs:\n    background_tasks: FastAPI background tasks for async workflow trigger\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Campaign creation request (user_id extracted from JWT, not body)\n    brand_repository: Repository for brand data access\n    campaign_service: Service for campaign CRUD operations\n    workflow_service: Service for triggering GCP Workflows\n    api_config: API configuration with base URL\n\nReturns:\n    CampaignResponse: The created campaign (workflow runs in background)\n\nRaises:\n    HTTPException: 401 if authentication fails, 400 for invalid data",
         "operationId": "create_campaign_api_v2_campaigns_post",
         "security": [
           {
@@ -1098,6 +1098,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -2763,6 +2764,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "additionalProperties": true,
                 "description": "Content creation data",
                 "title": "Request"
               }
@@ -2776,6 +2778,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Campaign Content Api V2 Campaigns  Campaign Id  Content Post"
                 }
               }
@@ -3629,6 +3632,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Campaign Post Api V2 Campaigns  Campaign Id  Posts Post"
                 }
               }
@@ -5628,6 +5632,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5716,6 +5721,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5756,6 +5762,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5910,6 +5917,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5976,6 +5984,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6494,6 +6503,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6608,6 +6618,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -6795,6 +6806,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7115,6 +7127,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7144,6 +7157,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7334,6 +7348,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7449,6 +7464,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7610,6 +7626,7 @@
           "adjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7729,6 +7746,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -7832,6 +7850,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7870,6 +7889,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -7913,6 +7933,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7992,6 +8013,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8063,6 +8085,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -8815,6 +8838,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9073,6 +9097,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9602,6 +9627,7 @@
           },
           "crawledPages": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9976,6 +10002,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10135,6 +10162,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11369,6 +11397,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11616,11 +11645,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -11696,6 +11727,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -11703,6 +11735,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12706,6 +12739,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
