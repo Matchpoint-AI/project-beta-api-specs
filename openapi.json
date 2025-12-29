@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.320"
+    "version": "0.7.321"
   },
   "paths": {
     "/api/v2/brands": {
@@ -598,14 +598,76 @@
         }
       }
     },
+    "/api/v2/brands/{brand_id}/location/extractions": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Create Location Extraction",
+        "description": "Extract physical locations from text or brand knowledge.\n\nExtracts structured physical location information (address, city, state, country)\nfrom either provided text or from the brand's stored knowledge base.\n\nRMM Level 2 Compliant Pattern:\n- POST creates a new location-extraction resource\n- Resource-oriented URL: /brands/{id}/location/extractions (hierarchical)\n- Uses noun-based resource name (no verbs or hyphens in path)\n- Returns 200 OK with extracted data (extraction is idempotent)\n\nBusiness Context:\n- Enables location-based marketing and targeting\n- Extracts from brand website content, social media, or provided text\n- Uses AI/LLM for intelligent location extraction\n- Results are structured for easy querying and filtering\n\nRequest Body:\n- text (optional): Text content to extract locations from\n- If text not provided, extracts from brand's stored knowledge\n\nArgs:\n    brand_id: The brand identifier\n    request: LocationExtractionRequest with optional text\n    extractor_service: Injected ExtractorService for extraction\n\nReturns:\n    LocationExtractionResponse with list of extracted locations\n\nRaises:\n    HTTPException: 404 if brand not found, 400 for invalid data, 500 on failure",
+        "operationId": "create_location_extraction_api_v2_brands__brand_id__location_extractions_post",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationExtractionRequest",
+                "description": "Optional text to extract locations from"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Physical locations extracted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationExtractionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brand_id}/extract/locations": {
       "post": {
         "tags": [
           "brands"
         ],
         "summary": "Extract Brand Locations",
-        "description": "Extract physical locations from text or brand knowledge.\n\nExtracts structured physical location information (address, city, state, country)\nfrom either provided text or from the brand's stored knowledge base.\n\nRMM-2 Compliant Pattern:\n- POST verb for action-oriented extraction operation\n- Hierarchical resource path: /brands/{id}/extract/locations\n- Uses path segment 'extract' as namespace for extraction sub-resources\n- Returns 200 OK with extracted data (not 201 as no resource is created)\n\nBusiness Context:\n- Enables location-based marketing and targeting\n- Extracts from brand website content, social media, or provided text\n- Uses AI/LLM for intelligent location extraction\n- Results are structured for easy querying and filtering\n\nRequest Body:\n- text (optional): Text content to extract locations from\n- If text not provided, extracts from brand's stored knowledge\n\nArgs:\n    brand_id: The brand identifier\n    request: LocationExtractionRequest with optional text\n    extractor_service: Injected ExtractorService for extraction\n\nReturns:\n    LocationExtractionResponse with list of extracted locations\n\nRaises:\n    HTTPException: 404 if brand not found, 400 for invalid data, 500 on failure",
+        "description": "Extract physical locations from text or brand knowledge.\n\nDEPRECATED: This endpoint uses a verb in the path which violates RMM Level 2.\nUse POST /brands/{brand_id}/location/extractions instead.\nThis endpoint will be removed in 6 months.\n\nDeprecation date: 2025-12-29\nRemoval date: 2026-06-29\nReplacement: POST /api/v2/brands/{brand_id}/location/extractions",
         "operationId": "extract_brand_locations_api_v2_brands__brand_id__extract_locations_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "brand_id",
@@ -1036,7 +1098,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -2702,7 +2763,6 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": true,
                 "description": "Content creation data",
                 "title": "Request"
               }
@@ -2716,7 +2776,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Create Campaign Content Api V2 Campaigns  Campaign Id  Content Post"
                 }
               }
@@ -3570,7 +3629,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Create Campaign Post Api V2 Campaigns  Campaign Id  Posts Post"
                 }
               }
@@ -4007,14 +4065,73 @@
         ]
       }
     },
+    "/api/v2/integrations/{platform}/sessions": {
+      "post": {
+        "tags": [
+          "integrations"
+        ],
+        "summary": "Create Integration Session",
+        "description": "Create a new integration session with a platform.\n\nRMM Level 2 Compliant Pattern:\n- POST creates a new session resource\n- Resource-oriented URL: /integrations/{platform}/sessions\n- Uses noun-based resource name (no verbs in path)\n- Returns 201 Created with the new session/integration\n\nArgs:\n    platform: Platform name (instagram, facebook, linkedin, twitter)\n    request: Integration authentication request with tokens/code\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    integration_repo: Injected integration repository\n\nReturns:\n    Created integration with ID\n\nRaises:\n    HTTPException: 400 if integration already exists or validation fails\n    HTTPException: 401 if authentication fails\n    HTTPException: 500 if database operation fails",
+        "operationId": "create_integration_session_api_v2_integrations__platform__sessions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Platform"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationAuthRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/integrations/{platform}/auth": {
       "post": {
         "tags": [
           "integrations"
         ],
         "summary": "Authenticate Integration",
-        "description": "Authenticate with a platform and store integration.\n\nArgs:\n    platform: Platform name (instagram, facebook, linkedin, twitter)\n    request: Integration authentication request with tokens/code\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    integration_repo: Injected integration repository\n\nReturns:\n    Created integration with ID\n\nRaises:\n    HTTPException: 400 if integration already exists or validation fails\n    HTTPException: 401 if authentication fails\n    HTTPException: 500 if database operation fails",
+        "description": "Authenticate with a platform and store integration.\n\nDEPRECATED: This endpoint uses a verb in the path which violates RMM Level 2.\nUse POST /integrations/{platform}/sessions instead.\nThis endpoint will be removed in 6 months.\n\nDeprecation date: 2025-12-29\nRemoval date: 2026-06-29\nReplacement: POST /api/v2/integrations/{platform}/sessions\n\nArgs:\n    platform: Platform name (instagram, facebook, linkedin, twitter)\n    request: Integration authentication request with tokens/code\n    response: FastAPI Response object for adding headers\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    integration_repo: Injected integration repository\n\nReturns:\n    Created integration with ID\n\nRaises:\n    HTTPException: 400 if integration already exists or validation fails\n    HTTPException: 401 if authentication fails\n    HTTPException: 500 if database operation fails",
         "operationId": "authenticate_integration_api_v2_integrations__platform__auth_post",
+        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
@@ -5402,7 +5519,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5491,7 +5607,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5532,7 +5647,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5687,7 +5801,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5754,7 +5867,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6273,7 +6385,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6388,7 +6499,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -6576,7 +6686,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6897,7 +7006,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -6927,7 +7035,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7118,7 +7225,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7234,7 +7340,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7396,7 +7501,6 @@
           "adjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7516,7 +7620,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -7620,7 +7723,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7659,7 +7761,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -7703,7 +7804,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7783,7 +7883,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7855,7 +7954,6 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -8608,7 +8706,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8867,7 +8964,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9397,7 +9493,6 @@
           },
           "crawledPages": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -9772,7 +9867,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9932,7 +10026,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11108,7 +11201,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11356,13 +11448,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -11438,7 +11528,6 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -11446,7 +11535,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12450,7 +12538,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
