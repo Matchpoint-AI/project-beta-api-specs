@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.333] - 2025-12-29
+
+### Changes
+- fix: lower coverage threshold to 89.9% to avoid floating-point edge case (#1225)
+
+**Source:** project-beta-api@11267438
+
 ## [v0.7.332] - 2025-12-29
 
 ### Changes
