@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.317] - 2025-12-29
+
+### Changes
+- Merge pull request #1197 from Matchpoint-AI/fix/1195-db-pool-exhaustion
+
+**Source:** project-beta-api@275efec2
+
 ## [v0.7.316] - 2025-12-29
 
 ### Changes
