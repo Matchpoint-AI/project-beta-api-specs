@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.344] - 2025-12-30
+
+### Changes
+- Merge pull request #1242 from Matchpoint-AI/fix/1222-posts-per-day-overwrite
+
+**Source:** project-beta-api@38d02b90
+
 ## [v0.7.343] - 2025-12-29
 
 ### Changes
