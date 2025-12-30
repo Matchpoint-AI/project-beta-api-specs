@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.353"
+    "version": "0.7.354"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1467,6 +1467,62 @@
           },
           "404": {
             "description": "Campaign not found or no workflow started"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/content/generations": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Trigger Content Generation",
+        "description": "Trigger content generation for a campaign.\n\nPublishes a content generation request to the content-generator service.\nThe request is processed asynchronously - this endpoint returns immediately\nwith a 202 Accepted response.\n\nThis endpoint uses the new Pub/Sub-based content generation architecture:\n- Sends a skinny message containing only the campaign_id\n- The content-generator service fetches full context from the database\n- Generation progress can be monitored via the workflow status endpoint\n\nArgs:\n    campaign_id: The campaign ID to generate content for\n    firebase_user: Authenticated user (from JWT token)\n    campaign_service: Service for campaign operations\n    content_generation_publisher: Publisher for content generation requests\n\nReturns:\n    ContentGenerationResponse with message_id for tracking\n\nRaises:\n    HTTPException: 404 if campaign not found, 500 if publishing fails",
+        "operationId": "trigger_content_generation_api_v2_campaigns__campaign_id__content_generations_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Content generation request accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentGenerationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "500": {
+            "description": "Failed to trigger content generation"
           },
           "422": {
             "description": "Validation Error",
@@ -8871,6 +8927,39 @@
         ],
         "title": "ContentFeedbackResponse",
         "description": "Schema for content feedback response."
+      },
+      "ContentGenerationResponse": {
+        "properties": {
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaign ID",
+            "description": "ID of the campaign for which content generation was triggered"
+          },
+          "messageId": {
+            "type": "string",
+            "title": "Message ID",
+            "description": "ID of the published message for tracking"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Request status (accepted)",
+            "default": "accepted"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message",
+            "default": "Content generation request accepted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId",
+          "messageId"
+        ],
+        "title": "ContentGenerationResponse",
+        "description": "Response schema for content generation request.\n\nReturns when a content generation request has been published.\nThe actual generation happens asynchronously."
       },
       "ContentImageGenerateRequest": {
         "properties": {
