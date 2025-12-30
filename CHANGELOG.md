@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.346] - 2025-12-30
+
+### Changes
+- Merge pull request #1252 from Matchpoint-AI/fix/1247-feature-flag
+
+**Source:** project-beta-api@82a46c06
+
 ## [v0.7.345] - 2025-12-30
 
 ### Changes
