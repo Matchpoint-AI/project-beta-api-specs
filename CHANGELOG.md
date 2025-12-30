@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.352] - 2025-12-30
+
+### Changes
+- Merge pull request #1284 from Matchpoint-AI/feat/1279-brand-crawl-progress
+
+**Source:** project-beta-api@60c830dc
+
 ## [v0.7.351] - 2025-12-30
 
 ### Changes

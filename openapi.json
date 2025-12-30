@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.351"
+    "version": "0.7.352"
   },
   "paths": {
     "/api/v2/brands": {
@@ -598,6 +598,54 @@
         }
       }
     },
+    "/api/v2/brands/{brand_id}/crawl/status": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Get Brand Crawl Status",
+        "description": "Get real-time brand crawl progress (Issue #1279).\n\nReturns comprehensive crawl status information so the frontend can show\nusers real-time progress during website crawling operations.\n\nStatus Values:\n- not_started: No crawl has been initiated\n- pending: Crawl queued but not yet started\n- estimating: Analyzing website structure\n- crawling: Actively crawling pages\n- extracting: Extracting brand assets from crawled content\n- uploading: Saving extracted assets\n- complete: Crawl finished successfully\n- failed: Crawl encountered an error\n\nRMM Level 2 Compliance:\n- GET retrieves crawl status sub-resource\n- Resource-oriented hierarchical URL structure\n- /crawl/status follows RMM-2 path pattern",
+        "operationId": "get_brand_crawl_status_api_v2_brands__brand_id__crawl_status_get",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand crawl status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandCrawlStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands/{brand_id}/location/extractions": {
       "post": {
         "tags": [
@@ -1098,6 +1146,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -2875,6 +2924,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "additionalProperties": true,
                 "description": "Content creation data",
                 "title": "Request"
               }
@@ -2888,6 +2938,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Campaign Content Api V2 Campaigns  Campaign Id  Content Post"
                 }
               }
@@ -3741,6 +3792,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Campaign Post Api V2 Campaigns  Campaign Id  Posts Post"
                 }
               }
@@ -5686,6 +5738,41 @@
         "type": "object",
         "title": "Body_upload_brand_files"
       },
+      "BrandCrawlAssetsInfo": {
+        "properties": {
+          "colorsFound": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Colorsfound",
+            "description": "Number of brand colors found",
+            "default": 0
+          },
+          "fontsFound": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Fontsfound",
+            "description": "Number of fonts identified",
+            "default": 0
+          },
+          "imagesFound": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Imagesfound",
+            "description": "Number of images discovered",
+            "default": 0
+          },
+          "logosFound": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Logosfound",
+            "description": "Number of logos identified",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "BrandCrawlAssetsInfo",
+        "description": "Assets discovered during brand crawl."
+      },
       "BrandCrawlPerformance": {
         "properties": {
           "brand_id": {
@@ -5761,6 +5848,171 @@
         ],
         "title": "BrandCrawlPerformance",
         "description": "Crawl performance metrics for a single brand."
+      },
+      "BrandCrawlProgressInfo": {
+        "properties": {
+          "pagesEstimated": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Pagesestimated",
+            "description": "Estimated total pages to crawl",
+            "default": 0
+          },
+          "pagesCrawled": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Pagescrawled",
+            "description": "Pages successfully crawled",
+            "default": 0
+          },
+          "pagesFailed": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Pagesfailed",
+            "description": "Pages that failed to crawl",
+            "default": 0
+          },
+          "pagesPending": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Pagespending",
+            "description": "Pages waiting to be crawled",
+            "default": 0
+          },
+          "percentage": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Percentage",
+            "description": "Crawl completion percentage",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "title": "BrandCrawlProgressInfo",
+        "description": "Progress metrics for brand crawl status."
+      },
+      "BrandCrawlStatusResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "crawlJobId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crawljobid",
+            "description": "ID of the current crawl job (if any)"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "estimating",
+              "crawling",
+              "extracting",
+              "uploading",
+              "complete",
+              "failed",
+              "not_started"
+            ],
+            "title": "Status",
+            "description": "Current crawl status"
+          },
+          "progress": {
+            "$ref": "#/components/schemas/BrandCrawlProgressInfo",
+            "description": "Detailed progress metrics"
+          },
+          "assets": {
+            "$ref": "#/components/schemas/BrandCrawlAssetsInfo",
+            "description": "Assets discovered during crawl"
+          },
+          "timing": {
+            "$ref": "#/components/schemas/BrandCrawlTimingInfo",
+            "description": "Timing information"
+          },
+          "currentPage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentpage",
+            "description": "URL of the page currently being crawled"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error message if status is 'failed'"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "status",
+          "progress",
+          "assets",
+          "timing"
+        ],
+        "title": "BrandCrawlStatusResponse",
+        "description": "Response schema for brand crawl progress endpoint (Issue #1279).\n\nProvides real-time status updates for brand crawl operations so the\nfrontend can show users progress during website crawling."
+      },
+      "BrandCrawlTimingInfo": {
+        "properties": {
+          "startedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Startedat",
+            "description": "When the crawl started"
+          },
+          "estimatedCompletion": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimatedcompletion",
+            "description": "Estimated completion time"
+          },
+          "elapsedSeconds": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Elapsedseconds",
+            "description": "Seconds elapsed since crawl started",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "BrandCrawlTimingInfo",
+        "description": "Timing information for brand crawl."
       },
       "BrandCreate": {
         "properties": {
@@ -5859,6 +6111,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5947,6 +6200,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5987,6 +6241,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6141,6 +6396,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6207,6 +6463,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6737,6 +6994,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6853,6 +7111,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7052,6 +7311,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7381,6 +7641,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7410,6 +7671,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7612,6 +7874,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7727,6 +7990,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7888,6 +8152,7 @@
           "adjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8007,6 +8272,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8110,6 +8376,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8148,6 +8415,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8191,6 +8459,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8270,6 +8539,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8341,6 +8611,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -9093,6 +9364,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9351,6 +9623,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9891,6 +10164,7 @@
           },
           "crawledPages": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -10265,6 +10539,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10424,6 +10699,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11621,6 +11897,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11868,11 +12145,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -11948,6 +12227,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -11955,6 +12235,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13054,6 +13335,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
