@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.347] - 2025-12-30
+
+### Changes
+- Merge pull request #1245 from Matchpoint-AI/fix/1244-audience-params
+
+**Source:** project-beta-api@a5a7c4d9
+
 ## [v0.7.346] - 2025-12-30
 
 ### Changes
