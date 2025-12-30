@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.347"
+    "version": "0.7.348"
   },
   "paths": {
     "/api/v2/brands": {
@@ -6675,6 +6675,18 @@
             ],
             "title": "Description"
           },
+          "brandId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand ID",
+            "description": "ID of the brand this campaign belongs to. If not provided, will be resolved from user."
+          },
           "durationWeeks": {
             "type": "integer",
             "maximum": 52.0,
@@ -6978,6 +6990,18 @@
             ],
             "title": "Description"
           },
+          "brandId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand ID",
+            "description": "ID of the brand this campaign belongs to. If not provided, will be resolved from user."
+          },
           "durationWeeks": {
             "type": "integer",
             "maximum": 52.0,
@@ -7072,8 +7096,16 @@
             "title": "ID"
           },
           "userId": {
-            "type": "string",
-            "title": "User ID"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User ID",
+            "description": "User ID (deprecated - use brand_id relationship)"
           },
           "status": {
             "$ref": "#/components/schemas/CampaignStatus"
@@ -7265,7 +7297,6 @@
           "durationWeeks",
           "postsPerDay",
           "id",
-          "userId",
           "status",
           "createdAt",
           "updatedAt"
@@ -7490,6 +7521,18 @@
               }
             ],
             "title": "Description"
+          },
+          "brandId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand ID",
+            "description": "ID of the brand this campaign belongs to"
           },
           "durationWeeks": {
             "anyOf": [

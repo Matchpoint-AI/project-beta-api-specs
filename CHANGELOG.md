@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.348] - 2025-12-30
+
+### Changes
+- Merge pull request #1262 from Matchpoint-AI/feat/brand-campaign-relationships
+
+**Source:** project-beta-api@11c965f7
+
 ## [v0.7.347] - 2025-12-30
 
 ### Changes
