@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.349] - 2025-12-30
+
+### Changes
+- Merge pull request #1259 from Matchpoint-AI/fix/1251-image-sync
+
+**Source:** project-beta-api@a3892bbc
+
 ## [v0.7.348] - 2025-12-30
 
 ### Changes
