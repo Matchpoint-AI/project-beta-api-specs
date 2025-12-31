@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.385] - 2025-12-31
+
+### Changes
+- Delete terraform directory (#1389)
+
+**Source:** project-beta-api@79837527
+
 ## [v0.7.384] - 2025-12-31
 
 ### Changes
