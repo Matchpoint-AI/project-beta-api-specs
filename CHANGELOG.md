@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.398] - 2025-12-31
+
+### Changes
+- Merge pull request #1403 from Matchpoint-AI/fix/1386-brand-llm-migration
+
+**Source:** project-beta-api@703a46b0
+
 ## [v0.7.397] - 2025-12-31
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.397"
+    "version": "0.7.398"
   },
   "paths": {
     "/api/v2/brands": {
@@ -322,7 +322,7 @@
           "brands"
         ],
         "summary": "Upload Brand Files",
-        "description": "Upload brand files (guidelines PDF and logo) with LLM extraction.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines using LLM processing.",
+        "description": "Upload brand files (guidelines PDF and logo) with async LLM extraction.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines via brand-crawler service (async).\n\nThe extraction is now async - file is uploaded immediately, and\nbrand-crawler processes the PDF in the background.",
         "operationId": "upload_brand_files",
         "parameters": [
           {
@@ -446,7 +446,7 @@
           "brands"
         ],
         "summary": "Generate Brand Summary",
-        "description": "Generate a cohesive brand summary from current brand data.\n\n**RMM L2 Decision**: POST /api/v2/brands/{brand_id}/summary\n- Summary is a computed sub-resource of brand\n- POST generates new summary from current brand data\n- Not idempotent (each call generates fresh summary)\n\nPorts V1 logic from ReviewForm.tsx getSummary() function:\n- Generates 60-word brand summary via LLM (OpenAI GPT-4)\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Returns cohesive paragraph summarizing brand identity",
+        "description": "Trigger brand summary generation via brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\n\n**RMM L2 Decision**: POST /api/v2/brands/{brand_id}/summary\n- Summary is a computed sub-resource of brand\n- POST triggers new summary generation via brand-crawler\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by brand-crawler:\n- Generates 60-word brand summary via LLM\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
         "operationId": "generate_brand_summary_api_v2_brands__brand_id__summary_post",
         "parameters": [
           {
@@ -462,8 +462,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Brand summary generated successfully",
+          "202": {
+            "description": "Brand summary generation triggered",
             "content": {
               "application/json": {
                 "schema": {
@@ -476,7 +476,7 @@
             "description": "Brand not found"
           },
           "500": {
-            "description": "Failed to generate summary"
+            "description": "Failed to trigger summary generation"
           },
           "422": {
             "description": "Validation Error",
@@ -6648,23 +6648,52 @@
             "description": "The brand ID this summary belongs to"
           },
           "summary": {
-            "type": "string",
-            "maxLength": 1000,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Summary",
-            "description": "Generated brand summary (60 words or less)",
+            "description": "Generated brand summary (60 words or less), or None if async",
             "examples": [
               "TechCorp is committed to democratizing AI technology, envisioning a future where intelligent systems enhance human potential. Operating in the technology industry, the brand emphasizes innovation and accessibility, communicating with a professional yet approachable voice. Known for its modern design, it embodies an innovative persona, effectively serving the enterprise software vertical."
             ]
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Status message for async operations"
+          },
+          "correlationId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlationid",
+            "description": "Correlation ID for tracking async operations"
           }
         },
         "type": "object",
         "required": [
-          "brandId",
-          "summary"
+          "brandId"
         ],
         "title": "BrandSummaryResponse",
-        "description": "Schema for brand summary response.\n\nReturns a generated cohesive brand summary paragraph based on the brand's\nmission, vision, values, tone/voice, persona, industry, and vertical.\n\nFollowing V1 implementation (ReviewForm.tsx):\n- Generated via LLM (OpenAI GPT-4)\n- 60 words or less\n- Single cohesive paragraph\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location"
+        "description": "Schema for brand summary response.\n\nIssue #1386: Updated to support async pattern with optional summary.\n\nReturns a generated cohesive brand summary paragraph based on the brand's\nmission, vision, values, tone/voice, persona, industry, and vertical.\n\nFor async operations:\n- summary is None (generation in progress)\n- message contains status info\n- correlation_id can be used for tracking\n\nFollowing V1 implementation (ReviewForm.tsx):\n- Generated via LLM (brand-crawler service)\n- 60 words or less\n- Single cohesive paragraph\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location"
       },
       "BrandUpdate": {
         "properties": {
