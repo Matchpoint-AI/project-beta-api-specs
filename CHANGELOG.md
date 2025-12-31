@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.387] - 2025-12-31
+
+### Changes
+- Merge pull request #1390 from Matchpoint-AI/feat/1297-pubsub-workflow-controller
+
+**Source:** project-beta-api@b436ff64
+
 ## [v0.7.386] - 2025-12-31
 
 ### Changes
