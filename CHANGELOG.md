@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.383] - 2025-12-31
+
+### Changes
+- cleanup: Simplify WorkflowService by removing unused methods (#1378)
+
+**Source:** project-beta-api@7497d594
+
 ## [v0.7.382] - 2025-12-31
 
 ### Changes
