@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.380] - 2025-12-31
+
+### Changes
+- Merge pull request #1376 from Matchpoint-AI/cleanup/1375-dead-di
+
+**Source:** project-beta-api@17d95c52
+
 ## [v0.7.379] - 2025-12-31
 
 ### Changes
