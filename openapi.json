@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.396"
+    "version": "0.7.397"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1038,6 +1038,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -2449,8 +2450,9 @@
           "captions"
         ],
         "summary": "Create Caption Version",
-        "description": "Create a new version of a caption (RMM-2 compliant regeneration).\n\nThis is the REST-compliant version of caption regeneration.\nInstead of POST /regenerate (verb), we POST /versions (noun) to create a resource.\n\nBusiness Context:\n- Creates a new caption version with user feedback and adjustments\n- Maintains caption versioning history for auditing\n- Supports iterative refinement of AI-generated captions\n\nRMM-2 Compliance:\n- Uses resource noun 'versions' instead of verb 'regenerate'\n- Creates a new version resource through POST method\n- Returns 201 Created status code\n- Proper camelCase parameter naming\n\nArgs:\n    content_id: Parent content identifier\n    caption_id: Caption identifier to create new version from\n    request: Regeneration parameters (feedback, adjustments, tone)\n\nReturns:\n    CaptionResponse with the newly generated caption version\n\nRaises:\n    404 Not Found: If content or caption doesn't exist\n    500 Internal Server Error: If caption generation fails",
+        "description": "**DEPRECATED**: Use POST /posts/{post_id}/versions with target='text' instead. This endpoint will be removed on 2025-03-31. See https://docs.matchpointai.com/api/post-versioning for migration guide.",
         "operationId": "create_caption_version",
+        "deprecated": true,
         "parameters": [
           {
             "name": "content_id",
@@ -3273,8 +3275,9 @@
           "content-images"
         ],
         "summary": "Generate Content Image",
-        "description": "Generate a new AI image for content.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\nThe endpoint uses '/generations' (noun) instead of '/generate' (verb)\nto comply with RMM L2 no-verbs-in-urls rule.\n\nThis endpoint generates a new image using AI based on the provided prompt\nand associates it with the specified content at the given week/day/post\nlocation.\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image generation request with prompt, week, day, post\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Created content image response with generated image URL\n\nRaises:\n    HTTPException: 400 if generation limit exceeded\n    HTTPException: 500 if image generation fails",
+        "description": "**DEPRECATED**: Use POST /posts/{post_id}/versions with target='media' instead. This endpoint will be removed on 2025-03-31. See https://docs.matchpointai.com/api/post-versioning for migration guide.",
         "operationId": "generate_content_image_api_v2_content__content_id__images_generations_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "content_id",
@@ -3485,8 +3488,9 @@
           "content-versions"
         ],
         "summary": "Create Content Version",
-        "description": "Create a new version of content (RMM L2 compliant regeneration).\n\nThis is the REST-compliant version of content regeneration.\nInstead of POST /regenerate (verb), we POST /versions (noun) to create a resource.\n\nDirect port from V1 (tag v0.2.46) with proper REST design:\n- Creates a new version as a resource\n- Maintains parent-child lineage\n- Enforces plan limits: FREE=3, PRO=10 versions per content\n\nArgs:\n    content_id: Content identifier (from URL path)\n    request: Version creation request with parent ID and optional prompt\n\nReturns:\n    ContentVersionResponse with new version details and quota info\n\nRaises:\n    400 Bad Request: If content not found or generation limit exceeded\n    500 Internal Server Error: If version creation fails",
+        "description": "**DEPRECATED**: Use POST /posts/{post_id}/versions with target='all' instead. This endpoint will be removed on 2025-03-31. See https://docs.matchpointai.com/api/post-versioning for migration guide.",
         "operationId": "create_content_version_api_v2_content__content_id__versions_post",
+        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
@@ -6056,6 +6060,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6144,6 +6149,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6302,6 +6308,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6368,6 +6375,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6892,6 +6900,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7009,6 +7018,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7202,6 +7212,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7526,6 +7537,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7555,6 +7567,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7758,6 +7771,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7873,6 +7887,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8034,6 +8049,7 @@
           "adjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8153,6 +8169,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8256,6 +8273,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8294,6 +8312,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8337,6 +8356,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8416,6 +8436,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8487,6 +8508,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -9272,6 +9294,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9530,6 +9553,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10354,6 +10378,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10513,6 +10538,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11076,6 +11102,7 @@
           "mediaSnapshot": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11767,6 +11794,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12014,11 +12042,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -12094,6 +12124,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -12101,6 +12132,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13446,6 +13478,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
