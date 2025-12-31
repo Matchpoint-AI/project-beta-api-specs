@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.357] - 2025-12-31
+
+### Changes
+- Merge pull request #1305 from Matchpoint-AI/test/1288-rag-coverage
+
+**Source:** project-beta-api@02994e78
+
 ## [v0.7.356] - 2025-12-31
 
 ### Changes
