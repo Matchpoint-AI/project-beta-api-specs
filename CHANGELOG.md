@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.386] - 2025-12-31
+
+### Changes
+- Merge pull request #1387 from Matchpoint-AI/feat/1383-two-action-publisher
+
+**Source:** project-beta-api@51099c27
+
 ## [v0.7.385] - 2025-12-31
 
 ### Changes
