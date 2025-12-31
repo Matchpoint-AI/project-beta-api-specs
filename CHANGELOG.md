@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.358] - 2025-12-31
+
+### Changes
+- Merge pull request #1308 from Matchpoint-AI/test/1289-quick-extract-coverage
+
+**Source:** project-beta-api@c00ffdbf
+
 ## [v0.7.357] - 2025-12-31
 
 ### Changes
