@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.355] - 2025-12-31
+
+### Changes
+- Merge pull request #1303 from Matchpoint-AI/refactor/rename-post-worker-to-content-generator
+
+**Source:** project-beta-api@d7a79f1c
+
 ## [v0.7.354] - 2025-12-30
 
 ### Changes
