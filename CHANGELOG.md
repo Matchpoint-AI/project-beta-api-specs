@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.366] - 2025-12-31
+
+### Changes
+- Merge pull request #1336 from Matchpoint-AI/fix/1321-datetime-utc
+
+**Source:** project-beta-api@69961d02
+
 ## [v0.7.365] - 2025-12-31
 
 ### Changes
