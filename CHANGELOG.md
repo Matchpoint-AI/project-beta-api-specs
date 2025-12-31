@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.362] - 2025-12-31
+
+### Changes
+- Merge pull request #1307 from Matchpoint-AI/feat/1293-mock-publisher
+
+**Source:** project-beta-api@2a6e70ea
+
 ## [v0.7.361] - 2025-12-31
 
 ### Changes
