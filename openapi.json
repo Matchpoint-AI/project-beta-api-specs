@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.372"
+    "version": "0.7.373"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1070,7 +1070,7 @@
           "campaigns"
         ],
         "summary": "Create Campaign",
-        "description": "Create a new campaign and auto-trigger content generation workflow.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.\nUser ID is extracted from the authenticated user's JWT token for security.\n\nAfter successful campaign creation, automatically triggers the content generation\nworkflow in the background using FastAPI BackgroundTasks. This ensures the API\nreturns immediately (< 1 second) while the workflow runs asynchronously.\n\nArchitecture Note (Issue #1209):\n- Frontend NEVER waits for workflow completion\n- Workflow triggers happen in background tasks\n- Frontend polls /campaigns/{id}/content/workflows/{workflow_id} for status\n- This decouples campaign creation from workflow execution for better UX\n\nArgs:\n    background_tasks: FastAPI background tasks for async workflow trigger\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Campaign creation request (user_id extracted from JWT, not body)\n    brand_repository: Repository for brand data access\n    campaign_service: Service for campaign CRUD operations\n    workflow_service: Service for triggering GCP Workflows\n    api_config: API configuration with base URL\n\nReturns:\n    CampaignResponse: The created campaign (workflow runs in background)\n\nRaises:\n    HTTPException: 401 if authentication fails, 400 for invalid data",
+        "description": "Create a new campaign and auto-trigger content generation.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.\nUser ID is extracted from the authenticated user's JWT token for security.\n\nAfter successful campaign creation, automatically triggers content generation\nin the background using FastAPI BackgroundTasks. This ensures the API\nreturns immediately (< 1 second) while content generation runs asynchronously.\n\nArchitecture Note (Issue #1296):\n- Uses ContentGenerationPublisher for Pub/Sub-based content generation\n- Frontend NEVER waits for content generation completion\n- Content generation triggers happen in background tasks\n- Frontend polls /campaigns/{id}/workflow/status for progress\n- Skinny message pattern: only campaign_id is sent to content-generator\n\nArgs:\n    background_tasks: FastAPI background tasks for async content generation\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Campaign creation request (user_id extracted from JWT, not body)\n    brand_repository: Repository for brand data access\n    campaign_service: Service for campaign CRUD operations\n    content_generation_publisher: Publisher for content generation requests\n\nReturns:\n    CampaignResponse: The created campaign (content generation runs in background)\n\nRaises:\n    HTTPException: 401 if authentication fails, 400 for invalid data",
         "operationId": "create_campaign_api_v2_campaigns_post",
         "security": [
           {
