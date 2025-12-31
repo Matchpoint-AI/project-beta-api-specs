@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.383"
+    "version": "0.7.384"
   },
   "paths": {
     "/api/v2/brands": {
@@ -537,65 +537,6 @@
             }
           }
         }
-      },
-      "patch": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Update Brand Knowledge Status",
-        "description": "Update brand knowledge extraction status (Phase 3: Background Crawl Webhooks).\n\nThis endpoint is called by GCP Workflows to report progress during background crawling\nand knowledge extraction. It allows the workflow to progressively update the brand's\nknowledge status as the deep crawl proceeds.\n\nWebhook Security:\n- Called by GCP Workflows using OIDC authentication\n- Only authenticated workflow service accounts can update status\n\nUse Cases:\n- Workflow starts deep crawl: status=\"deep_crawl_running\", progress=10\n- Workflow crawls pages: status=\"deep_crawl_running\", progress=50, metadata={pages_crawled: 25}\n- Workflow completes: status=\"deep_crawl_complete\", progress=100\n- Workflow fails: status=\"failed\", metadata={error: \"...\"}\n\nRMM Level 2 Compliance:\n- PATCH to /brands/{brand_id}/knowledge/status updates the status resource\n- Resource-oriented URL structure\n- No verbs in URL path",
-        "operationId": "update_brand_knowledge_status_api_v2_brands__brand_id__knowledge_status_patch",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BrandKnowledgeStatusUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Knowledge status updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandKnowledgeStatusResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "400": {
-            "description": "Invalid status update data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/api/v2/brands/{brand_id}/crawl/status": {
@@ -893,55 +834,6 @@
       }
     },
     "/api/v2/brands/{brand_id}/knowledge": {
-      "post": {
-        "tags": [
-          "brand-workflow"
-        ],
-        "summary": "Create Brand Knowledge",
-        "description": "Create knowledge resource from crawled pages (RMM-2 compliant).\n\nAnalyzes crawled content to extract and store brand knowledge including\npersonality traits, tone attributes, visual style, products, etc.\nThis endpoint follows RMM Level 2 principles by using POST to create\na knowledge resource rather than using a verb in the URL.\n\nThis is a workflow operation typically triggered by crawling completion.\n\nDesign Pattern (RMM L2):\n- POST creates a knowledge resource (not an RPC \"extract\" action)\n- Returns 201 Created with the knowledge resource\n- Resource-oriented URL: /brands/{id}/knowledge",
-        "operationId": "create_brand_knowledge_api_v2_brands__brand_id__knowledge_post",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExtractKnowledgeRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Knowledge extracted and created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExtractKnowledgeResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Invalid request"
-          },
-          "500": {
-            "description": "Knowledge extraction failed"
-          }
-        }
-      },
       "get": {
         "tags": [
           "brand-workflow"
@@ -1146,6 +1038,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -4084,67 +3977,6 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/queue": {
-      "post": {
-        "tags": [
-          "crawled-pages"
-        ],
-        "summary": "Initialize Queue",
-        "description": "Initialize a new crawl queue for a brand (RMM-2 compliant).\n\nThis is the RMM-2 compliant endpoint that uses POST to the queue resource\nto initialize a new crawl session. It cleans up any previous queue entries\nand sets up a fresh crawl with the starting URL.\n\nRMM-2 Compliance:\n- Uses POST method to create queue resource\n- Resource-oriented URL with single-word segment (queue vs crawl-queue)\n- No verb in URL (initialize action is implied by POST method)",
-        "operationId": "initialize_queue_api_v2_brands__brand_id__queue_post",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InitializeCrawlRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Crawl session initialized successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InitializeCrawlResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/health": {
       "get": {
         "tags": [
@@ -6046,6 +5878,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6134,6 +5967,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6156,42 +5990,6 @@
         ],
         "title": "BrandKnowledgeStatusResponse",
         "description": "Response schema for brand knowledge extraction status (Phase 1: Progressive Brand Knowledge)."
-      },
-      "BrandKnowledgeStatusUpdate": {
-        "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Current knowledge extraction status (quick_extract_pending, quick_extract_complete, deep_crawl_pending, deep_crawl_running, deep_crawl_complete, failed)"
-          },
-          "progress": {
-            "type": "integer",
-            "maximum": 100.0,
-            "minimum": 0.0,
-            "title": "Progress",
-            "description": "Overall progress percentage (0-100)"
-          },
-          "metadata": {
-            "anyOf": [
-              {
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "additionalProperties": true,
-            "title": "Metadata",
-            "description": "Additional metadata about knowledge extraction (pages_crawled, pages_processed, total_pages, error details, etc.)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "status",
-          "progress"
-        ],
-        "title": "BrandKnowledgeStatusUpdate",
-        "description": "Request schema for updating brand knowledge status (Phase 3: Background Crawl Webhooks)."
       },
       "BrandKnowledgeV2ListResponse": {
         "properties": {
@@ -6328,6 +6126,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6394,6 +6193,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6918,6 +6718,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7035,6 +6836,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7228,6 +7030,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7552,6 +7355,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7581,6 +7385,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7784,6 +7589,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7899,6 +7705,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8060,6 +7867,7 @@
           "adjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8179,6 +7987,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8282,6 +8091,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8320,6 +8130,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8363,6 +8174,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8442,6 +8254,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8513,6 +8326,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -9298,6 +9112,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9556,6 +9371,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10087,95 +9903,6 @@
         "title": "EmailVerificationRequest",
         "description": "Schema for email verification request.\n\nFor POST /api/v2/verifications endpoint.\nVerifies user email using token from verification email."
       },
-      "ExtractKnowledgeRequest": {
-        "properties": {
-          "workflowId": {
-            "type": "string",
-            "title": "Workflowid",
-            "description": "Workflow ID"
-          },
-          "crawledPages": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Crawledpages",
-            "description": "List of crawled page data"
-          }
-        },
-        "type": "object",
-        "required": [
-          "workflowId",
-          "crawledPages"
-        ],
-        "title": "ExtractKnowledgeRequest",
-        "description": "Request for extracting brand knowledge from crawled pages."
-      },
-      "ExtractKnowledgeResponse": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "personalityTraits": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Personalitytraits",
-            "description": "2-5 personality traits as lowercase adjectives"
-          },
-          "toneAttributes": {
-            "$ref": "#/components/schemas/ToneAttributes",
-            "description": "Communication tone attributes"
-          },
-          "colorPalette": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Colorpalette",
-            "description": "3-5 hex color codes"
-          },
-          "products": {
-            "items": {
-              "$ref": "#/components/schemas/ProductInfo"
-            },
-            "type": "array",
-            "title": "Products",
-            "description": "Products and services"
-          },
-          "brandDescription": {
-            "type": "string",
-            "title": "Branddescription",
-            "description": "1-2 sentence brand description"
-          },
-          "valueProposition": {
-            "type": "string",
-            "title": "Valueproposition",
-            "description": "1-2 sentence value proposition"
-          },
-          "targetAudience": {
-            "type": "string",
-            "title": "Targetaudience",
-            "description": "1-2 sentence target audience description"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "personalityTraits",
-          "toneAttributes",
-          "colorPalette",
-          "products",
-          "brandDescription",
-          "valueProposition",
-          "targetAudience"
-        ],
-        "title": "ExtractKnowledgeResponse",
-        "description": "Response from brand knowledge extraction."
-      },
       "ForgotPasswordRequest": {
         "properties": {
           "email": {
@@ -10273,77 +10000,6 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
-      },
-      "InitializeCrawlRequest": {
-        "properties": {
-          "startingUrl": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "title": "Startingurl",
-            "description": "Initial URL to start crawling"
-          },
-          "maxPages": {
-            "type": "integer",
-            "maximum": 1000.0,
-            "minimum": 1.0,
-            "title": "Maxpages",
-            "description": "Maximum pages to crawl",
-            "default": 50
-          }
-        },
-        "type": "object",
-        "required": [
-          "startingUrl"
-        ],
-        "title": "InitializeCrawlRequest",
-        "description": "Request model for initializing a new crawl session."
-      },
-      "InitializeCrawlResponse": {
-        "properties": {
-          "crawlSessionId": {
-            "type": "string",
-            "title": "Crawlsessionid",
-            "description": "Unique ID for this crawl session"
-          },
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "startingUrl": {
-            "type": "string",
-            "title": "Startingurl",
-            "description": "Initial URL"
-          },
-          "maxPages": {
-            "type": "integer",
-            "title": "Maxpages",
-            "description": "Maximum pages to crawl"
-          },
-          "baseDomain": {
-            "type": "string",
-            "title": "Basedomain",
-            "description": "Detected base domain"
-          },
-          "urlsQueued": {
-            "type": "integer",
-            "title": "Urlsqueued",
-            "description": "Number of URLs initially queued"
-          }
-        },
-        "type": "object",
-        "required": [
-          "crawlSessionId",
-          "brandId",
-          "startingUrl",
-          "maxPages",
-          "baseDomain",
-          "urlsQueued"
-        ],
-        "title": "InitializeCrawlResponse",
-        "description": "Response model for crawl initialization."
       },
       "InstagramOAuthRequest": {
         "properties": {
@@ -10470,6 +10126,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10629,6 +10286,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11148,27 +10806,6 @@
         ],
         "title": "PostSchema",
         "description": "Schema for individual social media post."
-      },
-      "ProductInfo": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Product name"
-          },
-          "category": {
-            "type": "string",
-            "title": "Category",
-            "description": "Product category"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "category"
-        ],
-        "title": "ProductInfo",
-        "description": "Product information schema."
       },
       "ProductV2": {
         "properties": {
@@ -11826,6 +11463,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12073,11 +11711,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -12153,6 +11793,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -12160,6 +11801,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12819,33 +12461,6 @@
         "title": "TokenRefreshResponse",
         "description": "Schema for token refresh response.\n\nReturns new access token and refresh token with fresh expiration.\nFrontend needs both tokens to maintain authentication state."
       },
-      "ToneAttributes": {
-        "properties": {
-          "formality": {
-            "type": "string",
-            "title": "Formality",
-            "description": "Formality level: casual, semi-formal, formal"
-          },
-          "enthusiasm": {
-            "type": "string",
-            "title": "Enthusiasm",
-            "description": "Enthusiasm level: low, medium, high"
-          },
-          "expertise": {
-            "type": "string",
-            "title": "Expertise",
-            "description": "Expertise level: beginner, intermediate, authoritative"
-          }
-        },
-        "type": "object",
-        "required": [
-          "formality",
-          "enthusiasm",
-          "expertise"
-        ],
-        "title": "ToneAttributes",
-        "description": "Tone attributes schema."
-      },
       "ToneAttributesV2": {
         "properties": {
           "formality": {
@@ -13259,6 +12874,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
