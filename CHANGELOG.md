@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.371] - 2025-12-31
+
+### Changes
+- Merge pull request #1348 from Matchpoint-AI/cleanup/1328-scheduler-todos
+
+**Source:** project-beta-api@15f5710b
+
 ## [v0.7.370] - 2025-12-31
 
 ### Changes
