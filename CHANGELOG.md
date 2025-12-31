@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.360] - 2025-12-31
+
+### Changes
+- Merge pull request #1310 from Matchpoint-AI/test/1287-prompt-composer-coverage
+
+**Source:** project-beta-api@db98420d
+
 ## [v0.7.359] - 2025-12-31
 
 ### Changes
