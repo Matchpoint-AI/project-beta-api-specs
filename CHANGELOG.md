@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.377] - 2025-12-31
+
+### Changes
+- Merge pull request #1372 from Matchpoint-AI/refactor/1355-remove-dead-llm
+
+**Source:** project-beta-api@8cba2023
+
 ## [v0.7.376] - 2025-12-31
 
 ### Changes
