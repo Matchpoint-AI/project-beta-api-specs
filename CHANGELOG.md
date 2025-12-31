@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.393] - 2025-12-31
+
+### Changes
+- Merge pull request #1393 from Matchpoint-AI/feat/1360-media-table
+
+**Source:** project-beta-api@9df3a67b
+
 ## [v0.7.392] - 2025-12-31
 
 ### Changes
