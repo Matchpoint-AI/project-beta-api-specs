@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.370] - 2025-12-31
+
+### Changes
+- Merge pull request #1342 from Matchpoint-AI/feat/1332-campaign-publisher-protocol
+
+**Source:** project-beta-api@c55e15a0
+
 ## [v0.7.369] - 2025-12-31
 
 ### Changes
