@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.381"
+    "version": "0.7.382"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2954,60 +2954,6 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": [
-          "content"
-        ],
-        "summary": "Create Campaign Content",
-        "description": "Create content for a campaign.\n\nThis is the RMM Level 2 compliant endpoint for creating content for a campaign.\nSupports two modes:\n1. Assembly mode: When 'posts' array is provided, assembles posts into content calendar\n2. Generation mode: When no 'posts' array, generates content using AI\n\nThis endpoint is called by the campaign-generator workflow to assemble posts\ninto a content calendar structure.\n\nArgs:\n    campaign_id: Campaign ID\n    request: Content creation data (may include 'posts' array for assembly)\n\nReturns:\n    Created content record\n\nRaises:\n    HTTPException: 404 if campaign not found, 400 for invalid data",
-        "operationId": "create_campaign_content_api_v2_campaigns__campaign_id__content_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "description": "Content creation data",
-                "title": "Request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Response Create Campaign Content Api V2 Campaigns  Campaign Id  Content Post"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/api/v2/content/{content_id}/status": {
@@ -3792,69 +3738,6 @@
           },
           "500": {
             "description": "Failed to retrieve workflow status"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/posts": {
-      "post": {
-        "tags": [
-          "content-workflows"
-        ],
-        "summary": "Create Campaign Post",
-        "description": "Generate a single post for a campaign (called by workflow).\n\nThis endpoint is called by the campaign-generator workflow to generate\nindividual posts in parallel. The workflow provides week, day, and platform\nparameters.\n\nArchitecture Note (Issue #1025):\nThis controller orchestrates ContentService (text) and ImageService (images)\nper AGENTS.md guidelines. Controllers handle service orchestration, not\nservice-to-service calls.\n\nNote: GCP Workflows may send the request body as either a dict or a\nsingle-element list containing a dict. This endpoint handles both cases.\n\nArgs:\n    campaign_id: Campaign ID\n    post_params: Post generation parameters (week, day, platform)\n\nReturns:\n    Generated post data with text and images\n\nRaises:\n    HTTPException: 404 if campaign not found, 400 for invalid data",
-        "operationId": "create_campaign_post_api_v2_campaigns__campaign_id__posts_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "Campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "Campaign ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "description": "Post generation parameters",
-                "title": "Post Params"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Post created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Response Create Campaign Post Api V2 Campaigns  Campaign Id  Posts Post"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign not found"
-          },
-          "400": {
-            "description": "Invalid request data"
           },
           "422": {
             "description": "Validation Error",

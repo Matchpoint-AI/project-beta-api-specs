@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.382] - 2025-12-31
+
+### Changes
+- Merge pull request #1381 from Matchpoint-AI/fix/1318-remove-workflow-campaign-endpoints
+
+**Source:** project-beta-api@a7143e5b
+
 ## [v0.7.381] - 2025-12-31
 
 ### Changes
