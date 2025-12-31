@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.381] - 2025-12-31
+
+### Changes
+- Merge pull request #1382 from Matchpoint-AI/fix/1370-dead-llm-services
+
+**Source:** project-beta-api@beefba08
+
 ## [v0.7.380] - 2025-12-31
 
 ### Changes
