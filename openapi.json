@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.390"
+    "version": "0.7.391"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1330,7 +1330,7 @@
           "campaigns"
         ],
         "summary": "Get Campaign Workflow Status",
-        "description": "Get workflow status for a campaign's content generation.\n\nReturns the current status of the campaign's content generation workflow.\nUsed by the frontend to poll for progress during content generation.\n\nIssue #1227: Missing workflow-status endpoint for campaigns.\n\nThe workflow status includes:\n- status: pending, running, completed, or failed\n- progress: completion percentage (0-100)\n- message: human-readable progress message (e.g., \"Generating post 10 of 21\")\n- current_step: the currently executing workflow step\n\nArgs:\n    campaign_id: The campaign ID\n    campaign_service: Service for campaign CRUD operations\n    workflow_service: Service for workflow status retrieval\n    content_repository: Repository for content data (to get post counts)\n\nReturns:\n    WorkflowStatusResponse with status, progress, and message\n\nRaises:\n    HTTPException: 404 if campaign not found or no workflow started",
+        "description": "Get workflow status for a campaign's content generation.\n\nReturns the current status of the campaign's content generation workflow.\nUsed by the frontend to poll for progress during content generation.\n\nIssue #1227: Missing workflow-status endpoint for campaigns.\nIssue #1298: DB-based status for Pub/Sub content generation.\n\nThis endpoint uses a DB-first approach:\n1. Query database for content generation status\n2. Calculate progress from Content record counts\n3. Only fall back to WorkflowService for legacy GCP workflow polling\n\nThe workflow status includes:\n- status: pending, running, completed, or failed\n- progress: completion percentage (0-100)\n- message: human-readable progress message (e.g., \"Generating post 10 of 21\")\n- current_step: the currently executing workflow step\n\nArgs:\n    campaign_id: The campaign ID\n    campaign_service: Service for campaign CRUD operations\n    workflow_service: Service for workflow status retrieval\n    content_repository: Repository for content data (to get post counts)\n\nReturns:\n    WorkflowStatusResponse with status, progress, and message\n\nRaises:\n    HTTPException: 404 if campaign not found or no workflow started",
         "operationId": "get_campaign_workflow_status_api_v2_campaigns__campaign_id__workflow_status_get",
         "parameters": [
           {
