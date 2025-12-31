@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.372] - 2025-12-31
+
+### Changes
+- Merge pull request #1344 from Matchpoint-AI/cleanup/1334-remove-legacy-publishing
+
+**Source:** project-beta-api@d1f9abcc
+
 ## [v0.7.371] - 2025-12-31
 
 ### Changes
