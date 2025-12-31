@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.398"
+    "version": "0.7.399"
   },
   "paths": {
     "/api/v2/brands": {
@@ -12,7 +12,7 @@
           "brands"
         ],
         "summary": "Create Brand",
-        "description": "Create a new brand and automatically trigger brand crawler via Pub/Sub.\n\nIssue #1316: Migrated from GCP Workflow to Pub/Sub for brand crawling.\n\nCreates a new brand with server-generated ID and immediately publishes\na brand crawl request to trigger the brand-crawler service in the background.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Brand creation request",
+        "description": "Create a new brand and automatically trigger knowledge workflow.\n\nCreates a new brand with server-generated ID and immediately starts\na knowledge extraction workflow in the background.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Brand creation request",
         "operationId": "create_brand_api_v2_brands_post",
         "security": [
           {
@@ -780,7 +780,7 @@
           "brand-workflow"
         ],
         "summary": "Get Brand Workflow",
-        "description": "Get the status of the knowledge collection workflow.\n\nReturns the current status of the background workflow including\nprogress, current step, and any results. This endpoint is used\nby the frontend to monitor the progress of the knowledge extraction\nthat was initiated internally during brand creation.",
+        "description": "Get the status of the knowledge collection workflow.\n\nReturns the current status of the background workflow including\nprogress, current step, and any results. This endpoint is used\nby the frontend to monitor the progress of the knowledge extraction\nthat was initiated internally during brand creation.\n\nIssue #1268: Migrated from WorkflowService to DB-based status tracking.\nStatus is now read from the brand's knowledge_status field.",
         "operationId": "get_brand_workflow_api_v2_brands__brand_id__knowledge_workflows__workflow_id__get",
         "parameters": [
           {
@@ -1331,7 +1331,7 @@
           "campaigns"
         ],
         "summary": "Get Campaign Workflow Status",
-        "description": "Get workflow status for a campaign's content generation.\n\nReturns the current status of the campaign's content generation workflow.\nUsed by the frontend to poll for progress during content generation.\n\nIssue #1227: Missing workflow-status endpoint for campaigns.\nIssue #1298: DB-based status for Pub/Sub content generation.\n\nThis endpoint uses a DB-first approach:\n1. Query database for content generation status\n2. Calculate progress from Content record counts\n3. Only fall back to WorkflowService for legacy GCP workflow polling\n\nThe workflow status includes:\n- status: pending, running, completed, or failed\n- progress: completion percentage (0-100)\n- message: human-readable progress message (e.g., \"Generating post 10 of 21\")\n- current_step: the currently executing workflow step\n\nArgs:\n    campaign_id: The campaign ID\n    campaign_service: Service for campaign CRUD operations\n    workflow_service: Service for workflow status retrieval\n    content_repository: Repository for content data (to get post counts)\n\nReturns:\n    WorkflowStatusResponse with status, progress, and message\n\nRaises:\n    HTTPException: 404 if campaign not found or no workflow started",
+        "description": "Get workflow status for a campaign's content generation.\n\nReturns the current status of the campaign's content generation workflow.\nUsed by the frontend to poll for progress during content generation.\n\nIssue #1227: Missing workflow-status endpoint for campaigns.\nIssue #1298: DB-based status for Pub/Sub content generation.\nIssue #1268: Removed WorkflowService - fully DB-based now.\n\nThis endpoint uses a DB-first approach:\n1. Query database for content generation status\n2. Calculate progress from Content record counts\n3. Return pending status if workflow started but no content yet\n\nThe workflow status includes:\n- status: pending, running, completed, or failed\n- progress: completion percentage (0-100)\n- message: human-readable progress message (e.g., \"Generating post 10 of 21\")\n- current_step: the currently executing workflow step\n\nArgs:\n    campaign_id: The campaign ID\n    campaign_service: Service for campaign CRUD operations\n    content_repository: Repository for content data (to get post counts)\n\nReturns:\n    WorkflowStatusResponse with status, progress, and message\n\nRaises:\n    HTTPException: 404 if campaign not found or no workflow started",
         "operationId": "get_campaign_workflow_status_api_v2_campaigns__campaign_id__workflow_status_get",
         "parameters": [
           {
@@ -3576,64 +3576,6 @@
           },
           "500": {
             "description": "Failed to start workflow"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/content/workflows/{workflow_id}": {
-      "get": {
-        "tags": [
-          "content-workflows"
-        ],
-        "summary": "Get Campaign Content Workflow Status",
-        "description": "Get the status of a content generation workflow.\n\nThis endpoint retrieves the current status of a workflow execution,\nincluding progress, current step, and completion status.\n\nUse this endpoint to poll for workflow completion after starting\na workflow with POST /campaigns/{campaign_id}/content/workflows.\n\nRMM Level 2 Compliance:\n- GET retrieves workflow resource by ID\n- Resource-oriented URL structure\n- Returns workflow state representation\n\nArgs:\n    campaign_id: Campaign ID the workflow belongs to\n    workflow_id: Workflow execution ID (from start_campaign_content_workflow)\n    workflow_service: Injected workflow service\n\nReturns:\n    CampaignWorkflowResponse with current workflow status\n\nRaises:\n    HTTPException: 404 if workflow not found, 500 on service errors",
-        "operationId": "get_campaign_content_workflow_status_api_v2_campaigns__campaign_id__content_workflows__workflow_id__get",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Campaign Id"
-            }
-          },
-          {
-            "name": "workflow_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Workflow Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Workflow status retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CampaignWorkflowResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Workflow not found"
-          },
-          "500": {
-            "description": "Failed to retrieve workflow status"
           },
           "422": {
             "description": "Validation Error",

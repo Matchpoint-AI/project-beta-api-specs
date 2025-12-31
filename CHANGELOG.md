@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.399] - 2025-12-31
+
+### Changes
+- Merge pull request #1397 from Matchpoint-AI/fix/1268-remove-workflow-service
+
+**Source:** project-beta-api@b60b22a0
+
 ## [v0.7.398] - 2025-12-31
 
 ### Changes
