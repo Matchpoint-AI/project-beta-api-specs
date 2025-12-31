@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.389"
+    "version": "0.7.390"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4327,6 +4327,185 @@
             "description": "Prometheus metrics in text format",
             "content": {
               "text/plain": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/{post_id}/versions": {
+      "post": {
+        "tags": [
+          "post-versions"
+        ],
+        "summary": "Create a new version of a post",
+        "description": "Create a new version of a post by regenerating text, media, or both.\n\n        Returns 202 Accepted immediately. Use the status_url to poll for completion.\n\n        **Targets:**\n        - `text`: Regenerate caption/text only\n        - `media`: Regenerate specific media item (requires media_id)\n        - `all`: Regenerate both text and media",
+        "operationId": "create_post_version",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVersionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateVersionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "post-versions"
+        ],
+        "summary": "Get version history for a post",
+        "description": "Returns complete version history with lineage information.",
+        "operationId": "get_post_versions",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Max versions to return",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Max versions to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Offset for pagination",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Offset for pagination"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionHistoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/versions/{request_id}/status": {
+      "get": {
+        "tags": [
+          "post-versions"
+        ],
+        "summary": "Get status of version creation request",
+        "description": "Poll status of async version creation.",
+        "operationId": "get_version_status",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
             }
           }
         }
@@ -9682,6 +9861,76 @@
         "title": "CrawlTrendDataPoint",
         "description": "Single data point in crawl trends time series."
       },
+      "CreateVersionRequest": {
+        "properties": {
+          "target": {
+            "$ref": "#/components/schemas/VersionRequestTarget",
+            "description": "What to regenerate: text, media, or all"
+          },
+          "mediaId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mediaid",
+            "description": "Required when target='media'. ID of media to regenerate."
+          },
+          "modifications": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VersionModifications"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Modification parameters for regeneration"
+          }
+        },
+        "type": "object",
+        "required": [
+          "target"
+        ],
+        "title": "CreateVersionRequest",
+        "description": "Request to create a new post version."
+      },
+      "CreateVersionResponse": {
+        "properties": {
+          "versionRequestId": {
+            "type": "string",
+            "title": "Versionrequestid",
+            "description": "UUID of the version request"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Initial status",
+            "default": "pending"
+          },
+          "statusUrl": {
+            "type": "string",
+            "title": "Statusurl",
+            "description": "URL to poll for status"
+          },
+          "estimatedCompletionSeconds": {
+            "type": "integer",
+            "title": "Estimatedcompletionseconds",
+            "description": "Estimated seconds to completion",
+            "default": 30
+          }
+        },
+        "type": "object",
+        "required": [
+          "versionRequestId",
+          "statusUrl"
+        ],
+        "title": "CreateVersionResponse",
+        "description": "Response when version request is accepted (202 Accepted)."
+      },
       "DayContent": {
         "properties": {
           "dayNumber": {
@@ -10783,6 +11032,84 @@
         ],
         "title": "PostSchema",
         "description": "Schema for individual social media post."
+      },
+      "PostVersionItemResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "postId": {
+            "type": "string",
+            "title": "Postid"
+          },
+          "versionNumber": {
+            "type": "integer",
+            "title": "Versionnumber"
+          },
+          "parentVersionId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parentversionid"
+          },
+          "changeType": {
+            "type": "string",
+            "title": "Changetype"
+          },
+          "textSnapshot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Textsnapshot"
+          },
+          "mediaSnapshot": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mediasnapshot"
+          },
+          "createdBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Createdby"
+          },
+          "createdAt": {
+            "type": "string",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "postId",
+          "versionNumber",
+          "changeType",
+          "createdAt"
+        ],
+        "title": "PostVersionItemResponse",
+        "description": "Single version in history response with camelCase aliases."
       },
       "ProductV2": {
         "properties": {
@@ -12288,6 +12615,100 @@
         "title": "SignupResponse",
         "description": "Schema for signup responses.\n\nReturned after successful signup creation."
       },
+      "StatusErrorResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "StatusErrorResponse",
+        "description": "Error info."
+      },
+      "StatusProgressResponse": {
+        "properties": {
+          "step": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step"
+          },
+          "percentage": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percentage"
+          }
+        },
+        "type": "object",
+        "title": "StatusProgressResponse",
+        "description": "Progress info with camelCase."
+      },
+      "StatusResultResponse": {
+        "properties": {
+          "versionId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Versionid"
+          },
+          "mediaUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mediaurl"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "title": "StatusResultResponse",
+        "description": "Result info with camelCase."
+      },
       "SubtypeVarietyMetrics": {
         "properties": {
           "sceneType": {
@@ -12677,6 +13098,185 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VersionHistoryResponse": {
+        "properties": {
+          "postId": {
+            "type": "string",
+            "title": "Postid"
+          },
+          "currentVersion": {
+            "type": "integer",
+            "title": "Currentversion"
+          },
+          "totalVersions": {
+            "type": "integer",
+            "title": "Totalversions"
+          },
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/PostVersionItemResponse"
+            },
+            "type": "array",
+            "title": "Versions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postId",
+          "currentVersion",
+          "totalVersions",
+          "versions"
+        ],
+        "title": "VersionHistoryResponse",
+        "description": "Version history response with camelCase aliases."
+      },
+      "VersionModifications": {
+        "properties": {
+          "feedback": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback",
+            "description": "User feedback to incorporate"
+          },
+          "tone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone",
+            "description": "Desired tone: professional, casual, etc."
+          },
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt",
+            "description": "New/modified prompt for media"
+          },
+          "style": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Style",
+            "description": "Style transfer to apply"
+          },
+          "keep_composition": {
+            "type": "boolean",
+            "title": "Keep Composition",
+            "description": "Preserve layout/composition",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "VersionModifications",
+        "description": "Modification parameters for version creation."
+      },
+      "VersionRequestTarget": {
+        "type": "string",
+        "enum": [
+          "text",
+          "media",
+          "all"
+        ],
+        "title": "VersionRequestTarget",
+        "description": "Target type for version generation."
+      },
+      "VersionStatusResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "progress": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StatusProgressResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StatusResultResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StatusErrorResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "title": "Createdat"
+          },
+          "startedAt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Startedat"
+          },
+          "completedAt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "createdAt"
+        ],
+        "title": "VersionStatusResponse",
+        "description": "Status polling response with camelCase aliases."
       },
       "WeekContent": {
         "properties": {
