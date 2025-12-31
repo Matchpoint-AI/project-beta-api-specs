@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.356] - 2025-12-31
+
+### Changes
+- Merge pull request #1304 from Matchpoint-AI/test/1285-local-workflow-coverage
+
+**Source:** project-beta-api@4303178d
+
 ## [v0.7.355] - 2025-12-31
 
 ### Changes
