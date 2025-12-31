@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.364] - 2025-12-31
+
+### Changes
+- Merge pull request #1314 from Matchpoint-AI/fix/1312-dead-tests
+
+**Source:** project-beta-api@1798fa1b
+
 ## [v0.7.363] - 2025-12-31
 
 ### Changes
