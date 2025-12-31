@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.391"
+    "version": "0.7.392"
   },
   "paths": {
     "/api/v2/brands": {
@@ -12,7 +12,7 @@
           "brands"
         ],
         "summary": "Create Brand",
-        "description": "Create a new brand and automatically trigger knowledge workflow.\n\nCreates a new brand with server-generated ID and immediately starts\na knowledge extraction workflow in the background.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Brand creation request",
+        "description": "Create a new brand and automatically trigger brand crawler via Pub/Sub.\n\nIssue #1316: Migrated from GCP Workflow to Pub/Sub for brand crawling.\n\nCreates a new brand with server-generated ID and immediately publishes\na brand crawl request to trigger the brand-crawler service in the background.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Brand creation request",
         "operationId": "create_brand_api_v2_brands_post",
         "security": [
           {
