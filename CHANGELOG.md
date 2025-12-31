@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.395] - 2025-12-31
+
+### Changes
+- Merge pull request #1399 from Matchpoint-AI/fix/1363-content-image-media-migration
+
+**Source:** project-beta-api@9a6bf46c
+
 ## [v0.7.394] - 2025-12-31
 
 ### Changes
