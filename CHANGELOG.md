@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.374] - 2025-12-31
+
+### Changes
+- Merge pull request #1351 from Matchpoint-AI/feat/1315-brand-crawler-publisher
+
+**Source:** project-beta-api@b09c54b9
+
 ## [v0.7.373] - 2025-12-31
 
 ### Changes
