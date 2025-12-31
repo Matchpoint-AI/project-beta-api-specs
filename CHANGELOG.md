@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.367] - 2025-12-31
+
+### Changes
+- Merge pull request #1313 from Matchpoint-AI/feat/1269-campaign-constraints
+
+**Source:** project-beta-api@fb1e16d0
+
 ## [v0.7.366] - 2025-12-31
 
 ### Changes
