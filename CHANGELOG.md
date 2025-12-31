@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.365] - 2025-12-31
+
+### Changes
+- Merge pull request #1338 from Matchpoint-AI/chore/1337-cleanup-stale-files
+
+**Source:** project-beta-api@2bf4530d
+
 ## [v0.7.364] - 2025-12-31
 
 ### Changes
