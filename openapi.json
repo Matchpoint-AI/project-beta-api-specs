@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.426"
+    "version": "0.7.427"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1119,6 +1119,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -5176,135 +5177,6 @@
         }
       }
     },
-    "/api/v2/auth/forgot-password": {
-      "post": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Forgot Password",
-        "description": "Initiate password reset flow by sending email with reset token.\n\nDEPRECATED: This endpoint uses a verb in the path which violates RMM Level 2.\nUse POST /passwords instead.\nThis endpoint will be removed in 6 months.\n\nDeprecation date: 2025-12-29\nRemoval date: 2026-06-29\nReplacement: POST /api/v2/passwords\n\nSecurity consideration: Always returns success message regardless of whether\nemail exists, to prevent email enumeration attacks.",
-        "operationId": "forgot_password_api_v2_auth_forgot_password_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Password reset email sent (if email exists)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ForgotPasswordResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/v2/auth/reset-password": {
-      "post": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Reset Password",
-        "description": "Reset password using reset token from email.\n\nDEPRECATED: This endpoint uses a verb in the path which violates RMM Level 2.\nUse PUT /passwords/{token} instead.\nThis endpoint will be removed in 6 months.\n\nDeprecation date: 2025-12-29\nRemoval date: 2026-06-29\nReplacement: PUT /api/v2/passwords/{token}",
-        "operationId": "reset_password_api_v2_auth_reset_password_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResetPasswordRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Password reset successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResetPasswordResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid or expired reset token"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/v2/auth/refresh": {
-      "post": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Refresh Token",
-        "description": "Refresh an expiring or expired JWT token.\n\nDEPRECATED: This endpoint uses a verb in the path which violates RMM Level 2.\nUse POST /sessions with grant_type=refresh_token instead.\nThis endpoint will be removed in 6 months.\n\nDeprecation date: 2025-12-29\nRemoval date: 2026-06-29\nReplacement: POST /api/v2/sessions with body {\"grant_type\": \"refresh_token\", \"refresh_token\": \"...\"}\n\nThis endpoint allows native auth users to refresh their JWT tokens\nwithout requiring re-authentication. The endpoint accepts expired tokens\n(within a reasonable grace period) and issues a new token with fresh\nexpiration.\n\nSecurity considerations:\n- Validates token signature and structure\n- Checks if token is blacklisted (logged out)\n- Preserves original token claims in new token\n- Does not extend refresh capability indefinitely\n\nArgs:\n    response: FastAPI Response object for adding headers\n    credentials: HTTP Bearer token credentials from request header\n    auth_service: Injected authentication service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    TokenRefreshResponse with new access token and expiration time\n\nRaises:\n    HTTPException 401: If token is invalid, malformed, or blacklisted\n    HTTPException 500: If token refresh fails due to server error",
-        "operationId": "refresh_token_api_v2_auth_refresh_post",
-        "responses": {
-          "200": {
-            "description": "Token refreshed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TokenRefreshResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid or malformed token"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "deprecated": true,
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
     "/api/v2/users/me": {
       "get": {
         "tags": [
@@ -6000,6 +5872,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6088,6 +5961,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6142,6 +6016,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6208,6 +6083,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6761,6 +6637,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6878,6 +6755,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7071,6 +6949,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7395,6 +7274,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7424,6 +7304,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7627,6 +7508,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7742,6 +7624,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7903,6 +7786,7 @@
           "adjustments": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8022,6 +7906,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8125,6 +8010,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8163,6 +8049,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8206,6 +8093,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8285,6 +8173,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8356,6 +8245,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -9175,6 +9065,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9433,6 +9324,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10034,35 +9926,6 @@
         "title": "EmailVerificationRequest",
         "description": "Schema for email verification request.\n\nFor POST /api/v2/verifications endpoint.\nVerifies user email using token from verification email."
       },
-      "ForgotPasswordRequest": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email",
-            "description": "User email address"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email"
-        ],
-        "title": "ForgotPasswordRequest",
-        "description": "Schema for forgot password request.\n\nFor POST /api/v2/auth/forgot-password endpoint.\nInitiates password reset flow by sending email with reset token."
-      },
-      "ForgotPasswordResponse": {
-        "properties": {
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Generic success message",
-            "default": "If the email exists, a password reset link has been sent."
-          }
-        },
-        "type": "object",
-        "title": "ForgotPasswordResponse",
-        "description": "Schema for forgot password response.\n\nReturns confirmation message without revealing if email exists."
-      },
       "GeneratedContent": {
         "properties": {
           "id": {
@@ -10257,6 +10120,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10416,6 +10280,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -10979,6 +10844,7 @@
           "mediaSnapshot": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11256,43 +11122,6 @@
         "type": "object",
         "title": "ResendVerificationResponse",
         "description": "Schema for resend verification email response.\n\nReturned after resending verification email.\nReturns generic message to prevent email enumeration attacks."
-      },
-      "ResetPasswordRequest": {
-        "properties": {
-          "token": {
-            "type": "string",
-            "minLength": 1,
-            "title": "Token",
-            "description": "Password reset token from email"
-          },
-          "newPassword": {
-            "type": "string",
-            "maxLength": 128,
-            "minLength": 8,
-            "title": "Newpassword",
-            "description": "New password (min 8 characters)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "token",
-          "newPassword"
-        ],
-        "title": "ResetPasswordRequest",
-        "description": "Schema for reset password request.\n\nFor POST /api/v2/auth/reset-password endpoint.\nResets password using token from reset email."
-      },
-      "ResetPasswordResponse": {
-        "properties": {
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Success message",
-            "default": "Password reset successful. You can now log in with your new password."
-          }
-        },
-        "type": "object",
-        "title": "ResetPasswordResponse",
-        "description": "Schema for reset password response.\n\nReturns success message after password reset."
       },
       "SceneMixPlanCreate": {
         "properties": {
@@ -11649,6 +11478,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11896,11 +11726,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -11976,6 +11808,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -11983,6 +11816,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12703,39 +12537,6 @@
           "thread_id": "thread-550e8400-e29b-41d4-a716-446655440001"
         }
       },
-      "TokenRefreshResponse": {
-        "properties": {
-          "accessToken": {
-            "type": "string",
-            "title": "Accesstoken",
-            "description": "New JWT access token"
-          },
-          "refreshToken": {
-            "type": "string",
-            "title": "Refreshtoken",
-            "description": "New refresh token for next refresh"
-          },
-          "tokenType": {
-            "type": "string",
-            "title": "Tokentype",
-            "description": "Token type (always 'bearer')",
-            "default": "bearer"
-          },
-          "expiresIn": {
-            "type": "integer",
-            "title": "Expiresin",
-            "description": "Token expiration time in seconds from now"
-          }
-        },
-        "type": "object",
-        "required": [
-          "accessToken",
-          "refreshToken",
-          "expiresIn"
-        ],
-        "title": "TokenRefreshResponse",
-        "description": "Schema for token refresh response.\n\nReturns new access token and refresh token with fresh expiration.\nFrontend needs both tokens to maintain authentication state."
-      },
       "URLContentRequest": {
         "properties": {
           "url": {
@@ -13374,6 +13175,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
