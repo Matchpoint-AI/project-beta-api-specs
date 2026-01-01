@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.425] - 2026-01-01
+
+### Changes
+- Merge pull request #1455 from Matchpoint-AI/chore/1385-cleanup-dead-brand-services
+
+**Source:** project-beta-api@9a956157
+
 ## [v0.7.424] - 2026-01-01
 
 ### Changes
