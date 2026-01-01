@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.404] - 2026-01-01
+
+### Changes
+- Merge pull request #1413 from Matchpoint-AI/feat/1408-schema-validation-tests
+
+**Source:** project-beta-api@4e30330e
+
 ## [v0.7.403] - 2026-01-01
 
 ### Changes
