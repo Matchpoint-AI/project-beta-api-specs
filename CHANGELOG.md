@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.411] - 2026-01-01
+
+### Changes
+- fix(schemas): handle weeks array format in content_data (#1429) (#1430)
+
+**Source:** project-beta-api@3c9d39b3
+
 ## [v0.7.410] - 2026-01-01
 
 ### Changes
