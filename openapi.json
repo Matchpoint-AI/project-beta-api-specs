@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.419"
+    "version": "0.7.420"
   },
   "paths": {
     "/api/v2/brands": {
@@ -960,7 +960,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BrandKnowledgeV2ListResponse"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/BrandKnowledgeV2ListResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/BrandKnowledgeBrandSummaryResponse"
+                    }
+                  ]
                 }
               }
             }
@@ -6472,110 +6479,6 @@
         "title": "BrandKnowledgeStatusResponse",
         "description": "Response schema for brand knowledge extraction status (Phase 1: Progressive Brand Knowledge)."
       },
-      "BrandKnowledgeV2ListResponse": {
-        "properties": {
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/BrandKnowledgeV2Response"
-            },
-            "type": "array",
-            "title": "Items",
-            "description": "List of brand knowledge entries"
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total",
-            "description": "Total number of knowledge entries for this brand"
-          },
-          "limit": {
-            "type": "integer",
-            "title": "Limit",
-            "description": "Number of items per page"
-          },
-          "offset": {
-            "type": "integer",
-            "title": "Offset",
-            "description": "Number of items skipped"
-          }
-        },
-        "type": "object",
-        "required": [
-          "items",
-          "total",
-          "limit",
-          "offset"
-        ],
-        "title": "BrandKnowledgeV2ListResponse",
-        "description": "V2 Paginated response model for brand knowledge list."
-      },
-      "BrandKnowledgeV2Response": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "personalityTraits": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Personalitytraits",
-            "description": "2-5 lowercase adjectives describing brand personality"
-          },
-          "toneAttributes": {
-            "$ref": "#/components/schemas/ToneAttributesV2",
-            "description": "Structured tone characteristics"
-          },
-          "colorPalette": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Colorpalette",
-            "description": "3-5 hex color codes from brand visual identity"
-          },
-          "products": {
-            "items": {
-              "$ref": "#/components/schemas/ProductV2"
-            },
-            "type": "array",
-            "title": "Products",
-            "description": "List of products with name and category"
-          },
-          "brandDescription": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Branddescription",
-            "description": "1-2 sentences describing the brand"
-          },
-          "valueProposition": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Valueproposition",
-            "description": "1-2 sentences describing the value proposition"
-          },
-          "targetAudience": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Targetaudience",
-            "description": "1-2 sentences describing the target audience"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "personalityTraits",
-          "toneAttributes",
-          "colorPalette",
-          "products",
-          "brandDescription",
-          "valueProposition",
-          "targetAudience"
-        ],
-        "title": "BrandKnowledgeV2Response",
-        "description": "V2 Response model for simplified brand knowledge extraction."
-      },
       "BrandOnboardingProgressResponse": {
         "properties": {
           "brandId": {
@@ -11479,27 +11382,6 @@
         "title": "PostVersionItemResponse",
         "description": "Single version in history response with camelCase aliases."
       },
-      "ProductV2": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Product name"
-          },
-          "category": {
-            "type": "string",
-            "title": "Category",
-            "description": "Product category"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "category"
-        ],
-        "title": "ProductV2",
-        "description": "V2 Product information for brand knowledge."
-      },
       "PromptCreate": {
         "properties": {
           "id": {
@@ -13221,33 +13103,6 @@
         ],
         "title": "TokenRefreshResponse",
         "description": "Schema for token refresh response.\n\nReturns new access token and refresh token with fresh expiration.\nFrontend needs both tokens to maintain authentication state."
-      },
-      "ToneAttributesV2": {
-        "properties": {
-          "formality": {
-            "type": "string",
-            "title": "Formality",
-            "description": "Formality level (casual, professional, formal)"
-          },
-          "enthusiasm": {
-            "type": "string",
-            "title": "Enthusiasm",
-            "description": "Enthusiasm level (low, medium, high)"
-          },
-          "expertise": {
-            "type": "string",
-            "title": "Expertise",
-            "description": "Expertise level (beginner, intermediate, expert)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "formality",
-          "enthusiasm",
-          "expertise"
-        ],
-        "title": "ToneAttributesV2",
-        "description": "V2 Tone attributes for brand knowledge."
       },
       "URLContentRequest": {
         "properties": {
