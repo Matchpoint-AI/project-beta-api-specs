@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.408] - 2026-01-01
+
+### Changes
+- Merge pull request #1427 from Matchpoint-AI/feat/1424-media-snapshot-schema
+
+**Source:** project-beta-api@e4133f77
+
 ## [v0.7.407] - 2026-01-01
 
 ### Changes
