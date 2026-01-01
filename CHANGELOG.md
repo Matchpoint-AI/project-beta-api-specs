@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.413] - 2026-01-01
+
+### Changes
+- cleanup(1326): Remove dead brand crawling code (#1434)
+
+**Source:** project-beta-api@0669b13d
+
 ## [v0.7.412] - 2026-01-01
 
 ### Changes
