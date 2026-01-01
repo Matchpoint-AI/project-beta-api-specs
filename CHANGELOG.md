@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.410] - 2026-01-01
+
+### Changes
+- Merge pull request #1431 from Matchpoint-AI/feat/1422-pdf-extraction-cleanup
+
+**Source:** project-beta-api@31fc7e7d
+
 ## [v0.7.409] - 2026-01-01
 
 ### Changes
