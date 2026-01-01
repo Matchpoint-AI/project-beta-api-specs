@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.403] - 2026-01-01
+
+### Changes
+- Merge pull request #1412 from Matchpoint-AI/feat/1405-regen-tests
+
+**Source:** project-beta-api@3c16eaac
+
 ## [v0.7.402] - 2026-01-01
 
 ### Changes
