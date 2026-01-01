@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.425"
+    "version": "0.7.426"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4127,49 +4127,6 @@
         }
       }
     },
-    "/api/v2/integrations/redirect-uri": {
-      "post": {
-        "tags": [
-          "integrations"
-        ],
-        "summary": "Get Integration Redirect Uri",
-        "description": "Get OAuth redirect URI for platform integration.\n\nDEPRECATED: This endpoint uses a hyphenated resource name which violates RMM-2.\nUse /integrations/redirects instead. This endpoint will be removed in 6 months.\n\nDeprecation date: 2025-10-21\nRemoval date: 2026-04-21\nReplacement: POST /api/v2/integrations/redirects",
-        "operationId": "get_integration_redirect_uri_api_v2_integrations_redirect_uri_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IntegrationRedirectRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IntegrationRedirectResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
     "/api/v2/integrations": {
       "get": {
         "tags": [
@@ -4205,65 +4162,6 @@
         "summary": "Create Integration Session",
         "description": "Create a new integration session with a platform.\n\nRMM Level 2 Compliant Pattern:\n- POST creates a new session resource\n- Resource-oriented URL: /integrations/{platform}/sessions\n- Uses noun-based resource name (no verbs in path)\n- Returns 201 Created with the new session/integration\n\nArgs:\n    platform: Platform name (instagram, facebook, linkedin, twitter)\n    request: Integration authentication request with tokens/code\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    integration_repo: Injected integration repository\n\nReturns:\n    Created integration with ID\n\nRaises:\n    HTTPException: 400 if integration already exists or validation fails\n    HTTPException: 401 if authentication fails\n    HTTPException: 500 if database operation fails",
         "operationId": "create_integration_session_api_v2_integrations__platform__sessions_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "platform",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Platform"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IntegrationAuthRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IntegrationResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/integrations/{platform}/auth": {
-      "post": {
-        "tags": [
-          "integrations"
-        ],
-        "summary": "Authenticate Integration",
-        "description": "Authenticate with a platform and store integration.\n\nDEPRECATED: This endpoint uses a verb in the path which violates RMM Level 2.\nUse POST /integrations/{platform}/sessions instead.\nThis endpoint will be removed in 6 months.\n\nDeprecation date: 2025-12-29\nRemoval date: 2026-06-29\nReplacement: POST /api/v2/integrations/{platform}/sessions\n\nArgs:\n    platform: Platform name (instagram, facebook, linkedin, twitter)\n    request: Integration authentication request with tokens/code\n    response: FastAPI Response object for adding headers\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    integration_repo: Injected integration repository\n\nReturns:\n    Created integration with ID\n\nRaises:\n    HTTPException: 400 if integration already exists or validation fails\n    HTTPException: 401 if authentication fails\n    HTTPException: 500 if database operation fails",
-        "operationId": "authenticate_integration_api_v2_integrations__platform__auth_post",
-        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
