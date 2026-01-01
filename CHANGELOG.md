@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.400] - 2026-01-01
+
+### Changes
+- Merge pull request #1402 from Matchpoint-AI/feat/1371-e2e-versioning
+
+**Source:** project-beta-api@c64a5983
+
 ## [v0.7.399] - 2025-12-31
 
 ### Changes
