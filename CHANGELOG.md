@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.422] - 2026-01-01
+
+### Changes
+- Merge pull request #1442 from Matchpoint-AI/fix/465-api-weeks-serialization
+
+**Source:** project-beta-api@fe4cf5bd
+
 ## [v0.7.421] - 2026-01-01
 
 ### Changes
