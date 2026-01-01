@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.418] - 2026-01-01
+
+### Changes
+- Merge pull request #1438 from Matchpoint-AI/feat/1030-db-assertion-plugin
+
+**Source:** project-beta-api@6794c339
+
 ## [v0.7.417] - 2026-01-01
 
 ### Changes
