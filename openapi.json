@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.416"
+    "version": "0.7.417"
   },
   "paths": {
     "/api/v2/brands": {
@@ -891,7 +891,7 @@
           "brand-workflow"
         ],
         "summary": "Get Brand Knowledge V2",
-        "description": "Get extracted brand knowledge in V2 format with pagination.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.\n\nSupports pagination parameters for future compatibility when multiple\nknowledge entries per brand are supported.",
+        "description": "Get extracted brand knowledge in V2 format with pagination.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.\n\nRMM L2 Compliant: Supports `view` query parameter to control response type.\n- view=summary: Returns summary statistics (replaces /knowledge/summary)\n- view not specified: Returns full knowledge list with pagination\n\nSupports pagination parameters for future compatibility when multiple\nknowledge entries per brand are supported.",
         "operationId": "get_brand_knowledge_v2_api_v2_brands__brand_id__knowledge_get",
         "parameters": [
           {
@@ -931,6 +931,27 @@
               "title": "Offset"
             },
             "description": "Number of items to skip"
+          },
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "View mode: 'summary' for summary statistics. If not provided, returns full knowledge list.",
+              "enum": [
+                "summary"
+              ],
+              "title": "View"
+            },
+            "description": "View mode: 'summary' for summary statistics. If not provided, returns full knowledge list."
           }
         ],
         "responses": {
@@ -966,8 +987,9 @@
           "brand-workflow"
         ],
         "summary": "Get Brand Knowledge Summary By Brand",
-        "description": "Get summary statistics for a brand's knowledge entries.\n\nReturns summary statistics including total entries count,\nlast updated timestamp, and category breakdown for the specified brand.\n\nRMM Level 2 Compliance:\n- GET to /brands/{brand_id}/knowledge/summary retrieves summary resource\n- HTTP verb (GET) indicates retrieval\n- No verbs in URL path\n- Resource-oriented URL structure",
+        "description": "Get summary statistics for a brand's knowledge entries.\n\nDEPRECATED: This endpoint uses '/summary' as a path segment for a view.\nUse GET /brands/{brand_id}/knowledge?view=summary instead.\nThis endpoint will be removed on 2026-07-01.\n\nDeprecation date: 2026-01-01\nRemoval date: 2026-07-01\nReplacement: GET /api/v2/brands/{brand_id}/knowledge?view=summary",
         "operationId": "get_brand_knowledge_summary_by_brand",
+        "deprecated": true,
         "parameters": [
           {
             "name": "brand_id",
@@ -1606,9 +1628,9 @@
         "tags": [
           "campaigns"
         ],
-        "summary": "Generate Audience Suggestions",
-        "description": "Generate audience emotion and interest suggestions for campaign.\n\nDirect port from V1 AudienceForm.tsx audience suggestion logic.\n\nRMM L2 Rationale:\n- Suggestions are computed sub-resource under campaign audience\n- POST generates new suggestions based on campaign context\n- Returns emotional triggers and interest categories\n- Uses OpenAI for intelligent audience analysis\n\nThis endpoint:\n- Fetches campaign and brand data\n- Constructs LLM prompt for audience analysis\n- Generates emotion and interest arrays using GPT-4\n- Returns exactly 3 items in each array",
-        "operationId": "generate_audience_suggestions_api_v2_campaigns__campaign_id__audience_suggestions_post",
+        "summary": "Create Audience Suggestions",
+        "description": "Generate audience emotion and interest suggestions for campaign.\n\nRMM L2 Compliant: Uses hierarchical path '/audience/suggestions'.\n\nThis endpoint:\n- Fetches campaign and brand data\n- Constructs LLM prompt for audience analysis\n- Generates emotion and interest arrays using GPT-4\n- Returns exactly 3 items in each array",
+        "operationId": "create_audience_suggestions_api_v2_campaigns__campaign_id__audience_suggestions_post",
         "parameters": [
           {
             "name": "campaign_id",
@@ -1652,14 +1674,123 @@
         }
       }
     },
+    "/api/v2/campaigns/{campaign_id}/audience-suggestions": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Generate Audience Suggestions",
+        "description": "Generate audience emotion and interest suggestions for campaign.\n\nDEPRECATED: This endpoint uses hyphenated path '/audience-suggestions'.\nUse /audience/suggestions instead for RMM L2 compliance.\nThis endpoint will be removed on 2026-07-01.\n\nDeprecation date: 2026-01-01\nRemoval date: 2026-07-01\nReplacement: POST /api/v2/campaigns/{campaign_id}/audience/suggestions",
+        "operationId": "generate_audience_suggestions_api_v2_campaigns__campaign_id__audience_suggestions_post",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Audience suggestions generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudienceSuggestionsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "500": {
+            "description": "Failed to generate suggestions"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/exports/approval/status": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Exports Approval Status",
+        "description": "Get detailed export approval status for a campaign.\n\nRMM L2 Compliant: Uses hierarchical path '/exports/approval/status'.\n\nReturns detailed approval status for the export workflow including:\n- Whether all content is approved\n- Count of approved posts\n- Total count of posts\n- List of unapproved content IDs (for UI to show what needs approval)\n\nUsed by export functionality to:\n- Enable/disable export button\n- Show which content items need approval before export\n- Provide detailed feedback to user\n\nReturns:\n    - approved: true if all content is approved, false otherwise\n    - approved_content: number of approved posts\n    - total_content: total number of posts in campaign\n    - unapproved_content_ids: list of content IDs that are not approved",
+        "operationId": "get_exports_approval_status_api_v2_campaigns__campaign_id__exports_approval_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Export approval status returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignExportApprovalStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign content not found"
+          },
+          "500": {
+            "description": "Failed to get export approval status"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/campaigns/{campaign_id}/export/approval-status": {
       "get": {
         "tags": [
           "campaigns"
         ],
         "summary": "Get Campaign Export Approval Status",
-        "description": "Get detailed export approval status for a campaign.\n\nDirect port from V1 /api/v1/check-approved endpoint used by TabItems.tsx:34.\n\nReturns detailed approval status for the export workflow including:\n- Whether all content is approved\n- Count of approved posts\n- Total count of posts\n- List of unapproved content IDs (for UI to show what needs approval)\n\nRMM L2 Rationale:\n- export/approval-status is a computed sub-resource of campaign\n- GET retrieves the current export-ready state (not a state change)\n- Returns structured data with additional unapproved_content_ids field\n- Separates general approval-status from export-specific approval-status\n\nUsed by export functionality to:\n- Enable/disable export button\n- Show which content items need approval before export\n- Provide detailed feedback to user\n\nReturns:\n    - approved: true if all content is approved, false otherwise\n    - approved_content: number of approved posts\n    - total_content: total number of posts in campaign\n    - unapproved_content_ids: list of content IDs that are not approved",
+        "description": "Get detailed export approval status for a campaign.\n\nDEPRECATED: This endpoint uses procedural namespace '/export/approval-status'.\nUse /exports/approval/status instead for RMM L2 compliance.\nThis endpoint will be removed on 2026-07-01.\n\nDeprecation date: 2026-01-01\nRemoval date: 2026-07-01\nReplacement: GET /api/v2/campaigns/{campaign_id}/exports/approval/status",
         "operationId": "get_campaign_export_approval_status_api_v2_campaigns__campaign_id__export_approval_status_get",
+        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
