@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.419] - 2026-01-01
+
+### Changes
+- Merge pull request #1439 from Matchpoint-AI/feat/1388-llm-params
+
+**Source:** project-beta-api@63c242f7
+
 ## [v0.7.418] - 2026-01-01
 
 ### Changes
