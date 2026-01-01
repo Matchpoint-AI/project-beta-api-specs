@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.402] - 2026-01-01
+
+### Changes
+- Merge pull request #1411 from Matchpoint-AI/feat/1406-caption-tests
+
+**Source:** project-beta-api@2df573b2
+
 ## [v0.7.401] - 2026-01-01
 
 ### Changes
