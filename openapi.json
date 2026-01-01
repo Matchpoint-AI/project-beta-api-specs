@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.423"
+    "version": "0.7.424"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5474,49 +5474,6 @@
             "HTTPBearer": []
           }
         ]
-      }
-    },
-    "/api/v2/utilities/fetch-url-content": {
-      "post": {
-        "tags": [
-          "utilities"
-        ],
-        "summary": "Fetch content from URL (DEPRECATED)",
-        "description": "DEPRECATED: This endpoint will be removed in a future version. Use POST /url/content/fetches instead. Fetch and extract text content, metadata, and optionally images from a URL.",
-        "operationId": "fetch_url_content_api_v2_utilities_fetch_url_content_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/URLContentRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/URLContentResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
       }
     }
   },
