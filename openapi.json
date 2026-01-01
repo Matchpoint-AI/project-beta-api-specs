@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.408"
+    "version": "0.7.409"
   },
   "paths": {
     "/api/v2/brands": {
@@ -440,14 +440,66 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/summary": {
+    "/api/v2/brands/{brand_id}/summaries": {
       "post": {
         "tags": [
           "brands"
         ],
         "summary": "Generate Brand Summary",
-        "description": "Trigger brand summary generation via brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\n\n**RMM L2 Decision**: POST /api/v2/brands/{brand_id}/summary\n- Summary is a computed sub-resource of brand\n- POST triggers new summary generation via brand-crawler\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by brand-crawler:\n- Generates 60-word brand summary via LLM\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
-        "operationId": "generate_brand_summary_api_v2_brands__brand_id__summary_post",
+        "description": "Trigger brand summary generation via brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1102: RMM L2 compliance - renamed from /summary to /summaries.\n\n**RMM L2 Compliance**: POST /api/v2/brands/{brand_id}/summaries\n- Summaries modeled as a resource collection\n- POST creates a new summary generation request\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by brand-crawler:\n- Generates 60-word brand summary via LLM\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
+        "operationId": "generate_brand_summary_api_v2_brands__brand_id__summaries_post",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Brand summary generation triggered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandSummaryResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "500": {
+            "description": "Failed to trigger summary generation"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/summary": {
+      "post": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Generate Brand Summary Deprecated",
+        "description": "[DEPRECATED] Use POST /brands/{brand_id}/summaries instead.\n\nIssue #1102: This endpoint is deprecated for RMM L2 compliance.\nThe new endpoint uses plural 'summaries' to properly model the resource collection.\n\nThis deprecated endpoint will be removed in a future release.",
+        "operationId": "generate_brand_summary_deprecated_api_v2_brands__brand_id__summary_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "brand_id",
@@ -1038,7 +1090,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -6179,7 +6230,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6268,7 +6318,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6427,7 +6476,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6494,7 +6542,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7048,7 +7095,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7166,7 +7212,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7360,7 +7405,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7685,7 +7729,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7715,7 +7758,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7919,7 +7961,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8035,7 +8076,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8197,7 +8237,6 @@
           "adjustments": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8317,7 +8356,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8421,7 +8459,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8460,7 +8497,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8504,7 +8540,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8584,7 +8619,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8656,7 +8690,6 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -9476,7 +9509,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9735,7 +9767,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10560,7 +10591,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10720,7 +10750,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11284,7 +11313,6 @@
           "mediaSnapshot": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11976,7 +12004,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12224,13 +12251,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -12306,7 +12331,6 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -12314,7 +12338,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13733,7 +13756,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
