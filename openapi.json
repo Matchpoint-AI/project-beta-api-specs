@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.400"
+    "version": "0.7.401"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3323,6 +3323,130 @@
         }
       }
     },
+    "/api/v2/content/{content_id}/images/{image_id}": {
+      "patch": {
+        "tags": [
+          "content-images"
+        ],
+        "summary": "Update Image Prompt",
+        "description": "Update the prompt for an existing image (does not regenerate).\n\nRMM L2: PATCH for partial resource update.\n\nThis endpoint allows updating the image prompt without triggering\nregeneration. Use POST /images/{image_id}/regenerations to regenerate.\n\nArgs:\n    content_id: Content ID (path parameter, for URL consistency)\n    image_id: Image ID to update\n    request: Image update request with new prompt\n    service: Injected content image service\n\nReturns:\n    Updated content image response\n\nRaises:\n    HTTPException: 404 if image not found\n    HTTPException: 422 if validation fails",
+        "operationId": "update_image_prompt_api_v2_content__content_id__images__image_id__patch",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Content Id"
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentImageUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/images/{image_id}/regenerations": {
+      "post": {
+        "tags": [
+          "content-images"
+        ],
+        "summary": "Regenerate Image",
+        "description": "Regenerate an existing image with optional custom prompt.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\nThe endpoint uses '/regenerations' (noun) to comply with RMM L2.\n\nThis endpoint triggers image regeneration using either:\n- The existing prompt (if custom_prompt not provided)\n- A new custom prompt (which also updates the stored prompt)\n\nArgs:\n    content_id: Content ID (path parameter)\n    image_id: Image ID to regenerate\n    request: Regeneration request with optional custom prompt\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Regenerated content image response\n\nRaises:\n    HTTPException: 404 if image not found\n    HTTPException: 400 if generation limit exceeded or no prompt available\n    HTTPException: 500 if regeneration fails",
+        "operationId": "regenerate_image_api_v2_content__content_id__images__image_id__regenerations_post",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Content Id"
+            }
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentImageRegenerateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/content/{content_id}/prompt": {
       "get": {
         "tags": [
@@ -3468,6 +3592,59 @@
           },
           "404": {
             "description": "Content not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/text/versions": {
+      "post": {
+        "tags": [
+          "content-text-versions"
+        ],
+        "summary": "Update Text Versions",
+        "description": "Update text versions for a specific post.\n\nRMM L2: Uses POST for action that updates text, text_versions,\nand selected_image_index fields in content_data.\n\nThis endpoint allows the frontend to:\n- Edit post text after generation\n- Maintain text version history\n- Select which image to display\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Text versions update request\n    service: Injected text versions service\n\nReturns:\n    UpdateTextVersionsResponse with success status\n\nRaises:\n    HTTPException: 404 if content not found\n    HTTPException: 422 if validation fails",
+        "operationId": "update_text_versions_api_v2_content__content_id__text_versions_post",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Content Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTextVersionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTextVersionsResponse"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -8823,6 +9000,25 @@
         "title": "ContentImageGenerateRequest",
         "description": "Schema for generating a new content image."
       },
+      "ContentImageRegenerateRequest": {
+        "properties": {
+          "customPrompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customprompt",
+            "description": "Optional custom prompt for regeneration. If not provided, uses existing prompt."
+          }
+        },
+        "type": "object",
+        "title": "ContentImageRegenerateRequest",
+        "description": "Schema for regenerating an existing content image.\n\nIssue #1345: Restore image regeneration endpoint."
+      },
       "ContentImageResponse": {
         "properties": {
           "id": {
@@ -8948,6 +9144,21 @@
         "title": "ContentImageResponse",
         "description": "Schema for content image response."
       },
+      "ContentImageUpdate": {
+        "properties": {
+          "imagePrompt": {
+            "type": "string",
+            "title": "Imageprompt",
+            "description": "New prompt for image regeneration"
+          }
+        },
+        "type": "object",
+        "required": [
+          "imagePrompt"
+        ],
+        "title": "ContentImageUpdate",
+        "description": "Schema for updating a content image."
+      },
       "ContentImageUploadRequest": {
         "properties": {
           "url": {
@@ -8968,7 +9179,7 @@
             "title": "Caption",
             "description": "Image caption or alt text"
           },
-          "alt_text": {
+          "altText": {
             "anyOf": [
               {
                 "type": "string"
@@ -8977,7 +9188,7 @@
                 "type": "null"
               }
             ],
-            "title": "Alt Text",
+            "title": "Alttext",
             "description": "Accessibility alt text"
           },
           "width": {
@@ -12968,6 +13179,79 @@
         ],
         "title": "URLMetadata",
         "description": "Metadata extracted from URL."
+      },
+      "UpdateTextVersionsRequest": {
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "title": "Contentid",
+            "description": "Content ID to update"
+          },
+          "weekNum": {
+            "type": "integer",
+            "title": "Weeknum",
+            "description": "Week number in campaign"
+          },
+          "dayNum": {
+            "type": "integer",
+            "title": "Daynum",
+            "description": "Day number in week"
+          },
+          "postNum": {
+            "type": "integer",
+            "title": "Postnum",
+            "description": "Post number in day"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "Currently selected text"
+          },
+          "textVersions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Textversions",
+            "description": "Array of text versions"
+          },
+          "selectedImageIndex": {
+            "type": "integer",
+            "title": "Selectedimageindex",
+            "description": "Currently selected image index"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contentId",
+          "weekNum",
+          "dayNum",
+          "postNum",
+          "text",
+          "textVersions",
+          "selectedImageIndex"
+        ],
+        "title": "UpdateTextVersionsRequest",
+        "description": "Request schema for updating text versions.\n\nDirect port from V1 UpdateTextVersionsRequest model."
+      },
+      "UpdateTextVersionsResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Operation status",
+            "default": "success"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success message",
+            "default": "Text versions updated successfully"
+          }
+        },
+        "type": "object",
+        "title": "UpdateTextVersionsResponse",
+        "description": "Response schema for text versions update.\n\nDirect port from V1 response format."
       },
       "UserRegistrationResponse": {
         "properties": {
