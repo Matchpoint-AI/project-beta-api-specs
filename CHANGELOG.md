@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.445] - 2026-01-02
+
+### Changes
+- Merge pull request #1506 from Matchpoint-AI/fix/1476-threadmessages-eval
+
+**Source:** project-beta-api@c38e5e4f
+
 ## [v0.7.444] - 2026-01-02
 
 ### Changes
