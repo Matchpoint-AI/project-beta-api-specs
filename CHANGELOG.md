@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.438] - 2026-01-02
+
+### Changes
+- Merge pull request #1496 from Matchpoint-AI/fix/allow-draft-to-approved-transition
+
+**Source:** project-beta-api@cbe89c9a
+
 ## [v0.7.437] - 2026-01-02
 
 ### Changes
