@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.440] - 2026-01-02
+
+### Changes
+- Merge pull request #1499 from Matchpoint-AI/fix/1477-migrate-extractor
+
+**Source:** project-beta-api@759f16a9
+
 ## [v0.7.439] - 2026-01-02
 
 ### Changes
