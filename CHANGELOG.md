@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.458] - 2026-01-02
+
+### Changes
+- Merge pull request #1531 from Matchpoint-AI/fix/1490-video-models
+
+**Source:** project-beta-api@af734f90
+
 ## [v0.7.457] - 2026-01-02
 
 ### Changes
