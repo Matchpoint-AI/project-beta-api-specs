@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.446] - 2026-01-02
+
+### Changes
+- Merge pull request #1508 from Matchpoint-AI/fix/1485-fal-video-research
+
+**Source:** project-beta-api@b79a9dec
+
 ## [v0.7.445] - 2026-01-02
 
 ### Changes
