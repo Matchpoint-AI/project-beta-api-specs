@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.456] - 2026-01-02
+
+### Changes
+- Merge pull request #1529 from Matchpoint-AI/issue-1526-add-google-cloud-scheduler
+
+**Source:** project-beta-api@0b264c43
+
 ## [v0.7.455] - 2026-01-02
 
 ### Changes
