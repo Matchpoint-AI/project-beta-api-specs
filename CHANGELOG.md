@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.443] - 2026-01-02
+
+### Changes
+- Merge pull request #1503 from Matchpoint-AI/fix/1487-video-gcs-design
+
+**Source:** project-beta-api@5f3eaa0e
+
 ## [v0.7.442] - 2026-01-02
 
 ### Changes
