@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.452] - 2026-01-02
+
+### Changes
+- Merge pull request #1520 from Matchpoint-AI/fix/1507-thread-messages-cleanup
+
+**Source:** project-beta-api@f40cbe8b
+
 ## [v0.7.451] - 2026-01-02
 
 ### Changes
