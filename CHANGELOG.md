@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.435] - 2026-01-02
+
+### Changes
+- Merge pull request #1468 from Matchpoint-AI/feat/1153-quality-gate
+
+**Source:** project-beta-api@f4333ad9
+
 ## [v0.7.434] - 2026-01-02
 
 ### Changes
