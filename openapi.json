@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.427"
+    "version": "0.7.428"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1682,58 +1682,6 @@
         }
       }
     },
-    "/api/v2/campaigns/{campaign_id}/audience-suggestions": {
-      "post": {
-        "tags": [
-          "campaigns"
-        ],
-        "summary": "Generate Audience Suggestions",
-        "description": "Generate audience emotion and interest suggestions for campaign.\n\nDEPRECATED: This endpoint uses hyphenated path '/audience-suggestions'.\nUse /audience/suggestions instead for RMM L2 compliance.\nThis endpoint will be removed on 2026-07-01.\n\nDeprecation date: 2026-01-01\nRemoval date: 2026-07-01\nReplacement: POST /api/v2/campaigns/{campaign_id}/audience/suggestions",
-        "operationId": "generate_audience_suggestions_api_v2_campaigns__campaign_id__audience_suggestions_post",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Audience suggestions generated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AudienceSuggestionsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign not found"
-          },
-          "500": {
-            "description": "Failed to generate suggestions"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/campaigns/{campaign_id}/exports/approval/status": {
       "get": {
         "tags": [
@@ -1742,63 +1690,6 @@
         "summary": "Get Exports Approval Status",
         "description": "Get detailed export approval status for a campaign.\n\nRMM L2 Compliant: Uses hierarchical path '/exports/approval/status'.\n\nReturns detailed approval status for the export workflow including:\n- Whether all content is approved\n- Count of approved posts\n- Total count of posts\n- List of unapproved content IDs (for UI to show what needs approval)\n\nUsed by export functionality to:\n- Enable/disable export button\n- Show which content items need approval before export\n- Provide detailed feedback to user\n\nReturns:\n    - approved: true if all content is approved, false otherwise\n    - approved_content: number of approved posts\n    - total_content: total number of posts in campaign\n    - unapproved_content_ids: list of content IDs that are not approved",
         "operationId": "get_exports_approval_status_api_v2_campaigns__campaign_id__exports_approval_status_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Export approval status returned successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CampaignExportApprovalStatus"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign content not found"
-          },
-          "500": {
-            "description": "Failed to get export approval status"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/export/approval-status": {
-      "get": {
-        "tags": [
-          "campaigns"
-        ],
-        "summary": "Get Campaign Export Approval Status",
-        "description": "Get detailed export approval status for a campaign.\n\nDEPRECATED: This endpoint uses procedural namespace '/export/approval-status'.\nUse /exports/approval/status instead for RMM L2 compliance.\nThis endpoint will be removed on 2026-07-01.\n\nDeprecation date: 2026-01-01\nRemoval date: 2026-07-01\nReplacement: GET /api/v2/campaigns/{campaign_id}/exports/approval/status",
-        "operationId": "get_campaign_export_approval_status_api_v2_campaigns__campaign_id__export_approval_status_get",
-        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
@@ -1896,55 +1787,6 @@
           },
           "406": {
             "description": "Requested format not supported"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/export/pdf": {
-      "get": {
-        "tags": [
-          "campaigns"
-        ],
-        "summary": "Get Campaign Pdf Export Data",
-        "description": "Get campaign PDF export data.\n\nDEPRECATED: Use GET /campaigns/{campaign_id}/export with Accept header.\n\nThis endpoint is deprecated and will be removed on 2026-06-28.\nPlease migrate to the new content-negotiation endpoint:\n- New endpoint: GET /api/v2/campaigns/{campaign_id}/export\n- Use Accept header: Accept: application/pdf\n\nDirect port from V1 GET /api/v1/getPdfData?campaign_id={id} endpoint.\nUsed by frontend src/shared/utils/exportUtils.ts:51 for PDF generation.\n\nRMM L2 Note:\n- This endpoint violates RMM L2 by specifying format in the URL path\n- Format should be requested using the Accept HTTP header\n- See Issue #1097 for migration details",
-        "operationId": "get_campaign_pdf_export_data_api_v2_campaigns__campaign_id__export_pdf_get",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "PDF export data returned successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CampaignExportData"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign not found"
           },
           "422": {
             "description": "Validation Error",
@@ -2842,74 +2684,6 @@
         },
         "responses": {
           "201": {
-            "description": "Bulk approval completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BulkContentApprovalResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign or content not found"
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/content/approve-all": {
-      "post": {
-        "tags": [
-          "content-approval"
-        ],
-        "summary": "[DEPRECATED] Bulk approve campaign content",
-        "description": "DEPRECATED: Use POST /campaigns/{id}/content-approvals instead. This endpoint will be removed in a future version.",
-        "operationId": "bulk_approve_campaign_content_api_v2_campaigns__campaign_id__content_approve_all_post",
-        "deprecated": true,
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "Campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "Campaign ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BulkContentApprovalRequest",
-                "description": "Bulk approval request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
             "description": "Bulk approval completed successfully",
             "content": {
               "application/json": {

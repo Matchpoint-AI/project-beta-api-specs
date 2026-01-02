@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.428] - 2026-01-02
+
+### Changes
+- Merge pull request #1456 from Matchpoint-AI/fix/1445-delete-legacy-campaign
+
+**Source:** project-beta-api@fc022e65
+
 ## [v0.7.427] - 2026-01-01
 
 ### Changes
