@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.430] - 2026-01-02
+
+### Changes
+- feat(api): delete legacy brand endpoints (summary, extract/locations) (#1452)
+
+**Source:** project-beta-api@1bfff96d
+
 ## [v0.7.429] - 2026-01-02
 
 ### Changes

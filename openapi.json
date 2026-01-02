@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.429"
+    "version": "0.7.430"
   },
   "paths": {
     "/api/v2/brands": {
@@ -491,58 +491,6 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/summary": {
-      "post": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Generate Brand Summary Deprecated",
-        "description": "[DEPRECATED] Use POST /brands/{brand_id}/summaries instead.\n\nIssue #1102: This endpoint is deprecated for RMM L2 compliance.\nThe new endpoint uses plural 'summaries' to properly model the resource collection.\n\nThis deprecated endpoint will be removed in a future release.",
-        "operationId": "generate_brand_summary_deprecated_api_v2_brands__brand_id__summary_post",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Brand summary generation triggered",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandSummaryResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "500": {
-            "description": "Failed to trigger summary generation"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/brands/{brand_id}/knowledge/status": {
       "get": {
         "tags": [
@@ -647,68 +595,6 @@
         "summary": "Create Location Extraction",
         "description": "Extract physical locations from text or brand knowledge.\n\nExtracts structured physical location information (address, city, state, country)\nfrom either provided text or from the brand's stored knowledge base.\n\nRMM Level 2 Compliant Pattern:\n- POST creates a new location-extraction resource\n- Resource-oriented URL: /brands/{id}/location/extractions (hierarchical)\n- Uses noun-based resource name (no verbs or hyphens in path)\n- Returns 200 OK with extracted data (extraction is idempotent)\n\nBusiness Context:\n- Enables location-based marketing and targeting\n- Extracts from brand website content, social media, or provided text\n- Uses AI/LLM for intelligent location extraction\n- Results are structured for easy querying and filtering\n\nRequest Body:\n- text (optional): Text content to extract locations from\n- If text not provided, extracts from brand's stored knowledge\n\nArgs:\n    brand_id: The brand identifier\n    request: LocationExtractionRequest with optional text\n    extractor_service: Injected ExtractorService for extraction\n\nReturns:\n    LocationExtractionResponse with list of extracted locations\n\nRaises:\n    HTTPException: 404 if brand not found, 400 for invalid data, 500 on failure",
         "operationId": "create_location_extraction_api_v2_brands__brand_id__location_extractions_post",
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LocationExtractionRequest",
-                "description": "Optional text to extract locations from"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Physical locations extracted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationExtractionResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/extract/locations": {
-      "post": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Extract Brand Locations",
-        "description": "Extract physical locations from text or brand knowledge.\n\nDEPRECATED: This endpoint uses a verb in the path which violates RMM Level 2.\nUse POST /brands/{brand_id}/location/extractions instead.\nThis endpoint will be removed in 6 months.\n\nDeprecation date: 2025-12-29\nRemoval date: 2026-06-29\nReplacement: POST /api/v2/brands/{brand_id}/location/extractions",
-        "operationId": "extract_brand_locations_api_v2_brands__brand_id__extract_locations_post",
-        "deprecated": true,
         "parameters": [
           {
             "name": "brand_id",
@@ -974,55 +860,6 @@
           },
           "404": {
             "description": "Brand knowledge not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/knowledge/summary": {
-      "get": {
-        "tags": [
-          "brand-workflow"
-        ],
-        "summary": "Get Brand Knowledge Summary By Brand",
-        "description": "Get summary statistics for a brand's knowledge entries.\n\nDEPRECATED: This endpoint uses '/summary' as a path segment for a view.\nUse GET /brands/{brand_id}/knowledge?view=summary instead.\nThis endpoint will be removed on 2026-07-01.\n\nDeprecation date: 2026-01-01\nRemoval date: 2026-07-01\nReplacement: GET /api/v2/brands/{brand_id}/knowledge?view=summary",
-        "operationId": "get_brand_knowledge_summary_by_brand",
-        "deprecated": true,
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Brand knowledge summary returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandKnowledgeBrandSummaryResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No knowledge found for brand"
           },
           "422": {
             "description": "Validation Error",
@@ -5664,39 +5501,6 @@
         "title": "BrandFileUploadResponse",
         "description": "Response schema for brand file upload with LLM extraction."
       },
-      "BrandKnowledgeBrandSummaryResponse": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "totalEntries": {
-            "type": "integer",
-            "title": "Totalentries",
-            "description": "Total number of knowledge entries for this brand"
-          },
-          "lastUpdated": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Lastupdated",
-            "description": "Last update timestamp"
-          },
-          "categoryBreakdown": {
-            "$ref": "#/components/schemas/CategoryBreakdown",
-            "description": "Breakdown by category (traits, products, colors)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "totalEntries",
-          "lastUpdated",
-          "categoryBreakdown"
-        ],
-        "title": "BrandKnowledgeBrandSummaryResponse",
-        "description": "Summary statistics for a specific brand's knowledge."
-      },
       "BrandKnowledgeStatusResponse": {
         "properties": {
           "brandId": {
@@ -7696,31 +7500,6 @@
         ],
         "title": "CaptionResponse",
         "description": "Schema for caption response."
-      },
-      "CategoryBreakdown": {
-        "properties": {
-          "personalityTraits": {
-            "type": "integer",
-            "title": "Personalitytraits",
-            "description": "Number of personality traits",
-            "default": 0
-          },
-          "products": {
-            "type": "integer",
-            "title": "Products",
-            "description": "Number of products",
-            "default": 0
-          },
-          "colorPalette": {
-            "type": "integer",
-            "title": "Colorpalette",
-            "description": "Number of colors in palette",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "title": "CategoryBreakdown",
-        "description": "Category breakdown for brand knowledge."
       },
       "ContentApprovalRequest": {
         "properties": {
