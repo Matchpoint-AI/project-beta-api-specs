@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.433] - 2026-01-02
+
+### Changes
+- Merge pull request #1465 from Matchpoint-AI/feat/1417-tiered-models
+
+**Source:** project-beta-api@9a849da8
+
 ## [v0.7.432] - 2026-01-02
 
 ### Changes
