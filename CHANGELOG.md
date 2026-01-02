@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.432] - 2026-01-02
+
+### Changes
+- Merge pull request #1464 from Matchpoint-AI/fix/1724-firestore-migration
+
+**Source:** project-beta-api@dc7e8608
+
 ## [v0.7.431] - 2026-01-02
 
 ### Changes
