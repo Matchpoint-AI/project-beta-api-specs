@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.459] - 2026-01-02
+
+### Changes
+- Merge pull request #1523 from Matchpoint-AI/fix/1346-scheduler
+
+**Source:** project-beta-api@b91bb546
+
 ## [v0.7.458] - 2026-01-02
 
 ### Changes

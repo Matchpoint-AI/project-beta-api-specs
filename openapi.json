@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.458"
+    "version": "0.7.459"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4102,6 +4102,303 @@
         }
       }
     },
+    "/api/v2/scheduled-posts": {
+      "get": {
+        "tags": [
+          "scheduled-posts"
+        ],
+        "summary": "List Scheduled Posts",
+        "description": "List all scheduled posts for the authenticated user.\n\nReturns a list of scheduled posts optionally filtered by status.\nPosts are ordered by scheduled time.\n\nArgs:\n    firebase_user: Authenticated user from JWT\n    status: Optional status filter\n\nReturns:\n    ScheduledPostListResponse with list of posts",
+        "operationId": "list_scheduled_posts_api_v2_scheduled_posts_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ScheduledPostStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by status",
+              "title": "Status"
+            },
+            "description": "Filter by status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scheduled posts list returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduledPostListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/scheduled-posts": {
+      "get": {
+        "tags": [
+          "scheduled-posts"
+        ],
+        "summary": "List Campaign Scheduled Posts",
+        "description": "List all scheduled posts for a specific campaign.\n\nReturns scheduled posts for the given campaign, optionally filtered by status.\nPosts are ordered by scheduled time.\n\nArgs:\n    campaign_id: Campaign ID to filter by\n    status: Optional status filter\n\nReturns:\n    ScheduledPostListResponse with list of posts for the campaign",
+        "operationId": "list_campaign_scheduled_posts_api_v2_campaigns__campaign_id__scheduled_posts_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ScheduledPostStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by status",
+              "title": "Status"
+            },
+            "description": "Filter by status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scheduled posts for campaign returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduledPostListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/scheduled-posts/{post_id}": {
+      "get": {
+        "tags": [
+          "scheduled-posts"
+        ],
+        "summary": "Get Scheduled Post",
+        "description": "Get a scheduled post by its unique post ID.\n\nArgs:\n    post_id: Unique post identifier\n\nReturns:\n    ScheduledPostResponse with post details\n\nRaises:\n    404: If post not found",
+        "operationId": "get_scheduled_post_api_v2_scheduled_posts__post_id__get",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Unique post ID",
+              "title": "Post Id"
+            },
+            "description": "Unique post ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scheduled post returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduledPostResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Scheduled post not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/scheduled-posts/{post_id}/cancel": {
+      "post": {
+        "tags": [
+          "scheduled-posts"
+        ],
+        "summary": "Cancel Scheduled Post",
+        "description": "Cancel a scheduled post.\n\nCancels the scheduled post and deletes the Cloud Scheduler job.\nCannot cancel posts that are already published or cancelled.\n\nArgs:\n    post_id: Unique post identifier\n    request: Optional cancellation reason\n    firebase_user: Authenticated user\n\nReturns:\n    CancelScheduledPostResponse with result\n\nRaises:\n    404: If post not found\n    400: If post cannot be cancelled in current state",
+        "operationId": "cancel_scheduled_post_api_v2_scheduled_posts__post_id__cancel_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Unique post ID",
+              "title": "Post Id"
+            },
+            "description": "Unique post ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelScheduledPostRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scheduled post cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelScheduledPostResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Scheduled post not found"
+          },
+          "400": {
+            "description": "Cannot cancel post in current state"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/scheduled-posts/{post_id}/status": {
+      "patch": {
+        "tags": [
+          "scheduled-posts"
+        ],
+        "summary": "Update Scheduled Post Status",
+        "description": "Update the status of a scheduled post.\n\nThis endpoint is primarily used by the campaign-publisher worker\nto update status after publishing attempts.\n\nArgs:\n    post_id: Unique post identifier\n    request: Status update with optional error message and Instagram post ID\n\nReturns:\n    Updated ScheduledPostResponse\n\nRaises:\n    404: If post not found",
+        "operationId": "update_scheduled_post_status_api_v2_scheduled_posts__post_id__status_patch",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Unique post ID",
+              "title": "Post Id"
+            },
+            "description": "Unique post ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduledPostStatusUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduledPostResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Scheduled post not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/signups": {
       "post": {
         "tags": [
@@ -7161,6 +7458,59 @@
         ],
         "title": "CampaignWorkflowStep",
         "description": "Schema for campaign workflow step tracking."
+      },
+      "CancelScheduledPostRequest": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Optional reason for cancellation"
+          }
+        },
+        "type": "object",
+        "title": "CancelScheduledPostRequest",
+        "description": "Request schema for cancelling a scheduled post."
+      },
+      "CancelScheduledPostResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether cancellation succeeded"
+          },
+          "post_id": {
+            "type": "string",
+            "title": "Post Id",
+            "description": "Post ID that was cancelled"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Result message"
+          },
+          "scheduler_job_deleted": {
+            "type": "boolean",
+            "title": "Scheduler Job Deleted",
+            "description": "Whether Cloud Scheduler job was deleted",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "post_id",
+          "message"
+        ],
+        "title": "CancelScheduledPostResponse",
+        "description": "Response schema for cancel operation."
       },
       "CaptionCreate": {
         "properties": {
@@ -11446,6 +11796,277 @@
         ],
         "title": "SceneTypeDistribution",
         "description": "Distribution of scene types in content."
+      },
+      "ScheduledPostListResponse": {
+        "properties": {
+          "posts": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduledPostResponse"
+            },
+            "type": "array",
+            "title": "Posts",
+            "description": "List of scheduled posts"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of scheduled posts"
+          },
+          "campaign_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Id",
+            "description": "Campaign filter if applied"
+          },
+          "status_filter": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduledPostStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Status filter if applied"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total"
+        ],
+        "title": "ScheduledPostListResponse",
+        "description": "Response schema for listing scheduled posts."
+      },
+      "ScheduledPostResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Database ID"
+          },
+          "post_id": {
+            "type": "string",
+            "title": "Post Id",
+            "description": "Unique post identifier"
+          },
+          "campaign_id": {
+            "type": "integer",
+            "title": "Campaign Id",
+            "description": "Campaign ID"
+          },
+          "week_key": {
+            "type": "string",
+            "title": "Week Key",
+            "description": "Week identifier (e.g., week_1)"
+          },
+          "day_key": {
+            "type": "string",
+            "title": "Day Key",
+            "description": "Day identifier (e.g., day_1)"
+          },
+          "post_key": {
+            "type": "string",
+            "title": "Post Key",
+            "description": "Post identifier (e.g., post_1)"
+          },
+          "scheduled_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Scheduled Time",
+            "description": "When the post will be published"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone",
+            "description": "IANA timezone string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ScheduledPostStatus",
+            "description": "Current status"
+          },
+          "caption": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Caption",
+            "description": "Post caption"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Url",
+            "description": "Post image URL"
+          },
+          "instagram_account_id": {
+            "type": "string",
+            "title": "Instagram Account Id",
+            "description": "Instagram account ID"
+          },
+          "instagram_post_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instagram Post Id",
+            "description": "Instagram post ID after publishing"
+          },
+          "scheduler_job_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheduler Job Name",
+            "description": "Cloud Scheduler job name"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message",
+            "description": "Error message if failed"
+          },
+          "retry_count": {
+            "type": "integer",
+            "title": "Retry Count",
+            "description": "Number of retry attempts",
+            "default": 0
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Creation timestamp"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At",
+            "description": "Last update timestamp"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At",
+            "description": "When post was published"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "post_id",
+          "campaign_id",
+          "week_key",
+          "day_key",
+          "post_key",
+          "scheduled_time",
+          "timezone",
+          "status",
+          "instagram_account_id",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "ScheduledPostResponse",
+        "description": "Response schema for a scheduled post."
+      },
+      "ScheduledPostStatus": {
+        "type": "string",
+        "enum": [
+          "scheduled",
+          "publishing",
+          "published",
+          "failed",
+          "cancelled"
+        ],
+        "title": "ScheduledPostStatus",
+        "description": "Status of a scheduled post."
+      },
+      "ScheduledPostStatusUpdate": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ScheduledPostStatus",
+            "description": "New status"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message",
+            "description": "Error message if status is FAILED"
+          },
+          "instagram_post_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instagram Post Id",
+            "description": "Instagram post ID if published"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At",
+            "description": "Timestamp when published"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ScheduledPostStatusUpdate",
+        "description": "Request schema for updating scheduled post status.\n\nUsed by campaign-publisher worker to update status after publishing."
       },
       "SessionRequest": {
         "properties": {
