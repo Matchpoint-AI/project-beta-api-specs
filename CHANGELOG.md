@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.451] - 2026-01-02
+
+### Changes
+- Merge pull request #1518 from Matchpoint-AI/fix/1511-dead-code
+
+**Source:** project-beta-api@90c825f1
+
 ## [v0.7.450] - 2026-01-02
 
 ### Changes
