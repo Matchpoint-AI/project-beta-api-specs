@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.439] - 2026-01-02
+
+### Changes
+- Merge pull request #1497 from Matchpoint-AI/fix/1473-migrate-audience-suggestion
+
+**Source:** project-beta-api@bba6129a
+
 ## [v0.7.438] - 2026-01-02
 
 ### Changes
