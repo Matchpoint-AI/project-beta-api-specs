@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.447] - 2026-01-02
+
+### Changes
+- Merge pull request #1498 from Matchpoint-AI/fix/1475-migrate-rag-embeddings
+
+**Source:** project-beta-api@a1831cc4
+
 ## [v0.7.446] - 2026-01-02
 
 ### Changes
