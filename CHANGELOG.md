@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.441] - 2026-01-02
+
+### Changes
+- Merge pull request #1501 from Matchpoint-AI/fix/1474-campaign-spec-v2
+
+**Source:** project-beta-api@af1d6b43
+
 ## [v0.7.440] - 2026-01-02
 
 ### Changes
