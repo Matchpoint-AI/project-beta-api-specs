@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.454] - 2026-01-02
+
+### Changes
+- Merge pull request #1522 from Matchpoint-AI/fix/1510-approval-stats
+
+**Source:** project-beta-api@9437074f
+
 ## [v0.7.453] - 2026-01-02
 
 ### Changes
