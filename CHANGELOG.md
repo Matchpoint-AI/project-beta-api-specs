@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.455] - 2026-01-02
+
+### Changes
+- Merge pull request #1524 from Matchpoint-AI/fix/1480-llm-decouple-content-image-service
+
+**Source:** project-beta-api@8b32322a
+
 ## [v0.7.454] - 2026-01-02
 
 ### Changes
