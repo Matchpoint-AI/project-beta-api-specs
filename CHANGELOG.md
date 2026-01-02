@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.429] - 2026-01-02
+
+### Changes
+- Merge pull request #1461 from Matchpoint-AI/fix/1459-jsonb-mismatch
+
+**Source:** project-beta-api@94fb75ab
+
 ## [v0.7.428] - 2026-01-02
 
 ### Changes
