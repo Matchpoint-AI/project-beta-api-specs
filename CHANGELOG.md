@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.448] - 2026-01-02
+
+### Changes
+- Merge pull request #1514 from Matchpoint-AI/revert/1502-generate-image
+
+**Source:** project-beta-api@2d9d8273
+
 ## [v0.7.447] - 2026-01-02
 
 ### Changes
