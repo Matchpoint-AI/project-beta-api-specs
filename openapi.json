@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.449"
+    "version": "0.7.450"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3027,9 +3027,9 @@
         "tags": [
           "content-images"
         ],
-        "summary": "Upload Content Image",
-        "description": "Upload/associate an image with content.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image upload request with URL and optional caption\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 422 if validation fails",
-        "operationId": "upload_content_image_api_v2_content__content_id__images_post",
+        "summary": "Create Content Image",
+        "description": "Create a content image via upload OR generation.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nIssue #1509: This endpoint now handles both upload and generation:\n- If request has `url` field: Associates existing image (upload)\n- If request has `prompt` field: Generates new image (generation)\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image request with either URL (upload) or prompt (generation)\n    response: FastAPI response object for headers\n    service: Injected content image service\n    image_service: Injected image generation service\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 422 if validation fails or request type unclear\n    HTTPException: 500 if generation fails",
+        "operationId": "create_content_image_api_v2_content__content_id__images_post",
         "parameters": [
           {
             "name": "content_id",
@@ -3046,7 +3046,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ContentImageUploadRequest"
+                "$ref": "#/components/schemas/ContentImageRequest"
               }
             }
           }
@@ -7917,6 +7917,172 @@
         "title": "ContentImageRegenerateRequest",
         "description": "Schema for regenerating an existing content image.\n\nIssue #1345: Restore image regeneration endpoint."
       },
+      "ContentImageRequest": {
+        "properties": {
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url",
+            "description": "URL of existing image to associate"
+          },
+          "caption": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Caption",
+            "description": "Image caption or alt text"
+          },
+          "altText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alttext",
+            "description": "Accessibility alt text"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Width",
+            "description": "Image width in pixels"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Height",
+            "description": "Image height in pixels"
+          },
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt",
+            "description": "Image generation prompt"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model",
+            "description": "Image model to use"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size",
+            "description": "Image size"
+          },
+          "quality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quality",
+            "description": "Image quality: standard or hd"
+          },
+          "style": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Style",
+            "description": "Image style: vivid or natural"
+          },
+          "n": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "N",
+            "description": "Number of images to generate"
+          },
+          "brandColors": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandcolors",
+            "description": "Brand colors"
+          },
+          "brandStyle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandstyle",
+            "description": "Brand style guidelines"
+          }
+        },
+        "type": "object",
+        "title": "ContentImageRequest",
+        "description": "Union schema for POST /content/{id}/images - handles both upload and generation.\n\nIssue #1509: Frontend-Backend API Mismatch fix.\nThis schema accepts either:\n- Upload request: has `url` field (associates existing image)\n- Generation request: has `prompt` field (generates new image)\n\nThe endpoint logic inspects which fields are present to determine behavior."
+      },
       "ContentImageResponse": {
         "properties": {
           "id": {
@@ -8056,70 +8222,6 @@
         ],
         "title": "ContentImageUpdate",
         "description": "Schema for updating a content image."
-      },
-      "ContentImageUploadRequest": {
-        "properties": {
-          "url": {
-            "type": "string",
-            "minLength": 1,
-            "title": "Url",
-            "description": "URL of the image to associate"
-          },
-          "caption": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Caption",
-            "description": "Image caption or alt text"
-          },
-          "altText": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Alttext",
-            "description": "Accessibility alt text"
-          },
-          "width": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Width",
-            "description": "Image width in pixels"
-          },
-          "height": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Height",
-            "description": "Image height in pixels"
-          }
-        },
-        "type": "object",
-        "required": [
-          "url"
-        ],
-        "title": "ContentImageUploadRequest",
-        "description": "Schema for uploading/associating an existing image with content."
       },
       "ContentItemForScoring": {
         "properties": {
