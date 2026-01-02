@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.460] - 2026-01-02
+
+### Changes
+- Merge pull request #1533 from Matchpoint-AI/fix/1491-video-infra
+
+**Source:** project-beta-api@d42e0a7d
+
 ## [v0.7.459] - 2026-01-02
 
 ### Changes
