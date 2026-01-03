@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.463] - 2026-01-03
+
+### Changes
+- Merge pull request #1535 from Matchpoint-AI/fix/1481-content-service-migration
+
+**Source:** project-beta-api@a9eb874a
+
 ## [v0.7.462] - 2026-01-03
 
 ### Changes
