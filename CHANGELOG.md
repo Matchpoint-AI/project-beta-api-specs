@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.467] - 2026-01-03
+
+### Changes
+- Merge pull request #1554 from Matchpoint-AI/fix/1538-delete-plans-endpoint
+
+**Source:** project-beta-api@34fd6cd8
+
 ## [v0.7.466] - 2026-01-03
 
 ### Changes
