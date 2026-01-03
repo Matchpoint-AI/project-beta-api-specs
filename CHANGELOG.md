@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.461] - 2026-01-03
+
+### Changes
+- Merge pull request #1534 from Matchpoint-AI/fix/1492-video-action
+
+**Source:** project-beta-api@a9aa0eb3
+
 ## [v0.7.460] - 2026-01-02
 
 ### Changes
