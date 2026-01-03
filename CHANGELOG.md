@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.477] - 2026-01-03
+
+### Changes
+- Merge pull request #1574 from Matchpoint-AI/fix/1570-sendgrid-logging
+
+**Source:** project-beta-api@3a2b8daa
+
 ## [v0.7.476] - 2026-01-03
 
 ### Changes
