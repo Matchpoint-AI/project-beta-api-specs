@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.462] - 2026-01-03
+
+### Changes
+- Merge pull request #1532 from Matchpoint-AI/fix/1482-llm-decouple
+
+**Source:** project-beta-api@1285a207
+
 ## [v0.7.461] - 2026-01-03
 
 ### Changes

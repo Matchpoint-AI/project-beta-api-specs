@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.461"
+    "version": "0.7.462"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2716,6 +2716,52 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "content-generation-status"
+        ],
+        "summary": "Get Content Generation Status",
+        "description": "Get detailed generation status for specific content.\n\nThis endpoint provides granular status including per-post breakdown\nfor text and image generation status.\n\nIssue #1484: Part of LLM decoupling async infrastructure.",
+        "operationId": "get_content_generation_status_api_v2_content__content_id__status_get",
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Content ID",
+              "title": "Content Id"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed content generation status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentGenerationDetailStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Content not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/content/{content_id}/exports": {
@@ -3021,6 +3067,54 @@
             "HTTPBearer": []
           }
         ]
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/content/status": {
+      "get": {
+        "tags": [
+          "content-generation-status"
+        ],
+        "summary": "Get Campaign Content Status",
+        "description": "Get the status of content generation for a campaign.\n\nThis endpoint allows clients to poll for the progress of async\ncontent generation operations. Returns high-level status including:\n- Overall generation status (pending/generating/completed/failed)\n- Progress percentage\n- Post counts by status\n- Correlation ID for tracing\n\nIssue #1484: Part of LLM decoupling async infrastructure.",
+        "operationId": "get_campaign_content_status_api_v2_campaigns__campaign_id__content_status_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign content generation status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignContentStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/content/{content_id}/images": {
@@ -6330,6 +6424,133 @@
         "title": "BulkContentApprovalResponse",
         "description": "Response schema for bulk content approval operation.\n\nReturns counts and any failed IDs."
       },
+      "CampaignContentStatusResponse": {
+        "properties": {
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "status": {
+            "$ref": "#/components/schemas/GenerationStatus",
+            "description": "Overall generation status"
+          },
+          "progress": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progress",
+            "description": "Progress percentage (0-100)"
+          },
+          "totalPosts": {
+            "type": "integer",
+            "title": "Totalposts",
+            "description": "Total number of posts in campaign",
+            "default": 0
+          },
+          "completedPosts": {
+            "type": "integer",
+            "title": "Completedposts",
+            "description": "Number of posts fully completed (text + images)",
+            "default": 0
+          },
+          "pendingPosts": {
+            "type": "integer",
+            "title": "Pendingposts",
+            "description": "Number of posts still pending",
+            "default": 0
+          },
+          "failedPosts": {
+            "type": "integer",
+            "title": "Failedposts",
+            "description": "Number of posts that failed",
+            "default": 0
+          },
+          "textReady": {
+            "type": "integer",
+            "title": "Textready",
+            "description": "Number of posts with text ready",
+            "default": 0
+          },
+          "imagesReady": {
+            "type": "integer",
+            "title": "Imagesready",
+            "description": "Number of posts with images ready",
+            "default": 0
+          },
+          "correlationId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlationid",
+            "description": "Correlation ID from original request for tracing"
+          },
+          "startedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Startedat",
+            "description": "When generation started"
+          },
+          "completedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedat",
+            "description": "When generation completed (if finished)"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Overall error message if generation failed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId",
+          "status",
+          "progress"
+        ],
+        "title": "CampaignContentStatusResponse",
+        "description": "Response for campaign content generation status polling.\n\nGET /campaigns/{campaign_id}/content/status\n\nProvides high-level progress tracking for campaign content generation,\nincluding post-level status breakdown.",
+        "example": {
+          "campaignId": 123,
+          "completedPosts": 12,
+          "correlationId": "abc-123-def",
+          "failedPosts": 0,
+          "imagesReady": 12,
+          "pendingPosts": 18,
+          "progress": 45.5,
+          "startedAt": "2026-01-02T10:30:00Z",
+          "status": "generating",
+          "textReady": 20,
+          "totalPosts": 30
+        }
+      },
       "CampaignCreateRequest": {
         "properties": {
           "name": {
@@ -8233,6 +8454,133 @@
         "title": "ContentFeedbackResponse",
         "description": "Schema for content feedback response."
       },
+      "ContentGenerationDetailStatus": {
+        "properties": {
+          "contentId": {
+            "type": "integer",
+            "title": "Contentid",
+            "description": "Content ID"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "status": {
+            "$ref": "#/components/schemas/GenerationStatus",
+            "description": "Overall generation status"
+          },
+          "progress": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progress",
+            "description": "Progress percentage (0-100)"
+          },
+          "textGenerationStatus": {
+            "$ref": "#/components/schemas/GenerationStatus",
+            "description": "Status of text content generation",
+            "default": "pending"
+          },
+          "imageGenerationStatus": {
+            "$ref": "#/components/schemas/GenerationStatus",
+            "description": "Status of image generation",
+            "default": "pending"
+          },
+          "posts": {
+            "items": {
+              "$ref": "#/components/schemas/PostGenerationStatus"
+            },
+            "type": "array",
+            "title": "Posts",
+            "description": "Per-post generation status breakdown"
+          },
+          "correlationId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlationid",
+            "description": "Correlation ID from original request for tracing"
+          },
+          "startedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Startedat",
+            "description": "When generation started"
+          },
+          "completedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedat",
+            "description": "When generation completed (if finished)"
+          },
+          "errorDetails": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errordetails",
+            "description": "Detailed error information if generation failed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contentId",
+          "campaignId",
+          "status",
+          "progress"
+        ],
+        "title": "ContentGenerationDetailStatus",
+        "description": "Detailed generation status for a specific content record.\n\nGET /content/{content_id}/generation-status\n\nProvides granular status including per-post breakdown for text\nand image generation.",
+        "example": {
+          "campaignId": 123,
+          "contentId": 456,
+          "correlationId": "abc-123-def",
+          "imageGenerationStatus": "generating",
+          "posts": [
+            {
+              "imageCount": 1,
+              "imageStatus": "completed",
+              "postId": "w1d1p1",
+              "textStatus": "completed"
+            },
+            {
+              "imageCount": 0,
+              "imageStatus": "generating",
+              "postId": "w1d1p2",
+              "textStatus": "completed"
+            }
+          ],
+          "progress": 60.0,
+          "startedAt": "2026-01-02T10:30:00Z",
+          "status": "generating",
+          "textGenerationStatus": "completed"
+        }
+      },
       "ContentGenerationResponse": {
         "properties": {
           "campaignId": {
@@ -9701,6 +10049,17 @@
         "title": "GeneratedContent",
         "description": "Schema for generated content with nested structure."
       },
+      "GenerationStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "generating",
+          "completed",
+          "failed"
+        ],
+        "title": "GenerationStatus",
+        "description": "Status values for content generation operations."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -10372,6 +10731,49 @@
         ],
         "title": "PostContent",
         "description": "Schema for post content in approval request."
+      },
+      "PostGenerationStatus": {
+        "properties": {
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "Post identifier"
+          },
+          "textStatus": {
+            "$ref": "#/components/schemas/GenerationStatus",
+            "description": "Status of text generation",
+            "default": "pending"
+          },
+          "imageStatus": {
+            "$ref": "#/components/schemas/GenerationStatus",
+            "description": "Status of image generation",
+            "default": "pending"
+          },
+          "imageCount": {
+            "type": "integer",
+            "title": "Imagecount",
+            "description": "Number of images generated",
+            "default": 0
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error message if generation failed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postId"
+        ],
+        "title": "PostGenerationStatus",
+        "description": "Status details for an individual post's generation.\n\nTracks both text and image generation status separately to\nsupport partial completion states."
       },
       "PostPlan": {
         "properties": {
