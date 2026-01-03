@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.475] - 2026-01-03
+
+### Changes
+- refactor: remove deprecated content_workflow_controller (#1568)
+
+**Source:** project-beta-api@cfafd5e6
+
 ## [v0.7.474] - 2026-01-03
 
 ### Changes

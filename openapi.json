@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.474"
+    "version": "0.7.475"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3584,55 +3584,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/content/workflows": {
-      "post": {
-        "tags": [
-          "content-workflows"
-        ],
-        "summary": "Start Campaign Content Workflow",
-        "description": "Start a content generation workflow for a campaign.\n\nThis endpoint publishes a content generation request to Pub/Sub,\ntriggering the content-generator service asynchronously.\nThe workflow runs in the background, orchestrating:\n1. Campaign plan generation (scene mix)\n2. Text content generation using LLM\n3. Image generation using AI\n\nIssue #1297: Migrated from GCP Workflows to Pub/Sub-based content-generator.\nThe message_id from Pub/Sub is used as the workflow_id for tracking.\n\nRMM Level 2 Compliance:\n- POST creates a workflow resource (not an RPC \"generate\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling",
-        "operationId": "start_campaign_content_workflow_api_v2_campaigns__campaign_id__content_workflows_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Campaign Id"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Workflow started successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CampaignWorkflowResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign not found"
-          },
-          "500": {
-            "description": "Failed to start workflow"
           },
           "422": {
             "description": "Validation Error",
@@ -7835,132 +7786,6 @@
         "type": "object",
         "title": "CampaignUpdate",
         "description": "Schema for updating an existing campaign."
-      },
-      "CampaignWorkflowResponse": {
-        "properties": {
-          "workflowId": {
-            "type": "string",
-            "title": "Workflowid",
-            "description": "Unique workflow execution identifier"
-          },
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid",
-            "description": "Campaign identifier"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Overall workflow status: pending, running, completed, failed"
-          },
-          "steps": {
-            "items": {
-              "$ref": "#/components/schemas/CampaignWorkflowStep"
-            },
-            "type": "array",
-            "title": "Steps",
-            "description": "Workflow steps with status"
-          },
-          "createdAt": {
-            "type": "string",
-            "title": "Createdat",
-            "description": "ISO timestamp when workflow was created"
-          },
-          "progress": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 100.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Progress",
-            "description": "Overall progress percentage 0-100"
-          },
-          "currentStep": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Currentstep",
-            "description": "Currently executing step"
-          },
-          "result": {
-            "anyOf": [
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Result",
-            "description": "Final workflow result (only when completed)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "workflowId",
-          "campaignId",
-          "status",
-          "steps",
-          "createdAt"
-        ],
-        "title": "CampaignWorkflowResponse",
-        "description": "Response from campaign content generation workflow."
-      },
-      "CampaignWorkflowStep": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Step name: planning, generating_text, generating_images, completed"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Step status: pending, running, completed, or failed"
-          },
-          "started_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Started At",
-            "description": "ISO timestamp when step started"
-          },
-          "completed_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Completed At",
-            "description": "ISO timestamp when step completed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "status"
-        ],
-        "title": "CampaignWorkflowStep",
-        "description": "Schema for campaign workflow step tracking."
       },
       "CancelScheduledPostRequest": {
         "properties": {
