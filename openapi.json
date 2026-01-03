@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.471"
+    "version": "0.7.472"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1343,6 +1343,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid campaign ID format"
           },
           "404": {
             "description": "Campaign not found or no workflow started"
