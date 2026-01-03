@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.470] - 2026-01-03
+
+### Changes
+- Merge pull request #1563 from Matchpoint-AI/fix/1545-remove-diversity-endpoints
+
+**Source:** project-beta-api@e37c7e8e
+
 ## [v0.7.469] - 2026-01-03
 
 ### Changes
