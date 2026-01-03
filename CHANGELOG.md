@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.474] - 2026-01-03
+
+### Changes
+- Merge pull request #1567 from Matchpoint-AI/fix/1566-export-typeerror
+
+**Source:** project-beta-api@171d94dd
+
 ## [v0.7.473] - 2026-01-03
 
 ### Changes
