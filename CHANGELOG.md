@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.469] - 2026-01-03
+
+### Changes
+- Merge pull request #1559 from Matchpoint-AI/fix/1495-video-generation
+
+**Source:** project-beta-api@3a90d89c
+
 ## [v0.7.468] - 2026-01-03
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.468"
+    "version": "0.7.469"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1025,6 +1025,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -5965,6 +5966,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6020,6 +6022,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6074,6 +6077,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6140,6 +6144,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6802,6 +6807,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6840,6 +6846,46 @@
             ],
             "title": "Audience Age Range",
             "description": "Target audience age ranges (e.g., ['18-24'], ['25-34', '35-44'])"
+          },
+          "videoModel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Model",
+            "description": "Model for video generation (e.g., 'fal-ai/ltx-video', 'fal-ai/kling-video'). Only used when campaign_type is 'video'. If null, uses tier-based selection."
+          },
+          "videoDuration": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 60.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Duration",
+            "description": "Video duration in seconds. Only used when campaign_type is 'video'. Default: 5 seconds.",
+            "default": 5
+          },
+          "videoResolution": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Resolution",
+            "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'.",
+            "default": "1080p"
           }
         },
         "type": "object",
@@ -6919,6 +6965,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7112,6 +7159,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7150,6 +7198,46 @@
             ],
             "title": "Audience Age Range",
             "description": "Target audience age ranges (e.g., ['18-24'], ['25-34', '35-44'])"
+          },
+          "videoModel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Model",
+            "description": "Model for video generation (e.g., 'fal-ai/ltx-video', 'fal-ai/kling-video'). Only used when campaign_type is 'video'. If null, uses tier-based selection."
+          },
+          "videoDuration": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 60.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Duration",
+            "description": "Video duration in seconds. Only used when campaign_type is 'video'. Default: 5 seconds.",
+            "default": 5
+          },
+          "videoResolution": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Resolution",
+            "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'.",
+            "default": "1080p"
           },
           "id": {
             "type": "integer",
@@ -7526,6 +7614,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7555,6 +7644,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7758,6 +7848,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7808,6 +7899,44 @@
             ],
             "title": "Workflow ID",
             "description": "ID of the content generation workflow execution"
+          },
+          "videoModel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Model",
+            "description": "Model for video generation (e.g., 'fal-ai/ltx-video', 'fal-ai/kling-video'). Only used when campaign_type is 'video'. If null, uses tier-based selection."
+          },
+          "videoDuration": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 60.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Duration",
+            "description": "Video duration in seconds. Only used when campaign_type is 'video'."
+          },
+          "videoResolution": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Resolution",
+            "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'."
           }
         },
         "type": "object",
@@ -7873,6 +8002,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8138,6 +8268,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8216,6 +8347,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8254,6 +8386,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8297,6 +8430,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8376,6 +8510,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8447,6 +8582,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -8789,6 +8925,7 @@
           "errorDetails": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9615,6 +9752,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9873,6 +10011,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10604,6 +10743,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10763,6 +10903,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11290,6 +11431,7 @@
           "mediaSnapshot": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11923,6 +12065,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12170,11 +12313,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -12250,6 +12395,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -12257,6 +12403,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13886,6 +14033,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
