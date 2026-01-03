@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.471] - 2026-01-03
+
+### Changes
+- Merge pull request #1558 from Matchpoint-AI/fix/1547-async-plan
+
+**Source:** project-beta-api@913ee8bf
+
 ## [v0.7.470] - 2026-01-03
 
 ### Changes

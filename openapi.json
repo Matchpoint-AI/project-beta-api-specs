@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.470"
+    "version": "0.7.471"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2213,6 +2213,111 @@
           },
           "404": {
             "description": "Plan not found"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/plan/generations": {
+      "post": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Generate Scene Mix Plan Async",
+        "description": "Start async plan generation for a campaign.\n\nIssue #1547: Migrate /campaigns/{id}/plan to async publisher pattern.\n\nThis endpoint publishes a plan generation request to Pub/Sub. The\ncontent-generator service will generate the plan asynchronously.\nUse GET /campaigns/{campaign_id}/plan/generations/status to poll for completion.\n\nPrerequisites:\n- Policy must be generated first (POST /campaigns/{id}/policy)\n\nReturns:\n    202 Accepted with status_url and correlation_id for tracking",
+        "operationId": "generate_scene_mix_plan_async_api_v2_campaigns__campaign_id__plan_generations_post",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Plan generation started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanGenerationAcceptedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Policy must be generated first"
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/plan/generations/status": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Plan Generation Status",
+        "description": "Get plan generation status.\n\nIssue #1547: Migrate /campaigns/{id}/plan to async publisher pattern.\n\nPoll this endpoint to check if plan generation is complete.\n\nReturns:\n    - status: \"generating\" if plan is being generated\n    - status: \"completed\" with plan if generation is complete\n    - status: \"failed\" with error_message if generation failed",
+        "operationId": "get_plan_generation_status_api_v2_campaigns__campaign_id__plan_generations_status_get",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plan generation status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanGenerationStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
           },
           "500": {
             "description": "Server error"
@@ -10782,6 +10887,76 @@
         "type": "object",
         "title": "PhysicalLocation",
         "description": "A structured physical location with address components.\n\nRepresents a single physical location extracted from text, with individual\ncomponents for address, city, state, and country to enable location-based\nqueries and filtering."
+      },
+      "PlanGenerationAcceptedResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message",
+            "default": "Plan generation started"
+          },
+          "statusUrl": {
+            "type": "string",
+            "title": "Statusurl",
+            "description": "URL to poll for plan generation status"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID for tracking this generation request"
+          }
+        },
+        "type": "object",
+        "required": [
+          "statusUrl",
+          "correlationId"
+        ],
+        "title": "PlanGenerationAcceptedResponse",
+        "description": "Response for async plan generation request (HTTP 202 Accepted).\n\nIssue #1547: Migrate /campaigns/{id}/plan to async publisher pattern.\n\nReturned immediately after publishing plan generation request to indicate\nthe request was accepted and processing has begun asynchronously."
+      },
+      "PlanGenerationStatusResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "generating",
+              "completed",
+              "failed"
+            ],
+            "title": "Status",
+            "description": "Plan generation status"
+          },
+          "plan": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SceneMixPlanResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Generated plan (only present when status is 'completed')"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error message (only present when status is 'failed')"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "PlanGenerationStatusResponse",
+        "description": "Response for plan generation status polling.\n\nIssue #1547: Migrate /campaigns/{id}/plan to async publisher pattern.\n\nUsed to poll the status of an async plan generation request."
       },
       "PostContent": {
         "properties": {
