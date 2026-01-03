@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.475"
+    "version": "0.7.476"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3551,8 +3551,13 @@
           "content-text-versions"
         ],
         "summary": "Update Text Versions",
-        "description": "Update text versions for a specific post.\n\nRMM L2: Uses POST for action that updates text, text_versions,\nand selected_image_index fields in content_data.\n\nThis endpoint allows the frontend to:\n- Edit post text after generation\n- Maintain text version history\n- Select which image to display\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Text versions update request\n    service: Injected text versions service\n\nReturns:\n    UpdateTextVersionsResponse with success status\n\nRaises:\n    HTTPException: 404 if content not found\n    HTTPException: 422 if validation fails",
+        "description": "Update text versions for a specific post.\n\nRMM L2: Uses POST for action that updates text, text_versions,\nand selected_image_index fields in content_data.\n\nThis endpoint allows the frontend to:\n- Edit post text after generation\n- Maintain text version history\n- Select which image to display\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Text versions update request\n    firebase_user: Authenticated user from auth dependency\n    service: Injected text versions service\n\nReturns:\n    UpdateTextVersionsResponse with success status\n\nRaises:\n    HTTPException: 401 if not authenticated\n    HTTPException: 404 if content not found\n    HTTPException: 422 if validation fails",
         "operationId": "update_text_versions_api_v2_content__content_id__text_versions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",

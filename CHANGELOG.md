@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.476] - 2026-01-03
+
+### Changes
+- fix(security): require auth for text versions endpoint (#1569) (#1573)
+
+**Source:** project-beta-api@27c5432b
+
 ## [v0.7.475] - 2026-01-03
 
 ### Changes
