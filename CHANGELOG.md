@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.479] - 2026-01-03
+
+### Changes
+- Merge pull request #1577 from Matchpoint-AI/fix/1576-brand-knowledge-404
+
+**Source:** project-beta-api@78bedb6a
+
 ## [v0.7.478] - 2026-01-03
 
 ### Changes
