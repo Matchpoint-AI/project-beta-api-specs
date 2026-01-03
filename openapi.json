@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.464"
+    "version": "0.7.465"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1778,8 +1778,13 @@
           "campaigns"
         ],
         "summary": "Create Scene Mix Policy",
-        "description": "Create a scene mix policy for a campaign.\n\nCreates content mixing rules and policies for campaign content generation.",
+        "description": "Create a scene mix policy for a campaign.\n\nCreates content mixing rules and policies for campaign content generation.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.",
         "operationId": "create_scene_mix_policy_api_v2_campaigns__campaign_id__policy_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -1817,6 +1822,12 @@
           "400": {
             "description": "Invalid request data"
           },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
+          },
           "500": {
             "description": "Server error"
           },
@@ -1837,8 +1848,13 @@
           "campaigns"
         ],
         "summary": "Get Scene Mix Policy",
-        "description": "Get scene mix policy for a campaign.\n\nReturns the content mixing policy configuration for the specified campaign.",
+        "description": "Get scene mix policy for a campaign.\n\nReturns the content mixing policy configuration for the specified campaign.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.",
         "operationId": "get_scene_mix_policy_api_v2_campaigns__campaign_id__policy_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -1863,6 +1879,12 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
+          },
           "404": {
             "description": "Policy not found"
           },
@@ -1885,8 +1907,13 @@
           "campaigns"
         ],
         "summary": "Create Scene Mix Plan",
-        "description": "Create a scene mix plan for a campaign.\n\nCreates a content generation plan with scheduling and content mix specifications.",
+        "description": "Create a scene mix plan for a campaign.\n\nCreates a content generation plan with scheduling and content mix specifications.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.",
         "operationId": "create_scene_mix_plan_api_v2_campaigns__campaign_id__plan_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -1924,6 +1951,12 @@
           "400": {
             "description": "Invalid request data"
           },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
+          },
           "500": {
             "description": "Server error"
           },
@@ -1944,8 +1977,13 @@
           "campaigns"
         ],
         "summary": "Get Scene Mix Plan",
-        "description": "Get scene mix plan for a campaign.\n\nReturns the content generation plan and schedule for the specified campaign.",
+        "description": "Get scene mix plan for a campaign.\n\nReturns the content generation plan and schedule for the specified campaign.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.",
         "operationId": "get_scene_mix_plan_api_v2_campaigns__campaign_id__plan_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -1970,6 +2008,12 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
+          },
           "404": {
             "description": "Plan not found"
           },
@@ -1990,8 +2034,13 @@
           "campaigns"
         ],
         "summary": "Update Scene Mix Plan",
-        "description": "Update a scene mix plan for a campaign.\n\nUpdates an existing content generation plan. Increments the policy version\nwhen significant changes are made.",
+        "description": "Update a scene mix plan for a campaign.\n\nUpdates an existing content generation plan. Increments the policy version\nwhen significant changes are made.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.",
         "operationId": "update_scene_mix_plan_api_v2_campaigns__campaign_id__plan_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -2026,6 +2075,12 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
+          },
           "404": {
             "description": "Plan not found"
           },
@@ -2049,8 +2104,13 @@
           "campaigns"
         ],
         "summary": "Delete Scene Mix Plan",
-        "description": "Delete a scene mix plan for a campaign.\n\nRemoves the content generation plan from the specified campaign.",
+        "description": "Delete a scene mix plan for a campaign.\n\nRemoves the content generation plan from the specified campaign.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.",
         "operationId": "delete_scene_mix_plan_api_v2_campaigns__campaign_id__plan_delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -2067,6 +2127,12 @@
         "responses": {
           "204": {
             "description": "Plan deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
           },
           "404": {
             "description": "Plan not found"
@@ -2093,8 +2159,13 @@
           "campaigns"
         ],
         "summary": "Preview Scene Mix Plan",
-        "description": "Preview a scene mix plan with diversity metrics.\n\nGenerates a preview of the content plan with diversity metrics without\npersisting to the database. Use this endpoint during planning to evaluate\ndifferent configurations before committing.\n\nReturns:\n    Policy preview with mix_goal, subtype_weights, rationale, and\n    diversity_metrics for the proposed plan configuration.",
+        "description": "Preview a scene mix plan with diversity metrics.\n\nGenerates a preview of the content plan with diversity metrics without\npersisting to the database. Use this endpoint during planning to evaluate\ndifferent configurations before committing.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.\n\nReturns:\n    Policy preview with mix_goal, subtype_weights, rationale, and\n    diversity_metrics for the proposed plan configuration.",
         "operationId": "preview_scene_mix_plan_api_v2_campaigns__campaign_id__plan_preview_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -2131,6 +2202,12 @@
           },
           "400": {
             "description": "Invalid request data"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
           },
           "500": {
             "description": "Server error"
@@ -2208,8 +2285,13 @@
           "campaigns"
         ],
         "summary": "Get Diversity Metrics",
-        "description": "Get diversity metrics for a campaign's generated content.\n\nCalculates diversity scores across multiple dimensions:\n- Scene type distribution (human, product, ingredient)\n- Subtype variety within scene types\n- Shot diversity (angles, backdrops, lens, lighting)\n\nAlso validates content against the campaign's scene mix policy.\n\nReturns:\n    DiversityMetricsResponse with overall score, breakdowns, and recommendations",
+        "description": "Get diversity metrics for a campaign's generated content.\n\nCalculates diversity scores across multiple dimensions:\n- Scene type distribution (human, product, ingredient)\n- Subtype variety within scene types\n- Shot diversity (angles, backdrops, lens, lighting)\n\nAlso validates content against the campaign's scene mix policy.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.\n\nReturns:\n    DiversityMetricsResponse with overall score, breakdowns, and recommendations",
         "operationId": "get_diversity_metrics_api_v2_campaigns__campaign_id__diversity_metrics_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -2248,6 +2330,12 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
+          },
           "404": {
             "description": "Campaign not found"
           },
@@ -2270,8 +2358,13 @@
           "campaigns"
         ],
         "summary": "Validate Content Diversity",
-        "description": "Validate content diversity against policy and calculate scores.\n\nUse this endpoint to validate content diversity before generation\nor to analyze a specific set of content items.\n\nArgs:\n    campaign_id: Campaign ID\n    content_items: List of content items to analyze\n    threshold: Minimum diversity threshold\n\nReturns:\n    DiversityMetricsResponse with validation results and recommendations",
+        "description": "Validate content diversity against policy and calculate scores.\n\nUse this endpoint to validate content diversity before generation\nor to analyze a specific set of content items.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.\n\nArgs:\n    campaign_id: Campaign ID\n    content_items: List of content items to analyze\n    threshold: Minimum diversity threshold\n\nReturns:\n    DiversityMetricsResponse with validation results and recommendations",
         "operationId": "validate_content_diversity_api_v2_campaigns__campaign_id__diversity_validations_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -2327,6 +2420,12 @@
           },
           "400": {
             "description": "Invalid content data"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
           },
           "404": {
             "description": "Campaign not found"
