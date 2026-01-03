@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.467"
+    "version": "0.7.468"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1548,8 +1548,13 @@
           "campaigns"
         ],
         "summary": "Generate Campaign Specifications",
-        "description": "Generate campaign specifications using LLM analysis.\n\nDirect port from V1 /api/v1/llm/openai endpoint used by CampaignDetails.tsx.\n\nAnalyzes campaign data (objective, audience, product features) and generates\nstructured specifications including:\n- key_features: Product benefits and competitive features\n- audience: Target audience description with demographics\n- purpose: Campaign goal and focus description\n\nRMM L2 Design: Specifications are a computed sub-resource of campaign.\nPOST generates new specs from current campaign data using LLM analysis.",
+        "description": "Trigger async campaign specification generation.\n\nIssue #1549: Migrated to async publisher pattern.\n\nPublishes a specification generation request to the content-generator service.\nThe request is processed asynchronously - this endpoint returns immediately\nwith a 202 Accepted response.\n\nThis endpoint uses the Pub/Sub-based architecture:\n- Sends a skinny message containing only the campaign_id\n- The content-generator service fetches full context from the database\n- Generation progress can be monitored via the status endpoint\n\nArgs:\n    campaign_id: The campaign ID to generate specifications for\n    firebase_user: Authenticated user (from JWT token)\n    request: Request data (currently unused, reserved for future use)\n    campaign_service: Service for campaign operations\n    content_generation_publisher: Publisher for content generation requests\n\nReturns:\n    CampaignSpecificationAsyncResponse with message_id for tracking\n\nRaises:\n    HTTPException: 404 if campaign not found, 500 if publishing fails",
         "operationId": "generate_campaign_specifications_api_v2_campaigns__campaign_id__specifications_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -1573,12 +1578,12 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Campaign specifications generated successfully",
+          "202": {
+            "description": "Specification generation request accepted",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CampaignSpecificationResponse"
+                  "$ref": "#/components/schemas/CampaignSpecificationAsyncResponse"
                 }
               }
             }
@@ -1587,7 +1592,78 @@
             "description": "Campaign not found"
           },
           "500": {
-            "description": "Failed to generate specifications"
+            "description": "Failed to trigger specification generation"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/specifications/status": {
+      "get": {
+        "tags": [
+          "campaigns"
+        ],
+        "summary": "Get Specification Status",
+        "description": "Get specification generation status for a campaign.\n\nIssue #1549: Status polling endpoint for async specification generation.\n\nReturns the current status of async specification generation including:\n- Overall status (pending/generating/completed/failed)\n- Generated specification (when completed)\n- Error message (when failed)\n\nThis endpoint is designed for polling during async specification generation.\nFrontend should poll this endpoint to track progress after triggering\nspecification generation via POST /campaigns/{id}/specifications.\n\nArgs:\n    campaign_id: The campaign ID to check status for\n    correlation_id: Optional correlation ID from generation request\n    firebase_user: Authenticated user (from JWT token)\n    campaign_service: Service for campaign operations\n\nReturns:\n    CampaignSpecificationStatusResponse with status and optional specification",
+        "operationId": "get_specification_status_api_v2_campaigns__campaign_id__specifications_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          },
+          {
+            "name": "correlation_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Correlation ID from generation request for tracing",
+              "title": "Correlation Id"
+            },
+            "description": "Correlation ID from generation request for tracing"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Specification generation status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignSpecificationStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found"
           },
           "422": {
             "description": "Validation Error",
@@ -7283,6 +7359,51 @@
         "title": "CampaignResponse",
         "description": "Schema for campaign responses."
       },
+      "CampaignSpecificationAsyncResponse": {
+        "properties": {
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaign ID",
+            "description": "ID of the campaign for which specification generation was triggered"
+          },
+          "messageId": {
+            "type": "string",
+            "title": "Message ID",
+            "description": "Pub/Sub message ID for tracking the request"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlation ID",
+            "description": "Unique correlation ID for tracing the request"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current status of the generation request",
+            "default": "accepted"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "statusUrl": {
+            "type": "string",
+            "title": "Status URL",
+            "description": "URL to poll for generation status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId",
+          "messageId",
+          "correlationId",
+          "message",
+          "statusUrl"
+        ],
+        "title": "CampaignSpecificationAsyncResponse",
+        "description": "Response schema for async campaign specification generation request.\n\nIssue #1549: Returns when a specification generation request has been published.\nThe actual generation happens asynchronously via content-generator.\n\nFollows the same pattern as ContentGenerationResponse."
+      },
       "CampaignSpecificationRequest": {
         "properties": {},
         "type": "object",
@@ -7320,6 +7441,51 @@
           "keyFeatures": "Premium organic ingredients, eco-friendly packaging, supports local farmers",
           "purpose": "Launch new product line focused on environmental responsibility and premium quality"
         }
+      },
+      "CampaignSpecificationStatusResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Generation status: pending, generating, completed, or failed"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaign ID",
+            "description": "ID of the campaign"
+          },
+          "specification": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CampaignSpecificationResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specification",
+            "description": "Generated specification (only present when status is completed)"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message",
+            "description": "Error details (only present when status is failed)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "campaignId"
+        ],
+        "title": "CampaignSpecificationStatusResponse",
+        "description": "Response schema for specification generation status polling.\n\nIssue #1549: Used to check progress of async specification generation."
       },
       "CampaignStatistics": {
         "properties": {
