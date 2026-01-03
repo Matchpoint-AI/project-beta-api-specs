@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.466] - 2026-01-03
+
+### Changes
+- Merge pull request #1556 from Matchpoint-AI/fix/1553-e2e-content-tests
+
+**Source:** project-beta-api@06e65778
+
 ## [v0.7.465] - 2026-01-03
 
 ### Changes
