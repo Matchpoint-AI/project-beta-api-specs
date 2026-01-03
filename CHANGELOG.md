@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.480] - 2026-01-03
+
+### Changes
+- Merge pull request #1585 from Matchpoint-AI/fix/1712-content-weeks-field
+
+**Source:** project-beta-api@6f9dd190
+
 ## [v0.7.479] - 2026-01-03
 
 ### Changes
