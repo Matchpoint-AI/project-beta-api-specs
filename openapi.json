@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.472"
+    "version": "0.7.473"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1668,57 +1668,6 @@
           },
           "404": {
             "description": "Campaign not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/audience/suggestions": {
-      "post": {
-        "tags": [
-          "campaigns"
-        ],
-        "summary": "Create Audience Suggestions",
-        "description": "Generate audience emotion and interest suggestions for campaign.\n\nRMM L2 Compliant: Uses hierarchical path '/audience/suggestions'.\n\nThis endpoint:\n- Fetches campaign and brand data\n- Constructs LLM prompt for audience analysis\n- Generates emotion and interest arrays using GPT-4\n- Returns exactly 3 items in each array",
-        "operationId": "create_audience_suggestions_api_v2_campaigns__campaign_id__audience_suggestions_post",
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Audience suggestions generated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AudienceSuggestionsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign not found"
-          },
-          "500": {
-            "description": "Failed to generate suggestions"
           },
           "422": {
             "description": "Validation Error",

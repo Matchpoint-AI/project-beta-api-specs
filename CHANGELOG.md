@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.473] - 2026-01-03
+
+### Changes
+- Merge pull request #1562 from Matchpoint-AI/fix/1543-remove-audience-suggestions
+
+**Source:** project-beta-api@bfd39fdf
+
 ## [v0.7.472] - 2026-01-03
 
 ### Changes
