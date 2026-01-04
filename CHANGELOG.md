@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.482] - 2026-01-04
+
+### Changes
+- Merge pull request #1590 from Matchpoint-AI/fix/1588-approval-persistence
+
+**Source:** project-beta-api@41ebe89c
+
 ## [v0.7.481] - 2026-01-04
 
 ### Changes
