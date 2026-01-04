@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.484] - 2026-01-04
+
+### Changes
+- Merge pull request #1592 from Matchpoint-AI/fix/1589-approval-empty-text
+
+**Source:** project-beta-api@1cd95f5d
+
 ## [v0.7.483] - 2026-01-04
 
 ### Changes

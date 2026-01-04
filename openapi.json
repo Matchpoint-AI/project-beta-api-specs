@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.483"
+    "version": "0.7.484"
   },
   "paths": {
     "/api/v2/brands": {
@@ -10759,15 +10759,12 @@
           },
           "text": {
             "type": "string",
-            "minLength": 1,
+            "default": "",
             "title": "Text",
-            "description": "Post caption text"
+            "description": "Post caption text (can be empty)"
           }
         },
         "type": "object",
-        "required": [
-          "text"
-        ],
         "title": "PostContent",
         "description": "Schema for post content in approval request."
       },
