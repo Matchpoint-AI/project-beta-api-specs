@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.483] - 2026-01-04
+
+### Changes
+- Merge pull request #1591 from Matchpoint-AI/fix/1586-injector-binding
+
+**Source:** project-beta-api@434360de
+
 ## [v0.7.482] - 2026-01-04
 
 ### Changes
