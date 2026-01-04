@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.486] - 2026-01-04
+
+### Changes
+- Merge pull request #1594 from Matchpoint-AI/fix/adr-fal-video
+
+**Source:** project-beta-api@6358ceb6
+
 ## [v0.7.485] - 2026-01-04
 
 ### Changes
