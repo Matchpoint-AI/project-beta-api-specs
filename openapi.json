@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.488"
+    "version": "0.7.489"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1025,7 +1025,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -3392,7 +3391,7 @@
           "content-prompts"
         ],
         "summary": "Get Content Prompt",
-        "description": "Get image prompt data for a content item.\n\nThis endpoint retrieves image_prompt data from content.\nUsed by frontend to display/edit image generation prompts.\n\nCan filter by week/day/post_id to get specific prompt.\n\nArgs:\n    content_id: Content ID (string, converted to int internally)\n    week: Optional week number filter\n    day: Optional day number filter\n    post_id: Optional post ID filter\n    content_service: Injected content service\n\nReturns:\n    ContentPromptResponse with image_prompt data\n\nRaises:\n    HTTPException: 404 if content not found",
+        "description": "Get image prompt data for a content item.\n\nThis endpoint retrieves image_prompt data from content.\nUsed by frontend to display/edit image generation prompts.\n\nCan filter by week/day/post_id to get specific prompt.\n\nArgs:\n    content_id: Content ID (string, converted to int internally)\n    week: Optional week number filter\n    day: Optional day number filter\n    post_id: Optional post ID filter\n    post_service: Injected content service\n\nReturns:\n    ContentPromptResponse with image_prompt data\n\nRaises:\n    HTTPException: 404 if content not found",
         "operationId": "get_content_prompt_api_v2_content__content_id__prompt_get",
         "parameters": [
           {
@@ -3492,7 +3491,7 @@
           "content-prompts"
         ],
         "summary": "Update Content Prompt",
-        "description": "Update image prompt for a content item.\n\nThis endpoint updates image_prompt data in content.\nUsed by frontend to edit image generation prompts.\n\nArgs:\n    content_id: Content ID\n    request: Prompt update request with new image_prompt\n    content_service: Injected content service\n\nReturns:\n    ContentPromptResponse with updated prompt data\n\nRaises:\n    HTTPException: 404 if content not found",
+        "description": "Update image prompt for a content item.\n\nThis endpoint updates image_prompt data in content.\nUsed by frontend to edit image generation prompts.\n\nArgs:\n    content_id: Content ID\n    request: Prompt update request with new image_prompt\n    post_service: Injected content service\n\nReturns:\n    ContentPromptResponse with updated prompt data\n\nRaises:\n    HTTPException: 404 if content not found",
         "operationId": "update_content_prompt_api_v2_content__content_id__prompt_put",
         "parameters": [
           {
@@ -5815,7 +5814,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5871,7 +5869,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5926,7 +5923,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5993,7 +5989,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6656,7 +6651,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6814,7 +6808,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7008,7 +7001,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7463,7 +7455,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7493,7 +7484,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7697,7 +7687,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7991,7 +7980,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8070,7 +8058,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8109,7 +8096,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8153,7 +8139,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8233,7 +8218,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8305,7 +8289,6 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -8648,7 +8631,6 @@
           "errorDetails": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9380,7 +9362,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9639,7 +9620,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10259,7 +10239,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10419,7 +10398,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -10759,9 +10737,9 @@
           },
           "text": {
             "type": "string",
-            "default": "",
             "title": "Text",
-            "description": "Post caption text (can be empty)"
+            "description": "Post caption text (can be empty)",
+            "default": ""
           }
         },
         "type": "object",
@@ -10958,7 +10936,6 @@
           "mediaSnapshot": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11592,7 +11569,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11840,13 +11816,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -11922,7 +11896,6 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -11930,7 +11903,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13336,7 +13308,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
