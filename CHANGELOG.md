@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.485] - 2026-01-04
+
+### Changes
+- docs: add ADR for Instagram Reels video generation architecture (#1593)
+
+**Source:** project-beta-api@a2336110
+
 ## [v0.7.484] - 2026-01-04
 
 ### Changes
