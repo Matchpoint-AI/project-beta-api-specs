@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.481] - 2026-01-04
+
+### Changes
+- Merge pull request #1587 from Matchpoint-AI/fix/1586-runtime-checkable
+
+**Source:** project-beta-api@6515bfb4
+
 ## [v0.7.480] - 2026-01-03
 
 ### Changes
