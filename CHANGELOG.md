@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.513] - 2026-01-05
+
+### Changes
+- Merge pull request #1714 from Matchpoint-AI/fix/1668-token-expiration
+
+**Source:** project-beta-api@bfb15294
+
 ## [v0.7.512] - 2026-01-05
 
 ### Changes
