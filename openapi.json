@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.511"
+    "version": "0.7.512"
   },
   "paths": {
     "/api/v2/brands": {
@@ -7896,6 +7896,44 @@
             ],
             "title": "Video Resolution",
             "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'."
+          },
+          "startDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Start Date",
+            "description": "When the campaign should start posting content."
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Timezone",
+            "description": "Timezone for campaign scheduling (e.g., 'America/New_York')."
+          },
+          "postingDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Post Date",
+            "description": "Date of the first scheduled post."
           }
         },
         "type": "object",
