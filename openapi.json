@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.505"
+    "version": "0.7.506"
   },
   "paths": {
     "/api/v2/brands": {
@@ -136,8 +136,13 @@
           "brands"
         ],
         "summary": "Update Brand",
-        "description": "Update an existing brand.\n\nUpdates an existing brand. Returns 404 if the brand doesn't exist.\nOnly provided fields will be updated (partial update).",
+        "description": "Update an existing brand.\n\nUpdates an existing brand. Returns 404 if the brand doesn't exist.\nOnly provided fields will be updated (partial update).\n\nIssue #1655: Added authorization check to prevent IDOR vulnerability.",
         "operationId": "update_brand_api_v2_brands__brand_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -171,6 +176,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           },
           "404": {
             "description": "Brand not found"
@@ -261,8 +272,13 @@
           "brands"
         ],
         "summary": "Update Brand Onboarding Progress",
-        "description": "Update brand onboarding progress step.\n\nTracks onboarding workflow progress including current step, completed steps,\nand optional metadata to keep the frontend aligned with backend state.",
+        "description": "Update brand onboarding progress step.\n\nTracks onboarding workflow progress including current step, completed steps,\nand optional metadata to keep the frontend aligned with backend state.\n\nIssue #1655: Added authorization check to prevent IDOR vulnerability.",
         "operationId": "update_brand_onboarding_progress_api_v2_brands__brand_id__onboarding_progress_patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -300,6 +316,12 @@
           "400": {
             "description": "Invalid progress data"
           },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
           "404": {
             "description": "Brand not found"
           },
@@ -322,8 +344,13 @@
           "brands"
         ],
         "summary": "Upload Brand Files",
-        "description": "Upload brand files (guidelines PDF and logo) with async LLM extraction.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines via brand-crawler service (async).\n\nThe extraction is now async - file is uploaded immediately, and\nbrand-crawler processes the PDF in the background.",
+        "description": "Upload brand files (guidelines PDF and logo) with async LLM extraction.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines via brand-crawler service (async).\n\nThe extraction is now async - file is uploaded immediately, and\nbrand-crawler processes the PDF in the background.",
         "operationId": "upload_brand_files",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -360,6 +387,12 @@
           "400": {
             "description": "Invalid file format or size"
           },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
           "404": {
             "description": "Brand not found"
           },
@@ -383,8 +416,13 @@
           "brands"
         ],
         "summary": "Update Brand Files",
-        "description": "Update brand files (guidelines PDF and logo).\n\nProper REST endpoint for updating brand files.\nReplaces the non-RESTful /with-files endpoint.",
+        "description": "Update brand files (guidelines PDF and logo).\n\nProper REST endpoint for updating brand files.\nReplaces the non-RESTful /with-files endpoint.\n\nIssue #1655: Added authorization check to prevent IDOR vulnerability.",
         "operationId": "update_brand_files",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -421,6 +459,12 @@
           "400": {
             "description": "Invalid file format or size"
           },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
           "404": {
             "description": "Brand not found"
           },
@@ -446,8 +490,13 @@
           "brands"
         ],
         "summary": "Generate Brand Summary",
-        "description": "Trigger brand summary generation via brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1102: RMM L2 compliance - renamed from /summary to /summaries.\n\n**RMM L2 Compliance**: POST /api/v2/brands/{brand_id}/summaries\n- Summaries modeled as a resource collection\n- POST creates a new summary generation request\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by brand-crawler:\n- Generates 60-word brand summary via LLM\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
+        "description": "Trigger brand summary generation via brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1102: RMM L2 compliance - renamed from /summary to /summaries.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\n\n**RMM L2 Compliance**: POST /api/v2/brands/{brand_id}/summaries\n- Summaries modeled as a resource collection\n- POST creates a new summary generation request\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by brand-crawler:\n- Generates 60-word brand summary via LLM\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
         "operationId": "generate_brand_summary_api_v2_brands__brand_id__summaries_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -471,6 +520,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           },
           "404": {
             "description": "Brand not found"
@@ -497,8 +552,13 @@
           "brands"
         ],
         "summary": "Generate Brand Audience Suggestions",
-        "description": "Generate audience emotion and interest suggestions for a brand.\n\nIssue #1659: Restores V1 behavior for campaign creation flow.\nAudience suggestions are generated based on brand data BEFORE\na campaign exists, enabling the AudienceForm to auto-populate\nsuggestions during campaign wizard step 2.\n\n**Endpoint**: POST /api/v2/brands/{brand_id}/audience/suggestions\n\nThis endpoint generates:\n- audience_emotion: Array of emotional triggers (e.g., \"excited\", \"inspired\")\n- audience_interests: Array of interest categories (e.g., \"technology\", \"wellness\")\n\nUses LLM to analyze brand context (name, industry, vertical) and\noptional campaign purpose to generate tailored suggestions.",
+        "description": "Generate audience emotion and interest suggestions for a brand.\n\nIssue #1659: Restores V1 behavior for campaign creation flow.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\n\nAudience suggestions are generated based on brand data BEFORE\na campaign exists, enabling the AudienceForm to auto-populate\nsuggestions during campaign wizard step 2.\n\n**Endpoint**: POST /api/v2/brands/{brand_id}/audience/suggestions\n\nThis endpoint generates:\n- audience_emotion: Array of emotional triggers (e.g., \"excited\", \"inspired\")\n- audience_interests: Array of interest categories (e.g., \"technology\", \"wellness\")\n\nUses LLM to analyze brand context (name, industry, vertical) and\noptional campaign purpose to generate tailored suggestions.",
         "operationId": "generate_brand_audience_suggestions_api_v2_brands__brand_id__audience_suggestions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -540,6 +600,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           },
           "404": {
             "description": "Brand not found"
@@ -662,8 +728,13 @@
           "brands"
         ],
         "summary": "Create Location Extraction",
-        "description": "Extract physical locations from text or brand knowledge.\n\nExtracts structured physical location information (address, city, state, country)\nfrom either provided text or from the brand's stored knowledge base.\n\nRMM Level 2 Compliant Pattern:\n- POST creates a new location-extraction resource\n- Resource-oriented URL: /brands/{id}/location/extractions (hierarchical)\n- Uses noun-based resource name (no verbs or hyphens in path)\n- Returns 200 OK with extracted data (extraction is idempotent)\n\nBusiness Context:\n- Enables location-based marketing and targeting\n- Extracts from brand website content, social media, or provided text\n- Uses AI/LLM for intelligent location extraction\n- Results are structured for easy querying and filtering\n\nRequest Body:\n- text (optional): Text content to extract locations from\n- If text not provided, extracts from brand's stored knowledge\n\nArgs:\n    brand_id: The brand identifier\n    request: LocationExtractionRequest with optional text\n    extractor_service: Injected ExtractorService for extraction\n\nReturns:\n    LocationExtractionResponse with list of extracted locations\n\nRaises:\n    HTTPException: 404 if brand not found, 400 for invalid data, 500 on failure",
+        "description": "Extract physical locations from text or brand knowledge.\n\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\n\nExtracts structured physical location information (address, city, state, country)\nfrom either provided text or from the brand's stored knowledge base.\n\nRMM Level 2 Compliant Pattern:\n- POST creates a new location-extraction resource\n- Resource-oriented URL: /brands/{id}/location/extractions (hierarchical)\n- Uses noun-based resource name (no verbs or hyphens in path)\n- Returns 200 OK with extracted data (extraction is idempotent)\n\nBusiness Context:\n- Enables location-based marketing and targeting\n- Extracts from brand website content, social media, or provided text\n- Uses AI/LLM for intelligent location extraction\n- Results are structured for easy querying and filtering\n\nRequest Body:\n- text (optional): Text content to extract locations from\n- If text not provided, extracts from brand's stored knowledge\n\nArgs:\n    brand_id: The brand identifier\n    request: LocationExtractionRequest with optional text\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    location_extraction_service: Injected service for extraction\n    brand_repository: Repository for brand ownership verification\n\nReturns:\n    LocationExtractionResponse with list of extracted locations\n\nRaises:\n    HTTPException: 401 if not authenticated, 403 if not authorized,\n                  404 if brand not found, 400 for invalid data, 500 on failure",
         "operationId": "create_location_extraction_api_v2_brands__brand_id__location_extractions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -697,6 +768,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           },
           "404": {
             "description": "Brand not found"
