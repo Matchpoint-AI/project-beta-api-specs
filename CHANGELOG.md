@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.522] - 2026-01-05
+
+### Changes
+- Merge pull request #1761 from Matchpoint-AI/fix/1732-instagram-id-validation
+
+**Source:** project-beta-api@7d6d59e9
+
 ## [v0.7.521] - 2026-01-05
 
 ### Changes
