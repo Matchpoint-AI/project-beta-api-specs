@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.518] - 2026-01-05
+
+### Changes
+- Merge pull request #1758 from Matchpoint-AI/fix/1728-instagram-timezone
+
+**Source:** project-beta-api@0922f527
+
 ## [v0.7.517] - 2026-01-05
 
 ### Changes
