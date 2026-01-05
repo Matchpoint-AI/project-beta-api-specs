@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.521] - 2026-01-05
+
+### Changes
+- fix: add session.refresh() after commit in create_or_update() (#1759)
+
+**Source:** project-beta-api@e566b703
+
 ## [v0.7.520] - 2026-01-05
 
 ### Changes
