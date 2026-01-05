@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.515] - 2026-01-05
+
+### Changes
+- Merge pull request #1740 from Matchpoint-AI/fix/1726-timezone-aware-blacklist
+
+**Source:** project-beta-api@89188bbb
+
 ## [v0.7.514] - 2026-01-05
 
 ### Changes
