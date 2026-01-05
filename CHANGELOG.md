@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.526] - 2026-01-05
+
+### Changes
+- Merge pull request #1765 from Matchpoint-AI/fix/1734-unbounded-queries
+
+**Source:** project-beta-api@dddd918c
+
 ## [v0.7.525] - 2026-01-05
 
 ### Changes
