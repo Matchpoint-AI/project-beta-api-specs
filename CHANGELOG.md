@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.523] - 2026-01-05
+
+### Changes
+- Merge pull request #1760 from Matchpoint-AI/fix/ci-xfail-markers
+
+**Source:** project-beta-api@31ef86db
+
 ## [v0.7.522] - 2026-01-05
 
 ### Changes
