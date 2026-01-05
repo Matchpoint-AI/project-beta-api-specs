@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.507"
+    "version": "0.7.508"
   },
   "paths": {
     "/api/v2/brands": {
@@ -206,8 +206,13 @@
           "brands"
         ],
         "summary": "Get Brand",
-        "description": "Get brand information.\n\nReturns the brand details and status.\nReturns 404 if brand doesn't exist.\n\nRMM-2 Compliant Pattern:\n- Use GET /brands/{brand_id} for basic brand data\n- Use GET /brands/{brand_id}?include=files to explicitly request file URLs\n- Replaces non-compliant pattern: GET /brands/{brand_id}/with-files (hyphenated segment)\n\nQuery Parameters:\n- include: Optional comma-separated list of additional data to include\n          Supported values: 'files' (includes brand_guidelines_url, logo_url)\n          Example: ?include=files\n\nNote: File URLs (brand_guidelines_url, logo_url) are always included in the\nresponse for backward compatibility. The include parameter is provided to\ndemonstrate RMM-2 best practices using query parameters instead of hyphenated\npath segments.",
+        "description": "Get brand information.\n\nReturns the brand details and status.\nReturns 404 if brand doesn't exist.\n\nRMM-2 Compliant Pattern:\n- Use GET /brands/{brand_id} for basic brand data\n- Use GET /brands/{brand_id}?include=files to explicitly request file URLs\n- Replaces non-compliant pattern: GET /brands/{brand_id}/with-files (hyphenated segment)\n\nQuery Parameters:\n- include: Optional comma-separated list of additional data to include\n          Supported values: 'files' (includes brand_guidelines_url, logo_url)\n          Example: ?include=files\n\nNote: File URLs (brand_guidelines_url, logo_url) are always included in the\nresponse for backward compatibility. The include parameter is provided to\ndemonstrate RMM-2 best practices using query parameters instead of hyphenated\npath segments.\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.",
         "operationId": "get_brand_api_v2_brands__brand_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -249,6 +254,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           },
           "404": {
             "description": "Brand not found"
@@ -632,8 +643,13 @@
           "brands"
         ],
         "summary": "Get Brand Knowledge Status",
-        "description": "Get the status of brand knowledge extraction (Phase 1: Progressive Brand Knowledge).\n\nReturns the current status and progress of the brand's knowledge extraction workflow,\nincluding whether quick extraction and deep crawl phases are complete.\n\nThis endpoint enables the frontend to:\n- Show instant brand creation feedback\n- Display real-time progress of knowledge extraction\n- Determine when to enable features that require knowledge data\n- Poll for updates during background processing\n\nPhase Architecture:\n- Phase 1 (Instant): Brand created in < 1 second with status \"not_started\"\n- Phase 2 (Quick): Quick extraction adds colors/industry in < 3 seconds\n- Phase 3 (Deep): Deep crawl runs in background (minutes to hours)\n- Phase 4 (Enhancement): Campaigns improve as brand knowledge grows\n\nRMM Level 2 Compliance:\n- GET to /brands/{brand_id}/knowledge/status retrieves status resource\n- Resource-oriented URL structure\n- No verbs in URL path",
+        "description": "Get the status of brand knowledge extraction (Phase 1: Progressive Brand Knowledge).\n\nReturns the current status and progress of the brand's knowledge extraction workflow,\nincluding whether quick extraction and deep crawl phases are complete.\n\nThis endpoint enables the frontend to:\n- Show instant brand creation feedback\n- Display real-time progress of knowledge extraction\n- Determine when to enable features that require knowledge data\n- Poll for updates during background processing\n\nPhase Architecture:\n- Phase 1 (Instant): Brand created in < 1 second with status \"not_started\"\n- Phase 2 (Quick): Quick extraction adds colors/industry in < 3 seconds\n- Phase 3 (Deep): Deep crawl runs in background (minutes to hours)\n- Phase 4 (Enhancement): Campaigns improve as brand knowledge grows\n\nRMM Level 2 Compliance:\n- GET to /brands/{brand_id}/knowledge/status retrieves status resource\n- Resource-oriented URL structure\n- No verbs in URL path\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.",
         "operationId": "get_brand_knowledge_status_api_v2_brands__brand_id__knowledge_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -658,6 +674,12 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
           "404": {
             "description": "Brand not found"
           },
@@ -680,8 +702,13 @@
           "brands"
         ],
         "summary": "Get Brand Crawl Status",
-        "description": "Get real-time brand crawl progress (Issue #1279).\n\nReturns comprehensive crawl status information so the frontend can show\nusers real-time progress during website crawling operations.\n\nStatus Values:\n- not_started: No crawl has been initiated\n- pending: Crawl queued but not yet started\n- estimating: Analyzing website structure\n- crawling: Actively crawling pages\n- extracting: Extracting brand assets from crawled content\n- uploading: Saving extracted assets\n- complete: Crawl finished successfully\n- failed: Crawl encountered an error\n\nRMM Level 2 Compliance:\n- GET retrieves crawl status sub-resource\n- Resource-oriented hierarchical URL structure\n- /crawl/status follows RMM-2 path pattern",
+        "description": "Get real-time brand crawl progress (Issue #1279).\n\nReturns comprehensive crawl status information so the frontend can show\nusers real-time progress during website crawling operations.\n\nStatus Values:\n- not_started: No crawl has been initiated\n- pending: Crawl queued but not yet started\n- estimating: Analyzing website structure\n- crawling: Actively crawling pages\n- extracting: Extracting brand assets from crawled content\n- uploading: Saving extracted assets\n- complete: Crawl finished successfully\n- failed: Crawl encountered an error\n\nRMM Level 2 Compliance:\n- GET retrieves crawl status sub-resource\n- Resource-oriented hierarchical URL structure\n- /crawl/status follows RMM-2 path pattern\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.",
         "operationId": "get_brand_crawl_status_api_v2_brands__brand_id__crawl_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -705,6 +732,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           },
           "404": {
             "description": "Brand not found"
@@ -1102,6 +1135,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -5891,6 +5925,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5946,6 +5981,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6000,6 +6036,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6066,6 +6103,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6728,6 +6766,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6885,6 +6924,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7078,6 +7118,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7532,6 +7573,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7561,6 +7603,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7764,6 +7807,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8057,6 +8101,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8135,6 +8180,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8173,6 +8219,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8216,6 +8263,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8295,6 +8343,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8366,6 +8415,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -8708,6 +8758,7 @@
           "errorDetails": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9439,6 +9490,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9697,6 +9749,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10316,6 +10369,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10475,6 +10529,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11013,6 +11068,7 @@
           "mediaSnapshot": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11646,6 +11702,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11893,11 +11950,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -11973,6 +12032,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -11980,6 +12040,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13385,6 +13446,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
