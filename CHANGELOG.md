@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.527] - 2026-01-05
+
+### Changes
+- Merge pull request #1764 from Matchpoint-AI/fix/1735-dlq-phase2
+
+**Source:** project-beta-api@95f9c610
+
 ## [v0.7.526] - 2026-01-05
 
 ### Changes
