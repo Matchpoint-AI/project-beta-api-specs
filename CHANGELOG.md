@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.504] - 2026-01-05
+
+### Changes
+- Merge pull request #1678 from Matchpoint-AI/fix/1654-pubsub-emulator-auth
+
+**Source:** project-beta-api@1c7654ec
+
 ## [v0.7.503] - 2026-01-05
 
 ### Changes
