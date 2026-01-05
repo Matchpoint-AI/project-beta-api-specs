@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.520] - 2026-01-05
+
+### Changes
+- Merge pull request #1757 from Matchpoint-AI/fix/1737-content-authorization
+
+**Source:** project-beta-api@3826a8b7
+
 ## [v0.7.519] - 2026-01-05
 
 ### Changes

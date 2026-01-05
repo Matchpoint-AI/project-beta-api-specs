@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.519"
+    "version": "0.7.520"
   },
   "paths": {
     "/api/v2/brands": {
@@ -2744,7 +2744,7 @@
           "content-approval"
         ],
         "summary": "Approve Content",
-        "description": "Approve or unapprove content for a specific day.\n\nThis endpoint allows users to approve/reject content for a specific day.\nUpdates approval status in database and manages approval counters.\nDirect port from V1 tag v0.2.46.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    content_id: ID of the content to approve\n    request: Approval request with week, day, and post data\n\nReturns:\n    Updated day data with approval status\n\nRaises:\n    HTTPException: 404 if content not found, 400 if request invalid",
+        "description": "Approve or unapprove content for a specific day.\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\n\nThis endpoint allows users to approve/reject content for a specific day.\nUpdates approval status in database and manages approval counters.\nDirect port from V1 tag v0.2.46.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    content_id: ID of the content to approve\n    request: Approval request with week, day, and post data\n    post_service: Post service for content lookup\n    campaign_service: Campaign service for ownership verification\n\nReturns:\n    Updated day data with approval status\n\nRaises:\n    HTTPException: 401/403 for auth errors, 404 if content not found, 400 if request invalid",
         "operationId": "approve_content_api_v2_content__content_id__approvals_post",
         "security": [
           {
@@ -2777,7 +2777,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Response",
+            "description": "Content approval created successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -2785,6 +2785,15 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this content"
+          },
+          "404": {
+            "description": "Content not found"
           },
           "422": {
             "description": "Validation Error",
@@ -2847,6 +2856,12 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
+          },
           "404": {
             "description": "Campaign or content not found"
           },
@@ -2872,8 +2887,13 @@
           "content"
         ],
         "summary": "Update Content",
-        "description": "Update content fields (e.g., approval status).\n\nThis is the RMM Level 2 compliant endpoint for content updates\nincluding approval. Instead of POST /content/{id}/approve, we use\nPATCH /content/{id} with approved=true.\n\nExample: To approve content, send PATCH with {\"approved\": 1}",
+        "description": "Update content fields (e.g., approval status).\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\n\nThis is the RMM Level 2 compliant endpoint for content updates\nincluding approval. Instead of POST /content/{id}/approve, we use\nPATCH /content/{id} with approved=true.\n\nExample: To approve content, send PATCH with {\"approved\": 1}",
         "operationId": "update_content_api_v2_content__content_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -2897,7 +2917,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Content updated successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -2905,6 +2925,15 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this content"
+          },
+          "404": {
+            "description": "Content not found"
           },
           "422": {
             "description": "Validation Error",
@@ -2925,8 +2954,13 @@
           "content"
         ],
         "summary": "Get Campaign Content",
-        "description": "Get content for a campaign.\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.\n\nIssue #1257: Self-healing retry logic\nOn every GET request, checks for stuck image generation tasks and\nautomatically retries them in the background.\n\nStatus codes:\n- 200: Content exists and is returned\n- 204: Campaign exists but content not generated yet (poll again)\n- 404: Campaign does not exist",
+        "description": "Get content for a campaign.\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.\n\nIssue #1257: Self-healing retry logic\nOn every GET request, checks for stuck image generation tasks and\nautomatically retries them in the background.\n\nStatus codes:\n- 200: Content exists and is returned\n- 204: Campaign exists but content not generated yet (poll again)\n- 401: Not authenticated\n- 403: Not authorized to access this campaign\n- 404: Campaign does not exist",
         "operationId": "get_campaign_content_api_v2_campaigns__campaign_id__content_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -2952,6 +2986,12 @@
           "204": {
             "description": "Campaign exists but content not ready yet"
           },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this campaign"
+          },
           "404": {
             "description": "Campaign not found"
           },
@@ -2974,7 +3014,7 @@
           "content"
         ],
         "summary": "Update Content Status",
-        "description": "Update content approval status.\n\nRMM L2 Compliance: Status is a field on the content resource (not /approve action).\nThis replaces the V1 POST /api/v1/contentgen/approve endpoint.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    content_id: UUID of the content to update\n    status_update: New status and optional metadata\n    content_status_service: Injected status service\n\nReturns:\n    ContentStatusResponse with updated status and metadata\n\nRaises:\n    HTTPException: 400 for invalid transition, 404 if content not found",
+        "description": "Update content approval status.\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\n\nRMM L2 Compliance: Status is a field on the content resource (not /approve action).\nThis replaces the V1 POST /api/v1/contentgen/approve endpoint.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    content_id: UUID of the content to update\n    status_update: New status and optional metadata\n    content_status_service: Injected status service\n    post_service: Post service for content lookup\n    campaign_service: Campaign service for ownership verification\n\nReturns:\n    ContentStatusResponse with updated status and metadata\n\nRaises:\n    HTTPException: 400 for invalid transition, 401/403 for auth errors, 404 if content not found",
         "operationId": "update_content_status_api_v2_content__content_id__status_patch",
         "security": [
           {
@@ -3007,7 +3047,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Content status updated successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -3015,6 +3055,15 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this content"
+          },
+          "404": {
+            "description": "Content not found"
           },
           "422": {
             "description": "Validation Error",
@@ -3081,8 +3130,13 @@
           "content"
         ],
         "summary": "Get Content Generation Status",
-        "description": "Get detailed generation status for specific content.\n\nReturns detailed status for content generation including:\n- Overall status (pending/generating/completed/failed)\n- Progress percentage (0-100)\n- Post-level breakdown (ready, generating, failed)\n- Optional per-post status when include_post_details=true\n- Error details for failed posts\n\nThis endpoint provides more granular status than the campaign-level\nendpoint, useful for debugging and detailed progress tracking.\n\nIssue #1484: Add async status polling endpoints for content generation.\n\nArgs:\n    content_id: Content ID to check status for\n    include_post_details: Whether to include per-post breakdown\n    generation_status_service: Service for generation status\n\nReturns:\n    ContentGenerationStatusResponse with detailed status",
+        "description": "Get detailed generation status for specific content.\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\n\nReturns detailed status for content generation including:\n- Overall status (pending/generating/completed/failed)\n- Progress percentage (0-100)\n- Post-level breakdown (ready, generating, failed)\n- Optional per-post status when include_post_details=true\n- Error details for failed posts\n\nThis endpoint provides more granular status than the campaign-level\nendpoint, useful for debugging and detailed progress tracking.\n\nIssue #1484: Add async status polling endpoints for content generation.\n\nArgs:\n    content_id: Content ID to check status for\n    include_post_details: Whether to include per-post breakdown\n    firebase_user: Authenticated Firebase user\n    post_service: Post service for content lookup\n    campaign_service: Campaign service for ownership verification\n    generation_status_service: Service for generation status\n\nReturns:\n    ContentGenerationStatusResponse with detailed status",
         "operationId": "get_content_generation_status_api_v2_content__content_id__generation_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -3118,6 +3172,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this content"
           },
           "404": {
             "description": "Content not found"
