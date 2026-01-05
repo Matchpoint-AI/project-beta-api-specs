@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.517] - 2026-01-05
+
+### Changes
+- Merge pull request #1742 from Matchpoint-AI/fix/1689-jwt-secret-key-validation
+
+**Source:** project-beta-api@2ab587fa
+
 ## [v0.7.516] - 2026-01-05
 
 ### Changes
