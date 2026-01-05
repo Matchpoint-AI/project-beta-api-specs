@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.524] - 2026-01-05
+
+### Changes
+- fix: use job.schedule_time for correct scheduled_time in CloudSchedulerService (#1762)
+
+**Source:** project-beta-api@f03af6ea
+
 ## [v0.7.523] - 2026-01-05
 
 ### Changes
