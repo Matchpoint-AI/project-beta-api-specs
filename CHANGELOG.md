@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.514] - 2026-01-05
+
+### Changes
+- Merge pull request #1739 from Matchpoint-AI/fix/1727-token-blacklist-fail-closed
+
+**Source:** project-beta-api@d2f68ab3
+
 ## [v0.7.513] - 2026-01-05
 
 ### Changes
