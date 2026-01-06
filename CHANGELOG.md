@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.546] - 2026-01-06
+
+### Changes
+- Merge pull request #1870 from Matchpoint-AI/chore/remove-unused-protocols
+
+**Source:** project-beta-api@cc4d40e2
+
 ## [v0.7.545] - 2026-01-06
 
 ### Changes
