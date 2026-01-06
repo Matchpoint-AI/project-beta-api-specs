@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.536] - 2026-01-06
+
+### Changes
+- Merge pull request #1849 from Matchpoint-AI/cleanup/dynamic-prompt-todos
+
+**Source:** project-beta-api@5c2ef2f6
+
 ## [v0.7.535] - 2026-01-06
 
 ### Changes
