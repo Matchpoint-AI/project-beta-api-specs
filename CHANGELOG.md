@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.545] - 2026-01-06
+
+### Changes
+- Merge pull request #1869 from Matchpoint-AI/chore/remove-brand-attribute
+
+**Source:** project-beta-api@fe9e909e
+
 ## [v0.7.544] - 2026-01-06
 
 ### Changes
