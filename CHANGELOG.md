@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.542] - 2026-01-06
+
+### Changes
+- Merge pull request #1859 from Matchpoint-AI/chore/remove-admin-service
+
+**Source:** project-beta-api@d9ce0556
+
 ## [v0.7.541] - 2026-01-06
 
 ### Changes
