@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.534] - 2026-01-06
+
+### Changes
+- Merge pull request #1850 from Matchpoint-AI/fix/1828-deprecated-post-service-methods
+
+**Source:** project-beta-api@981dc60d
+
 ## [v0.7.533] - 2026-01-06
 
 ### Changes
