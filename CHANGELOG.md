@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.537] - 2026-01-06
+
+### Changes
+- Merge pull request #1853 from Matchpoint-AI/fix/1852-rename-test
+
+**Source:** project-beta-api@9c332f08
+
 ## [v0.7.536] - 2026-01-06
 
 ### Changes
