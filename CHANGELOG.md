@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.530] - 2026-01-06
+
+### Changes
+- Merge pull request #1846 from Matchpoint-AI/fix/1691-remove-firebase-uid
+
+**Source:** project-beta-api@118867a9
+
 ## [v0.7.529] - 2026-01-06
 
 ### Changes
