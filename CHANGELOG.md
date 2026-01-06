@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.532] - 2026-01-06
+
+### Changes
+- fix: read brand knowledge from semantic_data for V2 API (#1844)
+
+**Source:** project-beta-api@0f1087bd
+
 ## [v0.7.531] - 2026-01-06
 
 ### Changes
