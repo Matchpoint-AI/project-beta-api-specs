@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.531] - 2026-01-06
+
+### Changes
+- fix(security): remove API key exposure in debug logs (#1843)
+
+**Source:** project-beta-api@739b507d
+
 ## [v0.7.530] - 2026-01-06
 
 ### Changes
