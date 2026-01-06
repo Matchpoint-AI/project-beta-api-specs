@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.528] - 2026-01-06
+
+### Changes
+- Merge pull request #1836 from Matchpoint-AI/fix/1800-api-key-exposure
+
+**Source:** project-beta-api@28350f34
+
 ## [v0.7.527] - 2026-01-05
 
 ### Changes
