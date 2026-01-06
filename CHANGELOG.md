@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.547] - 2026-01-06
+
+### Changes
+- Merge pull request #1872 from Matchpoint-AI/fix/1871-migration-enum
+
+**Source:** project-beta-api@524a0694
+
 ## [v0.7.546] - 2026-01-06
 
 ### Changes
