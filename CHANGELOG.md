@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.541] - 2026-01-06
+
+### Changes
+- fix: replace broad exception handlers with handle_service_exception (#1690) (#1857)
+
+**Source:** project-beta-api@7a656f61
+
 ## [v0.7.540] - 2026-01-06
 
 ### Changes
