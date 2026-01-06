@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.532"
+    "version": "0.7.533"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1025,14 +1025,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
+                  "anyOf": [
                     {
                       "$ref": "#/components/schemas/BrandKnowledgeV2ListResponse"
                     },
                     {
                       "$ref": "#/components/schemas/BrandKnowledgeBrandSummaryResponse"
                     }
-                  ]
+                  ],
+                  "title": "Response Get Brand Knowledge V2 Api V2 Brands  Brand Id  Knowledge Get"
                 }
               }
             }
@@ -1135,7 +1136,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -6106,7 +6106,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6123,6 +6122,45 @@
         ],
         "title": "BrandFileUploadResponse",
         "description": "Response schema for brand file upload with LLM extraction."
+      },
+      "BrandKnowledgeBrandSummaryResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "totalEntries": {
+            "type": "integer",
+            "title": "Totalentries",
+            "description": "Total number of knowledge entries for this brand"
+          },
+          "lastUpdated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastupdated",
+            "description": "Last update timestamp (None if no knowledge exists)"
+          },
+          "categoryBreakdown": {
+            "$ref": "#/components/schemas/CategoryBreakdown",
+            "description": "Breakdown by category (traits, products, colors)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "totalEntries",
+          "categoryBreakdown"
+        ],
+        "title": "BrandKnowledgeBrandSummaryResponse",
+        "description": "Summary statistics for a specific brand's knowledge."
       },
       "BrandKnowledgeStatusResponse": {
         "properties": {
@@ -6162,7 +6200,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6185,6 +6222,110 @@
         ],
         "title": "BrandKnowledgeStatusResponse",
         "description": "Response schema for brand knowledge extraction status (Phase 1: Progressive Brand Knowledge)."
+      },
+      "BrandKnowledgeV2ListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BrandKnowledgeV2Response"
+            },
+            "type": "array",
+            "title": "Items",
+            "description": "List of brand knowledge entries"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of knowledge entries for this brand"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "description": "Number of items skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "BrandKnowledgeV2ListResponse",
+        "description": "V2 Paginated response model for brand knowledge list."
+      },
+      "BrandKnowledgeV2Response": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "personalityTraits": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Personalitytraits",
+            "description": "2-5 lowercase adjectives describing brand personality"
+          },
+          "toneAttributes": {
+            "$ref": "#/components/schemas/ToneAttributesV2",
+            "description": "Structured tone characteristics"
+          },
+          "colorPalette": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Colorpalette",
+            "description": "3-5 hex color codes from brand visual identity"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/ProductV2"
+            },
+            "type": "array",
+            "title": "Products",
+            "description": "List of products with name and category"
+          },
+          "brandDescription": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Branddescription",
+            "description": "1-2 sentences describing the brand"
+          },
+          "valueProposition": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Valueproposition",
+            "description": "1-2 sentences describing the value proposition"
+          },
+          "targetAudience": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Targetaudience",
+            "description": "1-2 sentences describing the target audience"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "personalityTraits",
+          "toneAttributes",
+          "colorPalette",
+          "products",
+          "brandDescription",
+          "valueProposition",
+          "targetAudience"
+        ],
+        "title": "BrandKnowledgeV2Response",
+        "description": "V2 Response model for simplified brand knowledge extraction."
       },
       "BrandOnboardingProgressResponse": {
         "properties": {
@@ -6217,7 +6358,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6284,7 +6424,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6947,7 +7086,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7105,7 +7243,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7299,7 +7436,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7754,7 +7890,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -7784,7 +7919,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -7988,7 +8122,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8320,7 +8453,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8336,6 +8468,31 @@
         ],
         "title": "CaptionResponse",
         "description": "Schema for caption response."
+      },
+      "CategoryBreakdown": {
+        "properties": {
+          "personalityTraits": {
+            "type": "integer",
+            "title": "Personalitytraits",
+            "description": "Number of personality traits",
+            "default": 0
+          },
+          "products": {
+            "type": "integer",
+            "title": "Products",
+            "description": "Number of products",
+            "default": 0
+          },
+          "colorPalette": {
+            "type": "integer",
+            "title": "Colorpalette",
+            "description": "Number of colors in palette",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "CategoryBreakdown",
+        "description": "Category breakdown for brand knowledge."
       },
       "ContentApprovalRequest": {
         "properties": {
@@ -8399,7 +8556,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8438,7 +8594,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8482,7 +8637,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8562,7 +8716,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8634,7 +8787,6 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -8977,7 +9129,6 @@
           "errorDetails": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9709,7 +9860,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9968,7 +10118,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10588,7 +10737,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10748,7 +10896,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11287,7 +11434,6 @@
           "mediaSnapshot": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11322,6 +11468,27 @@
         ],
         "title": "PostVersionItemResponse",
         "description": "Single version in history response with camelCase aliases."
+      },
+      "ProductV2": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Product name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Product category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category"
+        ],
+        "title": "ProductV2",
+        "description": "V2 Product information for brand knowledge."
       },
       "PromptCreate": {
         "properties": {
@@ -11921,7 +12088,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12169,13 +12335,11 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -12251,7 +12415,6 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -12259,7 +12422,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13027,6 +13189,33 @@
           "thread_id": "thread-550e8400-e29b-41d4-a716-446655440001"
         }
       },
+      "ToneAttributesV2": {
+        "properties": {
+          "formality": {
+            "type": "string",
+            "title": "Formality",
+            "description": "Formality level (casual, professional, formal)"
+          },
+          "enthusiasm": {
+            "type": "string",
+            "title": "Enthusiasm",
+            "description": "Enthusiasm level (low, medium, high)"
+          },
+          "expertise": {
+            "type": "string",
+            "title": "Expertise",
+            "description": "Expertise level (beginner, intermediate, expert)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "formality",
+          "enthusiasm",
+          "expertise"
+        ],
+        "title": "ToneAttributesV2",
+        "description": "V2 Tone attributes for brand knowledge."
+      },
       "URLContentRequest": {
         "properties": {
           "url": {
@@ -13665,7 +13854,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
