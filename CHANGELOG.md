@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.543] - 2026-01-06
+
+### Changes
+- Merge pull request #1860 from Matchpoint-AI/chore/remove-stale-coveragerc-entries
+
+**Source:** project-beta-api@d4ae9841
+
 ## [v0.7.542] - 2026-01-06
 
 ### Changes
