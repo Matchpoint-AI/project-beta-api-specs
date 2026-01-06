@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.544] - 2026-01-06
+
+### Changes
+- ci: temporarily use ubuntu-latest for release workflow (ARC down) (#1868)
+
+**Source:** project-beta-api@221e2466
+
 ## [v0.7.543] - 2026-01-06
 
 ### Changes
