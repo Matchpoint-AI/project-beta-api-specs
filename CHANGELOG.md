@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.538] - 2026-01-06
+
+### Changes
+- Merge pull request #1855 from Matchpoint-AI/fix/1801-sanitize-exceptions
+
+**Source:** project-beta-api@647edcea
+
 ## [v0.7.537] - 2026-01-06
 
 ### Changes
