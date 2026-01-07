@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.549] - 2026-01-07
+
+### Changes
+- Merge pull request #1874 from Matchpoint-AI/fix/migration-sa-text
+
+**Source:** project-beta-api@fbf8ff60
+
 ## [v0.7.548] - 2026-01-07
 
 ### Changes
