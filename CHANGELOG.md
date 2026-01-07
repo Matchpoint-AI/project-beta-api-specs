@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.548] - 2026-01-07
+
+### Changes
+- Merge pull request #1873 from Matchpoint-AI/fix/1873-duplicate-brands
+
+**Source:** project-beta-api@1507208e
+
 ## [v0.7.547] - 2026-01-06
 
 ### Changes
