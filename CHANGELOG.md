@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.552] - 2026-01-07
+
+### Changes
+- Merge pull request #1861 from Matchpoint-AI/fix/1802-ssl-verification
+
+**Source:** project-beta-api@81ccb5ad
+
 ## [v0.7.551] - 2026-01-07
 
 ### Changes
