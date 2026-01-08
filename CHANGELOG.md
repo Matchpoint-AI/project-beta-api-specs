@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.562] - 2026-01-08
+
+### Changes
+- fix: replace silent exception handler with debug logging in brand_controller (#1928)
+
+**Source:** project-beta-api@33a59f2a
+
 ## [v0.7.561] - 2026-01-08
 
 ### Changes
