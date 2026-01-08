@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.559] - 2026-01-08
+
+### Changes
+- Merge pull request #1919 from Matchpoint-AI/feat/1897-connection-pool-monitoring
+
+**Source:** project-beta-api@076232ff
+
 ## [v0.7.558] - 2026-01-08
 
 ### Changes
