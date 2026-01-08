@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.566] - 2026-01-08
+
+### Changes
+- fix: mask email addresses in password-related logs for security (#1935)
+
+**Source:** project-beta-api@e299116a
+
 ## [v0.7.565] - 2026-01-08
 
 ### Changes
