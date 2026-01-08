@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.565] - 2026-01-08
+
+### Changes
+- Merge pull request #1936 from Matchpoint-AI/fix/1834-instagram-oauth-validation
+
+**Source:** project-beta-api@c315b6f0
+
 ## [v0.7.564] - 2026-01-08
 
 ### Changes
