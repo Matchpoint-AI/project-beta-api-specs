@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.554] - 2026-01-08
+
+### Changes
+- fix(api): support string post IDs in content prompt endpoint (#1880)
+
+**Source:** project-beta-api@a3f996e2
+
 ## [v0.7.553] - 2026-01-08
 
 ### Changes
