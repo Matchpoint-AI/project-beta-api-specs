@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.564] - 2026-01-08
+
+### Changes
+- Merge pull request #1937 from Matchpoint-AI/feat/1833-magic-numbers
+
+**Source:** project-beta-api@f3e455d4
+
 ## [v0.7.563] - 2026-01-08
 
 ### Changes
