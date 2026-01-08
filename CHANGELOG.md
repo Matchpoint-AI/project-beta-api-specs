@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.558] - 2026-01-08
+
+### Changes
+- Merge pull request #1918 from Matchpoint-AI/feat/1704-video-generation-costs
+
+**Source:** project-beta-api@315d9ba1
+
 ## [v0.7.557] - 2026-01-08
 
 ### Changes
