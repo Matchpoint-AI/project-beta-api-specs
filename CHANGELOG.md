@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.563] - 2026-01-08
+
+### Changes
+- feat: add POST /api/v2/posts/{post_id}/videos endpoint (#1927)
+
+**Source:** project-beta-api@9344a24c
+
 ## [v0.7.562] - 2026-01-08
 
 ### Changes

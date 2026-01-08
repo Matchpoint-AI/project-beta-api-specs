@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.562"
+    "version": "0.7.563"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5499,10 +5499,93 @@
           }
         }
       }
+    },
+    "/api/v2/posts/{post_id}/videos": {
+      "post": {
+        "tags": [
+          "video-generation"
+        ],
+        "summary": "Create Video",
+        "description": "Queue video generation for a post.\n\nCreates a video generation job and publishes it to the video-generator\nworker via Pub/Sub. Returns immediately with job details including\ncost estimate.\n\nIssue #1701: Implements the POST /posts/{post_id}/videos endpoint.\n\nArgs:\n    post_id: ID of the post to generate video for\n    request: Video generation parameters\n    response: FastAPI response object for headers\n    firebase_user: Authenticated user from JWT token\n    post_repository: Repository for post lookup\n    job_repository: Repository for video job creation\n    publisher: Video generation publisher (Pub/Sub or direct HTTP)\n\nReturns:\n    VideoJobResponse with job ID and cost estimate\n\nRaises:\n    HTTPException 400: If post has no image\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the post\n    HTTPException 404: If post not found\n    HTTPException 500: If publishing fails",
+        "operationId": "create_video_api_v2_posts__post_id__videos_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Video generation job queued successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoJobResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Post has no image to generate video from"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this post"
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "500": {
+            "description": "Failed to queue video generation"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AspectRatio": {
+        "type": "string",
+        "enum": [
+          "9:16",
+          "1:1",
+          "16:9"
+        ],
+        "title": "AspectRatio",
+        "description": "Supported aspect ratios for video generation."
+      },
       "AudienceSuggestionsResponse": {
         "properties": {
           "audience_emotion": {
@@ -13135,6 +13218,17 @@
         "title": "StatusResultResponse",
         "description": "Result info with camelCase."
       },
+      "TextPosition": {
+        "type": "string",
+        "enum": [
+          "top",
+          "center",
+          "bottom",
+          "none"
+        ],
+        "title": "TextPosition",
+        "description": "Text overlay positions."
+      },
       "ThreadMessageCreate": {
         "properties": {
           "role": {
@@ -13705,6 +13799,136 @@
         ],
         "title": "VersionStatusResponse",
         "description": "Status polling response with camelCase aliases."
+      },
+      "VideoGenerationRequest": {
+        "properties": {
+          "durationSeconds": {
+            "type": "integer",
+            "maximum": 60.0,
+            "minimum": 10.0,
+            "title": "Durationseconds",
+            "description": "Video duration in seconds (10-60)",
+            "default": 15
+          },
+          "aspectRatio": {
+            "$ref": "#/components/schemas/AspectRatio",
+            "description": "Target aspect ratio for the video",
+            "default": "9:16"
+          },
+          "style": {
+            "$ref": "#/components/schemas/VideoStyle",
+            "description": "Visual style preset",
+            "default": "cinematic"
+          },
+          "includeTextOverlay": {
+            "type": "boolean",
+            "title": "Includetextoverlay",
+            "description": "Whether to include post text as overlay",
+            "default": true
+          },
+          "textPosition": {
+            "$ref": "#/components/schemas/TextPosition",
+            "description": "Position of text overlay if enabled",
+            "default": "bottom"
+          },
+          "motionType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motiontype",
+            "description": "Motion effect type (zoom, pan, push, etc.)"
+          }
+        },
+        "type": "object",
+        "title": "VideoGenerationRequest",
+        "description": "Request schema for initiating video generation.\n\nAttributes:\n    duration_seconds: Video duration (10-60 seconds for full video)\n    aspect_ratio: Target aspect ratio\n    style: Visual style preset\n    include_text_overlay: Whether to include text on the video\n    text_position: Where to position the text overlay\n    motion_type: Type of motion effect (zoom, pan, etc.)"
+      },
+      "VideoJobResponse": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid",
+            "description": "UUID of the video generation job"
+          },
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "ID of the post"
+          },
+          "jobType": {
+            "$ref": "#/components/schemas/VideoJobType",
+            "description": "Type of video being generated"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VideoJobStatus",
+            "description": "Current job status"
+          },
+          "estimatedDurationSeconds": {
+            "type": "integer",
+            "title": "Estimateddurationseconds",
+            "description": "Estimated processing time in seconds"
+          },
+          "estimatedCostUsd": {
+            "type": "string",
+            "title": "Estimatedcostusd",
+            "description": "Estimated cost in USD"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp when job was created"
+          }
+        },
+        "type": "object",
+        "required": [
+          "jobId",
+          "postId",
+          "jobType",
+          "status",
+          "estimatedDurationSeconds",
+          "estimatedCostUsd",
+          "createdAt"
+        ],
+        "title": "VideoJobResponse",
+        "description": "Response schema for video generation job creation.\n\nReturned when a video generation request is successfully queued.\n\nAttributes:\n    job_id: UUID of the created job\n    post_id: ID of the post being processed\n    job_type: Type of video being generated\n    status: Current job status (initially 'queued')\n    estimated_duration_seconds: Estimated processing time\n    estimated_cost_usd: Estimated cost for this generation"
+      },
+      "VideoJobStatus": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "processing",
+          "completed",
+          "failed",
+          "cancelled"
+        ],
+        "title": "VideoJobStatus",
+        "description": "Status values for video generation jobs."
+      },
+      "VideoJobType": {
+        "type": "string",
+        "enum": [
+          "motion_poster",
+          "full_video"
+        ],
+        "title": "VideoJobType",
+        "description": "Types of video generation jobs."
+      },
+      "VideoStyle": {
+        "type": "string",
+        "enum": [
+          "cinematic",
+          "dynamic",
+          "minimal",
+          "energetic"
+        ],
+        "title": "VideoStyle",
+        "description": "Visual styles for video generation."
       },
       "WeekContent": {
         "properties": {
