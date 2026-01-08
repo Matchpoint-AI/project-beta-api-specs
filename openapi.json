@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.556"
+    "version": "0.7.557"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5478,6 +5478,26 @@
             "HTTPBearer": []
           }
         ]
+      }
+    },
+    "/api/v2/version": {
+      "get": {
+        "tags": [
+          "version"
+        ],
+        "summary": "Get Version",
+        "description": "Get the current API version.\n\nReturns:\n    200 OK with version info including version tag and service name",
+        "operationId": "get_version_api_v2_version_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
       }
     }
   },
