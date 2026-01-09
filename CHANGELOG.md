@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.581] - 2026-01-09
+
+### Changes
+- Merge pull request #1970 from Matchpoint-AI/fix/1969-cloud-run-migrations
+
+**Source:** project-beta-api@1f8a1dda
+
 ## [v0.7.580] - 2026-01-09
 
 ### Changes
