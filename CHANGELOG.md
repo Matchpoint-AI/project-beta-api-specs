@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.569] - 2026-01-09
+
+### Changes
+- fix: add additionalProperties to SceneMixPolicy object fields (#1863) (#1948)
+
+**Source:** project-beta-api@a2b6003f
+
 ## [v0.7.568] - 2026-01-09
 
 ### Changes
