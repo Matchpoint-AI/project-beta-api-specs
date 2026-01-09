@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.579] - 2026-01-09
+
+### Changes
+- Merge pull request #1967 from Matchpoint-AI/fix/1963-migration-private-ip
+
+**Source:** project-beta-api@ebf49244
+
 ## [v0.7.578] - 2026-01-09
 
 ### Changes
