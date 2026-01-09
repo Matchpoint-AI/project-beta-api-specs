@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.578] - 2026-01-09
+
+### Changes
+- Merge pull request #1966 from Matchpoint-AI/fix/1963-migration-netcat-python
+
+**Source:** project-beta-api@d7d59b6b
+
 ## [v0.7.577] - 2026-01-09
 
 ### Changes
