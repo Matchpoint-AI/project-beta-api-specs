@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.574] - 2026-01-09
+
+### Changes
+- Merge pull request #1943 from Matchpoint-AI/feat/1705-video-cost-recorder
+
+**Source:** project-beta-api@35b4fb50
+
 ## [v0.7.573] - 2026-01-09
 
 ### Changes
