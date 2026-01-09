@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.574"
+    "version": "0.7.575"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5560,6 +5560,60 @@
           },
           "500": {
             "description": "Failed to queue video generation"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/video-jobs/{job_id}": {
+      "get": {
+        "tags": [
+          "video-generation"
+        ],
+        "summary": "Get Video Job Status",
+        "description": "Get the status of a video generation job.\n\nRetrieves the current status, progress, and result URL for a video\ngeneration job. Poll this endpoint to track job progress.\n\nIssue #1697: Implements GET /video-jobs/{job_id} status endpoint.\n\nArgs:\n    job_id: UUID of the video generation job\n    firebase_user: Authenticated user from JWT token\n    job_repository: Repository for video job retrieval\n\nReturns:\n    VideoJobStatusResponse with current job status and details\n\nRaises:\n    HTTPException 401: If not authenticated\n    HTTPException 404: If job not found",
+        "operationId": "get_video_job_status_api_v2_video_jobs__job_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Video job status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoJobStatusResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "404": {
+            "description": "Video job not found"
           },
           "422": {
             "description": "Validation Error",
@@ -14076,6 +14130,123 @@
         ],
         "title": "VideoJobStatus",
         "description": "Status values for video generation jobs."
+      },
+      "VideoJobStatusResponse": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid",
+            "description": "UUID of the video generation job"
+          },
+          "postId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postid",
+            "description": "ID of the associated post"
+          },
+          "jobType": {
+            "$ref": "#/components/schemas/VideoJobType",
+            "description": "Type of video job"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VideoJobStatus",
+            "description": "Current job status"
+          },
+          "videoUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videourl",
+            "description": "URL of generated video"
+          },
+          "thumbnailUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbnailurl",
+            "description": "URL of video thumbnail"
+          },
+          "durationSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Durationseconds",
+            "description": "Actual video duration"
+          },
+          "costUsd": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Costusd",
+            "description": "Actual cost incurred"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error details"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "When the job was created"
+          },
+          "completedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedat",
+            "description": "When the job completed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "jobId",
+          "jobType",
+          "status",
+          "createdAt"
+        ],
+        "title": "VideoJobStatusResponse",
+        "description": "Response schema for video job status queries.\n\nUsed by GET /api/v1/video-jobs/{job_id} endpoint (Issue #1697).\n\nAttributes:\n    job_id: UUID of the job\n    post_id: ID of the associated post\n    job_type: Type of video job\n    status: Current status\n    video_url: URL of generated video (if completed)\n    thumbnail_url: URL of video thumbnail (if completed)\n    duration_seconds: Actual video duration (if completed)\n    cost_usd: Actual cost incurred (if available)\n    error_message: Error details (if failed)\n    created_at: When the job was created\n    completed_at: When the job completed (if finished)"
       },
       "VideoJobType": {
         "type": "string",

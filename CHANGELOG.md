@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.575] - 2026-01-09
+
+### Changes
+- feat: add GET /video-jobs/{job_id} status endpoint (#1697) (#1939)
+
+**Source:** project-beta-api@2b7f8de6
+
 ## [v0.7.574] - 2026-01-09
 
 ### Changes
