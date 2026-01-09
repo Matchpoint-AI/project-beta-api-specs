@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.571] - 2026-01-09
+
+### Changes
+- Merge pull request #1947 from Matchpoint-AI/fix/1835-remove-asserts
+
+**Source:** project-beta-api@8fb146d2
+
 ## [v0.7.570] - 2026-01-09
 
 ### Changes
