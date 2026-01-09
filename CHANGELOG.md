@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.580] - 2026-01-09
+
+### Changes
+- feat(api): add v2 brand costs endpoint with RMM L2 compliance (#1952)
+
+**Source:** project-beta-api@be49a61b
+
 ## [v0.7.579] - 2026-01-09
 
 ### Changes

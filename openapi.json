@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.579"
+    "version": "0.7.580"
   },
   "paths": {
     "/api/v2/brands": {
@@ -813,6 +813,114 @@
           },
           "400": {
             "description": "Invalid request data"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/costs": {
+      "get": {
+        "tags": [
+          "brand-costs"
+        ],
+        "summary": "Get Brand Costs",
+        "description": "Get aggregated costs for a brand.\n\nRetrieves cost information for the specified brand and period.\nDefaults to current month if no period is specified.\n\nIssue #1952: Implements GET /brands/{brand_id}/costs endpoint with\nRMM L2 compliant naming (single-word noun \"costs\").\n\nArgs:\n    brand_id: ID of the brand to get costs for\n    cost_type: Type of costs to retrieve (default: video)\n    period_start: Start date of period (default: first of current month)\n    period_end: End date of period (default: last of current month)\n    firebase_user: Authenticated user from JWT token\n    brand_repository: Repository for brand lookup\n    video_cost_recorder: Service for cost retrieval\n\nReturns:\n    BrandCostsResponse with aggregated cost data\n\nRaises:\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the brand\n    HTTPException 404: If brand not found",
+        "operationId": "get_brand_costs_api_v2_brands__brand_id__costs_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CostType",
+              "description": "Type of costs to retrieve (default: video)",
+              "default": "video"
+            },
+            "description": "Type of costs to retrieve (default: video)"
+          },
+          {
+            "name": "periodStart",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of cost period (default: first day of current month)",
+              "title": "Periodstart"
+            },
+            "description": "Start date of cost period (default: first day of current month)"
+          },
+          {
+            "name": "periodEnd",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of cost period (default: last day of current month)",
+              "title": "Periodend"
+            },
+            "description": "End date of cost period (default: last day of current month)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand costs retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandCostsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
@@ -5891,6 +5999,92 @@
         "type": "object",
         "title": "Body_upload_brand_files"
       },
+      "BrandCostsResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "costType": {
+            "$ref": "#/components/schemas/CostType",
+            "description": "Type of costs"
+          },
+          "periodStart": {
+            "type": "string",
+            "format": "date",
+            "title": "Periodstart",
+            "description": "Start date of cost period"
+          },
+          "periodEnd": {
+            "type": "string",
+            "format": "date",
+            "title": "Periodend",
+            "description": "End date of cost period"
+          },
+          "totalJobs": {
+            "type": "integer",
+            "title": "Totaljobs",
+            "description": "Total number of jobs in period"
+          },
+          "totalSeconds": {
+            "type": "integer",
+            "title": "Totalseconds",
+            "description": "Total video seconds generated"
+          },
+          "totalCredits": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Totalcredits",
+            "description": "Total credits consumed"
+          },
+          "totalCostUsd": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Totalcostusd",
+            "description": "Total cost in USD"
+          },
+          "createdAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Createdat",
+            "description": "When the cost record was created"
+          },
+          "updatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updatedat",
+            "description": "When the cost record was last updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "costType",
+          "periodStart",
+          "periodEnd",
+          "totalJobs",
+          "totalSeconds",
+          "totalCredits",
+          "totalCostUsd"
+        ],
+        "title": "BrandCostsResponse",
+        "description": "Response schema for brand costs query.\n\nIssue #1952: Returns aggregated costs for a brand within a specified period.\n\nAttributes:\n    brand_id: The brand ID\n    cost_type: Type of costs (video, content, etc.)\n    period_start: Start date of the cost period\n    period_end: End date of the cost period\n    total_jobs: Total number of jobs in the period\n    total_seconds: Total video seconds generated\n    total_credits: Total credits consumed\n    total_cost_usd: Total cost in USD\n    created_at: When the cost record was first created\n    updated_at: When the cost record was last updated"
+      },
       "BrandCrawlAssetsInfo": {
         "properties": {
           "colorsFound": {
@@ -10446,6 +10640,14 @@
         "title": "ContentUpdate",
         "description": "Schema for updating content."
       },
+      "CostType": {
+        "type": "string",
+        "enum": [
+          "video"
+        ],
+        "title": "CostType",
+        "description": "Types of costs that can be queried."
+      },
       "CrawlErrorSummary": {
         "properties": {
           "error_code": {
@@ -14095,9 +14297,10 @@
             "description": "Estimated processing time in seconds"
           },
           "estimatedCostUsd": {
-            "description": "Estimated cost in USD",
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
-            "type": "string"
+            "description": "Estimated cost in USD"
           },
           "createdAt": {
             "type": "string",
@@ -14197,7 +14400,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
