@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.567] - 2026-01-09
+
+### Changes
+- Merge pull request #1932 from Matchpoint-AI/fix/1930-brand-status-transition
+
+**Source:** project-beta-api@1d52268a
+
 ## [v0.7.566] - 2026-01-08
 
 ### Changes
