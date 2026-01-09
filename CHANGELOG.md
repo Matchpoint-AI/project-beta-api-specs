@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.577] - 2026-01-09
+
+### Changes
+- Merge pull request #1964 from Matchpoint-AI/fix/1963-migration-workflow
+
+**Source:** project-beta-api@2b6af01c
+
 ## [v0.7.576] - 2026-01-09
 
 ### Changes
