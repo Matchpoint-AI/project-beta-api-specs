@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.576] - 2026-01-09
+
+### Changes
+- feat: implement video generation cost estimation service (#1702) (#1940)
+
+**Source:** project-beta-api@ae92d883
+
 ## [v0.7.575] - 2026-01-09
 
 ### Changes
