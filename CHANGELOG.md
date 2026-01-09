@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.572] - 2026-01-09
+
+### Changes
+- Merge pull request #1949 from Matchpoint-AI/fix/1946-uvicorn-reload
+
+**Source:** project-beta-api@c236b394
+
 ## [v0.7.571] - 2026-01-09
 
 ### Changes
