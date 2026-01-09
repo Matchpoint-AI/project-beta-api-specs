@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.568] - 2026-01-09
+
+### Changes
+- Merge pull request #1941 from Matchpoint-AI/feat/1933-scene-selection
+
+**Source:** project-beta-api@706370cf
+
 ## [v0.7.567] - 2026-01-09
 
 ### Changes

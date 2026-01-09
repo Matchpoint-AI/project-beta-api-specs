@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.567"
+    "version": "0.7.568"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1136,6 +1136,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -6209,6 +6210,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6303,6 +6305,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6461,6 +6464,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6527,6 +6531,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7189,6 +7194,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7227,6 +7233,22 @@
             ],
             "title": "Audience Age Range",
             "description": "Target audience age ranges (e.g., ['18-24'], ['25-34', '35-44'])"
+          },
+          "sceneLocations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scene Locations",
+            "description": "Backdrop/location settings for content (e.g., ['outdoor', 'office', 'home']). Up to 3 locations selected by user in campaign creation."
           },
           "videoModel": {
             "anyOf": [
@@ -7346,6 +7368,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7539,6 +7562,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7577,6 +7601,22 @@
             ],
             "title": "Audience Age Range",
             "description": "Target audience age ranges (e.g., ['18-24'], ['25-34', '35-44'])"
+          },
+          "sceneLocations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scene Locations",
+            "description": "Backdrop/location settings for content (e.g., ['outdoor', 'office', 'home']). Up to 3 locations selected by user in campaign creation."
           },
           "videoModel": {
             "anyOf": [
@@ -7993,6 +8033,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8022,6 +8063,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -8225,6 +8267,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8263,6 +8306,22 @@
             ],
             "title": "Audience Age Range",
             "description": "Target audience age ranges (e.g., ['18-24'], ['25-34', '35-44'])"
+          },
+          "sceneLocations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scene Locations",
+            "description": "Backdrop/location settings for content (e.g., ['outdoor', 'office', 'home']). Up to 3 locations selected by user in campaign creation."
           },
           "workflowId": {
             "anyOf": [
@@ -8556,6 +8615,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -8659,6 +8719,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8697,6 +8758,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -8740,6 +8802,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8819,6 +8882,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8890,6 +8954,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -9232,6 +9297,7 @@
           "errorDetails": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9963,6 +10029,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10221,6 +10288,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10840,6 +10908,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10999,6 +11068,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -11537,6 +11607,7 @@
           "mediaSnapshot": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12191,6 +12262,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12438,11 +12510,13 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
           },
           "diversitySettings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Diversitysettings",
             "description": "Content diversity settings"
@@ -12518,6 +12592,7 @@
             "description": "Target platforms"
           },
           "frequencyRules": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Frequencyrules",
             "description": "Content frequency rules"
@@ -12525,6 +12600,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13874,9 +13950,9 @@
             "description": "Estimated processing time in seconds"
           },
           "estimatedCostUsd": {
-            "type": "string",
+            "description": "Estimated cost in USD",
             "title": "Estimatedcostusd",
-            "description": "Estimated cost in USD"
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -14098,6 +14174,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
