@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.587] - 2026-01-10
+
+### Changes
+- docs: add cross-repo type generation reminder to PR template (#1981)
+
+**Source:** project-beta-api@46bff095
+
 ## [v0.7.586] - 2026-01-10
 
 ### Changes
