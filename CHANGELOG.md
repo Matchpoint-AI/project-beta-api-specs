@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.583] - 2026-01-10
+
+### Changes
+- Merge pull request #1972 from Matchpoint-AI/fix/1776-httpx-consolidation
+
+**Source:** project-beta-api@a99b3f17
+
 ## [v0.7.582] - 2026-01-10
 
 ### Changes
