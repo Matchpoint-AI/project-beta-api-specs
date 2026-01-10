@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.586] - 2026-01-10
+
+### Changes
+- fix: add missing prompt_revisions table migration (#1978)
+
+**Source:** project-beta-api@a38ba80f
+
 ## [v0.7.585] - 2026-01-10
 
 ### Changes
