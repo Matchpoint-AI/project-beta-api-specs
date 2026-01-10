@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.582] - 2026-01-10
+
+### Changes
+- perf: migrate from stdlib json to orjson for 3-10x faster serialization (#1971)
+
+**Source:** project-beta-api@6898a4d7
+
 ## [v0.7.581] - 2026-01-09
 
 ### Changes
