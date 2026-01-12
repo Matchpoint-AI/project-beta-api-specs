@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.595] - 2026-01-12
+
+### Changes
+- feat: add X-Git-SHA header for deployment tracking (#1958)
+
+**Source:** project-beta-api@e5d0f29e
+
 ## [v0.7.594] - 2026-01-12
 
 ### Changes
