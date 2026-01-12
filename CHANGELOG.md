@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.593] - 2026-01-12
+
+### Changes
+- Merge pull request #1994 from Matchpoint-AI/feat/1993-auth-image-regen
+
+**Source:** project-beta-api@644a04ce
+
 ## [v0.7.592] - 2026-01-12
 
 ### Changes

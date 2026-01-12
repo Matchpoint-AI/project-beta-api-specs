@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.592"
+    "version": "0.7.593"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3748,8 +3748,13 @@
           "content-images"
         ],
         "summary": "Regenerate Image",
-        "description": "Queue image regeneration with optional custom prompt.\n\nIssue #1480: Migrated to async Pub/Sub pattern.\n\nRMM L2: Returns 202 Accepted for async operations.\nThe endpoint uses '/regenerations' (noun) to comply with RMM L2.\n\nThis endpoint queues image regeneration using either:\n- The existing prompt (if custom_prompt not provided)\n- A new custom prompt (which also updates the stored prompt)\n\nThe actual regeneration is performed asynchronously by the\ncontent-generator worker via Pub/Sub.\n\nArgs:\n    content_id: Content ID (path parameter)\n    image_id: Image ID to regenerate\n    request: Regeneration request with optional custom prompt\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Regeneration response with message_id for tracking\n\nRaises:\n    HTTPException: 404 if image not found\n    HTTPException: 400 if generation limit exceeded or no prompt available\n    HTTPException: 500 if queueing fails",
+        "description": "Queue image regeneration with optional custom prompt.\n\nIssue #1480: Migrated to async Pub/Sub pattern.\nIssue #1993: Added authentication and user plan support.\n\nRMM L2: Returns 202 Accepted for async operations.\nThe endpoint uses '/regenerations' (noun) to comply with RMM L2.\n\nThis endpoint queues image regeneration using either:\n- The existing prompt (if custom_prompt not provided)\n- A new custom prompt (which also updates the stored prompt)\n\nThe actual regeneration is performed asynchronously by the\ncontent-generator worker via Pub/Sub.\n\nRegeneration limits are based on user's subscription plan:\n- FREE: 3 regenerations per post\n- PRO: 10 regenerations per post\n\nArgs:\n    content_id: Content ID (path parameter)\n    image_id: Image ID to regenerate\n    request: Regeneration request with optional custom prompt\n    response: FastAPI response object for headers\n    firebase_user: Decoded token claims (injected by auth dependency)\n    service: Injected content image service\n    user_service: Injected user service for plan lookup\n\nReturns:\n    Regeneration response with message_id for tracking\n\nRaises:\n    HTTPException: 401 if not authenticated\n    HTTPException: 404 if image not found\n    HTTPException: 400 if generation limit exceeded or no prompt available\n    HTTPException: 500 if queueing fails",
         "operationId": "regenerate_image_api_v2_content__content_id__images__image_id__regenerations_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
