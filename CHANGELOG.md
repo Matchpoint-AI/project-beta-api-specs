@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.590] - 2026-01-12
+
+### Changes
+- fix: add validation for malformed content data (#1983)
+
+**Source:** project-beta-api@0ec64832
+
 ## [v0.7.589] - 2026-01-12
 
 ### Changes
