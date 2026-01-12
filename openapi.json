@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.590"
+    "version": "0.7.591"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1222,7 +1222,7 @@
           "campaigns"
         ],
         "summary": "List Campaigns",
-        "description": "List all campaigns for the authenticated user.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n\nReturns:\n    List of campaigns for the authenticated user",
+        "description": "List all campaigns for the authenticated user.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    brand_id: Optional brand ID to filter campaigns by\n\nReturns:\n    List of campaigns for the authenticated user, optionally filtered by brand",
         "operationId": "list_campaigns_api_v2_campaigns_get",
         "security": [
           {
@@ -1249,6 +1249,24 @@
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
             "deprecated": true
+          },
+          {
+            "name": "brand_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter campaigns by brand ID. If provided, returns only campaigns for this brand.",
+              "title": "Brand Id"
+            },
+            "description": "Filter campaigns by brand ID. If provided, returns only campaigns for this brand."
           }
         ],
         "responses": {
