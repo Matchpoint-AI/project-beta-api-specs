@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.594] - 2026-01-12
+
+### Changes
+- fix: consolidate SSL context building in campaign_export_repository (#1789)
+
+**Source:** project-beta-api@e6bc7f80
+
 ## [v0.7.593] - 2026-01-12
 
 ### Changes
