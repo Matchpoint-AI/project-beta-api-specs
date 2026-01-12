@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.588] - 2026-01-12
+
+### Changes
+- fix: relax schema drift check to ignore cosmetic differences (#1988)
+
+**Source:** project-beta-api@9bb460a8
+
 ## [v0.7.587] - 2026-01-10
 
 ### Changes
