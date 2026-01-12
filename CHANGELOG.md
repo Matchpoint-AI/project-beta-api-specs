@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.589] - 2026-01-12
+
+### Changes
+- fix: centralize environment variable access via pydantic-settings (#1826) (#1982)
+
+**Source:** project-beta-api@0d4955db
+
 ## [v0.7.588] - 2026-01-12
 
 ### Changes
