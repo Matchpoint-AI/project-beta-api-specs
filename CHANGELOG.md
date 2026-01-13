@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.600] - 2026-01-13
+
+### Changes
+- Merge pull request #2006 from Matchpoint-AI/fix/2005-regenerate-404
+
+**Source:** project-beta-api@217e7e9e
+
 ## [v0.7.599] - 2026-01-13
 
 ### Changes
