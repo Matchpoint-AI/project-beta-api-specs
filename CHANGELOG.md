@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.597] - 2026-01-13
+
+### Changes
+- fix(audit): integrate AuditService into PostStatusService (#1808)
+
+**Source:** project-beta-api@96a6d5f6
+
 ## [v0.7.596] - 2026-01-13
 
 ### Changes
