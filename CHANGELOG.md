@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.603] - 2026-01-13
+
+### Changes
+- Merge pull request #2012 from Matchpoint-AI/feat/652-vscode-settings
+
+**Source:** project-beta-api@d4604fd7
+
 ## [v0.7.602] - 2026-01-13
 
 ### Changes
