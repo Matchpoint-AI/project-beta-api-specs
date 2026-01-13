@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.603"
+    "version": "0.7.604"
   },
   "paths": {
     "/api/v2/brands": {
@@ -6673,19 +6673,19 @@
           },
           "brandDescription": {
             "type": "string",
-            "maxLength": 200,
+            "maxLength": 500,
             "title": "Branddescription",
             "description": "1-2 sentences describing the brand"
           },
           "valueProposition": {
             "type": "string",
-            "maxLength": 200,
+            "maxLength": 500,
             "title": "Valueproposition",
             "description": "1-2 sentences describing the value proposition"
           },
           "targetAudience": {
             "type": "string",
-            "maxLength": 200,
+            "maxLength": 500,
             "title": "Targetaudience",
             "description": "1-2 sentences describing the target audience"
           }

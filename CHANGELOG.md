@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.604] - 2026-01-13
+
+### Changes
+- [P0 Fix] Increase max_length for brand description fields - unblocks user login (#2014)
+
+**Source:** project-beta-api@3c849549
+
 ## [v0.7.603] - 2026-01-13
 
 ### Changes
