@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.602] - 2026-01-13
+
+### Changes
+- Merge pull request #2011 from Matchpoint-AI/feat/1957-security-checklist
+
+**Source:** project-beta-api@d6bfd6c8
+
 ## [v0.7.601] - 2026-01-13
 
 ### Changes
