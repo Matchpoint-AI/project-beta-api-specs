@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.605] - 2026-01-13
+
+### Changes
+- Merge pull request #2015 from Matchpoint-AI/fix/2013-brand-knowledge-max-length
+
+**Source:** project-beta-api@2e7e412d
+
 ## [v0.7.604] - 2026-01-13
 
 ### Changes
