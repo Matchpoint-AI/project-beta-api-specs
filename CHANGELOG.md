@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.598] - 2026-01-13
+
+### Changes
+- feat: add database migration CI failure prevention (#1961)
+
+**Source:** project-beta-api@e59ecf99
+
 ## [v0.7.597] - 2026-01-13
 
 ### Changes
