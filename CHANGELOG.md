@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.607] - 2026-01-14
+
+### Changes
+- Merge pull request #2020 from Matchpoint-AI/feat/2019-nano-banana-pro
+
+**Source:** project-beta-api@d32ce869
+
 ## [v0.7.606] - 2026-01-13
 
 ### Changes
