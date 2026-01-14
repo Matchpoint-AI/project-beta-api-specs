@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.620] - 2026-01-14
+
+### Changes
+- Merge pull request #2106 from Matchpoint-AI/fix/2043-remove-hardcoded-ratios
+
+**Source:** project-beta-api@568bbde5
+
 ## [v0.7.619] - 2026-01-14
 
 ### Changes
