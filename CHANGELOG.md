@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.635] - 2026-01-14
+
+### Changes
+- feat: Add Manual Research Entry Capability (#2177)
+
+**Source:** project-beta-api@f3f61e3c
+
 ## [v0.7.634] - 2026-01-14
 
 ### Changes
