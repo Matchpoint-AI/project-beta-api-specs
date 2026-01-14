@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.626] - 2026-01-14
+
+### Changes
+- Merge pull request #2150 from Matchpoint-AI/feat/2126-brand-fields
+
+**Source:** project-beta-api@8e5c997b
+
 ## [v0.7.625] - 2026-01-14
 
 ### Changes

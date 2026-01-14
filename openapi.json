@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.625"
+    "version": "0.7.626"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1244,6 +1244,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -6067,6 +6068,45 @@
         "title": "AspectRatio",
         "description": "Supported aspect ratios for video generation."
       },
+      "AssetAvailability": {
+        "properties": {
+          "logos": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Logos",
+            "description": "Available logo URLs or identifiers"
+          },
+          "productImages": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Productimages",
+            "description": "Available product image URLs or identifiers"
+          },
+          "icons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Icons",
+            "description": "Available icon URLs or identifiers"
+          },
+          "fonts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Fonts",
+            "description": "Available font names or URLs"
+          }
+        },
+        "type": "object",
+        "title": "AssetAvailability",
+        "description": "Asset availability schema for brand resources."
+      },
       "AudienceSuggestionsResponse": {
         "properties": {
           "audience_emotion": {
@@ -6316,6 +6356,23 @@
         },
         "type": "object",
         "title": "Body_upload_brand_files"
+      },
+      "BrandArchetype": {
+        "type": "string",
+        "enum": [
+          "premium",
+          "minimalist",
+          "playful",
+          "luxury",
+          "eco",
+          "athletic",
+          "tech",
+          "professional",
+          "creative",
+          "traditional"
+        ],
+        "title": "BrandArchetype",
+        "description": "Brand archetype classification for content tone and style."
       },
       "BrandCostsResponse": {
         "properties": {
@@ -6730,6 +6787,39 @@
             ],
             "title": "Targetaudience",
             "description": "Description of target audience"
+          },
+          "brandArchetype": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BrandArchetype"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Brand archetype for content tone/style guidance"
+          },
+          "legalRestrictions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LegalRestrictions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Legal restrictions for brand content"
+          },
+          "assetAvailability": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssetAvailability"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Available brand assets"
           }
         },
         "type": "object",
@@ -6774,6 +6864,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6868,6 +6959,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7026,6 +7118,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7092,6 +7185,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7324,6 +7418,39 @@
             "description": "Knowledge extraction progress percentage (0-100)",
             "default": 0
           },
+          "brandArchetype": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BrandArchetype"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Brand archetype for content tone/style guidance"
+          },
+          "legalRestrictions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LegalRestrictions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Legal restrictions for brand content"
+          },
+          "assetAvailability": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssetAvailability"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Available brand assets"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -7511,6 +7638,39 @@
                 "type": "null"
               }
             ]
+          },
+          "brandArchetype": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BrandArchetype"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Brand archetype for content tone/style guidance"
+          },
+          "legalRestrictions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LegalRestrictions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Legal restrictions for brand content"
+          },
+          "assetAvailability": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssetAvailability"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Available brand assets"
           }
         },
         "type": "object",
@@ -7764,6 +7924,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7967,6 +8128,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -8160,6 +8322,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8660,6 +8823,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8689,6 +8853,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -8892,6 +9057,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9483,6 +9649,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -9597,6 +9764,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -9635,6 +9803,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -9678,6 +9847,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9757,6 +9927,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9828,6 +9999,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -10182,6 +10354,7 @@
           "errorDetails": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10913,6 +11086,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11171,6 +11345,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11189,7 +11364,6 @@
         "enum": [
           "video"
         ],
-        "const": "video",
         "title": "CostType",
         "description": "Types of costs that can be queried."
       },
@@ -11832,6 +12006,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11991,6 +12166,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -12030,6 +12206,37 @@
         ],
         "title": "IntegrationsListResponse",
         "description": "Schema for listing all integrations."
+      },
+      "LegalRestrictions": {
+        "properties": {
+          "claims": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Claims",
+            "description": "Legal claims the brand can make"
+          },
+          "disclaimers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Disclaimers",
+            "description": "Required disclaimers for brand content"
+          },
+          "restrictedTerms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Restrictedterms",
+            "description": "Terms that should not be used in content"
+          }
+        },
+        "type": "object",
+        "title": "LegalRestrictions",
+        "description": "Legal restrictions schema for brand compliance."
       },
       "LocationExtractionRequest": {
         "properties": {
@@ -12541,6 +12748,7 @@
           "mediaSnapshot": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13195,6 +13403,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13532,6 +13741,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -15432,6 +15642,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
