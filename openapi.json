@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.622"
+    "version": "0.7.623"
   },
   "paths": {
     "/api/v2/brands": {
@@ -7570,6 +7570,16 @@
         "title": "BulkContentApprovalResponse",
         "description": "Response schema for bulk content approval operation.\n\nReturns counts and any failed IDs."
       },
+      "CTAType": {
+        "type": "string",
+        "enum": [
+          "none",
+          "soft",
+          "direct"
+        ],
+        "title": "CTAType",
+        "description": "Call-to-action type options.\n\nControls the type of call-to-action included in the caption.\n- NONE: No CTA\n- SOFT: Subtle encouragement (e.g., \"Learn more\", \"Check it out\")\n- DIRECT: Strong CTA (e.g., \"Buy now\", \"Sign up today\", \"Shop the link\")"
+      },
       "CampaignContentStatusResponse": {
         "properties": {
           "campaignId": {
@@ -9123,26 +9133,37 @@
           "platform": {
             "anyOf": [
               {
-                "type": "string"
+                "$ref": "#/components/schemas/Platform"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Platform",
-            "description": "Target platform (instagram, facebook, linkedin)"
+            "description": "Target platform (instagram, facebook, linkedin, twitter, tiktok)"
           },
           "tone": {
             "anyOf": [
               {
-                "type": "string"
+                "$ref": "#/components/schemas/CaptionTone"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Tone",
-            "description": "Desired tone (professional, casual, friendly)"
+            "description": "Desired tone for the caption",
+            "default": "engaging"
+          },
+          "length": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CaptionLength"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Target length preset for the caption",
+            "default": "medium"
           },
           "hashtags": {
             "anyOf": [
@@ -9159,17 +9180,88 @@
             "title": "Hashtags",
             "description": "Hashtags to include"
           },
+          "hashtagDensity": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HashtagDensity"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Density of hashtags in the caption",
+            "default": "moderate"
+          },
+          "ctaType": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CTAType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Type of call-to-action to include",
+            "default": "soft"
+          },
+          "emojiUsage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EmojiUsage"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Level of emoji usage in the caption",
+            "default": "minimal"
+          },
+          "hookStyle": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HookStyle"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Style of opening hook for the caption"
+          },
+          "storyArc": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StoryArc"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Narrative structure for the caption"
+          },
+          "contentFocus": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ContentFocus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Primary focus area of the caption"
+          },
           "maxLength": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "integer",
+                "maximum": 63206.0,
+                "minimum": 1.0
               },
               {
                 "type": "null"
               }
             ],
             "title": "Maxlength",
-            "description": "Maximum caption length"
+            "description": "Maximum caption length (overrides platform default)"
           },
           "brandVoice": {
             "anyOf": [
@@ -9182,6 +9274,20 @@
             ],
             "title": "Brandvoice",
             "description": "Brand voice guidelines"
+          },
+          "brandVoiceAdherence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Brandvoiceadherence",
+            "description": "How strictly to follow brand voice (0.0-1.0)",
+            "default": 0.8
+          },
+          "platformOptimization": {
+            "type": "boolean",
+            "title": "Platformoptimization",
+            "description": "Whether to optimize caption for platform-specific best practices",
+            "default": false
           }
         },
         "type": "object",
@@ -9189,7 +9295,17 @@
           "text"
         ],
         "title": "CaptionCreate",
-        "description": "Schema for creating a caption."
+        "description": "Schema for creating a caption.\n\nIssue #2052: Enhanced with enum fields for structured caption parameters."
+      },
+      "CaptionLength": {
+        "type": "string",
+        "enum": [
+          "short",
+          "medium",
+          "long"
+        ],
+        "title": "CaptionLength",
+        "description": "Length presets for caption generation.\n\nControls the approximate length of generated captions.\n- SHORT: ~50-100 characters, ideal for punchy social posts\n- MEDIUM: ~100-200 characters, balanced engagement\n- LONG: ~200-500 characters, detailed storytelling"
       },
       "CaptionResponse": {
         "properties": {
@@ -9232,6 +9348,18 @@
             "title": "Tone",
             "description": "Caption tone"
           },
+          "length": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Length",
+            "description": "Caption length preset"
+          },
           "hashtags": {
             "items": {
               "type": "string"
@@ -9240,11 +9368,107 @@
             "title": "Hashtags",
             "description": "Included hashtags"
           },
+          "hashtagDensity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hashtagdensity",
+            "description": "Hashtag density setting"
+          },
+          "ctaType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ctatype",
+            "description": "CTA type setting"
+          },
+          "emojiUsage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Emojiusage",
+            "description": "Emoji usage setting"
+          },
+          "hookStyle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hookstyle",
+            "description": "Hook style setting"
+          },
+          "storyArc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storyarc",
+            "description": "Story arc setting"
+          },
+          "contentFocus": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contentfocus",
+            "description": "Content focus setting"
+          },
           "approved": {
             "type": "boolean",
             "title": "Approved",
             "description": "Approval status",
             "default": false
+          },
+          "brandVoiceAdherence": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandvoiceadherence",
+            "description": "Brand voice adherence (0.0-1.0)"
+          },
+          "platformOptimization": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Platformoptimization",
+            "description": "Platform optimization flag"
           },
           "generatedAt": {
             "type": "string",
@@ -9273,7 +9497,18 @@
           "updatedAt"
         ],
         "title": "CaptionResponse",
-        "description": "Schema for caption response."
+        "description": "Schema for caption response.\n\nIssue #2052: Enhanced with enum fields for structured caption parameters."
+      },
+      "CaptionTone": {
+        "type": "string",
+        "enum": [
+          "engaging",
+          "informative",
+          "promotional",
+          "conversational"
+        ],
+        "title": "CaptionTone",
+        "description": "Tone options for caption generation.\n\nDefines the emotional quality and style of the caption text."
       },
       "CategoryBreakdown": {
         "properties": {
@@ -9852,6 +10087,18 @@
         ],
         "title": "ContentFeedbackResponse",
         "description": "Schema for content feedback response."
+      },
+      "ContentFocus": {
+        "type": "string",
+        "enum": [
+          "product",
+          "brand",
+          "community",
+          "promotion",
+          "education"
+        ],
+        "title": "ContentFocus",
+        "description": "Content focus area options for captions.\n\nDefines the primary focus/theme of the caption content.\n- PRODUCT: Focus on product features/benefits\n- BRAND: Brand story/values emphasis\n- COMMUNITY: Audience engagement/connection\n- PROMOTION: Offer/discount/sale focus\n- EDUCATION: Tips/how-to/informative content"
       },
       "ContentGenerationDetailStatus": {
         "properties": {
@@ -11323,6 +11570,16 @@
         "title": "EmailVerificationRequest",
         "description": "Schema for email verification request.\n\nFor POST /api/v2/verifications endpoint.\nVerifies user email using token from verification email."
       },
+      "EmojiUsage": {
+        "type": "string",
+        "enum": [
+          "none",
+          "minimal",
+          "moderate"
+        ],
+        "title": "EmojiUsage",
+        "description": "Emoji usage options for captions.\n\nControls the frequency of emoji usage in generated captions.\n- NONE: No emojis\n- MINIMAL: 1-2 emojis, strategic placement\n- MODERATE: 3-5 emojis, natural integration"
+      },
       "GeneratedContent": {
         "properties": {
           "id": {
@@ -11415,6 +11672,29 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "HashtagDensity": {
+        "type": "string",
+        "enum": [
+          "none",
+          "light",
+          "moderate",
+          "heavy"
+        ],
+        "title": "HashtagDensity",
+        "description": "Hashtag density options for captions.\n\nControls how many hashtags are included in the caption.\n- NONE: No hashtags\n- LIGHT: 1-3 hashtags\n- MODERATE: 4-8 hashtags\n- HEAVY: 9+ hashtags"
+      },
+      "HookStyle": {
+        "type": "string",
+        "enum": [
+          "question",
+          "statement",
+          "statistic",
+          "story",
+          "benefit"
+        ],
+        "title": "HookStyle",
+        "description": "Opening hook style options for captions.\n\nDefines the style of the opening line to capture attention.\n- QUESTION: Start with an engaging question\n- STATEMENT: Bold declarative opening\n- STATISTIC: Lead with a compelling number or fact\n- STORY: Begin with narrative/personal element\n- BENEFIT: Lead with value proposition"
       },
       "ImageGenerationStatus": {
         "type": "string",
@@ -12030,6 +12310,18 @@
         ],
         "title": "PlanGenerationStatusResponse",
         "description": "Response for plan generation status polling.\n\nIssue #1547: Migrate /campaigns/{id}/plan to async publisher pattern.\n\nUsed to poll the status of an async plan generation request."
+      },
+      "Platform": {
+        "type": "string",
+        "enum": [
+          "instagram",
+          "facebook",
+          "linkedin",
+          "twitter",
+          "tiktok"
+        ],
+        "title": "Platform",
+        "description": "Supported social media platforms.\n\nUsed for platform-specific caption optimization."
       },
       "PostContent": {
         "properties": {
@@ -13933,6 +14225,18 @@
         "type": "object",
         "title": "StatusResultResponse",
         "description": "Result info with camelCase."
+      },
+      "StoryArc": {
+        "type": "string",
+        "enum": [
+          "problem_solution",
+          "before_after",
+          "list_format",
+          "testimonial",
+          "educational"
+        ],
+        "title": "StoryArc",
+        "description": "Narrative structure options for captions.\n\nDefines the overall narrative flow of the caption.\n- PROBLEM_SOLUTION: Present problem, offer solution\n- BEFORE_AFTER: Transformation narrative\n- LIST_FORMAT: Numbered or bulleted points\n- TESTIMONIAL: Social proof/customer story\n- EDUCATIONAL: Teaching/informative structure"
       },
       "TextPosition": {
         "type": "string",
