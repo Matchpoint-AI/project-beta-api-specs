@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.611] - 2026-01-14
+
+### Changes
+- Merge pull request #2037 from Matchpoint-AI/fix/1779-remove-dead-tests
+
+**Source:** project-beta-api@72e5651e
+
 ## [v0.7.610] - 2026-01-14
 
 ### Changes
