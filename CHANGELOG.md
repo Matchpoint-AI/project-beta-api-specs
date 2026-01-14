@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.618] - 2026-01-14
+
+### Changes
+- Merge pull request #2111 from Matchpoint-AI/feat/2047-online-learning
+
+**Source:** project-beta-api@bf719f47
+
 ## [v0.7.617] - 2026-01-14
 
 ### Changes
