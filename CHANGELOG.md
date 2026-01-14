@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.625] - 2026-01-14
+
+### Changes
+- Merge pull request #2148 from Matchpoint-AI/feat/2064-seed-data
+
+**Source:** project-beta-api@61b4d0e6
+
 ## [v0.7.624] - 2026-01-14
 
 ### Changes
