@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.609"
+    "version": "0.7.610"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5889,6 +5889,88 @@
           },
           "404": {
             "description": "Post or video job not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/{post_id}/videos/{job_id}/regenerations": {
+      "post": {
+        "tags": [
+          "video-generation"
+        ],
+        "summary": "Regenerate Video",
+        "description": "Regenerate a video during HITL review.\n\nCreates a new video generation job based on the original, optionally\nincorporating user feedback. Publishes to video-generator worker.\n\nIssue #2024: Implements POST /posts/{post_id}/videos/{job_id}/regenerations.\n\nArgs:\n    post_id: ID of the post containing the video\n    job_id: UUID of the original video generation job\n    request: Regeneration parameters including optional feedback\n    response: FastAPI response object for headers\n    firebase_user: Authenticated user from JWT token\n    post_repository: Repository for post lookup\n    job_repository: Repository for video job operations\n    publisher: Video generation publisher (Pub/Sub or direct HTTP)\n\nReturns:\n    VideoRegenerateResponse with new job details\n\nRaises:\n    HTTPException 400: If post has no image or original job invalid\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the post\n    HTTPException 404: If post or video job not found\n    HTTPException 500: If publishing fails",
+        "operationId": "regenerate_video_api_v2_posts__post_id__videos__job_id__regenerations_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoRegenerateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Video regeneration job queued successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoRegenerateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Post has no image or original job invalid"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this post"
+          },
+          "404": {
+            "description": "Post or video job not found"
+          },
+          "500": {
+            "description": "Failed to queue video regeneration"
           },
           "422": {
             "description": "Validation Error",
@@ -14635,6 +14717,70 @@
         ],
         "title": "VideoJobType",
         "description": "Types of video generation jobs."
+      },
+      "VideoRegenerateRequest": {
+        "properties": {
+          "feedback": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback",
+            "description": "Optional feedback to guide video regeneration"
+          },
+          "jobType": {
+            "$ref": "#/components/schemas/VideoJobType",
+            "description": "Type of video to generate",
+            "default": "motion_poster"
+          }
+        },
+        "type": "object",
+        "title": "VideoRegenerateRequest",
+        "description": "Request schema for regenerating a video during HITL review.\n\nAllows user to provide feedback for improved regeneration.\n\nAttributes:\n    feedback: Optional feedback to guide regeneration\n    job_type: Type of video to generate (defaults to motion_poster)"
+      },
+      "VideoRegenerateResponse": {
+        "properties": {
+          "newJobId": {
+            "type": "string",
+            "title": "Newjobid",
+            "description": "UUID of the new regeneration job"
+          },
+          "originalJobId": {
+            "type": "string",
+            "title": "Originaljobid",
+            "description": "UUID of the original job"
+          },
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "ID of the associated post"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VideoJobStatus",
+            "description": "Job status (queued)",
+            "default": "queued"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "Timestamp when new job was created"
+          }
+        },
+        "type": "object",
+        "required": [
+          "newJobId",
+          "originalJobId",
+          "postId",
+          "createdAt"
+        ],
+        "title": "VideoRegenerateResponse",
+        "description": "Response schema for video regeneration.\n\nReturned when a regeneration request is successfully queued.\n\nAttributes:\n    new_job_id: UUID of the new regeneration job\n    original_job_id: UUID of the original job being regenerated from\n    post_id: ID of the associated post\n    status: Status of new job (queued)\n    created_at: Timestamp when new job was created"
       },
       "VideoRejectRequest": {
         "properties": {

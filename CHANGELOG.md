@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.610] - 2026-01-14
+
+### Changes
+- Merge pull request #2036 from Matchpoint-AI/feat/2024-video-regenerate
+
+**Source:** project-beta-api@aa524484
+
 ## [v0.7.609] - 2026-01-14
 
 ### Changes
