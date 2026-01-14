@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.630] - 2026-01-14
+
+### Changes
+- Merge pull request #2167 from Matchpoint-AI/feat/2071-social-media-analyzer
+
+**Source:** project-beta-api@47086e2a
+
 ## [v0.7.629] - 2026-01-14
 
 ### Changes

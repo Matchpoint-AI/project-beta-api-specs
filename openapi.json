@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.629"
+    "version": "0.7.630"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5012,6 +5012,74 @@
         }
       }
     },
+    "/api/v2/brands/{brand_id}/social/instagram/analyze": {
+      "post": {
+        "tags": [
+          "social-media"
+        ],
+        "summary": "Analyze Instagram Profile",
+        "description": "Analyze a brand's Instagram presence.\n\nFetches profile information and recent posts from Instagram Graph API,\nthen extracts insights including:\n- Posting patterns and frequency\n- Best posting times and days\n- Engagement analysis (likes, comments, rates)\n- Content themes and hashtag strategy\n- Top performing content types\n\nThe analysis results are stored in brand knowledge for use in\ncontent generation.\n\nArgs:\n    brand_id: The brand to analyze\n    request: Optional analysis parameters (defaults to include_posts=True, max_posts=25)\n    social_media_service: Injected social media analyzer service\n\nReturns:\n    Complete Instagram analysis including engagement metrics,\n    posting patterns, and content insights",
+        "operationId": "analyze_instagram_profile_api_v2_brands__brand_id__social_instagram_analyze_post",
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID to analyze",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID to analyze"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AnalyzeInstagramRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeInstagramResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Brand not found or no Instagram integration"
+          },
+          "500": {
+            "description": "Analysis failed"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/threads/{thread_id}/messages": {
       "post": {
         "tags": [
@@ -6058,6 +6126,79 @@
   },
   "components": {
     "schemas": {
+      "AnalyzeInstagramRequest": {
+        "properties": {
+          "brand_id": {
+            "type": "integer",
+            "title": "Brand Id",
+            "description": "Brand ID to analyze"
+          },
+          "include_posts": {
+            "type": "boolean",
+            "title": "Include Posts",
+            "description": "Whether to fetch and analyze recent posts",
+            "default": true
+          },
+          "max_posts": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Max Posts",
+            "description": "Maximum number of posts to analyze",
+            "default": 25
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id"
+        ],
+        "title": "AnalyzeInstagramRequest",
+        "description": "Request to analyze an Instagram profile."
+      },
+      "AnalyzeInstagramResponse": {
+        "properties": {
+          "brand_id": {
+            "type": "integer",
+            "title": "Brand Id",
+            "description": "Brand ID that was analyzed"
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/SocialAnalysis",
+            "description": "Social media analysis results"
+          },
+          "posts_analyzed": {
+            "type": "integer",
+            "title": "Posts Analyzed",
+            "description": "Number of posts analyzed",
+            "default": 0
+          },
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether analysis succeeded",
+            "default": true
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Status message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "analysis"
+        ],
+        "title": "AnalyzeInstagramResponse",
+        "description": "Response from Instagram analysis."
+      },
       "AspectRatio": {
         "type": "string",
         "enum": [
@@ -11777,6 +11918,47 @@
         "title": "EmojiUsage",
         "description": "Emoji usage options for captions.\n\nControls the frequency of emoji usage in generated captions.\n- NONE: No emojis\n- MINIMAL: 1-2 emojis, strategic placement\n- MODERATE: 3-5 emojis, natural integration"
       },
+      "EngagementAnalysis": {
+        "properties": {
+          "avg_engagement_rate": {
+            "type": "number",
+            "title": "Avg Engagement Rate",
+            "description": "Average engagement rate (likes + comments / followers)",
+            "default": 0.0
+          },
+          "avg_likes_per_post": {
+            "type": "number",
+            "title": "Avg Likes Per Post",
+            "description": "Average likes per post",
+            "default": 0.0
+          },
+          "avg_comments_per_post": {
+            "type": "number",
+            "title": "Avg Comments Per Post",
+            "description": "Average comments per post",
+            "default": 0.0
+          },
+          "top_performing_content_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Top Performing Content Types",
+            "description": "Content types with highest engagement (e.g., ['carousel', 'reel', 'image'])"
+          },
+          "top_hashtags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Top Hashtags",
+            "description": "Most effective hashtags by engagement"
+          }
+        },
+        "type": "object",
+        "title": "EngagementAnalysis",
+        "description": "Analysis of what drives engagement for a brand."
+      },
       "GeneratedContent": {
         "properties": {
           "id": {
@@ -12806,6 +12988,43 @@
         ],
         "title": "PostVersionItemResponse",
         "description": "Single version in history response with camelCase aliases."
+      },
+      "PostingPatterns": {
+        "properties": {
+          "posting_frequency": {
+            "type": "string",
+            "title": "Posting Frequency",
+            "description": "Posting frequency (e.g., 'daily', '3x_week', 'weekly')"
+          },
+          "best_posting_times": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Best Posting Times",
+            "description": "Best times to post (e.g., ['9:00 AM', '6:00 PM'])"
+          },
+          "best_posting_days": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Best Posting Days",
+            "description": "Best days to post (e.g., ['Monday', 'Wednesday'])"
+          },
+          "avg_posts_per_week": {
+            "type": "number",
+            "title": "Avg Posts Per Week",
+            "description": "Average posts per week",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "posting_frequency"
+        ],
+        "title": "PostingPatterns",
+        "description": "Analysis of when and how frequently a brand posts."
       },
       "ProductV2": {
         "properties": {
@@ -14379,6 +14598,147 @@
         ],
         "title": "SignupResponse",
         "description": "Schema for signup responses.\n\nReturned after successful signup creation."
+      },
+      "SocialAnalysis": {
+        "properties": {
+          "platform": {
+            "type": "string",
+            "title": "Platform",
+            "description": "Social media platform",
+            "default": "instagram"
+          },
+          "account_id": {
+            "type": "string",
+            "title": "Account Id",
+            "description": "Platform account ID"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username",
+            "description": "Platform username/handle"
+          },
+          "followers": {
+            "type": "integer",
+            "title": "Followers",
+            "description": "Number of followers",
+            "default": 0
+          },
+          "following": {
+            "type": "integer",
+            "title": "Following",
+            "description": "Number of accounts followed",
+            "default": 0
+          },
+          "media_count": {
+            "type": "integer",
+            "title": "Media Count",
+            "description": "Total number of posts",
+            "default": 0
+          },
+          "biography": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Biography",
+            "description": "Account biography"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "Website URL from profile"
+          },
+          "avg_engagement_rate": {
+            "type": "number",
+            "title": "Avg Engagement Rate",
+            "description": "Average engagement rate across posts",
+            "default": 0.0
+          },
+          "top_performing_content_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Top Performing Content Types",
+            "description": "Best performing content types"
+          },
+          "posting_frequency": {
+            "type": "string",
+            "title": "Posting Frequency",
+            "description": "How often the brand posts",
+            "default": "unknown"
+          },
+          "best_posting_times": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Best Posting Times",
+            "description": "Optimal posting times"
+          },
+          "hashtag_strategy": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Hashtag Strategy",
+            "description": "Commonly used hashtags"
+          },
+          "content_themes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Content Themes",
+            "description": "Main content themes identified"
+          },
+          "posting_patterns": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PostingPatterns"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Detailed posting pattern analysis"
+          },
+          "engagement_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EngagementAnalysis"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Detailed engagement analysis"
+          },
+          "analyzed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Analyzed At",
+            "description": "When analysis was performed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "account_id",
+          "username"
+        ],
+        "title": "SocialAnalysis",
+        "description": "Complete social media analysis for a brand."
       },
       "StatusErrorResponse": {
         "properties": {
