@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.629] - 2026-01-14
+
+### Changes
+- fix(migrations): Make media table migration idempotent (#2165) (#2168)
+
+**Source:** project-beta-api@b58641d0
+
 ## [v0.7.628] - 2026-01-14
 
 ### Changes
