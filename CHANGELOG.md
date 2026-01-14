@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.631] - 2026-01-14
+
+### Changes
+- Merge pull request #2173 from Matchpoint-AI/feat/2068-websocket-support
+
+**Source:** project-beta-api@46aea104
+
 ## [v0.7.630] - 2026-01-14
 
 ### Changes
