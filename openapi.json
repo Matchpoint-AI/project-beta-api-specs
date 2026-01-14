@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.612"
+    "version": "0.7.613"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1804,7 +1804,7 @@
           "campaigns"
         ],
         "summary": "Create Campaign Publication",
-        "description": "Create a campaign publication (RMM L2: publication is a resource).\n\nDirect port from V1 POST /api/v1/campaign/publish endpoint.\nRequires authentication and ownership of the campaign.\n\nRMM L2 Rationale:\n- Publications are resources representing published campaign instances\n- Creating publication is resource creation (not RPC-style /publish)\n- Publications track platform, schedule, and status\n\nThis endpoint:\n- Validates campaign exists and has approved content\n- Schedules posts via Cloud Scheduler (TODO)\n- Returns publication summary with scheduling results\n\nIssue #1736: Added authorization check to prevent IDOR vulnerability.",
+        "description": "Create a campaign publication (RMM L2: publication is a resource).\n\nDirect port from V1 POST /api/v1/campaign/publish endpoint.\nRequires authentication and ownership of the campaign.\n\nRMM L2 Rationale:\n- Publications are resources representing published campaign instances\n- Creating publication is resource creation (not RPC-style /publish)\n- Publications track platform, schedule, and status\n\nThis endpoint:\n- Validates campaign exists and has approved content\n- Schedules posts via Cloud Scheduler (via ScheduledPostService)\n- Returns publication summary with scheduling results\n\nIssue #1736: Added authorization check to prevent IDOR vulnerability.",
         "operationId": "create_campaign_publication_api_v2_campaigns__campaign_id__publications_post",
         "security": [
           {
