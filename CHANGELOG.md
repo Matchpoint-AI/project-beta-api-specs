@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.632] - 2026-01-14
+
+### Changes
+- Merge pull request #2175 from Matchpoint-AI/feat/2086-research-caching
+
+**Source:** project-beta-api@dd3141fb
+
 ## [v0.7.631] - 2026-01-14
 
 ### Changes
