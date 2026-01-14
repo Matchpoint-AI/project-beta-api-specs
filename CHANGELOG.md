@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.628] - 2026-01-14
+
+### Changes
+- feat(cache): implement Redis distributed caching layer (#2161)
+
+**Source:** project-beta-api@d8253af3
+
 ## [v0.7.627] - 2026-01-14
 
 ### Changes
