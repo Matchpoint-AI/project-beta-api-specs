@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.619] - 2026-01-14
+
+### Changes
+- Merge pull request #2105 from Matchpoint-AI/feat/2053-brand-guardrails-quality
+
+**Source:** project-beta-api@2bf8a4ea
+
 ## [v0.7.618] - 2026-01-14
 
 ### Changes
