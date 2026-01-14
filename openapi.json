@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.607"
+    "version": "0.7.608"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5745,6 +5745,82 @@
           },
           "404": {
             "description": "Video job not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/{post_id}/videos/{job_id}/reject": {
+      "post": {
+        "tags": [
+          "video-generation"
+        ],
+        "summary": "Reject Video",
+        "description": "Reject a video during HITL review.\n\nMarks the video generation job as rejected with an optional reason.\nThis is part of the Human-in-the-Loop workflow for video content.\n\nIssue #2023: Implements POST /posts/{post_id}/videos/{job_id}/reject.\n\nArgs:\n    post_id: ID of the post containing the video\n    job_id: UUID of the video generation job to reject\n    request: Rejection details including optional reason\n    firebase_user: Authenticated user from JWT token\n    post_repository: Repository for post lookup\n    job_repository: Repository for video job operations\n\nReturns:\n    VideoRejectResponse with rejection details\n\nRaises:\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the post\n    HTTPException 404: If post or video job not found",
+        "operationId": "reject_video_api_v2_posts__post_id__videos__job_id__reject_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoRejectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Video job rejected successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoRejectResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this post"
+          },
+          "404": {
+            "description": "Post or video job not found"
           },
           "422": {
             "description": "Validation Error",
@@ -14352,7 +14428,8 @@
           "processing",
           "completed",
           "failed",
-          "cancelled"
+          "cancelled",
+          "rejected"
         ],
         "title": "VideoJobStatus",
         "description": "Status values for video generation jobs."
@@ -14483,6 +14560,71 @@
         ],
         "title": "VideoJobType",
         "description": "Types of video generation jobs."
+      },
+      "VideoRejectRequest": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Optional reason for rejecting the video"
+          }
+        },
+        "type": "object",
+        "title": "VideoRejectRequest",
+        "description": "Request schema for rejecting a video during HITL review.\n\nAttributes:\n    reason: Optional reason for rejection"
+      },
+      "VideoRejectResponse": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid",
+            "description": "UUID of the video generation job"
+          },
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "ID of the associated post"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VideoJobStatus",
+            "description": "Job status (rejected)",
+            "default": "rejected"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Rejection reason"
+          },
+          "rejectedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Rejectedat",
+            "description": "Timestamp when rejected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "jobId",
+          "postId",
+          "rejectedAt"
+        ],
+        "title": "VideoRejectResponse",
+        "description": "Response schema for video rejection.\n\nAttributes:\n    job_id: UUID of the rejected job\n    post_id: ID of the associated post\n    status: New status (rejected)\n    reason: Rejection reason if provided\n    rejected_at: Timestamp when rejected"
       },
       "VideoStyle": {
         "type": "string",

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.608] - 2026-01-14
+
+### Changes
+- feat: add video HITL reject endpoint (#2032)
+
+**Source:** project-beta-api@053f2d0e
+
 ## [v0.7.607] - 2026-01-14
 
 ### Changes
