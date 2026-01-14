@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.634] - 2026-01-14
+
+### Changes
+- Merge pull request #2174 from Matchpoint-AI/feat/2087-confidence-scoring
+
+**Source:** project-beta-api@a49af1fc
+
 ## [v0.7.633] - 2026-01-14
 
 ### Changes
