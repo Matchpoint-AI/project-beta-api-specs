@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.627] - 2026-01-14
+
+### Changes
+- Merge pull request #2149 from Matchpoint-AI/feat/2058-rejection-reasons
+
+**Source:** project-beta-api@83d2835a
+
 ## [v0.7.626] - 2026-01-14
 
 ### Changes

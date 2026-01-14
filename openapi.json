@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.626"
+    "version": "0.7.627"
   },
   "paths": {
     "/api/v2/brands": {
@@ -11196,6 +11196,17 @@
             "title": "Rejectedat",
             "description": "Timestamp when content was rejected"
           },
+          "rejectionReason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RejectionReason"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Structured reason for rejection"
+          },
           "notes": {
             "anyOf": [
               {
@@ -11249,6 +11260,17 @@
             "title": "Approvedby",
             "description": "User ID who approved/rejected the content"
           },
+          "rejectionReason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RejectionReason"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Structured reason for rejection (required when status is 'rejected')"
+          },
           "notes": {
             "anyOf": [
               {
@@ -11270,8 +11292,9 @@
         "description": "Request to update content status.\n\nRMM L2 Compliance: PATCH updates a specific field (status) on the content resource.",
         "example": {
           "approvedBy": "user123",
-          "notes": "Looks great!",
-          "status": "approved"
+          "notes": "The color scheme doesn't match brand guidelines",
+          "rejectionReason": "off_brand",
+          "status": "rejected"
         }
       },
       "ContentUpdate": {
@@ -13012,6 +13035,21 @@
         ],
         "title": "PublishedPostSummary",
         "description": "Summary of a single published post within a publication."
+      },
+      "RejectionReason": {
+        "type": "string",
+        "enum": [
+          "off_brand",
+          "low_quality",
+          "wrong_scene_type",
+          "inappropriate_content",
+          "text_error",
+          "image_quality",
+          "missing_elements",
+          "other"
+        ],
+        "title": "RejectionReason",
+        "description": "Structured rejection reasons for HITL workflow analysis.\n\nThese reasons enable aggregation and analysis of why content is being rejected,\nallowing for targeted improvements to content generation.\n\nSee Issue #2058 for requirements."
       },
       "ResendVerificationRequest": {
         "properties": {
