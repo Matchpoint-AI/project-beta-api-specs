@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.609] - 2026-01-14
+
+### Changes
+- feat(video): add video approve endpoint (Issue #2022) (#2033)
+
+**Source:** project-beta-api@9280b5b2
+
 ## [v0.7.608] - 2026-01-14
 
 ### Changes

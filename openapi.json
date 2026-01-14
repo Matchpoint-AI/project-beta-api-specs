@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.608"
+    "version": "0.7.609"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1244,7 +1244,6 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -5834,6 +5833,75 @@
           }
         }
       }
+    },
+    "/api/v2/posts/{post_id}/videos/{job_id}/approvals": {
+      "post": {
+        "tags": [
+          "video-generation"
+        ],
+        "summary": "Approve Video",
+        "description": "Approve a video during HITL review.\n\nMarks the video generation job as approved for publication.\nThis is part of the Human-in-the-Loop workflow for video content.\n\nIssue #2022: Implements POST /posts/{post_id}/videos/{job_id}/approvals.\n\nArgs:\n    post_id: ID of the post containing the video\n    job_id: UUID of the video generation job to approve\n    firebase_user: Authenticated user from JWT token\n    post_repository: Repository for post lookup\n    job_repository: Repository for video job operations\n\nReturns:\n    VideoApprovalResponse with approval details\n\nRaises:\n    HTTPException 400: If job cannot be approved (wrong state)\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the post\n    HTTPException 404: If post or video job not found",
+        "operationId": "approve_video_api_v2_posts__post_id__videos__job_id__approvals_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Video job approved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoApprovalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Video job cannot be approved in current state"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this post"
+          },
+          "404": {
+            "description": "Post or video job not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -6133,13 +6201,11 @@
           },
           "totalCredits": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -6557,7 +6623,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6652,7 +6717,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6811,7 +6875,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -6878,7 +6941,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7541,7 +7603,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7745,7 +7806,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -7939,7 +7999,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8440,7 +8499,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -8470,7 +8528,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -8674,7 +8731,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9052,7 +9108,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -9156,7 +9211,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -9195,7 +9249,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -9239,7 +9292,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9319,7 +9371,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9391,7 +9442,6 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -9734,7 +9784,6 @@
           "errorDetails": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10466,7 +10515,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10725,7 +10773,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10744,6 +10791,7 @@
         "enum": [
           "video"
         ],
+        "const": "video",
         "title": "CostType",
         "description": "Types of costs that can be queried."
       },
@@ -11353,7 +11401,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11513,7 +11560,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -12052,7 +12098,6 @@
           "mediaSnapshot": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12707,7 +12752,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13045,7 +13089,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14322,6 +14365,39 @@
         "title": "VersionStatusResponse",
         "description": "Status polling response with camelCase aliases."
       },
+      "VideoApprovalResponse": {
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "title": "Jobid",
+            "description": "UUID of the video generation job"
+          },
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "ID of the associated post"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VideoJobStatus",
+            "description": "Job status (approved)",
+            "default": "approved"
+          },
+          "approvedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Approvedat",
+            "description": "Timestamp when approved"
+          }
+        },
+        "type": "object",
+        "required": [
+          "jobId",
+          "postId",
+          "approvedAt"
+        ],
+        "title": "VideoApprovalResponse",
+        "description": "Response schema for video approval.\n\nAttributes:\n    job_id: UUID of the approved job\n    post_id: ID of the associated post\n    status: New status (approved)\n    approved_at: Timestamp when approved"
+      },
       "VideoGenerationRequest": {
         "properties": {
           "durationSeconds": {
@@ -14397,7 +14473,6 @@
           },
           "estimatedCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -14429,6 +14504,7 @@
           "completed",
           "failed",
           "cancelled",
+          "approved",
           "rejected"
         ],
         "title": "VideoJobStatus",
@@ -14500,8 +14576,7 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               },
               {
                 "type": "null"
@@ -14805,7 +14880,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
