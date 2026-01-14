@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.624] - 2026-01-14
+
+### Changes
+- fix(api): Remove analyze_content_tone() and generate_brand_content() from PostService (Issue #2131) (#2147)
+
+**Source:** project-beta-api@0384e15f
+
 ## [v0.7.623] - 2026-01-14
 
 ### Changes
