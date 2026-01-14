@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.612] - 2026-01-14
+
+### Changes
+- Merge pull request #2038 from Matchpoint-AI/fix/2027-reject-tests
+
+**Source:** project-beta-api@3e0b3c4d
+
 ## [v0.7.611] - 2026-01-14
 
 ### Changes
