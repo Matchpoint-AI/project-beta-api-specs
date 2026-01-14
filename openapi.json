@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.614"
+    "version": "0.7.615"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5971,6 +5971,75 @@
           },
           "500": {
             "description": "Failed to queue video regeneration"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/{post_id}/videos/{job_id}/static/conversions": {
+      "post": {
+        "tags": [
+          "video-generation"
+        ],
+        "summary": "Convert To Static",
+        "description": "Convert a video job to static image.\n\nCancels the video generation job and returns the post's static image.\nThis is part of the Human-in-the-Loop workflow for video content when\nthe user decides to use the static image instead.\n\nIssue #2025: Implements POST /posts/{post_id}/videos/{job_id}/static/conversions.\n\nArgs:\n    post_id: ID of the post containing the video\n    job_id: UUID of the video generation job to cancel\n    firebase_user: Authenticated user from JWT token\n    post_repository: Repository for post lookup\n    job_repository: Repository for video job operations\n\nReturns:\n    VideoConvertStaticResponse with static image URL\n\nRaises:\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the post\n    HTTPException 404: If post or video job not found\n    HTTPException 409: If job is already in terminal state",
+        "operationId": "convert_to_static_api_v2_posts__post_id__videos__job_id__static_conversions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Video converted to static image successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoConvertStaticResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this post"
+          },
+          "404": {
+            "description": "Post or video job not found"
+          },
+          "409": {
+            "description": "Conflict - job already in terminal state"
           },
           "422": {
             "description": "Validation Error",
@@ -14479,6 +14548,39 @@
         ],
         "title": "VideoApprovalResponse",
         "description": "Response schema for video approval.\n\nAttributes:\n    job_id: UUID of the approved job\n    post_id: ID of the associated post\n    status: New status (approved)\n    approved_at: Timestamp when approved"
+      },
+      "VideoConvertStaticResponse": {
+        "properties": {
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "ID of the post"
+          },
+          "jobId": {
+            "type": "string",
+            "title": "Jobid",
+            "description": "UUID of the video job"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VideoJobStatus",
+            "description": "Job status after conversion",
+            "default": "cancelled"
+          },
+          "convertedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Convertedat",
+            "description": "Timestamp when converted to static"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postId",
+          "jobId",
+          "convertedAt"
+        ],
+        "title": "VideoConvertStaticResponse",
+        "description": "Response schema for converting video back to static image.\n\nIssue #2025: POST /api/v2/posts/{post_id}/videos/{job_id}/static/conversions\n\nAttributes:\n    post_id: ID of the post that was converted\n    job_id: UUID of the video job that was cancelled\n    status: New status of the video job (cancelled)\n    converted_at: Timestamp when conversion occurred"
       },
       "VideoGenerationRequest": {
         "properties": {

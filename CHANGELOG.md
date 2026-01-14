@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.615] - 2026-01-14
+
+### Changes
+- feat(#2025): add convert-static endpoint for video HITL workflow (#2034)
+
+**Source:** project-beta-api@910f08a2
+
 ## [v0.7.614] - 2026-01-14
 
 ### Changes
