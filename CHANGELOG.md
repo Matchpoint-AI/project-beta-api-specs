@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.622] - 2026-01-14
+
+### Changes
+- feat(#2046): define ImagePromptSchema Pydantic model (#2113)
+
+**Source:** project-beta-api@8d31884e
+
 ## [v0.7.621] - 2026-01-14
 
 ### Changes
