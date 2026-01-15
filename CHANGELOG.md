@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.636] - 2026-01-15
+
+### Changes
+- Merge pull request #2180 from Matchpoint-AI/feat/crawler-messages-endpoint
+
+**Source:** project-beta-api@e0cf6840
+
 ## [v0.7.635] - 2026-01-14
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.635"
+    "version": "0.7.636"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1148,6 +1148,48 @@
           },
           "404": {
             "description": "Brand knowledge not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/briefs": {
+      "post": {
+        "tags": [
+          "briefs"
+        ],
+        "summary": "Receive brand brief from crawler",
+        "description": "Pub/Sub push endpoint for receiving brand briefs from the agentic brand crawler. Accepts messages from both core (quick) and deep (comprehensive) topics. Persists image assets to GCS and briefs to PostgreSQL.",
+        "operationId": "receive_brief_api_v2_briefs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__schemas__crawler_briefs__PubSubPushEnvelope"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefAckResponse"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -4667,6 +4709,93 @@
         }
       }
     },
+    "/api/v2/pulses": {
+      "post": {
+        "tags": [
+          "pulses"
+        ],
+        "summary": "Receive crawler status pulse",
+        "description": "Pub/Sub push endpoint for receiving real-time status pulses from the agentic brand crawler. Stores pulse in Redis for frontend polling.",
+        "operationId": "receive_pulse_api_v2_pulses_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__schemas__crawler_pulses__PubSubPushEnvelope"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PulseAckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/pulses/{correlation_id}": {
+      "get": {
+        "tags": [
+          "pulses"
+        ],
+        "summary": "Get crawler status by correlation ID",
+        "description": "Polling endpoint for frontend to get current crawl progress. Returns the latest pulse for a given correlation ID from Redis.",
+        "operationId": "get_pulse_status_api_v2_pulses__correlation_id__get",
+        "parameters": [
+          {
+            "name": "correlation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Correlation ID from crawl request",
+              "title": "Correlation Id"
+            },
+            "description": "Correlation ID from crawl request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PulseStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/scheduled-posts": {
       "get": {
         "tags": [
@@ -7817,6 +7946,44 @@
         "type": "object",
         "title": "BrandUpdate",
         "description": "Schema for updating an existing brand."
+      },
+      "BriefAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID from message"
+          },
+          "messageType": {
+            "$ref": "#/components/schemas/MessageType",
+            "description": "Type of message processed"
+          },
+          "brandName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandname",
+            "description": "Brand name if available"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "messageType"
+        ],
+        "title": "BriefAckResponse",
+        "description": "Response for successful brief processing."
       },
       "BulkContentApprovalRequest": {
         "properties": {
@@ -12495,6 +12662,16 @@
         "title": "LogoutResponse",
         "description": "Schema for logout response.\n\nConfirms successful token invalidation (logout)."
       },
+      "MessageType": {
+        "type": "string",
+        "enum": [
+          "core",
+          "deep",
+          "event"
+        ],
+        "title": "MessageType",
+        "description": "Message type discriminator for topic routing."
+      },
       "NativeUserCreate": {
         "properties": {
           "email": {
@@ -13215,6 +13392,33 @@
           "total": 1
         }
       },
+      "PubSubMessage": {
+        "properties": {
+          "data": {
+            "type": "string",
+            "title": "Data",
+            "description": "Base64-encoded JSON payload"
+          },
+          "messageId": {
+            "type": "string",
+            "title": "Messageid",
+            "description": "Pub/Sub message ID"
+          },
+          "publishTime": {
+            "type": "string",
+            "title": "Publishtime",
+            "description": "ISO-8601 timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "messageId",
+          "publishTime"
+        ],
+        "title": "PubSubMessage",
+        "description": "Inner Pub/Sub message structure."
+      },
       "PublishedPostSummary": {
         "properties": {
           "week_key": {
@@ -13254,6 +13458,80 @@
         ],
         "title": "PublishedPostSummary",
         "description": "Summary of a single published post within a publication."
+      },
+      "PulseAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID from message"
+          },
+          "progressPct": {
+            "type": "integer",
+            "title": "Progresspct",
+            "description": "Progress percentage received"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "progressPct"
+        ],
+        "title": "PulseAckResponse",
+        "description": "Response for successful pulse processing."
+      },
+      "PulseStatusResponse": {
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID for this crawl"
+          },
+          "progressPct": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progresspct",
+            "description": "Current progress percentage"
+          },
+          "currentStep": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentstep",
+            "description": "Current crawl step"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp",
+            "description": "ISO-8601 timestamp of last update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "progressPct",
+          "message",
+          "timestamp"
+        ],
+        "title": "PulseStatusResponse",
+        "description": "Response for GET /pulses/{correlation_id} polling endpoint.\n\nIssue #2181: Frontend polling endpoint for crawl progress."
       },
       "RejectionReason": {
         "type": "string",
@@ -16213,6 +16491,46 @@
         ],
         "title": "PostGenerationStatus",
         "description": "Status details for an individual post's generation.\n\nTracks both text and image generation status separately to\nsupport partial completion states."
+      },
+      "src__schemas__crawler_briefs__PubSubPushEnvelope": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/PubSubMessage",
+            "description": "The Pub/Sub message"
+          },
+          "subscription": {
+            "type": "string",
+            "title": "Subscription",
+            "description": "Subscription name that sent the message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "subscription"
+        ],
+        "title": "PubSubPushEnvelope",
+        "description": "Pub/Sub push subscription envelope format.\n\nThis is the outer wrapper that Pub/Sub sends to push endpoints.\nThe actual message data is base64-encoded inside message.data."
+      },
+      "src__schemas__crawler_pulses__PubSubPushEnvelope": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/PubSubMessage",
+            "description": "The Pub/Sub message"
+          },
+          "subscription": {
+            "type": "string",
+            "title": "Subscription",
+            "description": "Subscription name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "subscription"
+        ],
+        "title": "PubSubPushEnvelope",
+        "description": "Pub/Sub push subscription envelope format."
       },
       "src__schemas__generation_status__GenerationStatus": {
         "type": "string",
