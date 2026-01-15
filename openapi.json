@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.636"
+    "version": "0.7.637"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3851,6 +3851,135 @@
         }
       }
     },
+    "/api/v2/outputs": {
+      "post": {
+        "tags": [
+          "outputs"
+        ],
+        "summary": "Receive generated post from content-generator",
+        "description": "Pub/Sub push endpoint for receiving individual generated posts from the content-generator service. Updates the pre-created post record by post_id with generated content (text, image, etc.).",
+        "operationId": "receive_output_api_v2_outputs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputAckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/pulses": {
+      "post": {
+        "tags": [
+          "outputs"
+        ],
+        "summary": "Receive content generation status pulse",
+        "description": "Pub/Sub push endpoint for receiving real-time status pulses from the content-generator service. Stores pulse in Redis for frontend polling.",
+        "operationId": "receive_content_pulse_api_v2_content_pulses_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PulseAckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/pulses/{correlation_id}": {
+      "get": {
+        "tags": [
+          "outputs"
+        ],
+        "summary": "Get content generation status by correlation ID",
+        "description": "Polling endpoint for frontend to get current content generation progress. Returns the latest pulse for a given correlation ID from Redis.",
+        "operationId": "get_content_pulse_status_api_v2_content_pulses__correlation_id__get",
+        "parameters": [
+          {
+            "name": "correlation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Correlation ID from generation request",
+              "title": "Correlation Id"
+            },
+            "description": "Correlation ID from generation request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PulseStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/content/{content_id}/prompt": {
       "get": {
         "tags": [
@@ -4709,14 +4838,14 @@
         }
       }
     },
-    "/api/v2/pulses": {
+    "/api/v2/crawler/pulses": {
       "post": {
         "tags": [
           "pulses"
         ],
         "summary": "Receive crawler status pulse",
         "description": "Pub/Sub push endpoint for receiving real-time status pulses from the agentic brand crawler. Stores pulse in Redis for frontend polling.",
-        "operationId": "receive_pulse_api_v2_pulses_post",
+        "operationId": "receive_pulse_api_v2_crawler_pulses_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4733,7 +4862,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PulseAckResponse"
+                  "$ref": "#/components/schemas/src__schemas__crawler_pulses__PulseAckResponse"
                 }
               }
             }
@@ -4751,14 +4880,14 @@
         }
       }
     },
-    "/api/v2/pulses/{correlation_id}": {
+    "/api/v2/crawler/pulses/{correlation_id}": {
       "get": {
         "tags": [
           "pulses"
         ],
         "summary": "Get crawler status by correlation ID",
         "description": "Polling endpoint for frontend to get current crawl progress. Returns the latest pulse for a given correlation ID from Redis.",
-        "operationId": "get_pulse_status_api_v2_pulses__correlation_id__get",
+        "operationId": "get_pulse_status_api_v2_crawler_pulses__correlation_id__get",
         "parameters": [
           {
             "name": "correlation_id",
@@ -4778,7 +4907,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PulseStatusResponse"
+                  "$ref": "#/components/schemas/src__schemas__crawler_pulses__PulseStatusResponse"
                 }
               }
             }
@@ -12704,6 +12833,33 @@
         "title": "NativeUserCreate",
         "description": "Schema for creating a new user via native email/password authentication.\n\nFor POST /api/v2/users endpoint.\nPassword is hashed and stored in our database with bcrypt.\nEmail verification link is sent via SendGrid."
       },
+      "OutputAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID from message"
+          },
+          "postId": {
+            "type": "integer",
+            "title": "Postid",
+            "description": "Post ID that was updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "postId"
+        ],
+        "title": "OutputAckResponse",
+        "description": "Response for successful output processing."
+      },
       "PasswordResetCreateRequest": {
         "properties": {
           "email": {
@@ -13458,80 +13614,6 @@
         ],
         "title": "PublishedPostSummary",
         "description": "Summary of a single published post within a publication."
-      },
-      "PulseAckResponse": {
-        "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Processing status",
-            "default": "acknowledged"
-          },
-          "correlationId": {
-            "type": "string",
-            "title": "Correlationid",
-            "description": "Correlation ID from message"
-          },
-          "progressPct": {
-            "type": "integer",
-            "title": "Progresspct",
-            "description": "Progress percentage received"
-          }
-        },
-        "type": "object",
-        "required": [
-          "correlationId",
-          "progressPct"
-        ],
-        "title": "PulseAckResponse",
-        "description": "Response for successful pulse processing."
-      },
-      "PulseStatusResponse": {
-        "properties": {
-          "correlationId": {
-            "type": "string",
-            "title": "Correlationid",
-            "description": "Correlation ID for this crawl"
-          },
-          "progressPct": {
-            "type": "integer",
-            "maximum": 100.0,
-            "minimum": 0.0,
-            "title": "Progresspct",
-            "description": "Current progress percentage"
-          },
-          "currentStep": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Currentstep",
-            "description": "Current crawl step"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Human-readable status message"
-          },
-          "timestamp": {
-            "type": "string",
-            "title": "Timestamp",
-            "description": "ISO-8601 timestamp of last update"
-          }
-        },
-        "type": "object",
-        "required": [
-          "correlationId",
-          "progressPct",
-          "message",
-          "timestamp"
-        ],
-        "title": "PulseStatusResponse",
-        "description": "Response for GET /pulses/{correlation_id} polling endpoint.\n\nIssue #2181: Frontend polling endpoint for crawl progress."
       },
       "RejectionReason": {
         "type": "string",
@@ -16492,6 +16574,116 @@
         "title": "PostGenerationStatus",
         "description": "Status details for an individual post's generation.\n\nTracks both text and image generation status separately to\nsupport partial completion states."
       },
+      "src__schemas__content_generator_pubsub__PubSubPushEnvelope": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/PubSubMessage",
+            "description": "The Pub/Sub message"
+          },
+          "subscription": {
+            "type": "string",
+            "title": "Subscription",
+            "description": "Subscription name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "subscription"
+        ],
+        "title": "PubSubPushEnvelope",
+        "description": "Pub/Sub push subscription envelope format."
+      },
+      "src__schemas__content_generator_pubsub__PulseAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID from message"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "campaignId"
+        ],
+        "title": "PulseAckResponse",
+        "description": "Response for successful pulse processing."
+      },
+      "src__schemas__content_generator_pubsub__PulseStatusResponse": {
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "currentStep": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentstep",
+            "description": "Current step"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current status"
+          },
+          "currentPostId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentpostid",
+            "description": "Post currently being generated"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp",
+            "description": "ISO-8601 timestamp of last update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "campaignId",
+          "message",
+          "status",
+          "timestamp"
+        ],
+        "title": "PulseStatusResponse",
+        "description": "Response for GET /pulses/{correlation_id} polling endpoint."
+      },
       "src__schemas__crawler_briefs__PubSubPushEnvelope": {
         "properties": {
           "message": {
@@ -16531,6 +16723,80 @@
         ],
         "title": "PubSubPushEnvelope",
         "description": "Pub/Sub push subscription envelope format."
+      },
+      "src__schemas__crawler_pulses__PulseAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID from message"
+          },
+          "progressPct": {
+            "type": "integer",
+            "title": "Progresspct",
+            "description": "Progress percentage received"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "progressPct"
+        ],
+        "title": "PulseAckResponse",
+        "description": "Response for successful pulse processing."
+      },
+      "src__schemas__crawler_pulses__PulseStatusResponse": {
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID for this crawl"
+          },
+          "progressPct": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progresspct",
+            "description": "Current progress percentage"
+          },
+          "currentStep": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentstep",
+            "description": "Current crawl step"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp",
+            "description": "ISO-8601 timestamp of last update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "progressPct",
+          "message",
+          "timestamp"
+        ],
+        "title": "PulseStatusResponse",
+        "description": "Response for GET /pulses/{correlation_id} polling endpoint.\n\nIssue #2181: Frontend polling endpoint for crawl progress."
       },
       "src__schemas__generation_status__GenerationStatus": {
         "type": "string",
