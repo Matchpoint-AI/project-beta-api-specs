@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.639] - 2026-01-15
+
+### Changes
+- feat: add is_ready_for_campaigns computed property to BrandResponse (#2189)
+
+**Source:** project-beta-api@bd7effa0
+
 ## [v0.7.638] - 2026-01-15
 
 ### Changes
