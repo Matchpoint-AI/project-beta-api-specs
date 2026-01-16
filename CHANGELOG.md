@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.657] - 2026-01-16
+
+### Changes
+- feat: Add correlation_id to ContentGenerationResponse (#2235)
+
+**Source:** project-beta-api@435bc68a
+
 ## [v0.7.656] - 2026-01-16
 
 ### Changes

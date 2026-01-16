@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.656"
+    "version": "0.7.657"
   },
   "paths": {
     "/api/v2/brands": {
@@ -7074,13 +7074,11 @@
           },
           "totalCredits": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -11116,6 +11114,11 @@
             "title": "Message ID",
             "description": "ID of the published message for tracking"
           },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlation ID",
+            "description": "Unique correlation ID for tracking this generation request across services"
+          },
           "status": {
             "type": "string",
             "title": "Status",
@@ -11132,7 +11135,8 @@
         "type": "object",
         "required": [
           "campaignId",
-          "messageId"
+          "messageId",
+          "correlationId"
         ],
         "title": "ContentGenerationResponse",
         "description": "Response schema for content generation request.\n\nReturns when a content generation request has been published.\nThe actual generation happens asynchronously."
@@ -16641,7 +16645,6 @@
           },
           "estimatedCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -16745,8 +16748,7 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               },
               {
                 "type": "null"
