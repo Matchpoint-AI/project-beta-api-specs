@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.663] - 2026-01-16
+
+### Changes
+- feat(#2124): add HITL selection tracking for feedback loop (#2145)
+
+**Source:** project-beta-api@c315c614
+
 ## [v0.7.662] - 2026-01-16
 
 ### Changes

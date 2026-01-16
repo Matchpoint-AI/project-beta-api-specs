@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.662"
+    "version": "0.7.663"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4612,6 +4612,165 @@
         }
       }
     },
+    "/api/v2/outputs/{post_id}/select": {
+      "post": {
+        "tags": [
+          "Post Selection"
+        ],
+        "summary": "Update post selection status",
+        "description": "Update the selection status (approved/rejected) for a single post.",
+        "operationId": "update_selection_api_v2_outputs__post_id__select_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostSelectionUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSelectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/outputs/batch/select": {
+      "post": {
+        "tags": [
+          "Post Selection"
+        ],
+        "summary": "Batch update post selection status",
+        "description": "Update selection status for multiple posts in a single request.",
+        "operationId": "batch_update_selections_api_v2_outputs_batch_select_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchPostSelectionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPostSelectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/outputs/selection/rates": {
+      "get": {
+        "tags": [
+          "Post Selection"
+        ],
+        "summary": "Get selection rates by scene type",
+        "description": "Get selection rate aggregates grouped by scene_type for a campaign.",
+        "operationId": "get_selection_rates_api_v2_outputs_selection_rates_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Campaign ID to get rates for",
+              "title": "Campaignid"
+            },
+            "description": "Campaign ID to get rates for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SelectionRateBySceneType"
+                  },
+                  "title": "Response Get Selection Rates Api V2 Outputs Selection Rates Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/posts/{post_id}/versions": {
       "post": {
         "tags": [
@@ -6886,6 +7045,54 @@
         "type": "object",
         "title": "BatchMetricResponse",
         "description": "Schema for batch metric ingestion response."
+      },
+      "BatchPostSelectionRequest": {
+        "properties": {
+          "selections": {
+            "items": {
+              "$ref": "#/components/schemas/PostSelectionItem"
+            },
+            "type": "array",
+            "title": "Selections",
+            "description": "List of post selections to apply"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selections"
+        ],
+        "title": "BatchPostSelectionRequest",
+        "description": "Schema for batch post selection.\n\nUsed for POST /outputs/batch/select endpoint."
+      },
+      "BatchPostSelectionResponse": {
+        "properties": {
+          "updatedCount": {
+            "type": "integer",
+            "title": "Updatedcount",
+            "description": "Number of posts updated"
+          },
+          "failedCount": {
+            "type": "integer",
+            "title": "Failedcount",
+            "description": "Number of posts that failed to update",
+            "default": 0
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/PostSelectionResponse"
+            },
+            "type": "array",
+            "title": "Results",
+            "description": "List of updated post results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "updatedCount",
+          "results"
+        ],
+        "title": "BatchPostSelectionResponse",
+        "description": "Schema for batch selection response."
       },
       "Body_update_brand_files": {
         "properties": {
@@ -13656,6 +13863,92 @@
         "title": "PostSchema",
         "description": "Schema for individual social media post."
       },
+      "PostSelectionItem": {
+        "properties": {
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "Post ID to update"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected"
+            ],
+            "title": "Status",
+            "description": "Selection decision"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postId",
+          "status"
+        ],
+        "title": "PostSelectionItem",
+        "description": "Individual post selection item for batch operations."
+      },
+      "PostSelectionResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "selectionStatus": {
+            "type": "string",
+            "title": "Selectionstatus"
+          },
+          "selectedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selectedat"
+          },
+          "selectedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selectedby"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "selectionStatus"
+        ],
+        "title": "PostSelectionResponse",
+        "description": "Schema for post selection response."
+      },
+      "PostSelectionUpdate": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected"
+            ],
+            "title": "Status",
+            "description": "Selection decision (approved or rejected)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "PostSelectionUpdate",
+        "description": "Schema for updating post selection status.\n\nUsed for POST /outputs/{id}/select endpoint."
+      },
       "PostVersionItemResponse": {
         "properties": {
           "id": {
@@ -15638,6 +15931,57 @@
         ],
         "title": "ScheduledPostStatusUpdate",
         "description": "Request schema for updating scheduled post status.\n\nUsed by campaign-publisher worker to update status after publishing."
+      },
+      "SelectionRateBySceneType": {
+        "properties": {
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype",
+            "description": "Scene type"
+          },
+          "totalCount": {
+            "type": "integer",
+            "title": "Totalcount",
+            "description": "Total posts with this scene_type",
+            "default": 0
+          },
+          "approvedCount": {
+            "type": "integer",
+            "title": "Approvedcount",
+            "description": "Number of approved posts",
+            "default": 0
+          },
+          "rejectedCount": {
+            "type": "integer",
+            "title": "Rejectedcount",
+            "description": "Number of rejected posts",
+            "default": 0
+          },
+          "pendingCount": {
+            "type": "integer",
+            "title": "Pendingcount",
+            "description": "Number of pending posts",
+            "default": 0
+          },
+          "approvalRate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approvalrate",
+            "description": "Approval rate (approved / (approved + rejected))"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sceneType"
+        ],
+        "title": "SelectionRateBySceneType",
+        "description": "Schema for selection rate aggregated by scene_type.\n\nUsed for GET /outputs/selection-rates endpoint."
       },
       "SessionRequest": {
         "properties": {
