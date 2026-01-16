@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.653] - 2026-01-16
+
+### Changes
+- Merge pull request #2201 from Matchpoint-AI/feat/video-schema-support
+
+**Source:** project-beta-api@74fd9d0e
+
 ## [v0.7.652] - 2026-01-16
 
 ### Changes
