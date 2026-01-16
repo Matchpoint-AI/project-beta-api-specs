@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.668] - 2026-01-16
+
+### Changes
+- test: Improve post_service.py test coverage to 97% (#2240)
+
+**Source:** project-beta-api@60a97a35
+
 ## [v0.7.667] - 2026-01-16
 
 ### Changes
