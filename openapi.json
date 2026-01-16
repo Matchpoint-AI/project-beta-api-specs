@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.712"
+    "version": "0.7.713"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5855,6 +5855,11 @@
         "summary": "Analyze Instagram Profile",
         "description": "Analyze a brand's Instagram presence.\n\nFetches profile information and recent posts from Instagram Graph API,\nthen extracts insights including:\n- Posting patterns and frequency\n- Best posting times and days\n- Engagement analysis (likes, comments, rates)\n- Content themes and hashtag strategy\n- Top performing content types\n\nThe analysis results are stored in brand knowledge for use in\ncontent generation.\n\nArgs:\n    brand_id: The brand to analyze\n    request: Optional analysis parameters (defaults to include_posts=True, max_posts=25)\n    social_media_service: Injected social media analyzer service\n\nReturns:\n    Complete Instagram analysis including engagement metrics,\n    posting patterns, and content insights",
         "operationId": "analyze_instagram_profile_api_v2_brands__brand_id__social_instagram_analyze_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -5895,6 +5900,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Not authorized to access this brand"
           },
           "404": {
             "description": "Brand not found or no Instagram integration"
