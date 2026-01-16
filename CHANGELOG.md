@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.705] - 2026-01-16
+
+### Changes
+- Merge pull request #2335 from Matchpoint-AI/dependabot/pip/pytest-xdist-3.8.0
+
+**Source:** project-beta-api@5f2215a0
+
 ## [v0.7.704] - 2026-01-16
 
 ### Changes
