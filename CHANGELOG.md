@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.641] - 2026-01-16
+
+### Changes
+- Merge pull request #2198 from Matchpoint-AI/chore/remove-image-prompt-schema
+
+**Source:** project-beta-api@752917f9
+
 ## [v0.7.640] - 2026-01-16
 
 ### Changes
