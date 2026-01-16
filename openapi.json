@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.678"
+    "version": "0.7.679"
   },
   "paths": {
     "/api/v2/brands": {
@@ -564,86 +564,6 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/audience/suggestions": {
-      "post": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Generate Brand Audience Suggestions",
-        "description": "Generate audience emotion and interest suggestions for a brand.\n\nIssue #1659: Restores V1 behavior for campaign creation flow.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\n\nAudience suggestions are generated based on brand data BEFORE\na campaign exists, enabling the AudienceForm to auto-populate\nsuggestions during campaign wizard step 2.\n\n**Endpoint**: POST /api/v2/brands/{brand_id}/audience/suggestions\n\nThis endpoint generates:\n- audience_emotion: Array of emotional triggers (e.g., \"excited\", \"inspired\")\n- audience_interests: Array of interest categories (e.g., \"technology\", \"wellness\")\n\nUses LLM to analyze brand context (name, industry, vertical) and\noptional campaign purpose to generate tailored suggestions.",
-        "operationId": "generate_brand_audience_suggestions_api_v2_brands__brand_id__audience_suggestions_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          },
-          {
-            "name": "campaign_purpose",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Optional campaign purpose/goal for context",
-              "title": "Campaign Purpose"
-            },
-            "description": "Optional campaign purpose/goal for context"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Audience suggestions generated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AudienceSuggestionsResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "500": {
-            "description": "Failed to generate audience suggestions"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/brands/{brand_id}/knowledge/status": {
       "get": {
         "tags": [
@@ -748,78 +668,6 @@
           },
           "404": {
             "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/location/extractions": {
-      "post": {
-        "tags": [
-          "brands"
-        ],
-        "summary": "Create Location Extraction",
-        "description": "Extract physical locations from text or brand knowledge.\n\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\n\nExtracts structured physical location information (address, city, state, country)\nfrom either provided text or from the brand's stored knowledge base.\n\nRMM Level 2 Compliant Pattern:\n- POST creates a new location-extraction resource\n- Resource-oriented URL: /brands/{id}/location/extractions (hierarchical)\n- Uses noun-based resource name (no verbs or hyphens in path)\n- Returns 200 OK with extracted data (extraction is idempotent)\n\nBusiness Context:\n- Enables location-based marketing and targeting\n- Extracts from brand website content, social media, or provided text\n- Uses AI/LLM for intelligent location extraction\n- Results are structured for easy querying and filtering\n\nRequest Body:\n- text (optional): Text content to extract locations from\n- If text not provided, extracts from brand's stored knowledge\n\nArgs:\n    brand_id: The brand identifier\n    request: LocationExtractionRequest with optional text\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    location_extraction_service: Injected service for extraction\n    brand_repository: Repository for brand ownership verification\n\nReturns:\n    LocationExtractionResponse with list of extracted locations\n\nRaises:\n    HTTPException: 401 if not authenticated, 403 if not authorized,\n                  404 if brand not found, 400 for invalid data, 500 on failure",
-        "operationId": "create_location_extraction_api_v2_brands__brand_id__location_extractions_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LocationExtractionRequest",
-                "description": "Optional text to extract locations from"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Physical locations extracted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationExtractionResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "400": {
-            "description": "Invalid request data"
           },
           "422": {
             "description": "Validation Error",
@@ -3728,7 +3576,7 @@
           "content-images"
         ],
         "summary": "Create Content Image",
-        "description": "Create a content image via upload OR generation.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nIssue #1509: This endpoint now handles both upload and generation:\n- If request has `url` field: Associates existing image (upload)\n- If request has `prompt` field: Generates new image (generation)\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image request with either URL (upload) or prompt (generation)\n    response: FastAPI response object for headers\n    service: Injected content image service\n    image_service: Injected image generation service\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 422 if validation fails or request type unclear\n    HTTPException: 500 if generation fails",
+        "description": "Create a content image via upload.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nIssue #2190: Direct image generation removed (LLM code moved to workers).\nTo generate images, upload an existing image first, then use the\nPOST /images/{image_id}/regenerations endpoint.\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image request with URL for upload\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 422 if validation fails or generation requested",
         "operationId": "create_content_image_api_v2_content__content_id__images_post",
         "parameters": [
           {
@@ -6924,49 +6772,6 @@
         "type": "object",
         "title": "AssetAvailability",
         "description": "Asset availability schema for brand resources."
-      },
-      "AudienceSuggestionsResponse": {
-        "properties": {
-          "audience_emotion": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "minItems": 3,
-            "title": "Audience Emotion",
-            "description": "Array of 3 emotional triggers that resonate with target audience"
-          },
-          "audience_interests": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "maxItems": 3,
-            "minItems": 3,
-            "title": "Audience Interests",
-            "description": "Array of 3 interest categories relevant to target audience"
-          }
-        },
-        "type": "object",
-        "required": [
-          "audience_emotion",
-          "audience_interests"
-        ],
-        "title": "AudienceSuggestionsResponse",
-        "description": "Response schema for audience suggestions.\n\nPort from V1 AudienceForm.tsx (lines 54-87) which extracts two arrays:\n- audienceEmotion: emotional triggers for the target audience\n- audienceInterests: interest categories for the target audience",
-        "example": {
-          "audience_emotion": [
-            "excited",
-            "inspired",
-            "curious"
-          ],
-          "audience_interests": [
-            "technology",
-            "innovation",
-            "sustainability"
-          ]
-        }
       },
       "BatchFeedbackResponse": {
         "properties": {
@@ -13399,43 +13204,6 @@
         "title": "LegalRestrictions",
         "description": "Legal restrictions schema for brand compliance."
       },
-      "LocationExtractionRequest": {
-        "properties": {
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text",
-            "description": "Text content to extract locations from. If not provided, uses brand knowledge.",
-            "examples": [
-              "We have offices in San Francisco, CA and New York, NY. Visit our retail store at 123 Main St, Austin, TX."
-            ]
-          }
-        },
-        "type": "object",
-        "title": "LocationExtractionRequest",
-        "description": "Request body for location extraction endpoint.\n\nBusiness Logic:\n- If text is provided, extract locations from that text\n- If text is empty/null, extract from brand's stored knowledge\n- Supports both modes to enable flexible extraction workflows"
-      },
-      "LocationExtractionResponse": {
-        "properties": {
-          "locations": {
-            "items": {
-              "$ref": "#/components/schemas/PhysicalLocation"
-            },
-            "type": "array",
-            "title": "Locations",
-            "description": "List of extracted physical locations"
-          }
-        },
-        "type": "object",
-        "title": "LocationExtractionResponse",
-        "description": "Response containing extracted physical locations.\n\nReturns a list of structured location objects extracted from the provided\ntext or brand knowledge. Empty list if no locations found."
-      },
       "LogoutResponse": {
         "properties": {
           "message": {
@@ -13578,73 +13346,6 @@
         "type": "object",
         "title": "PasswordResetUpdateResponse",
         "description": "Schema for password reset completion response (RMM L2 compliant).\n\nReturns success message after password is reset."
-      },
-      "PhysicalLocation": {
-        "properties": {
-          "address": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Address",
-            "description": "Street address (e.g., '123 Main St, Suite 100')",
-            "examples": [
-              "123 Main St, Suite 100"
-            ]
-          },
-          "city": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "City",
-            "description": "City name",
-            "examples": [
-              "San Francisco"
-            ]
-          },
-          "state": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "State",
-            "description": "State or province (2-letter code preferred)",
-            "examples": [
-              "CA"
-            ]
-          },
-          "country": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Country",
-            "description": "Country name or code",
-            "examples": [
-              "USA"
-            ]
-          }
-        },
-        "type": "object",
-        "title": "PhysicalLocation",
-        "description": "A structured physical location with address components.\n\nRepresents a single physical location extracted from text, with individual\ncomponents for address, city, state, and country to enable location-based\nqueries and filtering."
       },
       "PlanGenerationAcceptedResponse": {
         "properties": {

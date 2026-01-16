@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.679] - 2026-01-16
+
+### Changes
+- Merge pull request #2237 from Matchpoint-AI/chore/2190-remove-llm-code
+
+**Source:** project-beta-api@ddfc789e
+
 ## [v0.7.678] - 2026-01-16
 
 ### Changes
