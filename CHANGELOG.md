@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.686] - 2026-01-16
+
+### Changes
+- fix(security): Mask email addresses in log statements (#2296)
+
+**Source:** project-beta-api@90e20b5c
+
 ## [v0.7.685] - 2026-01-16
 
 ### Changes
