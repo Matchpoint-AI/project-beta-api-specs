@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.670] - 2026-01-16
+
+### Changes
+- Merge pull request #2242 from Matchpoint-AI/feat/coverage-gates-647
+
+**Source:** project-beta-api@b1b0b4ec
+
 ## [v0.7.669] - 2026-01-16
 
 ### Changes
