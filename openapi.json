@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.694"
+    "version": "0.7.695"
   },
   "paths": {
     "/api/v2/brands": {
@@ -362,7 +362,7 @@
           "brands"
         ],
         "summary": "Upload Brand Files",
-        "description": "Upload brand files (guidelines PDF and logo) with async LLM extraction.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines via brand-crawler service (async).\n\nThe extraction is now async - file is uploaded immediately, and\nbrand-crawler processes the PDF in the background.",
+        "description": "Upload brand files (guidelines PDF and logo) with async LLM extraction.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\nIssue #2245: Migrated to AgenticBrandCrawlerPublisher.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines via agentic brand-crawler service (async).\n\nThe extraction is now async - file is uploaded immediately, and\nagentic-brand-crawler processes the PDF in the background.",
         "operationId": "upload_brand_files",
         "security": [
           {
@@ -508,7 +508,7 @@
           "brands"
         ],
         "summary": "Generate Brand Summary",
-        "description": "Trigger brand summary generation via brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1102: RMM L2 compliance - renamed from /summary to /summaries.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\n\n**RMM L2 Compliance**: POST /api/v2/brands/{brand_id}/summaries\n- Summaries modeled as a resource collection\n- POST creates a new summary generation request\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by brand-crawler:\n- Generates 60-word brand summary via LLM\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
+        "description": "Trigger brand summary generation via agentic brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1102: RMM L2 compliance - renamed from /summary to /summaries.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\nIssue #2245: Migrated to AgenticBrandCrawlerPublisher.\n\n**RMM L2 Compliance**: POST /api/v2/brands/{brand_id}/summaries\n- Summaries modeled as a resource collection\n- POST creates a new summary generation request\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by agentic brand-crawler:\n- The agentic service extracts brand assets and generates summaries\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
         "operationId": "generate_brand_summary_api_v2_brands__brand_id__summaries_post",
         "security": [
           {
