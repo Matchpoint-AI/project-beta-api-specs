@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.680] - 2026-01-16
+
+### Changes
+- feat: Add brand-specific prior lookup from database (#2288)
+
+**Source:** project-beta-api@18a96b67
+
 ## [v0.7.679] - 2026-01-16
 
 ### Changes
