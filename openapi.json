@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.701"
+    "version": "0.7.702"
   },
   "paths": {
     "/api/v2/brands": {
@@ -8878,6 +8878,31 @@
             "title": "Video Resolution",
             "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'.",
             "default": "1080p"
+          },
+          "startDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Start Date",
+            "description": "When the campaign should start posting content. Required for content scheduling."
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Timezone",
+            "description": "Timezone for campaign scheduling (e.g., 'America/New_York')."
           }
         },
         "type": "object",
@@ -9277,6 +9302,29 @@
             "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'.",
             "default": "1080p"
           },
+          "startDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Start Date"
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Timezone"
+          },
           "id": {
             "type": "integer",
             "title": "ID"
@@ -9310,29 +9358,6 @@
             "type": "string",
             "format": "date-time",
             "title": "Updated At"
-          },
-          "startDate": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Campaign Start Date"
-          },
-          "timezone": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Campaign Timezone"
           },
           "postingDate": {
             "anyOf": [
