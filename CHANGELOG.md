@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.694] - 2026-01-16
+
+### Changes
+- Merge pull request #2337 from Matchpoint-AI/dependabot/pip/pytest-asyncio-1.3.0
+
+**Source:** project-beta-api@e2792a82
+
 ## [v0.7.693] - 2026-01-16
 
 ### Changes
