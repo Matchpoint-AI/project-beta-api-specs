@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.650] - 2026-01-16
+
+### Changes
+- feat(campaign): switch API routes to AgenticContentGenerationPublisher (#2199)
+
+**Source:** project-beta-api@f71f53c8
+
 ## [v0.7.649] - 2026-01-16
 
 ### Changes
