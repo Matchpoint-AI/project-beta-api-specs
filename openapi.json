@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.711"
+    "version": "0.7.712"
   },
   "paths": {
     "/api/v2/brands": {
@@ -3163,8 +3163,13 @@
           "content-generation-status"
         ],
         "summary": "Get Content Generation Status",
-        "description": "Get detailed generation status for specific content.\n\nThis endpoint provides granular status including per-post breakdown\nfor text and image generation status.\n\nIssue #1484: Part of LLM decoupling async infrastructure.",
+        "description": "Get detailed generation status for specific content.\n\nIssue #2306: Added authentication and ownership verification.\n\nThis endpoint provides granular status including per-post breakdown\nfor text and image generation status.\n\nIssue #1484: Part of LLM decoupling async infrastructure.",
         "operationId": "get_content_generation_status_api_v2_content__content_id__status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -3188,6 +3193,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this content"
           },
           "404": {
             "description": "Content not found"
