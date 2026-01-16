@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.640] - 2026-01-16
+
+### Changes
+- Merge pull request #2195 from Matchpoint-AI/chore/remove-manual-research
+
+**Source:** project-beta-api@0d86c0fc
+
 ## [v0.7.639] - 2026-01-15
 
 ### Changes
