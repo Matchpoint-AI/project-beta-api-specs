@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.702"
+    "version": "0.7.703"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1025,15 +1025,49 @@
         "summary": "Receive brand brief from crawler",
         "description": "Pub/Sub push endpoint for receiving brand briefs from the agentic brand crawler. Accepts messages from both core (quick) and deep (comprehensive) topics. Persists image assets to GCS and briefs to PostgreSQL.",
         "operationId": "receive_brief_api_v2_briefs_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/src__schemas__crawler_briefs__PubSubPushEnvelope"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -3737,15 +3771,49 @@
         "summary": "Receive generated post from content-generator",
         "description": "Pub/Sub push endpoint for receiving individual generated posts from the content-generator service. Updates the pre-created post record by post_id with generated content (text, image, etc.).",
         "operationId": "receive_output_api_v2_outputs_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -3779,15 +3847,49 @@
         "summary": "Receive content generation status pulse",
         "description": "Pub/Sub push endpoint for receiving real-time status pulses from the content-generator service. Stores pulse in Redis for frontend polling.",
         "operationId": "receive_content_pulse_api_v2_content_pulses_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -4900,15 +5002,49 @@
         "summary": "Receive crawler status pulse",
         "description": "Pub/Sub push endpoint for receiving real-time status pulses from the agentic brand crawler. Stores pulse in Redis for frontend polling.",
         "operationId": "receive_pulse_api_v2_crawler_pulses_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/src__schemas__crawler_pulses__PubSubPushEnvelope"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
