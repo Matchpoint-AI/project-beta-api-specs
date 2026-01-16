@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.666"
+    "version": "0.7.667"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4876,6 +4876,81 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VersionStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/{post_id}/versions/{version_id}/diff": {
+      "get": {
+        "tags": [
+          "post-versions"
+        ],
+        "summary": "Get diff between a version and its parent",
+        "description": "Calculate and return the diff between a specific version and its parent.\n\n        Shows what changed between versions, including:\n        - Line-by-line text diff with additions/deletions\n        - Similarity ratio (0-1) to detect edits vs regeneration\n        - Media change detection\n\n        **Change Types:**\n        - `no_change`: No differences\n        - `text_edit`: Manual text edits (high similarity)\n        - `regenerate`: Full regeneration (low similarity)\n        - `media_change`: Only media changed\n        - `both`: Both text and media changed",
+        "operationId": "get_version_diff",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          },
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version Id"
+            }
+          },
+          {
+            "name": "compareTo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Version to compare against (default: parent version)",
+              "title": "Compareto"
+            },
+            "description": "Version to compare against (default: parent version)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionDiffResponse"
                 }
               }
             }
@@ -12690,6 +12765,48 @@
         "title": "DayContent",
         "description": "Schema for daily content."
       },
+      "DiffLineResponse": {
+        "properties": {
+          "operation": {
+            "type": "string",
+            "title": "Operation",
+            "description": "'+' add, '-' remove, ' ' unchanged"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "lineNumberOld": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linenumberold"
+          },
+          "lineNumberNew": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linenumbernew"
+          }
+        },
+        "type": "object",
+        "required": [
+          "operation",
+          "content"
+        ],
+        "title": "DiffLineResponse",
+        "description": "Single line in diff output."
+      },
       "DiversityMetrics": {
         "properties": {
           "contentTypeDiversity": {
@@ -16330,6 +16447,43 @@
         "title": "StoryArc",
         "description": "Narrative structure options for captions.\n\nDefines the overall narrative flow of the caption.\n- PROBLEM_SOLUTION: Present problem, offer solution\n- BEFORE_AFTER: Transformation narrative\n- LIST_FORMAT: Numbered or bulleted points\n- TESTIMONIAL: Social proof/customer story\n- EDUCATIONAL: Teaching/informative structure"
       },
+      "TextDiffResponse": {
+        "properties": {
+          "changeType": {
+            "type": "string",
+            "title": "Changetype"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/DiffLineResponse"
+            },
+            "type": "array",
+            "title": "Lines"
+          },
+          "additions": {
+            "type": "integer",
+            "title": "Additions"
+          },
+          "deletions": {
+            "type": "integer",
+            "title": "Deletions"
+          },
+          "similarityRatio": {
+            "type": "number",
+            "title": "Similarityratio"
+          }
+        },
+        "type": "object",
+        "required": [
+          "changeType",
+          "lines",
+          "additions",
+          "deletions",
+          "similarityRatio"
+        ],
+        "title": "TextDiffResponse",
+        "description": "Text diff details."
+      },
       "TextPosition": {
         "type": "string",
         "enum": [
@@ -16574,6 +16728,62 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VersionDiffResponse": {
+        "properties": {
+          "postId": {
+            "type": "string",
+            "title": "Postid"
+          },
+          "fromVersion": {
+            "type": "integer",
+            "title": "Fromversion"
+          },
+          "toVersion": {
+            "type": "integer",
+            "title": "Toversion"
+          },
+          "changeType": {
+            "type": "string",
+            "title": "Changetype"
+          },
+          "textDiff": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TextDiffResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mediaChanged": {
+            "type": "boolean",
+            "title": "Mediachanged"
+          },
+          "mediaDiff": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mediadiff"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postId",
+          "fromVersion",
+          "toVersion",
+          "changeType",
+          "mediaChanged"
+        ],
+        "title": "VersionDiffResponse",
+        "description": "Complete diff between two versions."
       },
       "VersionHistoryResponse": {
         "properties": {

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.667] - 2026-01-16
+
+### Changes
+- Merge pull request #2170 from Matchpoint-AI/feat/2098-edit-diff-tracking
+
+**Source:** project-beta-api@b5f3a2ce
+
 ## [v0.7.666] - 2026-01-16
 
 ### Changes
