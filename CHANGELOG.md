@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.666] - 2026-01-16
+
+### Changes
+- Merge pull request #2239 from Matchpoint-AI/fix/2238-coverage-threshold
+
+**Source:** project-beta-api@e5556f20
+
 ## [v0.7.665] - 2026-01-16
 
 ### Changes
