@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.648] - 2026-01-16
+
+### Changes
+- Merge pull request #2191 from Matchpoint-AI/fix/agentic-pubsub-endpoint
+
+**Source:** project-beta-api@d41ece0f
+
 ## [v0.7.647] - 2026-01-16
 
 ### Changes
