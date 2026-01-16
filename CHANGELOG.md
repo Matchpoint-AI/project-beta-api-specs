@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.682] - 2026-01-16
+
+### Changes
+- fix(deps): Update aiohttp to 3.12.14 to fix CVE-2025-53643 (#2290)
+
+**Source:** project-beta-api@9fcda98f
+
 ## [v0.7.681] - 2026-01-16
 
 ### Changes
