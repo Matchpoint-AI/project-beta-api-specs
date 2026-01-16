@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.647] - 2026-01-16
+
+### Changes
+- fix(api): Remove ImageGenerationRetryService (Issue #2137) (#2146)
+
+**Source:** project-beta-api@5613471a
+
 ## [v0.7.646] - 2026-01-16
 
 ### Changes
