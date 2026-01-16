@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.646] - 2026-01-16
+
+### Changes
+- fix(brand): Make brand creation idempotent (#2163) (#2169)
+
+**Source:** project-beta-api@db969e8d
+
 ## [v0.7.645] - 2026-01-16
 
 ### Changes

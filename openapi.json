@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.645"
+    "version": "0.7.646"
   },
   "paths": {
     "/api/v2/brands": {
@@ -12,7 +12,7 @@
           "brands"
         ],
         "summary": "Create Brand",
-        "description": "Create a new brand and automatically trigger knowledge workflow.\n\nCreates a new brand with server-generated ID and immediately starts\na knowledge extraction workflow in the background.\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Brand creation request",
+        "description": "Create a new brand and automatically trigger knowledge workflow.\n\nCreates a new brand with server-generated ID and immediately starts\na knowledge extraction workflow in the background.\n\nIssue #2163: This endpoint is idempotent - if a brand with the same\nname already exists for this user, it returns the existing brand (200 OK)\ninstead of creating a duplicate or returning 409 Conflict.\n\nArgs:\n    response: FastAPI response object for setting status code\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Brand creation request\n\nReturns:\n    201 Created: New brand created\n    200 OK: Existing brand returned (idempotent)",
         "operationId": "create_brand_api_v2_brands_post",
         "security": [
           {
@@ -40,11 +40,18 @@
               }
             }
           },
+          "200": {
+            "description": "Existing brand returned (idempotent)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Invalid request data"
-          },
-          "409": {
-            "description": "Brand with this name already exists"
           },
           "422": {
             "description": "Validation Error",
@@ -6808,11 +6815,13 @@
           },
           "totalCredits": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -15929,6 +15938,7 @@
           },
           "estimatedCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -16032,7 +16042,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
