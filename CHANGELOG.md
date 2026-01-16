@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.656] - 2026-01-16
+
+### Changes
+- feat(content-gen): pre-create posts with DB IDs before triggering generation (#2229)
+
+**Source:** project-beta-api@359eee28
+
 ## [v0.7.655] - 2026-01-16
 
 ### Changes
