@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.645] - 2026-01-16
+
+### Changes
+- Merge pull request #2204 from Matchpoint-AI/chore/remove-dynamic-prompt-composer
+
+**Source:** project-beta-api@e63f1be7
+
 ## [v0.7.644] - 2026-01-16
 
 ### Changes
