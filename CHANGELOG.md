@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.661] - 2026-01-16
+
+### Changes
+- feat: Add GET /briefs/{correlation_id} endpoint for crawl status (#2232)
+
+**Source:** project-beta-api@4302b60a
+
 ## [v0.7.660] - 2026-01-16
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.660"
+    "version": "0.7.661"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1197,6 +1197,52 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/briefs/{correlation_id}": {
+      "get": {
+        "tags": [
+          "briefs"
+        ],
+        "summary": "Get crawl status by correlation_id",
+        "description": "Query the status of a brand crawl by correlation_id. Returns aggregated status derived from received briefs (CORE/DEEP), allowing frontend to track crawl progress in real-time.",
+        "operationId": "get_brief_status_api_v2_briefs__correlation_id__get",
+        "parameters": [
+          {
+            "name": "correlation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Correlation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No briefs found for correlation_id"
           },
           "422": {
             "description": "Validation Error",
@@ -8374,6 +8420,122 @@
         ],
         "title": "BriefAckResponse",
         "description": "Response for successful brief processing."
+      },
+      "BriefStatusEnum": {
+        "type": "string",
+        "enum": [
+          "in_progress",
+          "core_complete",
+          "complete",
+          "failed"
+        ],
+        "title": "BriefStatusEnum",
+        "description": "Aggregated crawl status derived from received briefs."
+      },
+      "BriefStatusResponse": {
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID for the crawl"
+          },
+          "brandId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandid",
+            "description": "Associated brand ID if known"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BriefStatusEnum",
+            "description": "Aggregated crawl status"
+          },
+          "briefs": {
+            "items": {
+              "$ref": "#/components/schemas/BriefSummary"
+            },
+            "type": "array",
+            "title": "Briefs",
+            "description": "List of received briefs"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error",
+            "description": "Error message if crawl failed"
+          },
+          "createdAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Createdat",
+            "description": "When first brief was received"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "status"
+        ],
+        "title": "BriefStatusResponse",
+        "description": "Response for GET /briefs/{correlation_id} endpoint.\n\nProvides aggregated status of a brand crawl by correlation_id,\nincluding list of received briefs and derived overall status.\n\nIssue #2225: Brand Crawl status endpoint for frontend polling."
+      },
+      "BriefSummary": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "Brief type: core or deep"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status"
+          },
+          "receivedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Receivedat",
+            "description": "When brief was received"
+          },
+          "brandName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandname",
+            "description": "Extracted brand name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "status",
+          "receivedAt"
+        ],
+        "title": "BriefSummary",
+        "description": "Summary of a single brief."
       },
       "BulkContentApprovalRequest": {
         "properties": {
