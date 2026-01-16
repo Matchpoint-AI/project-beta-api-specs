@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.654] - 2026-01-16
+
+### Changes
+- Merge pull request #2220 from Matchpoint-AI/fix/remove-dead-deprecation-middleware
+
+**Source:** project-beta-api@7acd4f6c
+
 ## [v0.7.653] - 2026-01-16
 
 ### Changes
