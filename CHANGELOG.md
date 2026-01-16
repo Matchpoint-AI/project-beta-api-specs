@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.700] - 2026-01-16
+
+### Changes
+- Merge pull request #2336 from Matchpoint-AI/dependabot/pip/pytest-mock-3.15.1
+
+**Source:** project-beta-api@498515e4
+
 ## [v0.7.699] - 2026-01-16
 
 ### Changes
