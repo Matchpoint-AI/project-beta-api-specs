@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.662] - 2026-01-16
+
+### Changes
+- Merge pull request #2236 from Matchpoint-AI/feat/2218-fsspec-filesystem
+
+**Source:** project-beta-api@2d1882cd
+
 ## [v0.7.661] - 2026-01-16
 
 ### Changes
