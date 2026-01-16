@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.707"
+    "version": "0.7.708"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4464,6 +4464,145 @@
         ]
       }
     },
+    "/api/v2/campaigns/{campaign_id}/learn": {
+      "post": {
+        "tags": [
+          "learning"
+        ],
+        "summary": "Run learning cycle",
+        "description": "Run a complete learning cycle for a campaign. Aggregates feedback signals, computes learning signals from Thompson Sampling posteriors, generates policy recommendations, and optionally applies updates and triggers plan regeneration when thresholds are met.",
+        "operationId": "run_learning_cycle_api_v2_campaigns__campaign_id__learn_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Campaign ID to run learning cycle for",
+              "examples": [
+                "123",
+                "campaign-abc"
+              ],
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID to run learning cycle for"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LearningRequest",
+                "description": "Learning cycle configuration (optional)",
+                "default": {
+                  "approvalThreshold": 0.7,
+                  "minFeedbackCount": 10,
+                  "autoApply": false,
+                  "forceRegeneration": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Learning cycle completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LearningResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid campaign ID or request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/learning/status": {
+      "get": {
+        "tags": [
+          "learning"
+        ],
+        "summary": "Get learning status",
+        "description": "Get the current learning status for a campaign including Thompson Sampler state, scene types being tracked, feedback counts, and exploration rate.",
+        "operationId": "get_learning_status_api_v2_campaigns__campaign_id__learning_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Campaign ID to get learning status for",
+              "examples": [
+                "123",
+                "campaign-abc"
+              ],
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID to get learning status for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Learning status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LearningStatus"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid campaign ID"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/metrics": {
       "get": {
         "tags": [
@@ -7220,11 +7359,13 @@
           },
           "totalCredits": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -13309,6 +13450,187 @@
         "title": "IntegrationsListResponse",
         "description": "Schema for listing all integrations."
       },
+      "LearningRequest": {
+        "properties": {
+          "approvalThreshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Approvalthreshold",
+            "description": "Threshold below which scene types are considered underperforming",
+            "default": 0.7
+          },
+          "minFeedbackCount": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Minfeedbackcount",
+            "description": "Minimum feedback count before triggering reoptimization",
+            "default": 10
+          },
+          "autoApply": {
+            "type": "boolean",
+            "title": "Autoapply",
+            "description": "If true, automatically apply recommended policy updates",
+            "default": false
+          },
+          "forceRegeneration": {
+            "type": "boolean",
+            "title": "Forceregeneration",
+            "description": "If true, force plan regeneration regardless of trigger status",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "LearningRequest",
+        "description": "Request schema for triggering learning cycle."
+      },
+      "LearningResponse": {
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid",
+            "description": "Campaign ID that was analyzed"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "When the learning analysis was performed"
+          },
+          "totalFeedbackCount": {
+            "type": "integer",
+            "title": "Totalfeedbackcount",
+            "description": "Total feedback signals collected",
+            "default": 0
+          },
+          "overallApprovalRate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Overallapprovalrate",
+            "description": "Overall approval rate across all scene types",
+            "default": 0.0
+          },
+          "sceneSignals": {
+            "items": {
+              "$ref": "#/components/schemas/SceneTypeLearningSignal"
+            },
+            "type": "array",
+            "title": "Scenesignals",
+            "description": "Learning signals per scene type"
+          },
+          "reoptimizationTriggered": {
+            "type": "boolean",
+            "title": "Reoptimizationtriggered",
+            "description": "Whether reoptimization threshold was met",
+            "default": false
+          },
+          "triggerReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Triggerreason",
+            "description": "Reason for trigger (or why not triggered)"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyRecommendation"
+            },
+            "type": "array",
+            "title": "Recommendations",
+            "description": "Policy update recommendations"
+          },
+          "policyUpdated": {
+            "type": "boolean",
+            "title": "Policyupdated",
+            "description": "Whether policy was automatically updated",
+            "default": false
+          },
+          "planRegenerated": {
+            "type": "boolean",
+            "title": "Planregenerated",
+            "description": "Whether plan regeneration was triggered",
+            "default": false
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "description": "Human-readable summary of learning results",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId"
+        ],
+        "title": "LearningResponse",
+        "description": "Response schema for learning endpoint."
+      },
+      "LearningStatus": {
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "hasSampler": {
+            "type": "boolean",
+            "title": "Hassampler",
+            "description": "Whether a Thompson Sampler exists for this campaign",
+            "default": false
+          },
+          "sceneTypes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scenetypes",
+            "description": "Scene types being tracked"
+          },
+          "totalFeedback": {
+            "type": "integer",
+            "title": "Totalfeedback",
+            "description": "Total feedback count",
+            "default": 0
+          },
+          "lastLearningRun": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastlearningrun",
+            "description": "When learning was last run"
+          },
+          "currentExplorationRate": {
+            "type": "number",
+            "title": "Currentexplorationrate",
+            "description": "Current epsilon for exploration",
+            "default": 0.0
+          },
+          "modelStatistics": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Modelstatistics",
+            "description": "Current model statistics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId"
+        ],
+        "title": "LearningStatus",
+        "description": "Status of the learning system for a campaign."
+      },
       "LegalRestrictions": {
         "properties": {
           "claims": {
@@ -13564,6 +13886,51 @@
         ],
         "title": "Platform",
         "description": "Supported social media platforms.\n\nUsed for platform-specific caption optimization."
+      },
+      "PolicyRecommendation": {
+        "properties": {
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype",
+            "description": "Scene type this recommendation applies to"
+          },
+          "currentWeight": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Currentweight",
+            "description": "Current weight in content mix"
+          },
+          "recommendedWeight": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Recommendedweight",
+            "description": "Recommended new weight"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "description": "Explanation for the recommendation"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "description": "Confidence level in this recommendation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sceneType",
+          "currentWeight",
+          "recommendedWeight",
+          "reason",
+          "confidence"
+        ],
+        "title": "PolicyRecommendation",
+        "description": "Recommendation for policy update."
       },
       "PostContent": {
         "properties": {
@@ -15541,6 +15908,85 @@
         "title": "SceneTypeAggregates",
         "description": "Aggregated metrics for a single scene type."
       },
+      "SceneTypeLearningSignal": {
+        "properties": {
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype",
+            "description": "Scene type identifier"
+          },
+          "expectedValue": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Expectedvalue",
+            "description": "Expected performance value from Thompson Sampling"
+          },
+          "observations": {
+            "type": "integer",
+            "title": "Observations",
+            "description": "Number of feedback observations",
+            "default": 0
+          },
+          "successRate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Successrate",
+            "description": "Historical success/approval rate",
+            "default": 0.0
+          },
+          "avgCtr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avgctr",
+            "description": "Average click-through rate"
+          },
+          "avgEr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avger",
+            "description": "Average engagement rate"
+          },
+          "avgCvr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avgcvr",
+            "description": "Average conversion rate"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Status: 'performing', 'stable', 'underperforming', 'insufficient_data'",
+            "default": "stable"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sceneType",
+          "expectedValue"
+        ],
+        "title": "SceneTypeLearningSignal",
+        "description": "Learning signal for a specific scene type."
+      },
       "ScheduledPostListResponse": {
         "properties": {
           "posts": {
@@ -16942,6 +17388,7 @@
           },
           "estimatedCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -17045,7 +17492,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
