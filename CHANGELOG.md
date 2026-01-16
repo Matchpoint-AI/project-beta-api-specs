@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.652] - 2026-01-16
+
+### Changes
+- feat: Add scene_performance_metrics table and API endpoints (#2160)
+
+**Source:** project-beta-api@c47993d8
+
 ## [v0.7.651] - 2026-01-16
 
 ### Changes

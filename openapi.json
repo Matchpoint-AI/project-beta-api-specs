@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.651"
+    "version": "0.7.652"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4932,6 +4932,238 @@
         }
       }
     },
+    "/api/v2/scenes/performance": {
+      "post": {
+        "tags": [
+          "scenes"
+        ],
+        "summary": "Ingest performance metric",
+        "description": "Ingest a single scene performance metric from external analytics. Used to track CTR, engagement rate, and conversion rate by scene type.",
+        "operationId": "ingest_metric_api_v2_scenes_performance_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenePerformanceMetricCreate",
+                "description": "Performance metric data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenePerformanceMetricResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "scenes"
+        ],
+        "summary": "Get metrics by campaign",
+        "description": "Retrieve all performance metrics for a campaign with pagination.",
+        "operationId": "get_metrics_by_campaign_api_v2_scenes_performance_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Campaign ID to get metrics for",
+              "title": "Campaignid"
+            },
+            "description": "Campaign ID to get metrics for"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum results to return",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum results to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Results to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Results to skip"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ScenePerformanceMetricResponse"
+                  },
+                  "title": "Response Get Metrics By Campaign Api V2 Scenes Performance Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/scenes/performance/batch": {
+      "post": {
+        "tags": [
+          "scenes"
+        ],
+        "summary": "Ingest batch metrics",
+        "description": "Ingest multiple performance metrics in a single request.",
+        "operationId": "ingest_batch_metrics_api_v2_scenes_performance_batch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenePerformanceMetricBatchCreate",
+                "description": "Batch of metrics to ingest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchMetricResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/scenes/performance/aggregates": {
+      "get": {
+        "tags": [
+          "scenes"
+        ],
+        "summary": "Get aggregated metrics by scene type",
+        "description": "Get aggregated performance statistics grouped by scene type. Optionally filter by campaign ID.",
+        "operationId": "get_aggregates_by_scene_type_api_v2_scenes_performance_aggregates_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional campaign ID to filter by",
+              "title": "Campaignid"
+            },
+            "description": "Optional campaign ID to filter by"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenePerformanceAggregates"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/scheduled-posts": {
       "get": {
         "tags": [
@@ -6582,6 +6814,33 @@
         "type": "object",
         "title": "BatchFeedbackResponse",
         "description": "Schema for batch feedback submission response."
+      },
+      "BatchMetricResponse": {
+        "properties": {
+          "ingestedCount": {
+            "type": "integer",
+            "title": "Ingestedcount",
+            "description": "Number of metrics successfully ingested",
+            "default": 0
+          },
+          "failedCount": {
+            "type": "integer",
+            "title": "Failedcount",
+            "description": "Number of metrics that failed to ingest",
+            "default": 0
+          },
+          "metricIds": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Metricids",
+            "description": "IDs of successfully ingested metrics"
+          }
+        },
+        "type": "object",
+        "title": "BatchMetricResponse",
+        "description": "Schema for batch metric ingestion response."
       },
       "Body_update_brand_files": {
         "properties": {
@@ -14484,6 +14743,369 @@
         "title": "SceneMixPolicyResponse",
         "description": "Schema for scene mix policy response."
       },
+      "ScenePerformanceAggregates": {
+        "properties": {
+          "campaignId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaignid",
+            "description": "Campaign ID if filtered by campaign"
+          },
+          "sceneTypes": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SceneTypeAggregates"
+            },
+            "type": "object",
+            "title": "Scenetypes",
+            "description": "Aggregates by scene type"
+          },
+          "overallAvgCtr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overallavgctr",
+            "description": "Overall average click-through rate"
+          },
+          "overallAvgEr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overallavger",
+            "description": "Overall average engagement rate"
+          },
+          "overallAvgCvr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overallavgcvr",
+            "description": "Overall average conversion rate"
+          },
+          "totalMetrics": {
+            "type": "integer",
+            "title": "Totalmetrics",
+            "description": "Total number of metric records",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "ScenePerformanceAggregates",
+        "description": "Schema for aggregated performance statistics by scene type.\n\nUsed for GET /performance-metrics/by-scene-type endpoint."
+      },
+      "ScenePerformanceMetricBatchCreate": {
+        "properties": {
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/ScenePerformanceMetricCreate"
+            },
+            "type": "array",
+            "title": "Metrics",
+            "description": "List of metrics to ingest"
+          }
+        },
+        "type": "object",
+        "required": [
+          "metrics"
+        ],
+        "title": "ScenePerformanceMetricBatchCreate",
+        "description": "Schema for batch metric ingestion.\n\nUsed for POST /performance-metrics/batch endpoint."
+      },
+      "ScenePerformanceMetricCreate": {
+        "properties": {
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID for this metric"
+          },
+          "sceneType": {
+            "type": "string",
+            "enum": [
+              "human",
+              "product",
+              "ingredient"
+            ],
+            "title": "Scenetype",
+            "description": "Scene type category"
+          },
+          "ctr": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ctr",
+            "description": "Click-through rate (0.0 - 1.0)"
+          },
+          "er": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Er",
+            "description": "Engagement rate (0.0 - 1.0)"
+          },
+          "cvr": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cvr",
+            "description": "Conversion rate (0.0 - 1.0)"
+          },
+          "impressions": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impressions",
+            "description": "Total impressions count"
+          },
+          "clicks": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clicks",
+            "description": "Total clicks count"
+          },
+          "engagements": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engagements",
+            "description": "Total engagements (likes, comments, shares)"
+          },
+          "conversions": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversions",
+            "description": "Total conversions count"
+          },
+          "measuredAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measuredat",
+            "description": "When these metrics were measured"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source",
+            "description": "Analytics platform source (e.g., 'instagram_insights', 'meta_business')"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId",
+          "sceneType"
+        ],
+        "title": "ScenePerformanceMetricCreate",
+        "description": "Schema for creating a scene performance metric.\n\nUsed for POST /performance-metrics endpoint."
+      },
+      "ScenePerformanceMetricResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid"
+          },
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype"
+          },
+          "ctr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ctr"
+          },
+          "er": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Er"
+          },
+          "cvr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cvr"
+          },
+          "impressions": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impressions"
+          },
+          "clicks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clicks"
+          },
+          "engagements": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engagements"
+          },
+          "conversions": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversions"
+          },
+          "measuredAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measuredat"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "campaignId",
+          "sceneType",
+          "createdAt"
+        ],
+        "title": "ScenePerformanceMetricResponse",
+        "description": "Schema for scene performance metric response."
+      },
       "ScenePolicy": {
         "properties": {
           "sceneType": {
@@ -14522,6 +15144,87 @@
         ],
         "title": "ScenePolicy",
         "description": "Schema for individual scene policy configuration."
+      },
+      "SceneTypeAggregates": {
+        "properties": {
+          "sceneType": {
+            "type": "string",
+            "title": "Scenetype",
+            "description": "Scene type category"
+          },
+          "avgCtr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avgctr",
+            "description": "Average click-through rate"
+          },
+          "avgEr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avger",
+            "description": "Average engagement rate"
+          },
+          "avgCvr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avgcvr",
+            "description": "Average conversion rate"
+          },
+          "totalImpressions": {
+            "type": "integer",
+            "title": "Totalimpressions",
+            "description": "Total impressions",
+            "default": 0
+          },
+          "totalClicks": {
+            "type": "integer",
+            "title": "Totalclicks",
+            "description": "Total clicks",
+            "default": 0
+          },
+          "totalEngagements": {
+            "type": "integer",
+            "title": "Totalengagements",
+            "description": "Total engagements",
+            "default": 0
+          },
+          "totalConversions": {
+            "type": "integer",
+            "title": "Totalconversions",
+            "description": "Total conversions",
+            "default": 0
+          },
+          "metricCount": {
+            "type": "integer",
+            "title": "Metriccount",
+            "description": "Number of metric records",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "sceneType"
+        ],
+        "title": "SceneTypeAggregates",
+        "description": "Aggregated metrics for a single scene type."
       },
       "ScheduledPostListResponse": {
         "properties": {
