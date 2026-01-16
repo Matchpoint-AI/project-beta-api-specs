@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.643] - 2026-01-16
+
+### Changes
+- Merge pull request #2202 from Matchpoint-AI/chore/remove-video-cost-estimator
+
+**Source:** project-beta-api@c0cadd80
+
 ## [v0.7.642] - 2026-01-16
 
 ### Changes
