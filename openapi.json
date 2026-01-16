@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.683"
+    "version": "0.7.684"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1174,26 +1174,6 @@
         ],
         "parameters": [
           {
-            "name": "user_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Deprecated: campaigns now scoped to authenticated user",
-              "deprecated": true,
-              "title": "User Id"
-            },
-            "description": "Deprecated: campaigns now scoped to authenticated user",
-            "deprecated": true
-          },
-          {
             "name": "brand_id",
             "in": "query",
             "required": false,
@@ -1226,9 +1206,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Missing or invalid user_id parameter"
           },
           "401": {
             "description": "Unauthorized - invalid or missing authentication token"
@@ -7107,13 +7084,11 @@
           },
           "totalCredits": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -16806,7 +16781,6 @@
           },
           "estimatedCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -16910,8 +16884,7 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               },
               {
                 "type": "null"
