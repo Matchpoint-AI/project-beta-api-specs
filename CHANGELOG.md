@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.644] - 2026-01-16
+
+### Changes
+- Merge pull request #2203 from Matchpoint-AI/chore/remove-linucb-bandit
+
+**Source:** project-beta-api@437d2a25
+
 ## [v0.7.643] - 2026-01-16
 
 ### Changes
