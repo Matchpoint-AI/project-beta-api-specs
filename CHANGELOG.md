@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.685] - 2026-01-16
+
+### Changes
+- feat: Add notification system for post status changes (#2289)
+
+**Source:** project-beta-api@bc267ed7
+
 ## [v0.7.684] - 2026-01-16
 
 ### Changes
