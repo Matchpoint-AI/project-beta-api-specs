@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.665] - 2026-01-16
+
+### Changes
+- Merge pull request #2214 from Matchpoint-AI/chore/remove-deprecated-fetch-url-content
+
+**Source:** project-beta-api@dcce7395
+
 ## [v0.7.664] - 2026-01-16
 
 ### Changes
