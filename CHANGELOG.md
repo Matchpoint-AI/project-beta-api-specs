@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.716] - 2026-01-16
+
+### Changes
+- Merge pull request #2374 from Matchpoint-AI/fix/2282
+
+**Source:** project-beta-api@e31e0218
+
 ## [v0.7.715] - 2026-01-16
 
 ### Changes
