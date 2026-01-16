@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.698] - 2026-01-16
+
+### Changes
+- Merge pull request #2339 from Matchpoint-AI/dependabot/pip/ruff-0.14.13
+
+**Source:** project-beta-api@7b33c266
+
 ## [v0.7.697] - 2026-01-16
 
 ### Changes
