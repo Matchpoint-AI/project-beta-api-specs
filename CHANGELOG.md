@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.660] - 2026-01-16
+
+### Changes
+- feat: Migrate post regeneration to agentic architecture (#2231)
+
+**Source:** project-beta-api@b9d825e4
+
 ## [v0.7.659] - 2026-01-16
 
 ### Changes
