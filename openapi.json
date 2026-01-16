@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.663"
+    "version": "0.7.664"
   },
   "paths": {
     "/api/v2/brands": {
@@ -1339,6 +1339,7 @@
                 }
               ],
               "description": "Deprecated: campaigns now scoped to authenticated user",
+              "deprecated": true,
               "title": "User Id"
             },
             "description": "Deprecated: campaigns now scoped to authenticated user",
@@ -4177,64 +4178,6 @@
           },
           "404": {
             "description": "Content not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/text/versions": {
-      "post": {
-        "tags": [
-          "content-text-versions"
-        ],
-        "summary": "Update Text Versions",
-        "description": "Update text versions for a specific post.\n\nRMM L2: Uses POST for action that updates text, text_versions,\nand selected_image_index fields in content_data.\n\nThis endpoint allows the frontend to:\n- Edit post text after generation\n- Maintain text version history\n- Select which image to display\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Text versions update request\n    firebase_user: Authenticated user from auth dependency\n    service: Injected text versions service\n\nReturns:\n    UpdateTextVersionsResponse with success status\n\nRaises:\n    HTTPException: 401 if not authenticated\n    HTTPException: 404 if content not found\n    HTTPException: 422 if validation fails",
-        "operationId": "update_text_versions_api_v2_content__content_id__text_versions_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Content Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTextVersionsRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UpdateTextVersionsResponse"
-                }
-              }
-            }
           },
           "422": {
             "description": "Validation Error",
@@ -7326,11 +7269,13 @@
           },
           "totalCredits": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -7781,6 +7726,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -7875,6 +7821,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8033,6 +7980,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8099,6 +8047,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -8991,6 +8940,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9194,6 +9144,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -9387,6 +9338,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9887,6 +9839,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -9916,6 +9869,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -10119,6 +10073,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10710,6 +10665,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -10824,6 +10780,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -10862,6 +10819,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -10905,6 +10863,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10984,6 +10943,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11055,6 +11015,7 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -11409,6 +11370,7 @@
           "errorDetails": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12146,6 +12108,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12427,6 +12390,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12445,7 +12409,6 @@
         "enum": [
           "video"
         ],
-        "const": "video",
         "title": "CostType",
         "description": "Types of costs that can be queried."
       },
@@ -13129,6 +13092,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13288,6 +13252,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -13992,6 +13957,7 @@
           "mediaSnapshot": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14725,6 +14691,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -15062,6 +15029,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -16601,79 +16569,6 @@
         "title": "URLMetadata",
         "description": "Metadata extracted from URL."
       },
-      "UpdateTextVersionsRequest": {
-        "properties": {
-          "contentId": {
-            "type": "string",
-            "title": "Contentid",
-            "description": "Content ID to update"
-          },
-          "weekNum": {
-            "type": "integer",
-            "title": "Weeknum",
-            "description": "Week number in campaign"
-          },
-          "dayNum": {
-            "type": "integer",
-            "title": "Daynum",
-            "description": "Day number in week"
-          },
-          "postNum": {
-            "type": "integer",
-            "title": "Postnum",
-            "description": "Post number in day"
-          },
-          "text": {
-            "type": "string",
-            "title": "Text",
-            "description": "Currently selected text"
-          },
-          "textVersions": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Textversions",
-            "description": "Array of text versions"
-          },
-          "selectedImageIndex": {
-            "type": "integer",
-            "title": "Selectedimageindex",
-            "description": "Currently selected image index"
-          }
-        },
-        "type": "object",
-        "required": [
-          "contentId",
-          "weekNum",
-          "dayNum",
-          "postNum",
-          "text",
-          "textVersions",
-          "selectedImageIndex"
-        ],
-        "title": "UpdateTextVersionsRequest",
-        "description": "Request schema for updating text versions.\n\nDirect port from V1 UpdateTextVersionsRequest model."
-      },
-      "UpdateTextVersionsResponse": {
-        "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Operation status",
-            "default": "success"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Success message",
-            "default": "Text versions updated successfully"
-          }
-        },
-        "type": "object",
-        "title": "UpdateTextVersionsResponse",
-        "description": "Response schema for text versions update.\n\nDirect port from V1 response format."
-      },
       "UserRegistrationResponse": {
         "properties": {
           "user": {
@@ -17127,6 +17022,7 @@
           },
           "estimatedCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -17230,7 +17126,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -17598,6 +17495,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {

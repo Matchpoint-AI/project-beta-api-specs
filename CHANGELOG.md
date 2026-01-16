@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.664] - 2026-01-16
+
+### Changes
+- Merge pull request #2197 from Matchpoint-AI/chore/remove-content-text-versions
+
+**Source:** project-beta-api@754a74af
+
 ## [v0.7.663] - 2026-01-16
 
 ### Changes
