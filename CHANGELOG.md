@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.691] - 2026-01-16
+
+### Changes
+- Merge pull request #2341 from Matchpoint-AI/dependabot/pip/pytest-cov-7.0.0
+
+**Source:** project-beta-api@5ebf3cb8
+
 ## [v0.7.690] - 2026-01-16
 
 ### Changes
