@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.710"
+    "version": "0.7.711"
   },
   "paths": {
     "/api/v2/brands": {
@@ -4127,6 +4127,11 @@
         "summary": "Get Crawl Stats",
         "description": "Get crawl statistics with flexible query parameters.\n\nThis unified endpoint replaces the individual report-style endpoints\nfor RMM L2 compliance. Use the 'view' parameter to select the type\nof statistics to retrieve.\n\nArgs:\n    view: Type of statistics view (overview, trends, errors, brands)\n    days: Number of days to analyze (1-365, default: 30)\n    limit: Maximum results for errors (1-100) or brands (1-200)\n    interval: Aggregation interval for trends (\"day\" or \"hour\")\n    analytics_service: Injected analytics service\n\nReturns:\n    Statistics based on the selected view type",
         "operationId": "get_crawl_stats_api_v2_crawls_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "view",
