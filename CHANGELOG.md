@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.730] - 2026-01-17
+
+### Changes
+- Merge pull request #2159 from Matchpoint-AI/feat/2059-workflow-notifications
+
+**Source:** project-beta-api@664421c8
+
 ## [v0.7.729] - 2026-01-17
 
 ### Changes
