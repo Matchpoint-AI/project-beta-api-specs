@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.735] - 2026-01-17
+
+### Changes
+- fix: Add camelCase serialization to media.py schemas (#2403)
+
+**Source:** project-beta-api@a1d8dd7f
+
 ## [v0.7.734] - 2026-01-17
 
 ### Changes
