@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.735"
+    "version": "0.7.736"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -2634,7 +2634,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "description": "The campaign ID",
               "title": "Campaign Id"
             },
