@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.728] - 2026-01-17
+
+### Changes
+- Merge pull request #2154 from Matchpoint-AI/feat/2067-asset-availability
+
+**Source:** project-beta-api@ea8896d0
+
 ## [v0.7.727] - 2026-01-17
 
 ### Changes
