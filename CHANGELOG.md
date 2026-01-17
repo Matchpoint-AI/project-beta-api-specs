@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.733] - 2026-01-17
+
+### Changes
+- Merge pull request #2400 from Matchpoint-AI/fix/2395-accurate-counts
+
+**Source:** project-beta-api@fe630fc3
+
 ## [v0.7.732] - 2026-01-17
 
 ### Changes
