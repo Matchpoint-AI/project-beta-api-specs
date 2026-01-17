@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.734] - 2026-01-17
+
+### Changes
+- Merge pull request #2398 from Matchpoint-AI/fix/2396-correlation-id
+
+**Source:** project-beta-api@407e88f6
+
 ## [v0.7.733] - 2026-01-17
 
 ### Changes

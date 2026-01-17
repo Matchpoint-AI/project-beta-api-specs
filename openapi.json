@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.733"
+    "version": "0.7.734"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -7563,11 +7563,13 @@
           },
           "totalCredits": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -12459,6 +12461,18 @@
             "type": "string",
             "format": "date-time",
             "title": "Updatedat"
+          },
+          "correlationId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlationid",
+            "description": "UUID correlation ID for tracking this generation run"
           }
         },
         "type": "object",
@@ -12731,6 +12745,19 @@
               }
             ],
             "title": "Contentdata"
+          },
+          "correlationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 36
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlationid",
+            "description": "UUID correlation ID for tracking this generation run"
           }
         },
         "type": "object",
@@ -17646,6 +17673,7 @@
           },
           "estimatedCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -17749,7 +17777,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
