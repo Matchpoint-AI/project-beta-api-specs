@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.717"
+    "version": "0.7.718"
   },
   "paths": {
     "/api/v2/brands": {
@@ -5058,6 +5058,11 @@
         "summary": "List Prompts",
         "description": "List application prompts with optional category filtering.\n\nBusiness Context:\nReturns system-level AI prompts used for content generation.\nFiltering by category helps frontend fetch only relevant prompts.\n\nPerformance:\n- Response time: <10ms (in-memory cache)\n- Cache-Control header set for client-side caching\n- No database calls required\n\nRMM Level 2:\n- HTTP GET for resource retrieval\n- Query parameter for filtering (not in URL path)\n- Returns 200 OK with list of prompts\n\nArgs:\n    response: FastAPI response object for setting headers\n    category: Optional category filter (brand, content, campaign)\n    prompts_service: Injected prompts service\n\nReturns:\n    PromptsListResponse containing matching prompts\n\nExample:\n    GET /api/v2/prompts\n    GET /api/v2/prompts?category=brand\n\nResponse:\n    {\n      \"prompts\": [\n        {\n          \"id\": \"brand_summary_v1\",\n          \"category\": \"brand\",\n          \"template\": \"Create a summary for {brand_name}...\",\n          \"variables\": [\"brand_name\"],\n          \"version\": \"1.0.0\",\n          \"description\": \"Brand summary generation\"\n        }\n      ],\n      \"total\": 1\n    }",
         "operationId": "list_prompts_api_v2_prompts_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "category",
@@ -5109,6 +5114,11 @@
         "summary": "Create Prompt",
         "description": "Create a new prompt.\n\nBusiness Context:\nCreates a new AI prompt template that can be used for content generation.\nThe prompt ID must be unique across all prompts.\n\nRMM Level 2:\n- HTTP POST for resource creation\n- POST to collection endpoint (/prompts)\n- Returns 201 Created with new resource\n- Location header would point to new resource (best practice)\n\nArgs:\n    request: Prompt creation data\n    prompts_service: Injected prompts service\n\nReturns:\n    Created prompt with all fields\n\nRaises:\n    HTTPException: 409 if prompt ID already exists\n    HTTPException: 400 if validation fails\n\nExample:\n    POST /api/v2/prompts\n    {\n      \"id\": \"content_variation_v1\",\n      \"category\": \"content\",\n      \"template\": \"Generate variations...\",\n      \"variables\": [\"brand_name\"],\n      \"version\": \"1.0.0\",\n      \"description\": \"Content variation generator\"\n    }",
         "operationId": "create_prompt_api_v2_prompts_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -7389,11 +7399,13 @@
           },
           "totalCredits": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -17416,6 +17428,7 @@
           },
           "estimatedCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -17519,7 +17532,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
