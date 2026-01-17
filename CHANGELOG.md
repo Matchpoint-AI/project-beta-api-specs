@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.737] - 2026-01-17
+
+### Changes
+- fix(schemas): Add camelCase serialization to scheduled_post.py schemas (#2402)
+
+**Source:** project-beta-api@5a0c5a25
+
 ## [v0.7.736] - 2026-01-17
 
 ### Changes

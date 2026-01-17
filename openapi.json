@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.736"
+    "version": "0.7.737"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -7563,13 +7563,11 @@
           },
           "totalCredits": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -10614,9 +10612,9 @@
             "title": "Success",
             "description": "Whether cancellation succeeded"
           },
-          "post_id": {
+          "postId": {
             "type": "string",
-            "title": "Post Id",
+            "title": "Postid",
             "description": "Post ID that was cancelled"
           },
           "message": {
@@ -10624,9 +10622,9 @@
             "title": "Message",
             "description": "Result message"
           },
-          "scheduler_job_deleted": {
+          "schedulerJobDeleted": {
             "type": "boolean",
-            "title": "Scheduler Job Deleted",
+            "title": "Schedulerjobdeleted",
             "description": "Whether Cloud Scheduler job was deleted",
             "default": false
           }
@@ -10634,7 +10632,7 @@
         "type": "object",
         "required": [
           "success",
-          "post_id",
+          "postId",
           "message"
         ],
         "title": "CancelScheduledPostResponse",
@@ -16247,7 +16245,7 @@
             "title": "Total",
             "description": "Total number of scheduled posts"
           },
-          "campaign_id": {
+          "campaignId": {
             "anyOf": [
               {
                 "type": "integer"
@@ -16256,10 +16254,10 @@
                 "type": "null"
               }
             ],
-            "title": "Campaign Id",
+            "title": "Campaignid",
             "description": "Campaign filter if applied"
           },
-          "status_filter": {
+          "statusFilter": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ScheduledPostStatus"
@@ -16285,35 +16283,35 @@
             "title": "Id",
             "description": "Database ID"
           },
-          "post_id": {
+          "postId": {
             "type": "string",
-            "title": "Post Id",
+            "title": "Postid",
             "description": "Unique post identifier"
           },
-          "campaign_id": {
+          "campaignId": {
             "type": "integer",
-            "title": "Campaign Id",
+            "title": "Campaignid",
             "description": "Campaign ID"
           },
-          "week_key": {
+          "weekKey": {
             "type": "string",
-            "title": "Week Key",
+            "title": "Weekkey",
             "description": "Week identifier (e.g., week_1)"
           },
-          "day_key": {
+          "dayKey": {
             "type": "string",
-            "title": "Day Key",
+            "title": "Daykey",
             "description": "Day identifier (e.g., day_1)"
           },
-          "post_key": {
+          "postKey": {
             "type": "string",
-            "title": "Post Key",
+            "title": "Postkey",
             "description": "Post identifier (e.g., post_1)"
           },
-          "scheduled_time": {
+          "scheduledTime": {
             "type": "string",
             "format": "date-time",
-            "title": "Scheduled Time",
+            "title": "Scheduledtime",
             "description": "When the post will be published"
           },
           "timezone": {
@@ -16337,7 +16335,7 @@
             "title": "Caption",
             "description": "Post caption"
           },
-          "image_url": {
+          "imageUrl": {
             "anyOf": [
               {
                 "type": "string"
@@ -16346,15 +16344,15 @@
                 "type": "null"
               }
             ],
-            "title": "Image Url",
+            "title": "Imageurl",
             "description": "Post image URL"
           },
-          "instagram_account_id": {
+          "instagramAccountId": {
             "type": "string",
-            "title": "Instagram Account Id",
+            "title": "Instagramaccountid",
             "description": "Instagram account ID"
           },
-          "instagram_post_id": {
+          "instagramPostId": {
             "anyOf": [
               {
                 "type": "string"
@@ -16363,10 +16361,10 @@
                 "type": "null"
               }
             ],
-            "title": "Instagram Post Id",
+            "title": "Instagrampostid",
             "description": "Instagram post ID after publishing"
           },
-          "scheduler_job_name": {
+          "schedulerJobName": {
             "anyOf": [
               {
                 "type": "string"
@@ -16375,10 +16373,10 @@
                 "type": "null"
               }
             ],
-            "title": "Scheduler Job Name",
+            "title": "Schedulerjobname",
             "description": "Cloud Scheduler job name"
           },
-          "error_message": {
+          "errorMessage": {
             "anyOf": [
               {
                 "type": "string"
@@ -16387,28 +16385,28 @@
                 "type": "null"
               }
             ],
-            "title": "Error Message",
+            "title": "Errormessage",
             "description": "Error message if failed"
           },
-          "retry_count": {
+          "retryCount": {
             "type": "integer",
-            "title": "Retry Count",
+            "title": "Retrycount",
             "description": "Number of retry attempts",
             "default": 0
           },
-          "created_at": {
+          "createdAt": {
             "type": "string",
             "format": "date-time",
-            "title": "Created At",
+            "title": "Createdat",
             "description": "Creation timestamp"
           },
-          "updated_at": {
+          "updatedAt": {
             "type": "string",
             "format": "date-time",
-            "title": "Updated At",
+            "title": "Updatedat",
             "description": "Last update timestamp"
           },
-          "published_at": {
+          "publishedAt": {
             "anyOf": [
               {
                 "type": "string",
@@ -16418,24 +16416,24 @@
                 "type": "null"
               }
             ],
-            "title": "Published At",
+            "title": "Publishedat",
             "description": "When post was published"
           }
         },
         "type": "object",
         "required": [
           "id",
-          "post_id",
-          "campaign_id",
-          "week_key",
-          "day_key",
-          "post_key",
-          "scheduled_time",
+          "postId",
+          "campaignId",
+          "weekKey",
+          "dayKey",
+          "postKey",
+          "scheduledTime",
           "timezone",
           "status",
-          "instagram_account_id",
-          "created_at",
-          "updated_at"
+          "instagramAccountId",
+          "createdAt",
+          "updatedAt"
         ],
         "title": "ScheduledPostResponse",
         "description": "Response schema for a scheduled post."
@@ -16458,7 +16456,7 @@
             "$ref": "#/components/schemas/ScheduledPostStatus",
             "description": "New status"
           },
-          "error_message": {
+          "errorMessage": {
             "anyOf": [
               {
                 "type": "string"
@@ -16467,10 +16465,10 @@
                 "type": "null"
               }
             ],
-            "title": "Error Message",
+            "title": "Errormessage",
             "description": "Error message if status is FAILED"
           },
-          "instagram_post_id": {
+          "instagramPostId": {
             "anyOf": [
               {
                 "type": "string"
@@ -16479,10 +16477,10 @@
                 "type": "null"
               }
             ],
-            "title": "Instagram Post Id",
+            "title": "Instagrampostid",
             "description": "Instagram post ID if published"
           },
-          "published_at": {
+          "publishedAt": {
             "anyOf": [
               {
                 "type": "string",
@@ -16492,7 +16490,7 @@
                 "type": "null"
               }
             ],
-            "title": "Published At",
+            "title": "Publishedat",
             "description": "Timestamp when published"
           }
         },
@@ -17673,7 +17671,6 @@
           },
           "estimatedCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -17777,8 +17774,7 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               },
               {
                 "type": "null"
