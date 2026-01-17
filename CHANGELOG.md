@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.731] - 2026-01-17
+
+### Changes
+- fix: Suppress Pydantic protected namespace warnings for model_used fields (#2266)
+
+**Source:** project-beta-api@54361b34
+
 ## [v0.7.730] - 2026-01-17
 
 ### Changes
