@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.741] - 2026-01-17
+
+### Changes
+- Merge pull request #2413 from Matchpoint-AI/fix/2412-cors-frontend-version
+
+**Source:** project-beta-api@38058db2
+
 ## [v0.7.740] - 2026-01-17
 
 ### Changes
