@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.742"
+    "version": "0.7.743"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -3103,6 +3103,182 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/posts/{post_id}/assign": {
+      "post": {
+        "tags": [
+          "content-approval"
+        ],
+        "summary": "Assign post to reviewer",
+        "description": "Assign a post to a specific reviewer for approval.",
+        "operationId": "assign_post_api_v2_posts__post_id__assign_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID of the post to assign",
+              "title": "Post Id"
+            },
+            "description": "ID of the post to assign"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignPostRequest",
+                "description": "Assignment request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post assigned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignPostResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this post"
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/reviewers/me/posts": {
+      "get": {
+        "tags": [
+          "content-approval"
+        ],
+        "summary": "Get reviewer queue",
+        "description": "Get posts assigned to the authenticated user for review.",
+        "operationId": "get_my_queue_api_v2_reviewers_me_posts_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "include_approved",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Approved"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reviewer queue retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewerQueueResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/assignments": {
+      "post": {
+        "tags": [
+          "content-approval"
+        ],
+        "summary": "Bulk assign posts to reviewers",
+        "description": "Assign multiple posts to reviewers. Supports manual assignment to a single reviewer or load-balanced auto-assignment across multiple reviewers.",
+        "operationId": "bulk_assign_posts_api_v2_posts_assignments_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkAssignPostsRequest",
+                "description": "Bulk assignment request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Bulk assignment completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkAssignPostsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/content/{content_id}": {
@@ -7232,6 +7408,56 @@
         "title": "AssetAvailability",
         "description": "Asset availability schema for brand resources."
       },
+      "AssignPostRequest": {
+        "properties": {
+          "assignee_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Assignee Id",
+            "description": "User ID of the reviewer to assign this post to"
+          }
+        },
+        "type": "object",
+        "required": [
+          "assignee_id"
+        ],
+        "title": "AssignPostRequest",
+        "description": "Request schema for assigning a post to a reviewer.\n\nIssue #2060: Enables post assignment to specific reviewers."
+      },
+      "AssignPostResponse": {
+        "properties": {
+          "post_id": {
+            "type": "string",
+            "title": "Post Id",
+            "description": "ID of the assigned post"
+          },
+          "assigned_to": {
+            "type": "string",
+            "title": "Assigned To",
+            "description": "User ID of the assigned reviewer"
+          },
+          "assigned_by": {
+            "type": "string",
+            "title": "Assigned By",
+            "description": "User ID who made the assignment"
+          },
+          "assigned_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Assigned At",
+            "description": "Timestamp of assignment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "post_id",
+          "assigned_to",
+          "assigned_by",
+          "assigned_at"
+        ],
+        "title": "AssignPostResponse",
+        "description": "Response schema for post assignment operation.\n\nIssue #2060: Returns assignment details."
+      },
       "BatchFeedbackResponse": {
         "properties": {
           "submittedCount": {
@@ -9003,6 +9229,118 @@
         ],
         "title": "BriefSummary",
         "description": "Summary of a single brief."
+      },
+      "BulkAssignPostsRequest": {
+        "properties": {
+          "post_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Post Ids",
+            "description": "List of post IDs to assign"
+          },
+          "assignee_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignee Id",
+            "description": "User ID to assign all posts to (optional if auto_assign=True)"
+          },
+          "auto_assign": {
+            "type": "boolean",
+            "title": "Auto Assign",
+            "description": "If True, uses load-balanced auto-assignment algorithm",
+            "default": false
+          },
+          "reviewer_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewer Ids",
+            "description": "List of reviewer IDs for auto-assignment (required if auto_assign=True)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "post_ids"
+        ],
+        "title": "BulkAssignPostsRequest",
+        "description": "Request schema for bulk post assignment.\n\nIssue #2060: Enables bulk assignment to specific reviewer or auto-assignment."
+      },
+      "BulkAssignPostsResponse": {
+        "properties": {
+          "assigned_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Assigned Count",
+            "description": "Number of posts successfully assigned"
+          },
+          "failed_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Failed Count",
+            "description": "Number of posts that failed to assign"
+          },
+          "failed_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Failed Ids",
+            "description": "List of post IDs that failed to assign"
+          },
+          "assignments": {
+            "items": {
+              "$ref": "#/components/schemas/BulkAssignmentDetail"
+            },
+            "type": "array",
+            "title": "Assignments",
+            "description": "Details of each successful assignment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "assigned_count",
+          "failed_count"
+        ],
+        "title": "BulkAssignPostsResponse",
+        "description": "Response schema for bulk post assignment.\n\nIssue #2060: Returns assignment results."
+      },
+      "BulkAssignmentDetail": {
+        "properties": {
+          "post_id": {
+            "type": "string",
+            "title": "Post Id",
+            "description": "ID of the assigned post"
+          },
+          "assigned_to": {
+            "type": "string",
+            "title": "Assigned To",
+            "description": "User ID of the assigned reviewer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "post_id",
+          "assigned_to"
+        ],
+        "title": "BulkAssignmentDetail",
+        "description": "Details of a single assignment in bulk operation.\n\nIssue #2060: Part of bulk assignment response."
       },
       "BulkContentApprovalRequest": {
         "properties": {
@@ -14836,6 +15174,131 @@
         "type": "object",
         "title": "ResendVerificationResponse",
         "description": "Schema for resend verification email response.\n\nReturned after resending verification email.\nReturns generic message to prevent email enumeration attacks."
+      },
+      "ReviewerQueueItem": {
+        "properties": {
+          "post_id": {
+            "type": "string",
+            "title": "Post Id",
+            "description": "ID of the post"
+          },
+          "campaign_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaign Id",
+            "description": "Campaign ID"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text",
+            "description": "Post text/caption"
+          },
+          "approved": {
+            "type": "boolean",
+            "title": "Approved",
+            "description": "Whether post is approved"
+          },
+          "assigned_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assigned At",
+            "description": "When assigned"
+          },
+          "week_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Week Number",
+            "description": "Week number"
+          },
+          "day_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Day Number",
+            "description": "Day number"
+          },
+          "post_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Number",
+            "description": "Post number"
+          }
+        },
+        "type": "object",
+        "required": [
+          "post_id",
+          "approved"
+        ],
+        "title": "ReviewerQueueItem",
+        "description": "Schema for a single item in the reviewer's queue.\n\nIssue #2060: Represents a post assigned for review."
+      },
+      "ReviewerQueueResponse": {
+        "properties": {
+          "posts": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewerQueueItem"
+            },
+            "type": "array",
+            "title": "Posts",
+            "description": "Posts assigned for review"
+          },
+          "total_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total Count",
+            "description": "Total number of assigned posts"
+          },
+          "pending_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Pending Count",
+            "description": "Number of posts pending review"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_count",
+          "pending_count"
+        ],
+        "title": "ReviewerQueueResponse",
+        "description": "Response schema for reviewer queue.\n\nIssue #2060: Returns list of posts assigned to the reviewer."
       },
       "SceneMixPlanCreate": {
         "properties": {
