@@ -3,9 +3,152 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.721"
+    "version": "0.7.722"
   },
   "paths": {
+    "/api/v2/auth/session": {
+      "post": {
+        "tags": [
+          "auth-session"
+        ],
+        "summary": "Create Session",
+        "description": "Create a server-side session from JWT token.\n\nThis endpoint implements the secure session flow:\n1. Frontend authenticates (login or Firebase), receives JWT\n2. Frontend sends JWT to this endpoint via Authorization header\n3. API validates JWT and creates server-side session\n4. API returns session ID in httpOnly cookie\n5. Browser automatically sends cookie on subsequent requests\n\nThe session ID is NOT returned in the response body - it's only\naccessible via the httpOnly cookie to prevent XSS attacks.\n\nTypical use case:\n- User logs in via POST /sessions, receives JWT\n- Frontend calls POST /auth/session with JWT to get httpOnly cookie\n- Subsequent requests use the cookie instead of Authorization header\n\nRMM Level 2 Compliance:\n- POST to /auth/session creates new session resource\n- HTTP verb (POST) indicates create action\n- No verbs in URL path\n\nArgs:\n    request: FastAPI request object (for client info)\n    response: FastAPI response object (for setting cookie)\n    user_context: Authenticated user from JWT (via require_auth)\n    session_service: Injected session service\n\nReturns:\n    SessionCreatedResponse confirming session creation\n\nRaises:\n    HTTPException 401: If JWT token is invalid\n    HTTPException 500: If session creation fails",
+        "operationId": "create_session_api_v2_auth_session_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session created successfully, httpOnly cookie set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionCreatedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid JWT token"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "auth-session"
+        ],
+        "summary": "Revoke Current Session",
+        "description": "Revoke the current session (logout).\n\nInvalidates the current user's session and clears the httpOnly cookie.\nAfter this, the session ID will be rejected by the authentication\nmiddleware.\n\nRMM Level 2 Compliance:\n- DELETE to /auth/session deletes the current session resource\n- HTTP verb (DELETE) indicates delete action\n- No verbs in URL path\n\nArgs:\n    response: FastAPI response object (for clearing cookie)\n    session_id: Session ID from cookie\n    session_service: Injected session service\n\nReturns:\n    SessionRevokedResponse confirming session revocation\n\nRaises:\n    HTTPException 401: If no valid session cookie\n    HTTPException 500: If revocation fails",
+        "operationId": "revoke_current_session_api_v2_auth_session_delete",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session revoked successfully, cookie cleared",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionRevokedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No valid session"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/auth/sessions": {
+      "delete": {
+        "tags": [
+          "auth-session"
+        ],
+        "summary": "Revoke All Sessions",
+        "description": "Revoke all sessions for the current user (logout from all devices).\n\nInvalidates all sessions for the authenticated user. Use this\nfor \"logout from all devices\" functionality.\n\nRMM Level 2 Compliance:\n- DELETE to /auth/sessions deletes all session resources\n- HTTP verb (DELETE) indicates delete action\n- No verbs in URL path\n\nArgs:\n    response: FastAPI response object (for clearing cookie)\n    user_context: Authenticated user context from session\n    session_service: Injected session service\n\nReturns:\n    AllSessionsRevokedResponse with count of revoked sessions\n\nRaises:\n    HTTPException 401: If not authenticated\n    HTTPException 500: If revocation fails",
+        "operationId": "revoke_all_sessions_api_v2_auth_sessions_delete",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All sessions revoked successfully, current cookie cleared",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllSessionsRevokedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/brands": {
       "post": {
         "tags": [
@@ -6943,6 +7086,27 @@
   },
   "components": {
     "schemas": {
+      "AllSessionsRevokedResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Confirmation message",
+            "default": "All sessions revoked successfully"
+          },
+          "sessionsRevoked": {
+            "type": "integer",
+            "title": "Sessionsrevoked",
+            "description": "Number of sessions that were revoked"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sessionsRevoked"
+        ],
+        "title": "AllSessionsRevokedResponse",
+        "description": "Schema for revoking all sessions response."
+      },
       "AnalyzeInstagramRequest": {
         "properties": {
           "brand_id": {
@@ -7399,13 +7563,11 @@
           },
           "totalCredits": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -16349,6 +16511,33 @@
         "title": "SelectionRateBySceneType",
         "description": "Schema for selection rate aggregated by scene_type.\n\nUsed for GET /outputs/selection-rates endpoint."
       },
+      "SessionCreatedResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success confirmation message",
+            "default": "Session created successfully"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid",
+            "description": "User ID associated with the session"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "title": "Expiresin",
+            "description": "Session expiration time in seconds from now"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userId",
+          "expiresIn"
+        ],
+        "title": "SessionCreatedResponse",
+        "description": "Schema for session creation response.\n\nThe actual session ID is NOT returned in the body - it's set\nvia httpOnly cookie. This response confirms session creation."
+      },
       "SessionRequest": {
         "properties": {
           "grantType": {
@@ -16444,6 +16633,19 @@
         ],
         "title": "SessionResponse",
         "description": "Unified session response for RMM L2 compliant sessions endpoint.\n\nUsed by POST /api/v2/sessions for both login and token refresh.\nContains all fields needed for both use cases.\n\nFor password grant (login):\n- user: User profile data\n- access_token: JWT access token\n- refresh_token: Token for refreshing session\n- token_type: Always \"bearer\"\n- expires_in: Token expiration in seconds\n\nFor refresh_token grant:\n- access_token: New JWT access token\n- refresh_token: New refresh token\n- token_type: Always \"bearer\"\n- expires_in: Token expiration in seconds\n- user: Optional (may be omitted for refresh)"
+      },
+      "SessionRevokedResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Confirmation message",
+            "default": "Session revoked successfully"
+          }
+        },
+        "type": "object",
+        "title": "SessionRevokedResponse",
+        "description": "Schema for session revocation response."
       },
       "SignupCreate": {
         "properties": {
@@ -17428,7 +17630,6 @@
           },
           "estimatedCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -17532,8 +17733,7 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               },
               {
                 "type": "null"
