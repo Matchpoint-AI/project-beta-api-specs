@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.726] - 2026-01-17
+
+### Changes
+- fix(schemas): Add camelCase serialization to version schemas (#2383)
+
+**Source:** project-beta-api@0d82f28a
+
 ## [v0.7.725] - 2026-01-17
 
 ### Changes
