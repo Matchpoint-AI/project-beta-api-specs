@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.737"
+    "version": "0.7.738"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -9130,6 +9130,21 @@
             "title": "Postsfailed",
             "description": "Number of posts that failed generation",
             "default": 0
+          },
+          "failedPostIds": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failedpostids",
+            "description": "IDs of posts that failed image generation (for retry functionality)"
           },
           "startedAt": {
             "anyOf": [
