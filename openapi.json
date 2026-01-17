@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.743"
+    "version": "0.7.744"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -939,7 +939,7 @@
           "brand-workflow"
         ],
         "summary": "Start Knowledge Workflow",
-        "description": "Start knowledge discovery workflow for a brand.\n\nCreates a new workflow resource that orchestrates website crawling,\ncontent extraction, and knowledge storage. This is an explicit trigger\nfollowing RMM Level 2 principles.\n\nThe workflow runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running",
+        "description": "Start knowledge discovery workflow for a brand.\n\nPublishes a crawl request to the agentic-brand-crawler Pub/Sub topic.\nThe crawler orchestrates website crawling, content extraction, and\nknowledge storage. This is an explicit trigger following RMM Level 2 principles.\n\nThe crawl runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running",
         "operationId": "start_knowledge_workflow_api_v2_brands__brand_id__knowledge_workflows_post",
         "parameters": [
           {

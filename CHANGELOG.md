@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.744] - 2026-01-17
+
+### Changes
+- Merge pull request #2415 from Matchpoint-AI/fix/2414-remove-cloud-workflows-references
+
+**Source:** project-beta-api@513834e7
+
 ## [v0.7.743] - 2026-01-17
 
 ### Changes
