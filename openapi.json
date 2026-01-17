@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.744"
+    "version": "0.7.745"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -4954,6 +4954,211 @@
             "description": "Prometheus metrics in text format",
             "content": {
               "text/plain": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/{post_id}/expedite": {
+      "post": {
+        "tags": [
+          "Post Priority"
+        ],
+        "summary": "Expedite a post in review queue",
+        "description": "Bump a post to higher priority for expedited review.",
+        "operationId": "expedite_post_api_v2_posts__post_id__expedite_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpediteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpediteResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/{post_id}/priority": {
+      "patch": {
+        "tags": [
+          "Post Priority"
+        ],
+        "summary": "Update post priority",
+        "description": "Update the review priority for a specific post.",
+        "operationId": "update_priority_api_v2_posts__post_id__priority_patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriorityUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpediteResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/reviews/queue": {
+      "get": {
+        "tags": [
+          "Post Priority"
+        ],
+        "summary": "Get review queue ordered by priority",
+        "description": "Get posts pending review, ordered by priority (highest first).",
+        "operationId": "get_review_queue_api_v2_posts_reviews_queue_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by campaign ID",
+              "title": "Campaignid"
+            },
+            "description": "Filter by campaign ID"
+          },
+          {
+            "name": "minPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 5,
+              "minimum": 1,
+              "description": "Minimum priority level to include",
+              "default": 1,
+              "title": "Minpriority"
+            },
+            "description": "Minimum priority level to include"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum number of posts to return",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Maximum number of posts to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PostPriorityResponse"
+                  },
+                  "title": "Response Get Review Queue Api V2 Posts Reviews Queue Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
             }
           }
         }
@@ -13557,6 +13762,70 @@
         "title": "EngagementAnalysis",
         "description": "Analysis of what drives engagement for a brand."
       },
+      "ExpediteRequest": {
+        "properties": {
+          "priority": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Priority",
+            "description": "Priority level (1=low, 2=normal, 3=high, 4=urgent, 5=critical)",
+            "default": 4
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Reason for expediting (e.g., 'Campaign deadline in 24h')"
+          }
+        },
+        "type": "object",
+        "title": "ExpediteRequest",
+        "description": "Schema for expediting a post in the review queue.\n\nUsed for POST /posts/{id}/expedite endpoint."
+      },
+      "ExpediteResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "reviewPriority": {
+            "type": "integer",
+            "title": "Reviewpriority"
+          },
+          "priorityReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priorityreason"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Status message",
+            "default": "Post priority updated successfully"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "reviewPriority"
+        ],
+        "title": "ExpediteResponse",
+        "description": "Schema for expedite response."
+      },
       "GeneratedContent": {
         "properties": {
           "id": {
@@ -14580,6 +14849,85 @@
         "title": "PostPlan",
         "description": "Individual post within a week."
       },
+      "PostPriorityResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "campaignId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaignid"
+          },
+          "reviewPriority": {
+            "type": "integer",
+            "title": "Reviewpriority"
+          },
+          "priorityReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priorityreason"
+          },
+          "selectionStatus": {
+            "type": "string",
+            "title": "Selectionstatus"
+          },
+          "weekNumber": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weeknumber"
+          },
+          "dayNumber": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daynumber"
+          },
+          "postNumber": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postnumber"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "reviewPriority",
+          "selectionStatus"
+        ],
+        "title": "PostPriorityResponse",
+        "description": "Schema for post priority in queue listings."
+      },
       "PostSchema": {
         "properties": {
           "id": {
@@ -14868,6 +15216,36 @@
         ],
         "title": "PostingPatterns",
         "description": "Analysis of when and how frequently a brand posts."
+      },
+      "PriorityUpdateRequest": {
+        "properties": {
+          "priority": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Priority",
+            "description": "Priority level (1=low, 2=normal, 3=high, 4=urgent, 5=critical)"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Reason for priority change"
+          }
+        },
+        "type": "object",
+        "required": [
+          "priority"
+        ],
+        "title": "PriorityUpdateRequest",
+        "description": "Schema for updating post priority.\n\nUsed for PATCH /posts/{id}/priority endpoint."
       },
       "ProductV2": {
         "properties": {
