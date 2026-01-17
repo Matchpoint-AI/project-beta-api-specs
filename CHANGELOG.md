@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.727] - 2026-01-17
+
+### Changes
+- Merge pull request #2157 from Matchpoint-AI/feat/2063-soft-delete
+
+**Source:** project-beta-api@c13f1e87
+
 ## [v0.7.726] - 2026-01-17
 
 ### Changes
