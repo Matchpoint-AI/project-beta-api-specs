@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.716"
+    "version": "0.7.717"
   },
   "paths": {
     "/api/v2/brands": {
@@ -6256,6 +6256,9 @@
           "401": {
             "description": "Authentication failed or token invalid"
           },
+          "429": {
+            "description": "Account locked due to too many failed login attempts (Issue #2317)"
+          },
           "500": {
             "description": "Internal server error"
           },
@@ -7386,13 +7389,11 @@
           },
           "totalCredits": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -17415,7 +17416,6 @@
           },
           "estimatedCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -17519,8 +17519,7 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               },
               {
                 "type": "null"
