@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.732] - 2026-01-17
+
+### Changes
+- fix(#818): Remove all Firestore references from project-beta-api (#2397)
+
+**Source:** project-beta-api@0afc67f5
+
 ## [v0.7.731] - 2026-01-17
 
 ### Changes
