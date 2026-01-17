@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.741"
+    "version": "0.7.742"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -3856,8 +3856,9 @@
           "content-images"
         ],
         "summary": "Regenerate Image",
-        "description": "Queue image regeneration with optional custom prompt.\n\nIssue #1480: Migrated to async Pub/Sub pattern.\nIssue #1993: Added authentication and user plan support.\n\nRMM L2: Returns 202 Accepted for async operations.\nThe endpoint uses '/regenerations' (noun) to comply with RMM L2.\n\nThis endpoint queues image regeneration using either:\n- The existing prompt (if custom_prompt not provided)\n- A new custom prompt (which also updates the stored prompt)\n\nThe actual regeneration is performed asynchronously by the\ncontent-generator worker via Pub/Sub.\n\nRegeneration limits are based on user's subscription plan:\n- FREE: 3 regenerations per post\n- PRO: 10 regenerations per post\n\nArgs:\n    content_id: Content ID (path parameter)\n    image_id: Image ID to regenerate\n    request: Regeneration request with optional custom prompt\n    response: FastAPI response object for headers\n    firebase_user: Decoded token claims (injected by auth dependency)\n    service: Injected content image service\n    user_service: Injected user service for plan lookup\n\nReturns:\n    Regeneration response with message_id for tracking\n\nRaises:\n    HTTPException: 401 if not authenticated\n    HTTPException: 404 if image not found\n    HTTPException: 400 if generation limit exceeded or no prompt available\n    HTTPException: 500 if queueing fails",
+        "description": "DEPRECATED: Use POST /posts/{post_id}/versions with target=\"media\" instead.\n\nIssue #2362: This endpoint is deprecated. Image regeneration has been\nmigrated to the unified versioning endpoint which uses the agentic\ncontent generator with FAL for images.\n\nThe new endpoint provides:\n- Consistent image storage in `media` table (not `content_image`)\n- FAL-powered image generation via agentic service\n- Unified versioning for text, media, and video regeneration\n- Fat message pattern with full brand/campaign context\n\nMigration guide:\n1. Get the post_id for the image's content\n2. Call POST /posts/{post_id}/versions with:\n   - target: \"media\"\n   - mediaId: {image_id}\n   - modifications: { prompt: \"your custom prompt\" }\n\nReturns:\n    410 Gone with deprecation notice and migration instructions",
         "operationId": "regenerate_image_api_v2_content__content_id__images__image_id__regenerations_post",
+        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
@@ -3894,12 +3895,14 @@
           }
         },
         "responses": {
-          "202": {
+          "410": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContentImageRegenerationResponse"
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Regenerate Image Api V2 Content  Content Id  Images  Image Id  Regenerations Post"
                 }
               }
             }
@@ -11952,45 +11955,6 @@
         "type": "object",
         "title": "ContentImageRegenerateRequest",
         "description": "Schema for regenerating an existing content image.\n\nIssue #1345: Restore image regeneration endpoint."
-      },
-      "ContentImageRegenerationResponse": {
-        "properties": {
-          "messageId": {
-            "type": "string",
-            "title": "Messageid",
-            "description": "Pub/Sub message ID for tracking the regeneration request"
-          },
-          "imageId": {
-            "type": "integer",
-            "title": "Imageid",
-            "description": "Image ID being regenerated"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Status of the regeneration request",
-            "default": "queued"
-          },
-          "correlationId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Correlationid",
-            "description": "Correlation ID for distributed tracing"
-          }
-        },
-        "type": "object",
-        "required": [
-          "messageId",
-          "imageId"
-        ],
-        "title": "ContentImageRegenerationResponse",
-        "description": "Schema for async image regeneration response.\n\nIssue #1480: Migrated to async Pub/Sub pattern.\nInstead of returning the regenerated image synchronously,\nthis response provides tracking information for the async operation."
       },
       "ContentImageRequest": {
         "properties": {
