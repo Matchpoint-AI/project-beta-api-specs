@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.755] - 2026-01-18
+
+### Changes
+- Merge pull request #2440 from Matchpoint-AI/fix/2439-buildkit-cache
+
+**Source:** project-beta-api@d931727b
+
 ## [v0.7.754] - 2026-01-18
 
 ### Changes
