@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.750] - 2026-01-18
+
+### Changes
+- Merge pull request #2426 from Matchpoint-AI/fix/2425-pulses-endpoint
+
+**Source:** project-beta-api@f0618a0c
+
 ## [v0.7.749] - 2026-01-18
 
 ### Changes

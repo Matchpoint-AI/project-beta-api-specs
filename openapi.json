@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.749"
+    "version": "0.7.750"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5807,6 +5807,51 @@
         }
       }
     },
+    "/api/v2/pulses/{correlation_id}": {
+      "get": {
+        "tags": [
+          "pulses"
+        ],
+        "summary": "Get crawler status by correlation ID (alias)",
+        "description": "Alias endpoint for frontend polling. Redirects to /crawler/pulses/{correlation_id} for backward compatibility. Issue #2425: Frontend expects /pulses path without /crawler prefix.",
+        "operationId": "get_pulse_status_alias_api_v2_pulses__correlation_id__get",
+        "parameters": [
+          {
+            "name": "correlation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Correlation ID from crawl request",
+              "title": "Correlation Id"
+            },
+            "description": "Correlation ID from crawl request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/src__schemas__crawler_pulses__PulseStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/scenes/performance": {
       "post": {
         "tags": [
@@ -7997,11 +8042,13 @@
           },
           "totalCredits": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -18491,6 +18538,7 @@
           },
           "estimatedCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -18594,7 +18642,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
