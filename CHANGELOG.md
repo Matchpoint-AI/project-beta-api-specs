@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.753] - 2026-01-18
+
+### Changes
+- fix: use brand workflow_id as correlation_id for pulse polling (#2434) (#2435)
+
+**Source:** project-beta-api@d0f56aa0
+
 ## [v0.7.752] - 2026-01-18
 
 ### Changes
