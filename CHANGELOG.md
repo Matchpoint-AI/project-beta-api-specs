@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.749] - 2026-01-18
+
+### Changes
+- Merge pull request #2421 from Matchpoint-AI/feat/2530-audience-brief-persistence
+
+**Source:** project-beta-api@e532fc33
+
 ## [v0.7.748] - 2026-01-18
 
 ### Changes
