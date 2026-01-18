@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.754] - 2026-01-18
+
+### Changes
+- fix(crawl-analytics): Handle NULL values in SQL aggregation results (#2438)
+
+**Source:** project-beta-api@912753da
+
 ## [v0.7.753] - 2026-01-18
 
 ### Changes
