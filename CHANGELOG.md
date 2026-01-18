@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.748] - 2026-01-18
+
+### Changes
+- chore(#2422): Merge Alembic migration branches (#2423)
+
+**Source:** project-beta-api@d7f1bc1a
+
 ## [v0.7.747] - 2026-01-18
 
 ### Changes
