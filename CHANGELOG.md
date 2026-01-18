@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.752] - 2026-01-18
+
+### Changes
+- feat(ci): add BuildKit cache-dance for faster Docker builds (#2433)
+
+**Source:** project-beta-api@4b77f621
+
 ## [v0.7.751] - 2026-01-18
 
 ### Changes
