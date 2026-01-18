@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.750"
+    "version": "0.7.751"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -4178,7 +4178,7 @@
           "outputs"
         ],
         "summary": "Receive content generation status pulse",
-        "description": "Pub/Sub push endpoint for receiving real-time status pulses from the content-generator service. Stores pulse in Redis for frontend polling.",
+        "description": "Pub/Sub push endpoint for receiving real-time status pulses from the content-generator service. Stores pulse in Redis for frontend polling. Issue #2428: Now uses unified key pattern pulse:{correlation_id}.",
         "operationId": "receive_content_pulse_api_v2_content_pulses_post",
         "parameters": [
           {
@@ -4254,7 +4254,7 @@
           "outputs"
         ],
         "summary": "Get content generation status by correlation ID",
-        "description": "Polling endpoint for frontend to get current content generation progress. Returns the latest pulse for a given correlation ID from Redis.",
+        "description": "Polling endpoint for frontend to get current content generation progress. Returns the latest pulse for a given correlation ID from Redis. Note: Prefer using /pulses/{correlation_id} for unified access (Issue #2428).",
         "operationId": "get_content_pulse_status_api_v2_content_pulses__correlation_id__get",
         "parameters": [
           {
@@ -5768,7 +5768,7 @@
           "pulses"
         ],
         "summary": "Get crawler status by correlation ID",
-        "description": "Polling endpoint for frontend to get current crawl progress. Returns the latest pulse for a given correlation ID from Redis.",
+        "description": "Polling endpoint for frontend to get current crawl progress. Returns the latest pulse for a given correlation ID from Redis. Note: Prefer using /pulses/{correlation_id} for unified access.",
         "operationId": "get_pulse_status_api_v2_crawler_pulses__correlation_id__get",
         "parameters": [
           {
@@ -5812,9 +5812,9 @@
         "tags": [
           "pulses"
         ],
-        "summary": "Get crawler status by correlation ID (alias)",
-        "description": "Alias endpoint for frontend polling. Redirects to /crawler/pulses/{correlation_id} for backward compatibility. Issue #2425: Frontend expects /pulses path without /crawler prefix.",
-        "operationId": "get_pulse_status_alias_api_v2_pulses__correlation_id__get",
+        "summary": "Get unified pulse status by correlation ID",
+        "description": "Unified polling endpoint for all agentic service status. Returns the latest pulse regardless of service type (brand_crawl, content_generation). Issue #2428: Frontend uses single endpoint for all agentic status.",
+        "operationId": "get_unified_pulse_status_api_v2_pulses__correlation_id__get",
         "parameters": [
           {
             "name": "correlation_id",
@@ -5822,10 +5822,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "description": "Correlation ID from crawl request",
+              "description": "Correlation ID from any agentic request",
               "title": "Correlation Id"
             },
-            "description": "Correlation ID from crawl request"
+            "description": "Correlation ID from any agentic request"
           }
         ],
         "responses": {
@@ -5834,7 +5834,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/src__schemas__crawler_pulses__PulseStatusResponse"
+                  "$ref": "#/components/schemas/UnifiedPulseStatusResponse"
                 }
               }
             }
@@ -8042,13 +8042,11 @@
           },
           "totalCredits": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -17419,6 +17417,15 @@
         "title": "SelectionRateBySceneType",
         "description": "Schema for selection rate aggregated by scene_type.\n\nUsed for GET /outputs/selection-rates endpoint."
       },
+      "ServiceType": {
+        "type": "string",
+        "enum": [
+          "brand_crawl",
+          "content_generation"
+        ],
+        "title": "ServiceType",
+        "description": "Type of agentic service that produced the pulse.\n\nUsed to distinguish pulses from different workflows while\nmaintaining a unified polling endpoint."
+      },
       "SessionCreatedResponse": {
         "properties": {
           "message": {
@@ -18029,6 +18036,100 @@
         "title": "ToneAttributesV2",
         "description": "V2 Tone attributes for brand knowledge."
       },
+      "UnifiedPulseStatusResponse": {
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID for this workflow"
+          },
+          "serviceType": {
+            "$ref": "#/components/schemas/ServiceType",
+            "description": "Type of agentic service (brand_crawl, content_generation)"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp",
+            "description": "ISO-8601 timestamp of last update"
+          },
+          "progressPct": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Progresspct",
+            "description": "Progress percentage (0-100)"
+          },
+          "currentStep": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentstep",
+            "description": "Current step name"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status",
+            "description": "Workflow status (in_progress, completed, failed)"
+          },
+          "campaignId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaignid",
+            "description": "Campaign ID (content_generation only)"
+          },
+          "currentPostId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentpostid",
+            "description": "Current post being generated (content_generation only)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "serviceType",
+          "message",
+          "timestamp"
+        ],
+        "title": "UnifiedPulseStatusResponse",
+        "description": "Unified response for GET /pulses/{correlation_id} endpoint.\n\nThis schema provides a consistent response format for pulses from\nany agentic service. The service_type field indicates the source.\n\nIssue #2428: Frontend polls single endpoint for all agentic status."
+      },
       "UserRegistrationResponse": {
         "properties": {
           "user": {
@@ -18538,7 +18639,6 @@
           },
           "estimatedCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -18642,8 +18742,7 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               },
               {
                 "type": "null"
