@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.756] - 2026-01-19
+
+### Changes
+- fix(briefs): Lookup brand_id from DB when not in DEEP message (#2452)
+
+**Source:** project-beta-api@f20791c1
+
 ## [v0.7.755] - 2026-01-18
 
 ### Changes
