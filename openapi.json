@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.757"
+    "version": "0.7.758"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -8573,6 +8573,11 @@
             "title": "Progress",
             "description": "Overall progress percentage (0-100)"
           },
+          "stepText": {
+            "type": "string",
+            "title": "Steptext",
+            "description": "Human-readable description of the current progress step (e.g., 'Initializing brand analysis', 'Crawling your website'). This is the single source of truth for frontend display."
+          },
           "quickExtractComplete": {
             "type": "boolean",
             "title": "Quickextractcomplete",
@@ -8609,6 +8614,7 @@
           "brandId",
           "status",
           "progress",
+          "stepText",
           "quickExtractComplete",
           "deepCrawlComplete",
           "lastUpdated"

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.758] - 2026-01-20
+
+### Changes
+- Merge pull request #2445 from Matchpoint-AI/fix/2441-brand-analysis-status
+
+**Source:** project-beta-api@835d7328
+
 ## [v0.7.757] - 2026-01-20
 
 ### Changes
