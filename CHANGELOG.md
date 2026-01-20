@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.759] - 2026-01-20
+
+### Changes
+- Merge pull request #2448 from Matchpoint-AI/fix/2447-deep-data-schema
+
+**Source:** project-beta-api@b29030cf
+
 ## [v0.7.758] - 2026-01-20
 
 ### Changes
