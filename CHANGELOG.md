@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.760] - 2026-01-21
+
+### Changes
+- Merge pull request #2463 from Matchpoint-AI/fix/deep-brief-schema-validators
+
+**Source:** project-beta-api@953d7e18
+
 ## [v0.7.759] - 2026-01-20
 
 ### Changes
