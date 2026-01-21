@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.766] - 2026-01-21
+
+### Changes
+- fix: Add missing scene_mix_controller to asgi.py CONTROLLERS (#2474)
+
+**Source:** project-beta-api@4116f608
+
 ## [v0.7.765] - 2026-01-21
 
 ### Changes
