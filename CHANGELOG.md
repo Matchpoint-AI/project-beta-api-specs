@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.762] - 2026-01-21
+
+### Changes
+- test: increase test coverage toward 90% goal (#2241)
+
+**Source:** project-beta-api@a0a1dd14
+
 ## [v0.7.761] - 2026-01-21
 
 ### Changes
