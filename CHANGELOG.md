@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.764] - 2026-01-21
+
+### Changes
+- Merge pull request #2469 from Matchpoint-AI/fix/2459-scene-mix-endpoint
+
+**Source:** project-beta-api@333bf25d
+
 ## [v0.7.763] - 2026-01-21
 
 ### Changes

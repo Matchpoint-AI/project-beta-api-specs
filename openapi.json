@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.763"
+    "version": "0.7.764"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5835,6 +5835,82 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UnifiedPulseStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/scenes": {
+      "post": {
+        "tags": [
+          "scenes"
+        ],
+        "summary": "Receive scene mix plan from content-generator",
+        "description": "Pub/Sub push endpoint for receiving scene mix plans from the content-generator service. Stores the plan in the database using UPSERT to handle both new and updated plans.",
+        "operationId": "receive_scene_mix_api_v2_scenes_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SceneMixAckResponse"
                 }
               }
             }
@@ -15728,6 +15804,39 @@
         ],
         "title": "ReviewerQueueResponse",
         "description": "Response schema for reviewer queue.\n\nIssue #2060: Returns list of posts assigned to the reviewer."
+      },
+      "SceneMixAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID from message"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "planId": {
+            "type": "string",
+            "title": "Planid",
+            "description": "Plan ID that was created/updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "campaignId",
+          "planId"
+        ],
+        "title": "SceneMixAckResponse",
+        "description": "Response for successful scene mix processing."
       },
       "SceneMixPlanCreate": {
         "properties": {
