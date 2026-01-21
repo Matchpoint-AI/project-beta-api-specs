@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.763] - 2026-01-21
+
+### Changes
+- Merge pull request #2449 from Matchpoint-AI/feat/remove-signup-industry
+
+**Source:** project-beta-api@e9920115
+
 ## [v0.7.762] - 2026-01-21
 
 ### Changes

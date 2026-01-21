@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.762"
+    "version": "0.7.763"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -17584,18 +17584,23 @@
             "description": "Signup email address"
           },
           "industry": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Industry",
-            "description": "Industry"
+            "description": "Industry (optional - crawler extracts automatically)"
           }
         },
         "type": "object",
         "required": [
           "name",
-          "email",
-          "industry"
+          "email"
         ],
         "title": "SignupCreate",
         "description": "Schema for creating a new signup.\n\nUsed for landing page beta signup form submissions."
@@ -17616,11 +17621,17 @@
             "description": "Signup email address"
           },
           "industry": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Industry",
-            "description": "Industry"
+            "description": "Industry (optional - crawler extracts automatically)"
           },
           "id": {
             "type": "string",
@@ -17639,7 +17650,6 @@
         "required": [
           "name",
           "email",
-          "industry",
           "id",
           "createdAt"
         ],
