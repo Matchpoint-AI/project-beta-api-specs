@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.761] - 2026-01-21
+
+### Changes
+- Merge pull request #2466 from Matchpoint-AI/fix/crawler-format-tolerances
+
+**Source:** project-beta-api@52676ee9
+
 ## [v0.7.760] - 2026-01-21
 
 ### Changes
