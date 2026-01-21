@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.765] - 2026-01-21
+
+### Changes
+- Merge pull request #2471 from Matchpoint-AI/fix/2461-color-role-mapping
+
+**Source:** project-beta-api@af5bb634
+
 ## [v0.7.764] - 2026-01-21
 
 ### Changes
