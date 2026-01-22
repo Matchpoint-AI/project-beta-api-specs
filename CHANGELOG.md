@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.771] - 2026-01-22
+
+### Changes
+- feat: Add strict validation mode for brand briefs (Issue #2453) (#2481)
+
+**Source:** project-beta-api@f4b3daac
+
 ## [v0.7.770] - 2026-01-22
 
 ### Changes
