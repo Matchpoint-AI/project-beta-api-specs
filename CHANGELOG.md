@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.773] - 2026-01-22
+
+### Changes
+- fix: Require brand_id in BrandDataMessage schema (Issue #2451) (#2483)
+
+**Source:** project-beta-api@540c1eb0
+
 ## [v0.7.772] - 2026-01-22
 
 ### Changes
