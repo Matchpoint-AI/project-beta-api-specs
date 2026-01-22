@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.774] - 2026-01-22
+
+### Changes
+- Merge pull request #2486 from Matchpoint-AI/fix/2485-password-reset
+
+**Source:** project-beta-api@86d9a42c
+
 ## [v0.7.773] - 2026-01-22
 
 ### Changes
