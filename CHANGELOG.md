@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.772] - 2026-01-22
+
+### Changes
+- docs: Update README to fat message + status cache architecture (#2482)
+
+**Source:** project-beta-api@d9bf7db9
+
 ## [v0.7.771] - 2026-01-22
 
 ### Changes
