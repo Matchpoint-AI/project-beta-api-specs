@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.770] - 2026-01-22
+
+### Changes
+- Merge pull request #2480 from Matchpoint-AI/fix/2446-pubsub-brand-crawl-events
+
+**Source:** project-beta-api@d120042a
+
 ## [v0.7.769] - 2026-01-22
 
 ### Changes
