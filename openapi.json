@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.786"
+    "version": "0.7.787"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -15323,6 +15323,13 @@
             },
             "type": "array",
             "title": "Imageurls"
+          },
+          "gcsUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Gcsurls"
           },
           "textVersions": {
             "items": {

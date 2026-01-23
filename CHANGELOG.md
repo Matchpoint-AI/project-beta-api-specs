@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.787] - 2026-01-23
+
+### Changes
+- Merge pull request #2514 from Matchpoint-AI/feat/2212-gcs-media-persistence
+
+**Source:** project-beta-api@cfd1d5c6
+
 ## [v0.7.786] - 2026-01-23
 
 ### Changes
