@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.776] - 2026-01-23
+
+### Changes
+- feat(pulses): Add SSE streaming endpoint for real-time progress updates (#2489)
+
+**Source:** project-beta-api@e7619346
+
 ## [v0.7.775] - 2026-01-22
 
 ### Changes

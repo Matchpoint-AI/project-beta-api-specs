@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.775"
+    "version": "0.7.776"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5973,6 +5973,50 @@
         }
       }
     },
+    "/api/v2/pulses/{correlation_id}/stream": {
+      "get": {
+        "tags": [
+          "pulses"
+        ],
+        "summary": "Stream pulse status via SSE",
+        "description": "Server-Sent Events (SSE) endpoint for real-time progress streaming. Streams pulse updates until completion or timeout. Browser auto-reconnects on disconnect via EventSource API. Issue #118: Fix brand crawl stuck at 51%.",
+        "operationId": "stream_pulse_status_api_v2_pulses__correlation_id__stream_get",
+        "parameters": [
+          {
+            "name": "correlation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Correlation ID from any agentic request",
+              "title": "Correlation Id"
+            },
+            "description": "Correlation ID from any agentic request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SSE stream of pulse events",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "text/event-stream": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/scenes": {
       "post": {
         "tags": [
@@ -8239,11 +8283,13 @@
           },
           "totalCredits": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -18885,6 +18931,7 @@
           },
           "estimatedCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -18988,7 +19035,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
