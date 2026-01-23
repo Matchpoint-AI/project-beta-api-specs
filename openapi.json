@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.777"
+    "version": "0.7.778"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -6002,6 +6002,12 @@
                 "schema": {}
               },
               "text/event-stream": {}
+            }
+          },
+          "500": {
+            "description": "SSE stream initialization failed",
+            "content": {
+              "application/json": {}
             }
           },
           "422": {
