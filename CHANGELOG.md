@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.779] - 2026-01-23
+
+### Changes
+- Merge pull request #2495 from Matchpoint-AI/fix/2494-brand-creation-flow
+
+**Source:** project-beta-api@c363b98f
+
 ## [v0.7.778] - 2026-01-23
 
 ### Changes
