@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.790"
+    "version": "0.7.791"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5077,6 +5077,183 @@
         }
       }
     },
+    "/api/v2/policies/{policy_id}/versions": {
+      "get": {
+        "tags": [
+          "policy-versions"
+        ],
+        "summary": "Get version history for a policy",
+        "description": "Returns complete version history with change tracking.",
+        "operationId": "get_policy_versions",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Max versions to return",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Max versions to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyVersionHistoryListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/policies/{policy_id}/versions/{version_number}": {
+      "get": {
+        "tags": [
+          "policy-versions"
+        ],
+        "summary": "Get specific version of a policy",
+        "description": "Returns a specific version by version number.",
+        "operationId": "get_policy_version",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Id"
+            }
+          },
+          {
+            "name": "version_number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version Number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyVersionItemResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/policies/{policy_id}/rollback": {
+      "post": {
+        "tags": [
+          "policy-versions"
+        ],
+        "summary": "Rollback policy to previous version",
+        "description": "Rollback a policy to a previous version.\n\n        Creates a new version with the snapshot from the target version,\n        and updates the actual policy record with the rolled-back values.\n\n        **Parameters:**\n        - `targetVersionNumber`: Version number to rollback to\n        - `reason`: Optional reason for the rollback",
+        "operationId": "rollback_policy",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Policy Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyRollbackApiRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyRollbackApiResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/posts/{post_id}/expedite": {
       "post": {
         "tags": [
@@ -8362,13 +8539,11 @@
           },
           "totalCredits": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcredits",
             "description": "Total credits consumed"
           },
           "totalCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Totalcostusd",
             "description": "Total cost in USD"
           },
@@ -15134,6 +15309,182 @@
         "title": "PolicyRecommendation",
         "description": "Recommendation for policy update."
       },
+      "PolicyRollbackApiRequest": {
+        "properties": {
+          "targetVersionNumber": {
+            "type": "integer",
+            "title": "Targetversionnumber"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "targetVersionNumber"
+        ],
+        "title": "PolicyRollbackApiRequest",
+        "description": "Rollback request with camelCase aliases."
+      },
+      "PolicyRollbackApiResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "newVersion": {
+            "$ref": "#/components/schemas/PolicyVersionItemResponse"
+          },
+          "rolledBackFrom": {
+            "type": "integer",
+            "title": "Rolledbackfrom"
+          },
+          "rolledBackTo": {
+            "type": "integer",
+            "title": "Rolledbackto"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "newVersion",
+          "rolledBackFrom",
+          "rolledBackTo"
+        ],
+        "title": "PolicyRollbackApiResponse",
+        "description": "Rollback response with camelCase aliases."
+      },
+      "PolicyVersionHistoryListResponse": {
+        "properties": {
+          "policyId": {
+            "type": "string",
+            "title": "Policyid"
+          },
+          "currentVersion": {
+            "type": "integer",
+            "title": "Currentversion"
+          },
+          "totalVersions": {
+            "type": "integer",
+            "title": "Totalversions"
+          },
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyVersionItemResponse"
+            },
+            "type": "array",
+            "title": "Versions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policyId",
+          "currentVersion",
+          "totalVersions",
+          "versions"
+        ],
+        "title": "PolicyVersionHistoryListResponse",
+        "description": "Version history response with camelCase aliases."
+      },
+      "PolicyVersionItemResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "policyId": {
+            "type": "string",
+            "title": "Policyid"
+          },
+          "versionNumber": {
+            "type": "integer",
+            "title": "Versionnumber"
+          },
+          "parentVersionId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parentversionid"
+          },
+          "changeReason": {
+            "type": "string",
+            "title": "Changereason"
+          },
+          "changeDescription": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Changedescription"
+          },
+          "policySnapshot": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policysnapshot"
+          },
+          "metricsAtChange": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metricsatchange"
+          },
+          "createdBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Createdby"
+          },
+          "createdAt": {
+            "type": "string",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "policyId",
+          "versionNumber",
+          "changeReason",
+          "createdAt"
+        ],
+        "title": "PolicyVersionItemResponse",
+        "description": "Single version in history response with camelCase aliases."
+      },
       "PostContent": {
         "properties": {
           "selected_image": {
@@ -19079,7 +19430,6 @@
           },
           "estimatedCostUsd": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -19183,8 +19533,7 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               },
               {
                 "type": "null"
