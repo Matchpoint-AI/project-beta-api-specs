@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.780] - 2026-01-23
+
+### Changes
+- Merge pull request #2501 from Matchpoint-AI/fix/2496-idempotent-verification
+
+**Source:** project-beta-api@94de0b46
+
 ## [v0.7.779] - 2026-01-23
 
 ### Changes
