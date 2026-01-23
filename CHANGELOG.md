@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.782] - 2026-01-23
+
+### Changes
+- feat: Add undo/revert capability for approval decisions (#2062)
+
+**Source:** project-beta-api@5c242c5e
+
 ## [v0.7.781] - 2026-01-23
 
 ### Changes

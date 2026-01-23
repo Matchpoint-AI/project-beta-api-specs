@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.781"
+    "version": "0.7.782"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -3324,6 +3324,79 @@
             "HTTPBearer": []
           }
         ]
+      }
+    },
+    "/api/v2/posts/{post_id}/revert": {
+      "post": {
+        "tags": [
+          "content-approval"
+        ],
+        "summary": "Revert post approval",
+        "description": "Revert an approval decision on a post, restoring it to pending review status.",
+        "operationId": "revert_post_approval_api_v2_posts__post_id__revert_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID of the post to revert",
+              "title": "Post Id"
+            },
+            "description": "ID of the post to revert"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevertApprovalRequest",
+                "description": "Revert request with reason"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post approval reverted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevertApprovalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Post is not approved or invalid request"
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this post"
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/content/{content_id}": {
@@ -15852,6 +15925,68 @@
         "type": "object",
         "title": "ResendVerificationResponse",
         "description": "Schema for resend verification email response.\n\nReturned after resending verification email.\nReturns generic message to prevent email enumeration attacks."
+      },
+      "RevertApprovalRequest": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Reason",
+            "description": "Reason for reverting the approval"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason"
+        ],
+        "title": "RevertApprovalRequest",
+        "description": "Request schema for reverting a post approval decision.\n\nIssue #2062: Allows undoing approval decisions within a time window."
+      },
+      "RevertApprovalResponse": {
+        "properties": {
+          "post_id": {
+            "type": "string",
+            "title": "Post Id",
+            "description": "ID of the reverted post"
+          },
+          "reverted": {
+            "type": "boolean",
+            "title": "Reverted",
+            "description": "Whether the revert was successful"
+          },
+          "previous_status": {
+            "type": "boolean",
+            "title": "Previous Status",
+            "description": "Previous approval status before revert"
+          },
+          "new_status": {
+            "type": "boolean",
+            "title": "New Status",
+            "description": "New approval status after revert"
+          },
+          "reverted_by": {
+            "type": "string",
+            "title": "Reverted By",
+            "description": "User ID who performed the revert"
+          },
+          "revert_reason": {
+            "type": "string",
+            "title": "Revert Reason",
+            "description": "Reason for the revert"
+          }
+        },
+        "type": "object",
+        "required": [
+          "post_id",
+          "reverted",
+          "previous_status",
+          "new_status",
+          "reverted_by",
+          "revert_reason"
+        ],
+        "title": "RevertApprovalResponse",
+        "description": "Response schema for revert approval operation.\n\nIssue #2062: Returns the reverted post status."
       },
       "ReviewerQueueItem": {
         "properties": {
