@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.793] - 2026-01-23
+
+### Changes
+- fix(brand-crawler): increase timeout from 600s to 900s (#2535)
+
+**Source:** project-beta-api@41573e7d
+
 ## [v0.7.792] - 2026-01-23
 
 ### Changes
