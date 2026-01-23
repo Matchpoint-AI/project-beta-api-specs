@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.777] - 2026-01-23
+
+### Changes
+- Merge pull request #2491 from Matchpoint-AI/fix/2490-sse-cors
+
+**Source:** project-beta-api@b9eed441
+
 ## [v0.7.776] - 2026-01-23
 
 ### Changes
