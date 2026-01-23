@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.786] - 2026-01-23
+
+### Changes
+- docs: Update README with accurate counts and fix broken links (#2512)
+
+**Source:** project-beta-api@9545fbc6
+
 ## [v0.7.785] - 2026-01-23
 
 ### Changes
