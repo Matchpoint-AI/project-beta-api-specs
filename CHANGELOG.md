@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.789] - 2026-01-23
+
+### Changes
+- Merge pull request #2520 from Matchpoint-AI/fix/2519-cors-rate-limit
+
+**Source:** project-beta-api@d53ccf65
+
 ## [v0.7.788] - 2026-01-23
 
 ### Changes
