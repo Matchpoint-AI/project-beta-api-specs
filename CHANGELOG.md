@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.788] - 2026-01-23
+
+### Changes
+- Merge pull request #2516 from Matchpoint-AI/fix/2515-sse-pulse-ttl
+
+**Source:** project-beta-api@7acfcede
+
 ## [v0.7.787] - 2026-01-23
 
 ### Changes
