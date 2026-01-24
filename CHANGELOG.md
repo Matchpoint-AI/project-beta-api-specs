@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.799] - 2026-01-24
+
+### Changes
+- deps(deps-dev): Bump black from 25.1.0 to 26.1.0 (#2531)
+
+**Source:** project-beta-api@cbfce841
+
 ## [v0.7.798] - 2026-01-24
 
 ### Changes
