@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.796] - 2026-01-24
+
+### Changes
+- fix(email): validate SendGrid API key at initialization (Issue #2541) (#2542)
+
+**Source:** project-beta-api@e0de095d
+
 ## [v0.7.795] - 2026-01-24
 
 ### Changes
