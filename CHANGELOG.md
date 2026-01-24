@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.795] - 2026-01-24
+
+### Changes
+- fix(pulses): return 'pending' status instead of 404 when no pulse exists (#2538) (#2539)
+
+**Source:** project-beta-api@aa8257dc
+
 ## [v0.7.794] - 2026-01-24
 
 ### Changes
