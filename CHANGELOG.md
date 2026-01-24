@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.797] - 2026-01-24
+
+### Changes
+- docs(specs): add SPEC.md and invariants.md for spec directory compliance (#2543)
+
+**Source:** project-beta-api@62610687
+
 ## [v0.7.796] - 2026-01-24
 
 ### Changes
