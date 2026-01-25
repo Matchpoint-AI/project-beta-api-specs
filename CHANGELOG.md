@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.803] - 2026-01-25
+
+### Changes
+- fix(content-export): Fix TypeError in content exports endpoint (Issue #2547) (#2552)
+
+**Source:** project-beta-api@603afb37
+
 ## [v0.7.802] - 2026-01-25
 
 ### Changes

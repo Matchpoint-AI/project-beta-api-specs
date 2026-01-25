@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.802"
+    "version": "0.7.803"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -3763,15 +3763,17 @@
           "content-exports"
         ],
         "summary": "Create Content Export",
-        "description": "Create export tracking record for content.\n\nRMM L2: Creates an export resource (not RPC-style \"track-export\" action).\nThis endpoint replaces V1's POST /contentgen/track-export.\n\nArgs:\n    content_id: UUID of the content being exported\n    export_data: Export tracking data (platform, timestamp, metadata)\n\nReturns:\n    Created export record with ID and timestamps\n\nRaises:\n    404: Content not found\n    422: Invalid export data",
+        "description": "Create export tracking record for content.\n\nRMM L2: Creates an export resource (not RPC-style \"track-export\" action).\nThis endpoint replaces V1's POST /contentgen/track-export.\n\nArgs:\n    content_id: Integer ID of the content being exported\n    export_data: Export tracking data (platform, timestamp, metadata)\n\nReturns:\n    Created export record with ID and timestamps\n\nRaises:\n    404: Content not found\n    422: Invalid export data",
         "operationId": "create_content_export_api_v2_content__content_id__exports_post",
         "parameters": [
           {
+            "description": "ID of the content being exported",
             "name": "content_id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
+              "description": "ID of the content being exported",
+              "type": "integer",
               "title": "Content Id"
             }
           }
@@ -3814,15 +3816,17 @@
           "content-exports"
         ],
         "summary": "List Content Exports",
-        "description": "List all export records for a content item.\n\nRMM L2: Retrieves export resources for a content item.\nReturns list ordered by exported_at descending (most recent first).\n\nArgs:\n    content_id: UUID of the content\n\nReturns:\n    List of export records with total count\n\nRaises:\n    404: Content not found\n    422: Invalid content_id format",
+        "description": "List all export records for a content item.\n\nRMM L2: Retrieves export resources for a content item.\nReturns list ordered by exported_at descending (most recent first).\n\nArgs:\n    content_id: Integer ID of the content\n\nReturns:\n    List of export records with total count\n\nRaises:\n    404: Content not found",
         "operationId": "list_content_exports_api_v2_content__content_id__exports_get",
         "parameters": [
           {
+            "description": "ID of the content",
             "name": "content_id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
+              "description": "ID of the content",
+              "type": "integer",
               "title": "Content Id"
             }
           }
@@ -12399,86 +12403,86 @@
         "description": "Schema for creating a new content export record.\n\nRMM L2: Creating an export is creating a resource, not an action."
       },
       "ContentExportListResponse": {
+        "description": "Schema for list of content exports.\n\nRMM L2: GET /content/{id}/exports returns list of export resources.\nIssue #2547: Changed content_id from UUID to int to match database.",
         "properties": {
-          "content_id": {
-            "type": "string",
-            "title": "Content Id",
-            "description": "ID of the content"
+          "contentId": {
+            "description": "ID of the content",
+            "title": "Contentid",
+            "type": "integer"
           },
           "exports": {
+            "description": "List of export records for this content",
             "items": {
               "$ref": "#/components/schemas/ContentExportResponse"
             },
-            "type": "array",
             "title": "Exports",
-            "description": "List of export records for this content"
+            "type": "array"
           },
-          "total_exports": {
-            "type": "integer",
-            "title": "Total Exports",
-            "description": "Total number of exports"
+          "totalExports": {
+            "description": "Total number of exports",
+            "title": "Totalexports",
+            "type": "integer"
           }
         },
-        "type": "object",
         "required": [
-          "content_id",
+          "contentId",
           "exports",
-          "total_exports"
+          "totalExports"
         ],
         "title": "ContentExportListResponse",
-        "description": "Schema for list of content exports.\n\nRMM L2: GET /content/{id}/exports returns list of export resources."
+        "type": "object"
       },
       "ContentExportResponse": {
+        "description": "Schema for content export response.\n\nRMM L2: Response includes the created export resource with its ID.\nIssue #2547: Changed id and content_id from UUID to int to match database.",
         "properties": {
+          "contentId": {
+            "description": "ID of the content that was exported",
+            "title": "Contentid",
+            "type": "integer"
+          },
+          "createdAt": {
+            "description": "When the export record was created",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "exportedAt": {
+            "description": "Timestamp when content was exported",
+            "title": "Exportedat",
+            "type": "string"
+          },
           "id": {
-            "type": "string",
+            "description": "Unique identifier for the export record",
             "title": "Id",
-            "description": "Unique identifier for the export record"
-          },
-          "content_id": {
-            "type": "string",
-            "title": "Content Id",
-            "description": "ID of the content that was exported"
-          },
-          "platform": {
-            "type": "string",
-            "title": "Platform",
-            "description": "Platform where content was exported"
-          },
-          "exported_at": {
-            "type": "string",
-            "title": "Exported At",
-            "description": "Timestamp when content was exported"
-          },
-          "created_at": {
-            "type": "string",
-            "title": "Created At",
-            "description": "When the export record was created"
+            "type": "integer"
           },
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
                 "type": "null"
               }
             ],
-            "additionalProperties": true,
-            "title": "Metadata",
-            "description": "Additional export metadata"
+            "description": "Additional export metadata",
+            "title": "Metadata"
+          },
+          "platform": {
+            "description": "Platform where content was exported",
+            "title": "Platform",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "id",
-          "content_id",
+          "contentId",
           "platform",
-          "exported_at",
-          "created_at"
+          "exportedAt",
+          "createdAt"
         ],
         "title": "ContentExportResponse",
-        "description": "Schema for content export response.\n\nRMM L2: Response includes the created export resource with its ID."
+        "type": "object"
       },
       "ContentFeedbackAggregates": {
         "properties": {
