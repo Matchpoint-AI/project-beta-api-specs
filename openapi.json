@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.807"
+    "version": "0.7.808"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5166,14 +5166,22 @@
           "metrics"
         ],
         "summary": "Prometheus Metrics",
-        "description": "Returns Prometheus-compatible metrics for monitoring.",
+        "description": "Returns Prometheus-compatible metrics for monitoring. Requires authentication to prevent exposure of internal system information.",
         "operationId": "get_metrics_api_v2_metrics_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Prometheus metrics in text format",
             "content": {
               "text/plain": {}
             }
+          },
+          "401": {
+            "description": "Authentication required"
           }
         }
       }

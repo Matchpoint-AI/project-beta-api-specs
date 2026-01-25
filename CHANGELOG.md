@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.808] - 2026-01-25
+
+### Changes
+- fix(security): Add authentication to /api/v2/metrics endpoint (Issue #2556) (#2564)
+
+**Source:** project-beta-api@a62b13fd
+
 ## [v0.7.807] - 2026-01-25
 
 ### Changes
