@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.817] - 2026-01-25
+
+### Changes
+- fix(docker): Align Playwright version with base image to fix release builds (Issue #2576) (#2577)
+
+**Source:** project-beta-api@7ebc3d7a
+
 ## [v0.7.816] - 2026-01-25
 
 ### Changes
