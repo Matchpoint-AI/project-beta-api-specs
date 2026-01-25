@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.819] - 2026-01-25
+
+### Changes
+- docs(specs): Add README.md with specification standards and index (#2580)
+
+**Source:** project-beta-api@9502c638
+
 ## [v0.7.818] - 2026-01-25
 
 ### Changes
