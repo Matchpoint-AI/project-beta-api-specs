@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.820] - 2026-01-25
+
+### Changes
+- fix(deps): Pin bcrypt <5.0 for passlib 1.7.4 compatibility (#2578)
+
+**Source:** project-beta-api@e02fcc3e
+
 ## [v0.7.819] - 2026-01-25
 
 ### Changes
