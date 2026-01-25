@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.816] - 2026-01-25
+
+### Changes
+- chore: Remove deprecated image regeneration endpoint (Issue #2506) (#2569)
+
+**Source:** project-beta-api@014dc830
+
 ## [v0.7.815] - 2026-01-25
 
 ### Changes

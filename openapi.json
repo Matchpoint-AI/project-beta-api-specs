@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.815"
+    "version": "0.7.816"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -4115,7 +4115,7 @@
           "content-images"
         ],
         "summary": "Create Content Image",
-        "description": "Create a content image via upload.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nIssue #2190: Direct image generation removed (LLM code moved to workers).\nTo generate images, upload an existing image first, then use the\nPOST /images/{image_id}/regenerations endpoint.\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image request with URL for upload\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 422 if validation fails or generation requested",
+        "description": "Create a content image via upload.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nIssue #2190: Direct image generation removed (LLM code moved to workers).\nIssue #2506: Regenerations endpoint removed.\nTo generate/regenerate images, use POST /posts/{post_id}/versions with target=\"media\".\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image request with URL for upload\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 422 if validation fails or generation requested",
         "operationId": "create_content_image_api_v2_content__content_id__images_post",
         "parameters": [
           {
@@ -4168,7 +4168,7 @@
           "content-images"
         ],
         "summary": "Update Image Prompt",
-        "description": "Update the prompt for an existing image (does not regenerate).\n\nRMM L2: PATCH for partial resource update.\n\nThis endpoint allows updating the image prompt without triggering\nregeneration. Use POST /images/{image_id}/regenerations to regenerate.\n\nArgs:\n    content_id: Content ID (path parameter, for URL consistency)\n    image_id: Image ID to update\n    request: Image update request with new prompt\n    service: Injected content image service\n\nReturns:\n    Updated content image response\n\nRaises:\n    HTTPException: 404 if image not found\n    HTTPException: 422 if validation fails",
+        "description": "Update the prompt for an existing image (does not regenerate).\n\nRMM L2: PATCH for partial resource update.\n\nThis endpoint allows updating the image prompt without triggering\nregeneration. Use POST /posts/{post_id}/versions with target=\"media\" to regenerate.\n\nArgs:\n    content_id: Content ID (path parameter, for URL consistency)\n    image_id: Image ID to update\n    request: Image update request with new prompt\n    service: Injected content image service\n\nReturns:\n    Updated content image response\n\nRaises:\n    HTTPException: 404 if image not found\n    HTTPException: 422 if validation fails",
         "operationId": "update_image_prompt_api_v2_content__content_id__images__image_id__patch",
         "parameters": [
           {
@@ -4207,75 +4207,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ContentImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/images/{image_id}/regenerations": {
-      "post": {
-        "tags": [
-          "content-images"
-        ],
-        "summary": "Regenerate Image",
-        "description": "DEPRECATED: Use POST /posts/{post_id}/versions with target=\"media\" instead.\n\nIssue #2362: This endpoint is deprecated. Image regeneration has been\nmigrated to the unified versioning endpoint which uses the agentic\ncontent generator with FAL for images.\n\nThe new endpoint provides:\n- Consistent image storage in `media` table (not `content_image`)\n- FAL-powered image generation via agentic service\n- Unified versioning for text, media, and video regeneration\n- Fat message pattern with full brand/campaign context\n\nMigration guide:\n1. Get the post_id for the image's content\n2. Call POST /posts/{post_id}/versions with:\n   - target: \"media\"\n   - mediaId: {image_id}\n   - modifications: { prompt: \"your custom prompt\" }\n\nReturns:\n    410 Gone with deprecation notice and migration instructions",
-        "operationId": "regenerate_image_api_v2_content__content_id__images__image_id__regenerations_post",
-        "deprecated": true,
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Content Id"
-            }
-          },
-          {
-            "name": "image_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Image Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentImageRegenerateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "410": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Response Regenerate Image Api V2 Content  Content Id  Images  Image Id  Regenerations Post"
                 }
               }
             }
@@ -13177,25 +13108,6 @@
         ],
         "title": "ContentGenerationStatusResponse",
         "description": "Detailed generation status for specific content.\n\nProvides granular status breakdown per post including text and image status.\nUsed for detailed progress tracking and debugging.\n\nIssue #1484: GET /content/{content_id}/generation-status"
-      },
-      "ContentImageRegenerateRequest": {
-        "properties": {
-          "customPrompt": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Customprompt",
-            "description": "Optional custom prompt for regeneration. If not provided, uses existing prompt."
-          }
-        },
-        "type": "object",
-        "title": "ContentImageRegenerateRequest",
-        "description": "Schema for regenerating an existing content image.\n\nIssue #1345: Restore image regeneration endpoint."
       },
       "ContentImageRequest": {
         "properties": {
