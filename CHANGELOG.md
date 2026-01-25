@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.813] - 2026-01-25
+
+### Changes
+- fix: SQLAlchemy enum case and post ID uniqueness issues (#2472)
+
+**Source:** project-beta-api@9818a75a
+
 ## [v0.7.812] - 2026-01-25
 
 ### Changes
