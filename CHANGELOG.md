@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.801] - 2026-01-25
+
+### Changes
+- fix(security): Add authentication to content prompt endpoints (#2550)
+
+**Source:** project-beta-api@5b636da6
+
 ## [v0.7.800] - 2026-01-25
 
 ### Changes
