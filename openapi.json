@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.817"
+    "version": "0.7.818"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -15142,7 +15142,7 @@
             "maxLength": 128,
             "minLength": 8,
             "title": "Password",
-            "description": "User password (will be hashed with bcrypt)"
+            "description": "User password. Must contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
           }
         },
         "type": "object",
@@ -15152,7 +15152,7 @@
           "password"
         ],
         "title": "NativeUserCreate",
-        "description": "Schema for creating a new user via native email/password authentication.\n\nFor POST /api/v2/users endpoint.\nPassword is hashed and stored in our database with bcrypt.\nEmail verification link is sent via SendGrid."
+        "description": "Schema for creating a new user via native email/password authentication.\n\nFor POST /api/v2/users endpoint.\nPassword is hashed and stored in our database with bcrypt.\nEmail verification link is sent via SendGrid.\n\nPassword Requirements:\n- Minimum 8 characters\n- Maximum 128 characters\n- At least one uppercase letter (A-Z)\n- At least one lowercase letter (a-z)\n- At least one digit (0-9)\n- At least one special character (!@#$%^&*(),.?\":{}|<>-_+=[]\\;'`~)\n- Not a commonly used password"
       },
       "OutputAckResponse": {
         "properties": {
@@ -15217,7 +15217,7 @@
             "maxLength": 128,
             "minLength": 8,
             "title": "Newpassword",
-            "description": "New password (min 8 characters)"
+            "description": "New password. Must contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
           }
         },
         "type": "object",
@@ -15225,7 +15225,7 @@
           "newPassword"
         ],
         "title": "PasswordResetUpdateRequest",
-        "description": "Schema for completing a password reset (RMM L2 compliant).\n\nFor PUT /api/v2/password-resets/{token} endpoint.\nUpdates the password using the reset token.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /password-resets/{token}\n- PUT method updates the password-reset resource\n- Token in path (resource identifier), password in body"
+        "description": "Schema for completing a password reset (RMM L2 compliant).\n\nFor PUT /api/v2/password-resets/{token} endpoint.\nUpdates the password using the reset token.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /password-resets/{token}\n- PUT method updates the password-reset resource\n- Token in path (resource identifier), password in body\n\nPassword Requirements:\n- Minimum 8 characters\n- Maximum 128 characters\n- At least one uppercase letter (A-Z)\n- At least one lowercase letter (a-z)\n- At least one digit (0-9)\n- At least one special character (!@#$%^&*(),.?\":{}|<>-_+=[]\\;'`~)\n- Not a commonly used password"
       },
       "PasswordResetUpdateResponse": {
         "properties": {

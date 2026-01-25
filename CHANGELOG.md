@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.818] - 2026-01-25
+
+### Changes
+- feat(security): Add password complexity requirements for user registration (#2546)
+
+**Source:** project-beta-api@4a040aa7
+
 ## [v0.7.817] - 2026-01-25
 
 ### Changes
