@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.811] - 2026-01-25
+
+### Changes
+- docker: bump playwright/python from v1.48.0-noble to v1.57.0-noble (#2327)
+
+**Source:** project-beta-api@6d675e81
+
 ## [v0.7.810] - 2026-01-25
 
 ### Changes
