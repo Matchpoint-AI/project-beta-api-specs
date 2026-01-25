@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.800] - 2026-01-25
+
+### Changes
+- docs: Add CORS & rate-limit checklist to PR template (#2545)
+
+**Source:** project-beta-api@cea71aee
+
 ## [v0.7.799] - 2026-01-24
 
 ### Changes
