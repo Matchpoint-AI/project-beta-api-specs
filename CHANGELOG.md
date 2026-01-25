@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.814] - 2026-01-25
+
+### Changes
+- feat: Add progress and estimatedTimeRemaining to VideoJobStatusResponse (#2570)
+
+**Source:** project-beta-api@c4476829
+
 ## [v0.7.813] - 2026-01-25
 
 ### Changes

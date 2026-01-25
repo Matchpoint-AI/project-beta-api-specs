@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.813"
+    "version": "0.7.814"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -1019,6 +1019,11 @@
         "summary": "Start Knowledge Workflow",
         "description": "Start knowledge discovery workflow for a brand.\n\nPublishes a crawl request to the agentic-brand-crawler Pub/Sub topic.\nThe crawler orchestrates website crawling, content extraction, and\nknowledge storage. This is an explicit trigger following RMM Level 2 principles.\n\nThe crawl runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running\n\nIssue #2553: Added authentication and authorization checks.",
         "operationId": "start_knowledge_workflow_api_v2_brands__brand_id__knowledge_workflows_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -1056,6 +1061,12 @@
           "400": {
             "description": "Invalid request data"
           },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
           "404": {
             "description": "Brand not found"
           },
@@ -1071,19 +1082,8 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v2/brands/{brand_id}/knowledge/workflows/{workflow_id}": {
@@ -1094,6 +1094,11 @@
         "summary": "Get Brand Workflow",
         "description": "Get the status of the knowledge collection workflow.\n\nReturns the current status of the background workflow including\nprogress, current step, and any results. This endpoint is used\nby the frontend to monitor the progress of the knowledge extraction\nthat was initiated internally during brand creation.\n\nIssue #1268: Migrated from WorkflowService to DB-based status tracking.\nStatus is now read from the brand's knowledge_status field.\n\nIssue #2553: Added authentication and authorization checks.",
         "operationId": "get_brand_workflow_api_v2_brands__brand_id__knowledge_workflows__workflow_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -1129,6 +1134,12 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
           "404": {
             "description": "No workflow found for this brand"
           },
@@ -1141,19 +1152,8 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v2/brands/{brand_id}/knowledge": {
@@ -1164,6 +1164,11 @@
         "summary": "Get Brand Knowledge V2",
         "description": "Get extracted brand knowledge in V2 format with pagination.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.\n\nRMM L2 Compliant: Supports `view` query parameter to control response type.\n- view=summary: Returns summary statistics (replaces /knowledge/summary)\n- view not specified: Returns full knowledge list with pagination\n\nSupports pagination parameters for future compatibility when multiple\nknowledge entries per brand are supported.\n\nIssue #2553: Added authentication and authorization checks.",
         "operationId": "get_brand_knowledge_v2_api_v2_brands__brand_id__knowledge_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "brand_id",
@@ -1244,6 +1249,12 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
           "404": {
             "description": "Brand knowledge not found"
           },
@@ -1256,19 +1267,8 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v2/briefs": {
@@ -3810,15 +3810,15 @@
         "operationId": "create_content_export_api_v2_content__content_id__exports_post",
         "parameters": [
           {
-            "description": "ID of the content being exported",
             "name": "content_id",
             "in": "path",
             "required": true,
             "schema": {
-              "description": "ID of the content being exported",
               "type": "integer",
+              "description": "ID of the content being exported",
               "title": "Content Id"
-            }
+            },
+            "description": "ID of the content being exported"
           }
         ],
         "requestBody": {
@@ -3863,15 +3863,15 @@
         "operationId": "list_content_exports_api_v2_content__content_id__exports_get",
         "parameters": [
           {
-            "description": "ID of the content",
             "name": "content_id",
             "in": "path",
             "required": true,
             "schema": {
-              "description": "ID of the content",
               "type": "integer",
+              "description": "ID of the content",
               "title": "Content Id"
-            }
+            },
+            "description": "ID of the content"
           }
         ],
         "responses": {
@@ -5168,11 +5168,6 @@
         "summary": "Prometheus Metrics",
         "description": "Returns Prometheus-compatible metrics for monitoring. Requires authentication to prevent exposure of internal system information.",
         "operationId": "get_metrics_api_v2_metrics_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "Prometheus metrics in text format",
@@ -5183,7 +5178,12 @@
           "401": {
             "description": "Authentication required"
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/policies/{policy_id}/versions": {
@@ -6295,6 +6295,11 @@
         "summary": "Get unified pulse status by correlation ID",
         "description": "Unified polling endpoint for all agentic service status. Returns the latest pulse regardless of service type (brand_crawl, content_generation). Issue #2428: Frontend uses single endpoint for all agentic status. Issue #2538: Returns 'pending' status when workflow hasn't published a pulse yet. Issue #2557: Requires authentication to prevent information disclosure.",
         "operationId": "get_unified_pulse_status_api_v2_pulses__correlation_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "correlation_id",
@@ -6329,12 +6334,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v2/pulses/{correlation_id}/stream": {
@@ -6763,6 +6763,11 @@
         "summary": "List Campaign Scheduled Posts",
         "description": "List all scheduled posts for a specific campaign.\n\nReturns scheduled posts for the given campaign, optionally filtered by status.\nPosts are ordered by scheduled time.\n\nIssue #2558: Requires authentication to prevent information disclosure.\n\nArgs:\n    campaign_id: Campaign ID to filter by\n    firebase_user: Authenticated user from JWT (Issue #2558)\n    status: Optional status filter\n\nReturns:\n    ScheduledPostListResponse with list of posts for the campaign",
         "operationId": "list_campaign_scheduled_posts_api_v2_campaigns__campaign_id__scheduled_posts_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "campaign_id",
@@ -6821,12 +6826,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v2/scheduled-posts/{post_id}": {
@@ -12467,77 +12467,77 @@
         "description": "Schema for creating a new content export record.\n\nRMM L2: Creating an export is creating a resource, not an action."
       },
       "ContentExportListResponse": {
-        "description": "Schema for list of content exports.\n\nRMM L2: GET /content/{id}/exports returns list of export resources.\nIssue #2547: Changed content_id from UUID to int to match database.",
         "properties": {
           "contentId": {
-            "description": "ID of the content",
+            "type": "integer",
             "title": "Contentid",
-            "type": "integer"
+            "description": "ID of the content"
           },
           "exports": {
-            "description": "List of export records for this content",
             "items": {
               "$ref": "#/components/schemas/ContentExportResponse"
             },
+            "type": "array",
             "title": "Exports",
-            "type": "array"
+            "description": "List of export records for this content"
           },
           "totalExports": {
-            "description": "Total number of exports",
+            "type": "integer",
             "title": "Totalexports",
-            "type": "integer"
+            "description": "Total number of exports"
           }
         },
+        "type": "object",
         "required": [
           "contentId",
           "exports",
           "totalExports"
         ],
         "title": "ContentExportListResponse",
-        "type": "object"
+        "description": "Schema for list of content exports.\n\nRMM L2: GET /content/{id}/exports returns list of export resources.\nIssue #2547: Changed content_id from UUID to int to match database."
       },
       "ContentExportResponse": {
-        "description": "Schema for content export response.\n\nRMM L2: Response includes the created export resource with its ID.\nIssue #2547: Changed id and content_id from UUID to int to match database.",
         "properties": {
-          "contentId": {
-            "description": "ID of the content that was exported",
-            "title": "Contentid",
-            "type": "integer"
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Unique identifier for the export record"
           },
-          "createdAt": {
-            "description": "When the export record was created",
-            "title": "Createdat",
-            "type": "string"
+          "contentId": {
+            "type": "integer",
+            "title": "Contentid",
+            "description": "ID of the content that was exported"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform",
+            "description": "Platform where content was exported"
           },
           "exportedAt": {
-            "description": "Timestamp when content was exported",
+            "type": "string",
             "title": "Exportedat",
-            "type": "string"
+            "description": "Timestamp when content was exported"
           },
-          "id": {
-            "description": "Unique identifier for the export record",
-            "title": "Id",
-            "type": "integer"
+          "createdAt": {
+            "type": "string",
+            "title": "Createdat",
+            "description": "When the export record was created"
           },
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Additional export metadata",
-            "title": "Metadata"
-          },
-          "platform": {
-            "description": "Platform where content was exported",
-            "title": "Platform",
-            "type": "string"
+            "additionalProperties": true,
+            "title": "Metadata",
+            "description": "Additional export metadata"
           }
         },
+        "type": "object",
         "required": [
           "id",
           "contentId",
@@ -12546,7 +12546,7 @@
           "createdAt"
         ],
         "title": "ContentExportResponse",
-        "type": "object"
+        "description": "Schema for content export response.\n\nRMM L2: Response includes the created export resource with its ID.\nIssue #2547: Changed id and content_id from UUID to int to match database."
       },
       "ContentFeedbackAggregates": {
         "properties": {
@@ -19622,6 +19622,25 @@
             "$ref": "#/components/schemas/VideoJobStatus",
             "description": "Current job status"
           },
+          "progress": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Progress",
+            "description": "Progress percentage 0-100 (Issue #2566: dumb frontend pattern)"
+          },
+          "estimatedTimeRemaining": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimatedtimeremaining",
+            "description": "Human-readable time estimate, e.g. '30 sec', '2 min' (Issue #2566)"
+          },
           "videoUrl": {
             "anyOf": [
               {
@@ -19707,10 +19726,11 @@
           "jobId",
           "jobType",
           "status",
+          "progress",
           "createdAt"
         ],
         "title": "VideoJobStatusResponse",
-        "description": "Response schema for video job status queries.\n\nUsed by GET /api/v1/video-jobs/{job_id} endpoint (Issue #1697).\n\nAttributes:\n    job_id: UUID of the job\n    post_id: ID of the associated post\n    job_type: Type of video job\n    status: Current status\n    video_url: URL of generated video (if completed)\n    thumbnail_url: URL of video thumbnail (if completed)\n    duration_seconds: Actual video duration (if completed)\n    cost_usd: Actual cost incurred (if available)\n    error_message: Error details (if failed)\n    created_at: When the job was created\n    completed_at: When the job completed (if finished)"
+        "description": "Response schema for video job status queries.\n\nUsed by GET /api/v1/video-jobs/{job_id} endpoint (Issue #1697).\nSupports \"dumb frontend\" pattern (Issue #2566) with pre-computed progress.\n\nAttributes:\n    job_id: UUID of the job\n    post_id: ID of the associated post\n    job_type: Type of video job\n    status: Current status\n    progress: Progress percentage 0-100 (for dumb frontend)\n    estimated_time_remaining: Human-readable time estimate (for dumb frontend)\n    video_url: URL of generated video (if completed)\n    thumbnail_url: URL of video thumbnail (if completed)\n    duration_seconds: Actual video duration (if completed)\n    cost_usd: Actual cost incurred (if available)\n    error_message: Error details (if failed)\n    created_at: When the job was created\n    completed_at: When the job completed (if finished)"
       },
       "VideoJobType": {
         "type": "string",
