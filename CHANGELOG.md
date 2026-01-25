@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.807] - 2026-01-25
+
+### Changes
+- fix(security): Add authentication to /pulses/{correlation_id} endpoint (Issue #2557) (#2561)
+
+**Source:** project-beta-api@e637aaac
+
 ## [v0.7.806] - 2026-01-25
 
 ### Changes

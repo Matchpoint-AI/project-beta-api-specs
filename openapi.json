@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.806"
+    "version": "0.7.807"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -6285,7 +6285,7 @@
           "pulses"
         ],
         "summary": "Get unified pulse status by correlation ID",
-        "description": "Unified polling endpoint for all agentic service status. Returns the latest pulse regardless of service type (brand_crawl, content_generation). Issue #2428: Frontend uses single endpoint for all agentic status. Issue #2538: Returns 'pending' status when workflow hasn't published a pulse yet.",
+        "description": "Unified polling endpoint for all agentic service status. Returns the latest pulse regardless of service type (brand_crawl, content_generation). Issue #2428: Frontend uses single endpoint for all agentic status. Issue #2538: Returns 'pending' status when workflow hasn't published a pulse yet. Issue #2557: Requires authentication to prevent information disclosure.",
         "operationId": "get_unified_pulse_status_api_v2_pulses__correlation_id__get",
         "parameters": [
           {
@@ -6321,7 +6321,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/pulses/{correlation_id}/stream": {
