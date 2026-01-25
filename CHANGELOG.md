@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.806] - 2026-01-25
+
+### Changes
+- fix(security): Add authentication to /campaigns/{campaign_id}/scheduled-posts endpoint (Issue #2558) (#2562)
+
+**Source:** project-beta-api@490058b6
+
 ## [v0.7.805] - 2026-01-25
 
 ### Changes

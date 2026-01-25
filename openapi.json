@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.805"
+    "version": "0.7.806"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -6748,7 +6748,7 @@
           "scheduled-posts"
         ],
         "summary": "List Campaign Scheduled Posts",
-        "description": "List all scheduled posts for a specific campaign.\n\nReturns scheduled posts for the given campaign, optionally filtered by status.\nPosts are ordered by scheduled time.\n\nArgs:\n    campaign_id: Campaign ID to filter by\n    status: Optional status filter\n\nReturns:\n    ScheduledPostListResponse with list of posts for the campaign",
+        "description": "List all scheduled posts for a specific campaign.\n\nReturns scheduled posts for the given campaign, optionally filtered by status.\nPosts are ordered by scheduled time.\n\nIssue #2558: Requires authentication to prevent information disclosure.\n\nArgs:\n    campaign_id: Campaign ID to filter by\n    firebase_user: Authenticated user from JWT (Issue #2558)\n    status: Optional status filter\n\nReturns:\n    ScheduledPostListResponse with list of posts for the campaign",
         "operationId": "list_campaign_scheduled_posts_api_v2_campaigns__campaign_id__scheduled_posts_get",
         "parameters": [
           {
@@ -6792,6 +6792,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Campaign not found"
           },
@@ -6805,7 +6808,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/scheduled-posts/{post_id}": {
