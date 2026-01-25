@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.809] - 2026-01-25
+
+### Changes
+- feat(deps): Register PostMediaPersistenceService for GCS media persistence (#2565)
+
+**Source:** project-beta-api@95ff1f0e
+
 ## [v0.7.808] - 2026-01-25
 
 ### Changes
