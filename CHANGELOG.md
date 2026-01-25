@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.805] - 2026-01-25
+
+### Changes
+- fix(security): Add authentication to brand knowledge endpoints (Issue #2553) (#2560)
+
+**Source:** project-beta-api@9a474ba7
+
 ## [v0.7.804] - 2026-01-25
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.804"
+    "version": "0.7.805"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -1017,7 +1017,7 @@
           "brand-workflow"
         ],
         "summary": "Start Knowledge Workflow",
-        "description": "Start knowledge discovery workflow for a brand.\n\nPublishes a crawl request to the agentic-brand-crawler Pub/Sub topic.\nThe crawler orchestrates website crawling, content extraction, and\nknowledge storage. This is an explicit trigger following RMM Level 2 principles.\n\nThe crawl runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running",
+        "description": "Start knowledge discovery workflow for a brand.\n\nPublishes a crawl request to the agentic-brand-crawler Pub/Sub topic.\nThe crawler orchestrates website crawling, content extraction, and\nknowledge storage. This is an explicit trigger following RMM Level 2 principles.\n\nThe crawl runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running\n\nIssue #2553: Added authentication and authorization checks.",
         "operationId": "start_knowledge_workflow_api_v2_brands__brand_id__knowledge_workflows_post",
         "parameters": [
           {
@@ -1071,8 +1071,19 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/brands/{brand_id}/knowledge/workflows/{workflow_id}": {
@@ -1081,7 +1092,7 @@
           "brand-workflow"
         ],
         "summary": "Get Brand Workflow",
-        "description": "Get the status of the knowledge collection workflow.\n\nReturns the current status of the background workflow including\nprogress, current step, and any results. This endpoint is used\nby the frontend to monitor the progress of the knowledge extraction\nthat was initiated internally during brand creation.\n\nIssue #1268: Migrated from WorkflowService to DB-based status tracking.\nStatus is now read from the brand's knowledge_status field.",
+        "description": "Get the status of the knowledge collection workflow.\n\nReturns the current status of the background workflow including\nprogress, current step, and any results. This endpoint is used\nby the frontend to monitor the progress of the knowledge extraction\nthat was initiated internally during brand creation.\n\nIssue #1268: Migrated from WorkflowService to DB-based status tracking.\nStatus is now read from the brand's knowledge_status field.\n\nIssue #2553: Added authentication and authorization checks.",
         "operationId": "get_brand_workflow_api_v2_brands__brand_id__knowledge_workflows__workflow_id__get",
         "parameters": [
           {
@@ -1130,8 +1141,19 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/brands/{brand_id}/knowledge": {
@@ -1140,7 +1162,7 @@
           "brand-workflow"
         ],
         "summary": "Get Brand Knowledge V2",
-        "description": "Get extracted brand knowledge in V2 format with pagination.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.\n\nRMM L2 Compliant: Supports `view` query parameter to control response type.\n- view=summary: Returns summary statistics (replaces /knowledge/summary)\n- view not specified: Returns full knowledge list with pagination\n\nSupports pagination parameters for future compatibility when multiple\nknowledge entries per brand are supported.",
+        "description": "Get extracted brand knowledge in V2 format with pagination.\n\nReturns the extracted brand knowledge including personality traits,\ntone attributes, color palette, products, and descriptions. This endpoint\nprovides the structured knowledge after workflow completion.\n\nRMM L2 Compliant: Supports `view` query parameter to control response type.\n- view=summary: Returns summary statistics (replaces /knowledge/summary)\n- view not specified: Returns full knowledge list with pagination\n\nSupports pagination parameters for future compatibility when multiple\nknowledge entries per brand are supported.\n\nIssue #2553: Added authentication and authorization checks.",
         "operationId": "get_brand_knowledge_v2_api_v2_brands__brand_id__knowledge_get",
         "parameters": [
           {
@@ -1234,8 +1256,19 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/briefs": {
