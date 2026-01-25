@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.821] - 2026-01-25
+
+### Changes
+- fix(cors): Add missing CORS origins to rate limiter (Issue #2582) (#2583)
+
+**Source:** project-beta-api@f0c7010f
+
 ## [v0.7.820] - 2026-01-25
 
 ### Changes
