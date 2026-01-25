@@ -5,6 +5,13 @@ All notable changes to the Project Beta API specification will be documented in 
 ## [v0.7.811] - 2026-01-25
 
 ### Changes
+- chore: trigger release workflow after tag deletion (Issue #2571) (#2572)
+
+**Source:** project-beta-api@52eb3a06
+
+## [v0.7.811] - 2026-01-25
+
+### Changes
 - docker: bump playwright/python from v1.48.0-noble to v1.57.0-noble (#2327)
 
 **Source:** project-beta-api@6d675e81
