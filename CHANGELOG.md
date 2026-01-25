@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.810] - 2026-01-25
+
+### Changes
+- ci: Bump actions/setup-python from 5 to 6 (#2528)
+
+**Source:** project-beta-api@544fa6c2
+
 ## [v0.7.809] - 2026-01-25
 
 ### Changes
