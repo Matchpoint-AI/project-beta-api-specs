@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.802] - 2026-01-25
+
+### Changes
+- fix(auth): Support direct login with email/password at POST /auth/session (Issue #2549) (#2551)
+
+**Source:** project-beta-api@1639b00e
+
 ## [v0.7.801] - 2026-01-25
 
 ### Changes

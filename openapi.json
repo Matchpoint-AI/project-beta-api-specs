@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.801"
+    "version": "0.7.802"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -12,13 +12,30 @@
           "auth-session"
         ],
         "summary": "Create Session",
-        "description": "Create a server-side session from JWT token.\n\nThis endpoint implements the secure session flow:\n1. Frontend authenticates (login or Firebase), receives JWT\n2. Frontend sends JWT to this endpoint via Authorization header\n3. API validates JWT and creates server-side session\n4. API returns session ID in httpOnly cookie\n5. Browser automatically sends cookie on subsequent requests\n\nThe session ID is NOT returned in the response body - it's only\naccessible via the httpOnly cookie to prevent XSS attacks.\n\nTypical use case:\n- User logs in via POST /sessions, receives JWT\n- Frontend calls POST /auth/session with JWT to get httpOnly cookie\n- Subsequent requests use the cookie instead of Authorization header\n\nRMM Level 2 Compliance:\n- POST to /auth/session creates new session resource\n- HTTP verb (POST) indicates create action\n- No verbs in URL path\n\nArgs:\n    request: FastAPI request object (for client info)\n    response: FastAPI response object (for setting cookie)\n    user_context: Authenticated user from JWT (via require_auth)\n    session_service: Injected session service\n\nReturns:\n    SessionCreatedResponse confirming session creation\n\nRaises:\n    HTTPException 401: If JWT token is invalid\n    HTTPException 500: If session creation fails",
+        "description": "Create a server-side session with httpOnly cookie.\n\nIssue #2549: This endpoint now supports two authentication methods:\n\n1. **Direct Login (email/password in request body)**:\n   - Send email and password in JSON body\n   - No Authorization header needed\n   - Returns session cookie directly\n\n2. **JWT Token (Authorization header)**:\n   - Send JWT in Authorization: Bearer <token> header\n   - Request body can be empty or omitted\n   - Converts existing JWT to session cookie\n\nThe session ID is NOT returned in the response body - it's only\naccessible via the httpOnly cookie to prevent XSS attacks.\n\nExample request for direct login:\n```\nPOST /api/v2/auth/session\nContent-Type: application/json\n\n{\"email\": \"user@example.com\", \"password\": \"secret\"}\n```\n\nExample request with JWT:\n```\nPOST /api/v2/auth/session\nAuthorization: Bearer eyJ...\n```\n\nRMM Level 2 Compliance:\n- POST to /auth/session creates new session resource\n- HTTP verb (POST) indicates create action\n- No verbs in URL path\n\nArgs:\n    request: FastAPI request object (for client info)\n    response: FastAPI response object (for setting cookie)\n    login_request: Optional login credentials (email/password)\n    credentials: Optional JWT token from Authorization header\n    session_service: Injected session service\n    user_service: Injected user service (for password login)\n    auth_service: Injected auth service (for JWT validation)\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    SessionCreatedResponse confirming session creation\n\nRaises:\n    HTTPException 400: If neither credentials nor JWT provided\n    HTTPException 401: If credentials or JWT token is invalid\n    HTTPException 429: If account is locked (too many failed attempts)\n    HTTPException 500: If session creation fails",
         "operationId": "create_session_api_v2_auth_session_post",
         "security": [
           {
             "HTTPBearer": []
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AuthSessionLoginRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Login Request"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Session created successfully, httpOnly cookie set",
@@ -30,11 +47,27 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid request (missing credentials)"
+          },
           "401": {
-            "description": "Invalid JWT token"
+            "description": "Invalid credentials or JWT token"
+          },
+          "429": {
+            "description": "Account locked due to too many failed login attempts"
           },
           "500": {
             "description": "Internal server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
           }
         }
       },
@@ -4195,7 +4228,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true,
                   "title": "Response Regenerate Image Api V2 Content  Content Id  Images  Image Id  Regenerations Post"
                 }
               }
@@ -8227,6 +8259,39 @@
         "title": "AssignPostResponse",
         "description": "Response schema for post assignment operation.\n\nIssue #2060: Returns assignment details."
       },
+      "AuthSessionLoginRequest": {
+        "properties": {
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "User email address (required for password login)"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Password",
+            "description": "User password (required for password login)"
+          }
+        },
+        "type": "object",
+        "title": "AuthSessionLoginRequest",
+        "description": "Schema for direct login via POST /auth/session.\n\nIssue #2549: Support direct login with email/password.\nThis allows creating a session directly without first obtaining a JWT.\n\nEither provide email/password credentials OR an Authorization header with JWT.\nIf neither is provided, the request will fail with 401."
+      },
       "BatchFeedbackResponse": {
         "properties": {
           "submittedCount": {
@@ -9016,7 +9081,6 @@
           "extractedData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9116,7 +9180,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9292,7 +9355,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -9359,7 +9421,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10379,7 +10440,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -10608,7 +10668,6 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -10802,7 +10861,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11303,7 +11361,6 @@
           },
           "platformStats": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -11333,7 +11390,6 @@
           },
           "topPerformingPosts": {
             "items": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -11537,7 +11593,6 @@
           "campaignVariables": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12129,7 +12184,6 @@
             "description": "Last update timestamp"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -12244,7 +12298,6 @@
           },
           "posts": {
             "additionalProperties": {
-              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -12283,7 +12336,6 @@
             "title": "Approved"
           },
           "contentData": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -12327,7 +12379,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12407,7 +12458,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12479,7 +12529,6 @@
             "description": "Average diversity rating (1-5)"
           },
           "tagDistribution": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Tagdistribution",
             "description": "Count of each tag used"
@@ -12834,7 +12883,6 @@
           "errorDetails": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13533,7 +13581,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13827,7 +13874,6 @@
           "contentData": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13859,6 +13905,7 @@
         "enum": [
           "video"
         ],
+        "const": "video",
         "title": "CostType",
         "description": "Types of costs that can be queried."
       },
@@ -14648,7 +14695,6 @@
           "metadata": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14808,7 +14854,6 @@
             "description": "Last update time"
           },
           "metadata": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -15017,7 +15062,6 @@
             "default": 0.0
           },
           "modelStatistics": {
-            "additionalProperties": true,
             "type": "object",
             "title": "Modelstatistics",
             "description": "Current model statistics"
@@ -15459,7 +15503,6 @@
           "policySnapshot": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -15471,7 +15514,6 @@
           "metricsAtChange": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -15897,7 +15939,6 @@
           "mediaSnapshot": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -16881,7 +16922,6 @@
           "executionStats": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -17219,7 +17259,6 @@
           "diversitySettings": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -19111,7 +19150,6 @@
           "mediaDiff": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -19923,7 +19961,6 @@
           "result": {
             "anyOf": [
               {
-                "additionalProperties": true,
                 "type": "object"
               },
               {
