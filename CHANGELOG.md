@@ -5,6 +5,13 @@ All notable changes to the Project Beta API specification will be documented in 
 ## [v0.7.811] - 2026-01-25
 
 ### Changes
+- chore: trigger release workflow (2nd attempt) (Issue #2571) (#2573)
+
+**Source:** project-beta-api@ceea0658
+
+## [v0.7.811] - 2026-01-25
+
+### Changes
 - chore: trigger release workflow after tag deletion (Issue #2571) (#2572)
 
 **Source:** project-beta-api@52eb3a06
