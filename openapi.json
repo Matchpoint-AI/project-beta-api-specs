@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.803"
+    "version": "0.7.804"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -2954,8 +2954,13 @@
           "captions"
         ],
         "summary": "Get Captions",
-        "description": "Get all captions for a content item.",
+        "description": "Get all captions for a content item.\n\nRequires authentication. Issue #2554: Added require_auth dependency\nto prevent unauthenticated access to caption data.",
         "operationId": "get_captions_api_v2_content__content_id__captions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -3001,8 +3006,13 @@
           "captions"
         ],
         "summary": "Delete Caption",
-        "description": "Delete a specific caption.",
+        "description": "Delete a specific caption.\n\nRequires authentication. Issue #2554: Added require_auth dependency\nto prevent unauthenticated deletion of captions.",
         "operationId": "delete_caption_api_v2_content__content_id__captions__caption_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",

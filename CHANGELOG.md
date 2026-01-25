@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.804] - 2026-01-25
+
+### Changes
+- fix(auth): Add authentication to content captions GET/DELETE endpoints (#2559)
+
+**Source:** project-beta-api@10d1013c
+
 ## [v0.7.803] - 2026-01-25
 
 ### Changes
