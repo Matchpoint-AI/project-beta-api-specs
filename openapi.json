@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.814"
+    "version": "0.7.815"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -9753,6 +9753,18 @@
               }
             ],
             "description": "Available brand assets"
+          },
+          "crawlData": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crawldata",
+            "description": "Full crawl data from brand crawler: visual_identity, brand_voice, social_media, etc."
           },
           "createdAt": {
             "type": "string",

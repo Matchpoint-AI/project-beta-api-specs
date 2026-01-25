@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.815] - 2026-01-25
+
+### Changes
+- feat(brands): persist full brand crawler data to PostgreSQL (Issue #2183) (#2555)
+
+**Source:** project-beta-api@f361529e
+
 ## [v0.7.814] - 2026-01-25
 
 ### Changes
