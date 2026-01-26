@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.822] - 2026-01-26
+
+### Changes
+- docs(spec): Remove pulse infrastructure from crawler specs (#2587)
+
+**Source:** project-beta-api@080ba0a8
+
 ## [v0.7.821] - 2026-01-25
 
 ### Changes
