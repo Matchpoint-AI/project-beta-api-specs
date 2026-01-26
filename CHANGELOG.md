@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.823] - 2026-01-26
+
+### Changes
+- feat(api): Add DELETE /brands/{brand_id} endpoint (#2589)
+
+**Source:** project-beta-api@c228d75e
+
 ## [v0.7.822] - 2026-01-26
 
 ### Changes

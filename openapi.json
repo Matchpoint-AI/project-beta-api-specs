@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.822"
+    "version": "0.7.823"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -482,6 +482,56 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Delete Brand",
+        "description": "Delete a brand.\n\nPermanently deletes a brand and all associated data.\nReturns 404 if brand doesn't exist.\n\nRMM Level 2 Compliance:\n- DELETE /brands/{brand_id} removes the brand resource\n- Returns 204 No Content on success\n- Returns 404 if brand not found\n\nSecurity:\n- Requires authentication\n- User must own the brand (IDOR protection)",
+        "operationId": "delete_brand_api_v2_brands__brand_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Brand deleted successfully"
           },
           "401": {
             "description": "Authentication required"
