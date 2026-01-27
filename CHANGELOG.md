@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.830] - 2026-01-27
+
+### Changes
+- chore: Remove dead schema files (audience_suggestions, locations) (#2603)
+
+**Source:** project-beta-api@320b50e7
+
 ## [v0.7.829] - 2026-01-27
 
 ### Changes
