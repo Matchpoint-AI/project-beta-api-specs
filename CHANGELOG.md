@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.856] - 2026-01-27
+
+### Changes
+- docs(specs): Add repository specifications for tested components (#2641)
+
+**Source:** project-beta-api@92e2ccaf
+
 ## [v0.7.855] - 2026-01-27
 
 ### Changes
