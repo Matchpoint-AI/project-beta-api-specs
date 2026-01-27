@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.835] - 2026-01-27
+
+### Changes
+- chore: Remove BuildKit caching (#2608)
+
+**Source:** project-beta-api@0b870f06
+
 ## [v0.7.834] - 2026-01-27
 
 ### Changes
