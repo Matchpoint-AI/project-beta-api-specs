@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.834] - 2026-01-27
+
+### Changes
+- feat(test): Add endpoint to force-verify users for E2E testing (#2606)
+
+**Source:** project-beta-api@6535aa66
+
 ## [v0.7.833] - 2026-01-27
 
 ### Changes

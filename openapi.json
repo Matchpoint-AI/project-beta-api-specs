@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.833"
+    "version": "0.7.834"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -7314,6 +7314,58 @@
           },
           "404": {
             "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/test/users/{user_id}/verifications": {
+      "post": {
+        "tags": [
+          "test-seed"
+        ],
+        "summary": "Verify Test User",
+        "description": "Force-verify a user for testing (dev/staging only).\n\nThis endpoint bypasses email verification for E2E testing.\n\nSECURITY: Only enabled in dev/staging environments.\nNo authentication required - uses user_id directly.",
+        "operationId": "verify_test_user_api_v2_test_users__user_id__verifications_post",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "User ID to verify",
+              "title": "User Id"
+            },
+            "description": "User ID to verify"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User verified successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Verify Test User Api V2 Test Users  User Id  Verifications Post"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - endpoint disabled in production"
+          },
+          "404": {
+            "description": "User not found"
           },
           "422": {
             "description": "Validation Error",
