@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.852] - 2026-01-27
+
+### Changes
+- test: Add comprehensive tests for crawler brief repository (#2634)
+
+**Source:** project-beta-api@727501c6
+
 ## [v0.7.851] - 2026-01-27
 
 ### Changes
