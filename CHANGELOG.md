@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.831] - 2026-01-27
+
+### Changes
+- feat(specs): Add functional requirements v2 for scene mix planner and APIs (#2604)
+
+**Source:** project-beta-api@774afd57
+
 ## [v0.7.830] - 2026-01-27
 
 ### Changes
