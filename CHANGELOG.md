@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.837] - 2026-01-27
+
+### Changes
+- spec: Add agentic message schema - learning state extension (#2610)
+
+**Source:** project-beta-api@7dd5d643
+
 ## [v0.7.836] - 2026-01-27
 
 ### Changes
