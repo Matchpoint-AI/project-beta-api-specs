@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.851] - 2026-01-27
+
+### Changes
+- test: Add tests for brand_guardrail and campaign_post repositories (#2633)
+
+**Source:** project-beta-api@c836b557
+
 ## [v0.7.850] - 2026-01-27
 
 ### Changes
