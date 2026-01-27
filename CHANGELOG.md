@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.827] - 2026-01-27
+
+### Changes
+- docs(specs): Update brands invariants and SPEC for simplified crawl (#2598)
+
+**Source:** project-beta-api@997a199f
+
 ## [v0.7.826] - 2026-01-27
 
 ### Changes
