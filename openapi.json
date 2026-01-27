@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.835"
+    "version": "0.7.836"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -4309,6 +4309,139 @@
             "HTTPBearer": []
           }
         ]
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/posts/{post_id}/feedback": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Submit feedback for a post",
+        "description": "Submit thumbs up/down feedback, edit feedback, or selection feedback for a specific post within a campaign. Feeds into ML learning loop.",
+        "operationId": "submit_post_feedback_api_v2_campaigns__campaign_id__posts__post_id__feedback_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Campaign ID the post belongs to",
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID the post belongs to"
+          },
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Post ID to provide feedback for",
+              "title": "Post Id"
+            },
+            "description": "Post ID to provide feedback for"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThumbsFeedbackCreate",
+                "description": "Feedback submission data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThumbsFeedbackResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/performance": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Submit batch performance metrics",
+        "description": "Submit engagement and performance metrics for multiple posts from social media platforms. Feeds into ML learning loop.",
+        "operationId": "submit_performance_metrics_api_v2_campaigns__campaign_id__performance_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Campaign ID the posts belong to",
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID the posts belong to"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchPerformanceCreate",
+                "description": "Batch of performance metrics"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchPerformanceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/content/{content_id}/images": {
@@ -8666,6 +8799,52 @@
         "type": "object",
         "title": "BatchMetricResponse",
         "description": "Schema for batch metric ingestion response."
+      },
+      "BatchPerformanceCreate": {
+        "properties": {
+          "posts": {
+            "items": {
+              "$ref": "#/components/schemas/PostPerformanceMetric"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Posts",
+            "description": "List of post performance metrics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "posts"
+        ],
+        "title": "BatchPerformanceCreate",
+        "description": "Schema for batch performance metrics submission.\n\nPhase 1 ML improvements: Accepts metrics for multiple posts at once.\nUsed for POST /api/v2/campaigns/{campaign_id}/performance"
+      },
+      "BatchPerformanceResponse": {
+        "properties": {
+          "submittedCount": {
+            "type": "integer",
+            "title": "Submittedcount",
+            "description": "Number of metrics successfully submitted",
+            "default": 0
+          },
+          "failedCount": {
+            "type": "integer",
+            "title": "Failedcount",
+            "description": "Number of metrics that failed",
+            "default": 0
+          },
+          "performanceIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Performanceids",
+            "description": "IDs of created performance records"
+          }
+        },
+        "type": "object",
+        "title": "BatchPerformanceResponse",
+        "description": "Response schema for batch performance submission."
       },
       "BatchPostSelectionRequest": {
         "properties": {
@@ -15938,6 +16117,178 @@
         "title": "PostContent",
         "description": "Schema for post content in approval request."
       },
+      "PostPerformanceMetric": {
+        "properties": {
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "Post ID the metrics relate to"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform",
+            "description": "Social media platform (instagram, tiktok, linkedin, twitter)"
+          },
+          "impressions": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impressions",
+            "description": "Total impressions/views"
+          },
+          "engagementRate": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engagementrate",
+            "description": "Engagement rate as decimal (0.04 = 4%)"
+          },
+          "likes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Likes",
+            "description": "Number of likes"
+          },
+          "comments": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comments",
+            "description": "Number of comments"
+          },
+          "shares": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shares",
+            "description": "Number of shares"
+          },
+          "saves": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Saves",
+            "description": "Number of saves/bookmarks"
+          },
+          "clicks": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clicks",
+            "description": "Number of link clicks"
+          },
+          "reach": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reach",
+            "description": "Unique accounts reached"
+          },
+          "videoViews": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videoviews",
+            "description": "Video views"
+          },
+          "videoCompletionRate": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videocompletionrate",
+            "description": "Video completion rate (0-1)"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "When the metrics were recorded"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "Additional platform-specific metrics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postId",
+          "platform",
+          "timestamp"
+        ],
+        "title": "PostPerformanceMetric",
+        "description": "Schema for a single post's performance metrics.\n\nPhase 1 ML improvements: Used within batch performance submission."
+      },
       "PostPlan": {
         "properties": {
           "day": {
@@ -19433,6 +19784,85 @@
           "role": "user",
           "thread_id": "thread-550e8400-e29b-41d4-a716-446655440001"
         }
+      },
+      "ThumbsFeedbackCreate": {
+        "properties": {
+          "feedbackType": {
+            "type": "string",
+            "enum": [
+              "thumbs",
+              "edit",
+              "selection",
+              "performance"
+            ],
+            "title": "Feedbacktype",
+            "description": "Type of feedback being submitted"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Feedback value - 'up'/'down' for thumbs, actual content for edit"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "Optional additional context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "feedbackType",
+          "value"
+        ],
+        "title": "ThumbsFeedbackCreate",
+        "description": "Schema for submitting thumbs up/down feedback on generated content.\n\nPhase 1 ML improvements: Simple feedback mechanism for quick user input.\nUsed for POST /api/v2/campaigns/{campaign_id}/posts/{post_id}/feedback"
+      },
+      "ThumbsFeedbackResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "postId": {
+            "type": "string",
+            "title": "Postid"
+          },
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid"
+          },
+          "feedbackType": {
+            "type": "string",
+            "title": "Feedbacktype"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "postId",
+          "campaignId",
+          "feedbackType",
+          "value",
+          "createdAt"
+        ],
+        "title": "ThumbsFeedbackResponse",
+        "description": "Response schema for thumbs feedback submission."
       },
       "ToneAttributesV2": {
         "properties": {

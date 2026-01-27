@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.836] - 2026-01-27
+
+### Changes
+- feat: Add ML feedback API endpoints for Phase 1 (#2609)
+
+**Source:** project-beta-api@bd824179
+
 ## [v0.7.835] - 2026-01-27
 
 ### Changes
