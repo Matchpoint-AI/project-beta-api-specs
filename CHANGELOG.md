@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.843] - 2026-01-27
+
+### Changes
+- Remove orphaned url_fetch_service, utility schemas, and broken task import (YAGNI) (#2622)
+
+**Source:** project-beta-api@185df809
+
 ## [v0.7.842] - 2026-01-27
 
 ### Changes
