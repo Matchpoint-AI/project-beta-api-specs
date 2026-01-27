@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.854] - 2026-01-27
+
+### Changes
+- test: Add comprehensive tests for scene mix plan repository (#2635)
+
+**Source:** project-beta-api@43047e7f
+
 ## [v0.7.853] - 2026-01-27
 
 ### Changes
