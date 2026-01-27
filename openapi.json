@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.824"
+    "version": "0.7.825"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -1047,6 +1047,158 @@
           },
           "404": {
             "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/webhooks/brand-crawl-output": {
+      "post": {
+        "tags": [
+          "brand-crawl-output"
+        ],
+        "summary": "Receive brand crawl output from single topic",
+        "description": "Pub/Sub push endpoint for receiving brand crawl results from the simplified single output topic (agentic-brand-crawler-{env}-output). Updates brand record with brand_assets and sets knowledge status. Issue #184: Replaces dual CORE/DEEP topic system.",
+        "operationId": "receive_brand_crawl_output_api_v2_webhooks_brand_crawl_output_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandCrawlOutputEnvelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandCrawlOutputAckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/pubsub/brand-crawl-output": {
+      "post": {
+        "tags": [
+          "brand-crawl-output"
+        ],
+        "summary": "Receive brand crawl output from Pub/Sub (alias)",
+        "description": "Alias endpoint for Pub/Sub push subscription. Routes to the same handler as /webhooks/brand-crawl-output.",
+        "operationId": "receive_brand_crawl_output_alias_api_v2_pubsub_brand_crawl_output_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandCrawlOutputEnvelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandCrawlOutputAckResponse"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -8758,6 +8910,53 @@
         "type": "object",
         "title": "BrandCrawlAssetsInfo",
         "description": "Assets discovered during brand crawl."
+      },
+      "BrandCrawlOutputAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id",
+            "description": "Brand ID from message"
+          },
+          "crawl_status": {
+            "type": "string",
+            "title": "Crawl Status",
+            "description": "Crawl status (completed/failed)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "crawl_status"
+        ],
+        "title": "BrandCrawlOutputAckResponse",
+        "description": "Response for successful brand crawl output processing."
+      },
+      "BrandCrawlOutputEnvelope": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/PubSubMessage",
+            "description": "The Pub/Sub message"
+          },
+          "subscription": {
+            "type": "string",
+            "title": "Subscription",
+            "description": "Subscription name that sent the message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "subscription"
+        ],
+        "title": "BrandCrawlOutputEnvelope",
+        "description": "Pub/Sub push subscription envelope for brand crawl output.\n\nThis is the outer wrapper that Pub/Sub sends to push endpoints.\nThe actual message data is base64-encoded inside message.data."
       },
       "BrandCrawlPerformance": {
         "properties": {

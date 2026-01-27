@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.825] - 2026-01-27
+
+### Changes
+- feat: Add handler for simplified brand crawl output (#2592)
+
+**Source:** project-beta-api@e58ff8b8
+
 ## [v0.7.824] - 2026-01-27
 
 ### Changes
