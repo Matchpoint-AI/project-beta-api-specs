@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.828] - 2026-01-27
+
+### Changes
+- docs(specs): Add spec ethos guidelines to README (#2600)
+
+**Source:** project-beta-api@cdf0f1b1
+
 ## [v0.7.827] - 2026-01-27
 
 ### Changes
