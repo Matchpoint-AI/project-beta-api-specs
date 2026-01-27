@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.839] - 2026-01-27
+
+### Changes
+- Remove unused notification system and brand_users model (YAGNI) (#2613)
+
+**Source:** project-beta-api@38a25d50
+
 ## [v0.7.838] - 2026-01-27
 
 ### Changes
