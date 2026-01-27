@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.832] - 2026-01-27
+
+### Changes
+- fix: Ensure brand knowledge_status updates correctly from crawler output (#2602)
+
+**Source:** project-beta-api@21a08768
+
 ## [v0.7.831] - 2026-01-27
 
 ### Changes
