@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.824] - 2026-01-27
+
+### Changes
+- docs: Update crawler specs for single-output architecture (#2594)
+
+**Source:** project-beta-api@5263a1d5
+
 ## [v0.7.823] - 2026-01-26
 
 ### Changes
