@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.826] - 2026-01-27
+
+### Changes
+- docs(specs): Update flow.md for single-output brand crawl architecture (#2596)
+
+**Source:** project-beta-api@78450bdc
+
 ## [v0.7.825] - 2026-01-27
 
 ### Changes
