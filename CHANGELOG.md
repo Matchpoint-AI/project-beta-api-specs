@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.844] - 2026-01-27
+
+### Changes
+- docs: Update documentation for content generator service split (#2629)
+
+**Source:** project-beta-api@60ef5b33
+
 ## [v0.7.843] - 2026-01-27
 
 ### Changes
