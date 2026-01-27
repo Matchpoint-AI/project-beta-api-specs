@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.850] - 2026-01-27
+
+### Changes
+- test: Add comprehensive tests for content generator output repository (#2632)
+
+**Source:** project-beta-api@b0b3411a
+
 ## [v0.7.849] - 2026-01-27
 
 ### Changes
