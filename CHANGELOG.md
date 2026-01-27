@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.846] - 2026-01-27
+
+### Changes
+- chore: Add CODEOWNERS to protect specs/ directory (#2624)
+
+**Source:** project-beta-api@9549f58e
+
 ## [v0.7.845] - 2026-01-27
 
 ### Changes
