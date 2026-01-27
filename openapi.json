@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.832"
+    "version": "0.7.833"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -7246,6 +7246,74 @@
           },
           "500": {
             "description": "Analysis failed"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/test/brands/{brand_id}/seed/knowledge": {
+      "post": {
+        "tags": [
+          "test-seed"
+        ],
+        "summary": "Seed Brand Knowledge",
+        "description": "Seed brand knowledge directly (bypasses crawler).\n\nThis endpoint is for E2E testing when the brand crawler is unavailable.\nIt:\n1. Updates brand status to 'crawl_complete' with progress 100\n2. Creates/updates brand knowledge with test data\n\nSECURITY: Only enabled in dev/staging environments.",
+        "operationId": "seed_brand_knowledge_api_v2_test_brands__brand_id__seed_knowledge_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to seed knowledge for",
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to seed knowledge for"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedBrandKnowledgeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Brand knowledge seeded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedBrandKnowledgeResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - endpoint disabled in production"
+          },
+          "404": {
+            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
@@ -18448,6 +18516,218 @@
         ],
         "title": "ScheduledPostStatusUpdate",
         "description": "Request schema for updating scheduled post status.\n\nUsed by campaign-publisher worker to update status after publishing."
+      },
+      "SeedBrandKnowledgeRequest": {
+        "properties": {
+          "mission": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mission",
+            "description": "Brand mission statement",
+            "default": "To provide exceptional testing experiences"
+          },
+          "value_proposition": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Proposition",
+            "description": "Value proposition",
+            "default": "We deliver reliable, high-quality test results"
+          },
+          "brand_persona": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Persona",
+            "description": "Brand persona description",
+            "default": "Innovative, reliable, customer-focused"
+          },
+          "tone_and_voice": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone And Voice",
+            "description": "Tone and voice guidelines",
+            "default": "Professional yet approachable, confident but not arrogant"
+          },
+          "primary_colors": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Colors",
+            "description": "Primary brand colors (hex)",
+            "default": [
+              "#1E40AF",
+              "#3B82F6",
+              "#60A5FA"
+            ]
+          },
+          "target_audience": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Audience",
+            "description": "Target audience description",
+            "default": "Tech-savvy professionals aged 25-45 who value quality and innovation"
+          },
+          "audience_emotions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audience Emotions",
+            "description": "Emotions to evoke in audience",
+            "default": [
+              "trust",
+              "excitement",
+              "confidence"
+            ]
+          },
+          "audience_interests": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audience Interests",
+            "description": "Target audience interests",
+            "default": [
+              "technology",
+              "innovation",
+              "efficiency"
+            ]
+          },
+          "products": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Products",
+            "description": "Brand products/services",
+            "default": [
+              {
+                "name": "Test Product",
+                "category": "Software"
+              },
+              {
+                "name": "Test Service",
+                "category": "Services"
+              }
+            ]
+          },
+          "personality_traits": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Personality Traits",
+            "description": "Brand personality traits",
+            "default": [
+              "innovative",
+              "reliable",
+              "professional",
+              "modern"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "SeedBrandKnowledgeRequest",
+        "description": "Request model for seeding brand knowledge."
+      },
+      "SeedBrandKnowledgeResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "knowledge_status": {
+            "type": "string",
+            "title": "Knowledge Status"
+          },
+          "knowledge_progress": {
+            "type": "integer",
+            "title": "Knowledge Progress"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "brand_id",
+          "message",
+          "knowledge_status",
+          "knowledge_progress"
+        ],
+        "title": "SeedBrandKnowledgeResponse",
+        "description": "Response model for seed operation."
       },
       "SelectionRateBySceneType": {
         "properties": {
