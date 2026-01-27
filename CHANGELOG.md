@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.840] - 2026-01-27
+
+### Changes
+- docs(specs): Add ML Features spec for Phases 2-4 (#2616)
+
+**Source:** project-beta-api@20460b33
+
 ## [v0.7.839] - 2026-01-27
 
 ### Changes
