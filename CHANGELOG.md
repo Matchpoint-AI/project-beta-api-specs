@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.845] - 2026-01-27
+
+### Changes
+- chore: Baseline coverage configuration for 90% target (#2623)
+
+**Source:** project-beta-api@1ff519a3
+
 ## [v0.7.844] - 2026-01-27
 
 ### Changes
