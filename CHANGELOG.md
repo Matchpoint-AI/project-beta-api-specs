@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.841] - 2026-01-27
+
+### Changes
+- Remove dead test_seed_controller and version_controller (YAGNI) (#2619)
+
+**Source:** project-beta-api@b42ddda1
+
 ## [v0.7.840] - 2026-01-27
 
 ### Changes
