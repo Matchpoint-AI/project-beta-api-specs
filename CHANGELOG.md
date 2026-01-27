@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.847] - 2026-01-27
+
+### Changes
+- refactor(services): Rename content-generator to post-generator (#2626)
+
+**Source:** project-beta-api@45b29a4d
+
 ## [v0.7.846] - 2026-01-27
 
 ### Changes
