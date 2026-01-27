@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.829] - 2026-01-27
+
+### Changes
+- feat(api): Simplify knowledge status enum to 3 values (#1042) (#2601)
+
+**Source:** project-beta-api@5ded0a4a
+
 ## [v0.7.828] - 2026-01-27
 
 ### Changes

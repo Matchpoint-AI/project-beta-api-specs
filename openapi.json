@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.828"
+    "version": "0.7.829"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -9395,7 +9395,7 @@
           "status": {
             "type": "string",
             "title": "Status",
-            "description": "Current knowledge extraction status (not_started, quick_extract_pending, quick_extract_complete, deep_crawl_pending, deep_crawl_running, deep_crawl_complete, failed)"
+            "description": "Current knowledge extraction status (not_started, pending, crawl_complete, failed)"
           },
           "progress": {
             "type": "integer",
@@ -9890,7 +9890,7 @@
           "knowledgeStatus": {
             "type": "string",
             "title": "Knowledgestatus",
-            "description": "Status of knowledge extraction (not_started, quick_extract_pending, quick_extract_complete, deep_crawl_pending, deep_crawl_running, deep_crawl_complete, failed)",
+            "description": "Status of knowledge extraction (not_started, pending, crawl_complete, failed)",
             "default": "not_started"
           },
           "knowledgeProgress": {
