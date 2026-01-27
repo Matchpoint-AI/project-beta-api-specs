@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.841"
+    "version": "0.7.842"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5426,6 +5426,368 @@
         }
       }
     },
+    "/api/v2/brands/{brand_id}/learning/state": {
+      "get": {
+        "tags": [
+          "learning-state"
+        ],
+        "summary": "Get brand learning state",
+        "description": "Get current Thompson Sampling posteriors for all scene types",
+        "operationId": "get_learning_state_api_v2_brands__brand_id__learning_state_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to get learning state for",
+              "examples": [
+                "brand-123",
+                "abc-def-ghi"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to get learning state for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Learning state retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BrandLearningStateResponse"
+                  },
+                  "title": "Response 200 Get Learning State Api V2 Brands  Brand Id  Learning State Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/learning/state/feedback": {
+      "post": {
+        "tags": [
+          "learning-state"
+        ],
+        "summary": "Submit learning state feedback",
+        "description": "Submit engagement feedback to update Thompson Sampling posteriors",
+        "operationId": "submit_learning_state_feedback_api_v2_brands__brand_id__learning_state_feedback_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to update learning state for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to update learning state for"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLearningStateRequest",
+                "description": "Update request with scene type and reward"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Feedback processed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateLearningStateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/learning/state/recommend": {
+      "get": {
+        "tags": [
+          "learning-state"
+        ],
+        "summary": "Get Thompson Sampling recommendation",
+        "description": "Get scene type recommendation using Thompson Sampling",
+        "operationId": "get_recommendation_api_v2_brands__brand_id__learning_state_recommend_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to get recommendation for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to get recommendation for"
+          },
+          {
+            "name": "exploration_rate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "description": "Probability of random exploration (0.0 to 1.0)",
+              "default": 0.1,
+              "title": "Exploration Rate"
+            },
+            "description": "Probability of random exploration (0.0 to 1.0)"
+          },
+          {
+            "name": "min_observations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Minimum observations before trusting posteriors",
+              "default": 50,
+              "title": "Min Observations"
+            },
+            "description": "Minimum observations before trusting posteriors"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recommendation generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThompsonSamplingRecommendation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/learning/state/initialize": {
+      "post": {
+        "tags": [
+          "learning-state"
+        ],
+        "summary": "Initialize brand learning state",
+        "description": "Initialize Thompson Sampling posteriors for a new brand",
+        "operationId": "initialize_learning_state_api_v2_brands__brand_id__learning_state_initialize_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to initialize learning state for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to initialize learning state for"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitializeLearningStateRequest",
+                "description": "Optional initialization parameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Learning state initialized successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BrandLearningStateResponse"
+                  },
+                  "title": "Response 201 Initialize Learning State Api V2 Brands  Brand Id  Learning State Initialize Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/learning/state/agentic": {
+      "get": {
+        "tags": [
+          "learning-state"
+        ],
+        "summary": "Get agentic learning state",
+        "description": "Get learning state formatted for fat message embedding",
+        "operationId": "get_agentic_learning_state_api_v2_brands__brand_id__learning_state_agentic_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to get agentic learning state for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to get agentic learning state for"
+          },
+          {
+            "name": "min_observations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Minimum observations threshold",
+              "default": 50,
+              "title": "Min Observations"
+            },
+            "description": "Minimum observations threshold"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agentic learning state retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgenticLearningState"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/metrics": {
       "get": {
         "tags": [
@@ -8380,6 +8742,63 @@
   },
   "components": {
     "schemas": {
+      "AgenticLearningState": {
+        "properties": {
+          "scene_posteriors": {
+            "items": {
+              "$ref": "#/components/schemas/AgenticScenePosterior"
+            },
+            "type": "array",
+            "title": "Scene Posteriors",
+            "description": "Beta distribution posteriors per scene type"
+          },
+          "min_observations_threshold": {
+            "type": "integer",
+            "title": "Min Observations Threshold",
+            "description": "Min observations before trusting posteriors",
+            "default": 50
+          }
+        },
+        "type": "object",
+        "title": "AgenticLearningState",
+        "description": "Learning state for embedding in fat Pub/Sub message.\n\nThis is fetched by the API and embedded in the content generation\nmessage. The content generator does NOT fetch this directly."
+      },
+      "AgenticScenePosterior": {
+        "properties": {
+          "scene_type": {
+            "type": "string",
+            "title": "Scene Type",
+            "description": "Scene type (lifestyle, product, etc.)"
+          },
+          "alpha": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Alpha",
+            "description": "Beta dist alpha param",
+            "default": 1.0
+          },
+          "beta": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Beta",
+            "description": "Beta dist beta param",
+            "default": 1.0
+          },
+          "observation_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Observation Count",
+            "description": "Total observations",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "scene_type"
+        ],
+        "title": "AgenticScenePosterior",
+        "description": "Beta distribution parameters for embedding in fat message.\n\nThis schema is used when building the Pub/Sub message for the\ncontent generator. The content generator does NOT call this API."
+      },
       "AllSessionsRevokedResponse": {
         "properties": {
           "message": {
@@ -9730,6 +10149,73 @@
         ],
         "title": "BrandKnowledgeV2Response",
         "description": "V2 Response model for simplified brand knowledge extraction."
+      },
+      "BrandLearningStateResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id"
+          },
+          "scene_type": {
+            "type": "string",
+            "title": "Scene Type",
+            "description": "Scene type: lifestyle, product, testimonial, educational"
+          },
+          "alpha": {
+            "type": "number",
+            "title": "Alpha",
+            "description": "Beta distribution alpha parameter"
+          },
+          "beta": {
+            "type": "number",
+            "title": "Beta",
+            "description": "Beta distribution beta parameter"
+          },
+          "observation_count": {
+            "type": "integer",
+            "title": "Observation Count",
+            "description": "Total observations for this scene type"
+          },
+          "positive_outcomes": {
+            "type": "integer",
+            "title": "Positive Outcomes",
+            "description": "Count of positive outcomes"
+          },
+          "negative_outcomes": {
+            "type": "integer",
+            "title": "Negative Outcomes",
+            "description": "Count of negative outcomes"
+          },
+          "expected_success_rate": {
+            "type": "number",
+            "title": "Expected Success Rate",
+            "description": "Expected success rate (alpha / (alpha + beta))"
+          },
+          "last_updated": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "brand_id",
+          "scene_type",
+          "alpha",
+          "beta",
+          "observation_count",
+          "positive_outcomes",
+          "negative_outcomes",
+          "expected_success_rate",
+          "last_updated"
+        ],
+        "title": "BrandLearningStateResponse",
+        "description": "Response schema for brand learning state."
       },
       "BrandOnboardingProgressResponse": {
         "properties": {
@@ -14970,6 +15456,42 @@
         "title": "ImageGenerationStatus",
         "description": "Image generation status values for individual posts."
       },
+      "InitializeLearningStateRequest": {
+        "properties": {
+          "scene_types": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scene Types",
+            "description": "Scene types to initialize. If None, uses defaults."
+          },
+          "initial_alpha": {
+            "type": "number",
+            "minimum": 0.1,
+            "title": "Initial Alpha",
+            "description": "Initial alpha for all scene types (uniform prior = 1.0)",
+            "default": 1.0
+          },
+          "initial_beta": {
+            "type": "number",
+            "minimum": 0.1,
+            "title": "Initial Beta",
+            "description": "Initial beta for all scene types (uniform prior = 1.0)",
+            "default": 1.0
+          }
+        },
+        "type": "object",
+        "title": "InitializeLearningStateRequest",
+        "description": "Request to initialize learning state for a new brand."
+      },
       "InstagramOAuthRequest": {
         "properties": {
           "code": {
@@ -19359,6 +19881,47 @@
         "title": "TextPosition",
         "description": "Text overlay positions."
       },
+      "ThompsonSamplingRecommendation": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id"
+          },
+          "recommended_scene_type": {
+            "type": "string",
+            "title": "Recommended Scene Type",
+            "description": "Scene type selected by Thompson Sampling"
+          },
+          "scene_probabilities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Scene Probabilities",
+            "description": "Expected success rate (posterior mean) for each scene type"
+          },
+          "exploration_mode": {
+            "type": "boolean",
+            "title": "Exploration Mode",
+            "description": "Whether this was an exploration (random) selection"
+          },
+          "min_observations_met": {
+            "type": "boolean",
+            "title": "Min Observations Met",
+            "description": "Whether minimum observation threshold was met"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "recommended_scene_type",
+          "scene_probabilities",
+          "exploration_mode",
+          "min_observations_met"
+        ],
+        "title": "ThompsonSamplingRecommendation",
+        "description": "Response schema for Thompson Sampling scene recommendation."
+      },
       "ThreadMessageCreate": {
         "properties": {
           "role": {
@@ -19632,6 +20195,84 @@
         ],
         "title": "UnifiedPulseStatusResponse",
         "description": "Unified response for GET /pulses/{correlation_id} endpoint.\n\nThis schema provides a consistent response format for pulses from\nany agentic service. The service_type field indicates the source.\n\nIssue #2428: Frontend polls single endpoint for all agentic status."
+      },
+      "UpdateLearningStateRequest": {
+        "properties": {
+          "scene_type": {
+            "type": "string",
+            "title": "Scene Type",
+            "description": "Scene type that received feedback",
+            "examples": [
+              "lifestyle",
+              "product",
+              "testimonial",
+              "educational"
+            ]
+          },
+          "reward": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Reward",
+            "description": "Engagement reward signal (0=negative, 1=positive, 0.5=neutral)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scene_type",
+          "reward"
+        ],
+        "title": "UpdateLearningStateRequest",
+        "description": "Request schema for updating learning state after feedback."
+      },
+      "UpdateLearningStateResponse": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id"
+          },
+          "scene_type": {
+            "type": "string",
+            "title": "Scene Type"
+          },
+          "previous_alpha": {
+            "type": "number",
+            "title": "Previous Alpha"
+          },
+          "previous_beta": {
+            "type": "number",
+            "title": "Previous Beta"
+          },
+          "new_alpha": {
+            "type": "number",
+            "title": "New Alpha"
+          },
+          "new_beta": {
+            "type": "number",
+            "title": "New Beta"
+          },
+          "observation_count": {
+            "type": "integer",
+            "title": "Observation Count"
+          },
+          "expected_success_rate": {
+            "type": "number",
+            "title": "Expected Success Rate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "scene_type",
+          "previous_alpha",
+          "previous_beta",
+          "new_alpha",
+          "new_beta",
+          "observation_count",
+          "expected_success_rate"
+        ],
+        "title": "UpdateLearningStateResponse",
+        "description": "Response schema after updating learning state."
       },
       "UserRegistrationResponse": {
         "properties": {

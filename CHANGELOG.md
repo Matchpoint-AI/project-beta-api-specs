@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.842] - 2026-01-27
+
+### Changes
+- feat(ml): Add Phase 2 Thompson Sampling for scene selection (#2618)
+
+**Source:** project-beta-api@f8aea9bf
+
 ## [v0.7.841] - 2026-01-27
 
 ### Changes
