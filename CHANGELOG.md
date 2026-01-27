@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.838] - 2026-01-27
+
+### Changes
+- feat: Add learning state to agentic content generation message (#2611)
+
+**Source:** project-beta-api@0e0de669
+
 ## [v0.7.837] - 2026-01-27
 
 ### Changes
