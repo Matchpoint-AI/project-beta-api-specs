@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.854"
+    "version": "0.7.855"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -8761,7 +8761,7 @@
         },
         "type": "object",
         "title": "AgenticLearningState",
-        "description": "Learning state for embedding in fat Pub/Sub message.\n\nThis is fetched by the API and embedded in the content generation\nmessage. The content generator does NOT fetch this directly."
+        "description": "Learning state for embedding in fat Pub/Sub message.\n\nThis is fetched by the API and embedded in the post generation\nmessage. The post-generator does NOT fetch this directly."
       },
       "AgenticScenePosterior": {
         "properties": {
@@ -8797,7 +8797,7 @@
           "scene_type"
         ],
         "title": "AgenticScenePosterior",
-        "description": "Beta distribution parameters for embedding in fat message.\n\nThis schema is used when building the Pub/Sub message for the\ncontent generator. The content generator does NOT call this API."
+        "description": "Beta distribution parameters for embedding in fat message.\n\nThis schema is used when building the Pub/Sub message for the\npost-generator. The post-generator does NOT call this API."
       },
       "AllSessionsRevokedResponse": {
         "properties": {
@@ -12142,7 +12142,7 @@
           "statusUrl"
         ],
         "title": "CampaignSpecificationAsyncResponse",
-        "description": "Response schema for async campaign specification generation request.\n\nIssue #1549: Returns when a specification generation request has been published.\nThe actual generation happens asynchronously via content-generator.\n\nFollows the same pattern as ContentGenerationResponse."
+        "description": "Response schema for async campaign specification generation request.\n\nIssue #1549: Returns when a specification generation request has been published.\nThe actual generation happens asynchronously via post-generator.\n\nFollows the same pattern as ContentGenerationResponse."
       },
       "CampaignSpecificationRequest": {
         "properties": {},

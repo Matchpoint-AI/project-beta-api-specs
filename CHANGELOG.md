@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.855] - 2026-01-27
+
+### Changes
+- refactor(schemas): Update content-generator refs to post-generator (#2625)
+
+**Source:** project-beta-api@178bbf66
+
 ## [v0.7.854] - 2026-01-27
 
 ### Changes
