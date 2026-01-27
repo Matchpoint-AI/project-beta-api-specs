@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.848] - 2026-01-27
+
+### Changes
+- test: Add comprehensive tests for dead letter queue repository (#2631)
+
+**Source:** project-beta-api@a9c7766c
+
 ## [v0.7.847] - 2026-01-27
 
 ### Changes
