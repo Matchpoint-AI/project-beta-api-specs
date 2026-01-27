@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.849] - 2026-01-27
+
+### Changes
+- test: Add comprehensive tests for session repository (#2630)
+
+**Source:** project-beta-api@7e3ac31e
+
 ## [v0.7.848] - 2026-01-27
 
 ### Changes
