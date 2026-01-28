@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.868] - 2026-01-28
+
+### Changes
+- docs: Rename agentic-content-designer to content-designer (#2650)
+
+**Source:** project-beta-api@62bfede7
+
 ## [v0.7.867] - 2026-01-28
 
 ### Changes
