@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.880] - 2026-01-28
+
+### Changes
+- refactor(specs): Consolidate .ai directory content into /specs (#2665)
+
+**Source:** project-beta-api@ddc073ee
+
 ## [v0.7.879] - 2026-01-28
 
 ### Changes
