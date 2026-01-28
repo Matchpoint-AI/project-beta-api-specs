@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.883] - 2026-01-28
+
+### Changes
+- test: Add timeout tests for PubSubAgenticContentGenerationPublisher (#2669)
+
+**Source:** project-beta-api@916802e2
+
 ## [v0.7.882] - 2026-01-28
 
 ### Changes
