@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.860] - 2026-01-28
+
+### Changes
+- test: Add tests for scene_performance_metrics and policy_version repositories (#2636)
+
+**Source:** project-beta-api@aa100f14
+
 ## [v0.7.859] - 2026-01-28
 
 ### Changes
