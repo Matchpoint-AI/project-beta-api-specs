@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.863] - 2026-01-28
+
+### Changes
+- refactor(tests): Update content-generator refs to service split names (#2628)
+
+**Source:** project-beta-api@d0666790
+
 ## [v0.7.862] - 2026-01-28
 
 ### Changes
