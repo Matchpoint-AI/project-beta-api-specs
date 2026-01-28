@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.870] - 2026-01-28
+
+### Changes
+- docs: API phase tracking specification (#2648)
+
+**Source:** project-beta-api@72fdb8f6
+
 ## [v0.7.869] - 2026-01-28
 
 ### Changes
