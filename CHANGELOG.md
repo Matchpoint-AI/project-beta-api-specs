@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.875] - 2026-01-28
+
+### Changes
+- fix: Update migration workflow to use arc-runner-sa service account (#2656)
+
+**Source:** project-beta-api@d58dde0d
+
 ## [v0.7.874] - 2026-01-28
 
 ### Changes
