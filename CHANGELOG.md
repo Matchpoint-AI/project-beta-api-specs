@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.859] - 2026-01-28
+
+### Changes
+- chore: update content-generator refs in controllers (#2627)
+
+**Source:** project-beta-api@f3156e91
+
 ## [v0.7.858] - 2026-01-28
 
 ### Changes

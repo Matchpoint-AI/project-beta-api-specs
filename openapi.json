@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.858"
+    "version": "0.7.859"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -2159,7 +2159,7 @@
           "campaigns"
         ],
         "summary": "Trigger Content Generation",
-        "description": "Trigger content generation for a campaign.\n\nPublishes a content generation request to the agentic-content-generator service.\nThe request is processed asynchronously - this endpoint returns immediately\nwith a 202 Accepted response.\n\nIssue #2192: Uses agentic content generation with fat message pattern:\n- All brand/campaign context included in the message\n- Agentic service has no database access\n- Generation progress can be monitored via the workflow status endpoint\n\nIssue #2223: Pre-creates placeholder posts before publishing:\n- Calculates total posts from campaign duration and posts_per_day\n- Creates posts with IDs like \"week_1_day_1_post_1\"\n- Includes post_placeholders in fat message for correlation\n- Generator uses these IDs when returning outputs\n\nArgs:\n    campaign_id: The campaign ID to generate content for\n    firebase_user: Authenticated user (from JWT token)\n    campaign_service: Service for campaign operations\n    brand_repository: Repository for brand data access\n    post_repository: Repository for post creation\n    agentic_publisher: Publisher for agentic content generation\n    brand_knowledge_service: Service for brand knowledge retrieval\n\nReturns:\n    ContentGenerationResponse with message_id for tracking\n\nRaises:\n    HTTPException: 404 if campaign not found, 500 if publishing fails",
+        "description": "Trigger content generation for a campaign.\n\nPublishes a content generation request to the post-generator service.\nThe request is processed asynchronously - this endpoint returns immediately\nwith a 202 Accepted response.\n\nIssue #2192: Uses agentic content generation with fat message pattern:\n- All brand/campaign context included in the message\n- Agentic service has no database access\n- Generation progress can be monitored via the workflow status endpoint\n\nIssue #2223: Pre-creates placeholder posts before publishing:\n- Calculates total posts from campaign duration and posts_per_day\n- Creates posts with IDs like \"week_1_day_1_post_1\"\n- Includes post_placeholders in fat message for correlation\n- Generator uses these IDs when returning outputs\n\nArgs:\n    campaign_id: The campaign ID to generate content for\n    firebase_user: Authenticated user (from JWT token)\n    campaign_service: Service for campaign operations\n    brand_repository: Repository for brand data access\n    post_repository: Repository for post creation\n    agentic_publisher: Publisher for agentic content generation\n    brand_knowledge_service: Service for brand knowledge retrieval\n\nReturns:\n    ContentGenerationResponse with message_id for tracking\n\nRaises:\n    HTTPException: 404 if campaign not found, 500 if publishing fails",
         "operationId": "trigger_content_generation_api_v2_campaigns__campaign_id__content_generations_post",
         "security": [
           {
@@ -2287,7 +2287,7 @@
           "campaigns"
         ],
         "summary": "Generate Campaign Specifications",
-        "description": "Trigger async campaign specification generation.\n\nIssue #2192: Uses agentic content generation with fat message pattern.\n\nPublishes a content generation request to the agentic-content-generator service.\nThe agentic service handles specifications as part of its strategy phase.\nThe request is processed asynchronously - this endpoint returns immediately\nwith a 202 Accepted response.\n\nArgs:\n    campaign_id: The campaign ID to generate specifications for\n    firebase_user: Authenticated user (from JWT token)\n    request: Request data (currently unused, reserved for future use)\n    campaign_service: Service for campaign operations\n    brand_repository: Repository for brand data access\n    agentic_publisher: Publisher for agentic content generation\n    brand_knowledge_service: Service for brand knowledge retrieval\n\nReturns:\n    CampaignSpecificationAsyncResponse with message_id for tracking\n\nRaises:\n    HTTPException: 404 if campaign not found, 500 if publishing fails",
+        "description": "Trigger async campaign specification generation.\n\nIssue #2192: Uses agentic content generation with fat message pattern.\n\nPublishes a content generation request to the post-generator service.\nThe agentic service handles specifications as part of its strategy phase.\nThe request is processed asynchronously - this endpoint returns immediately\nwith a 202 Accepted response.\n\nArgs:\n    campaign_id: The campaign ID to generate specifications for\n    firebase_user: Authenticated user (from JWT token)\n    request: Request data (currently unused, reserved for future use)\n    campaign_service: Service for campaign operations\n    brand_repository: Repository for brand data access\n    agentic_publisher: Publisher for agentic content generation\n    brand_knowledge_service: Service for brand knowledge retrieval\n\nReturns:\n    CampaignSpecificationAsyncResponse with message_id for tracking\n\nRaises:\n    HTTPException: 404 if campaign not found, 500 if publishing fails",
         "operationId": "generate_campaign_specifications_api_v2_campaigns__campaign_id__specifications_post",
         "security": [
           {
@@ -2934,7 +2934,7 @@
           "campaigns"
         ],
         "summary": "Generate Scene Mix Plan Async",
-        "description": "Start async plan generation for a campaign.\n\nIssue #1736: Added authorization check to prevent IDOR vulnerability.\nIssue #2192: Uses agentic content generation with fat message pattern.\n\nThis endpoint publishes a content generation request to the agentic-content-generator.\nThe agentic service handles plan generation as part of its strategy phase.\nUse GET /campaigns/{campaign_id}/plan/generations/status to poll for completion.\n\nPrerequisites:\n- Policy must be generated first (POST /campaigns/{id}/policy)\n\nReturns:\n    202 Accepted with status_url and correlation_id for tracking",
+        "description": "Start async plan generation for a campaign.\n\nIssue #1736: Added authorization check to prevent IDOR vulnerability.\nIssue #2192: Uses agentic content generation with fat message pattern.\n\nThis endpoint publishes a content generation request to the post-generator.\nThe agentic service handles plan generation as part of its strategy phase.\nUse GET /campaigns/{campaign_id}/plan/generations/status to poll for completion.\n\nPrerequisites:\n- Policy must be generated first (POST /campaigns/{id}/policy)\n\nReturns:\n    202 Accepted with status_url and correlation_id for tracking",
         "operationId": "generate_scene_mix_plan_async_api_v2_campaigns__campaign_id__plan_generations_post",
         "security": [
           {
@@ -3750,7 +3750,7 @@
           "content"
         ],
         "summary": "Get Campaign Content",
-        "description": "Get content for a campaign.\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\nIssue #2137: Removed self-healing retry logic (moved to content-generator).\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.\n\nStatus codes:\n- 200: Content exists and is returned\n- 204: Campaign exists but content not generated yet (poll again)\n- 401: Not authenticated\n- 403: Not authorized to access this campaign\n- 404: Campaign does not exist",
+        "description": "Get content for a campaign.\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\nIssue #2137: Removed self-healing retry logic (moved to post-generator).\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.\n\nStatus codes:\n- 200: Content exists and is returned\n- 204: Campaign exists but content not generated yet (poll again)\n- 401: Not authenticated\n- 403: Not authorized to access this campaign\n- 404: Campaign does not exist",
         "operationId": "get_campaign_content_api_v2_campaigns__campaign_id__content_get",
         "security": [
           {
@@ -4564,8 +4564,8 @@
         "tags": [
           "outputs"
         ],
-        "summary": "Receive generated post from content-generator",
-        "description": "Pub/Sub push endpoint for receiving individual generated posts from the content-generator service. Updates the pre-created post record by post_id with generated content (text, image, etc.).",
+        "summary": "Receive generated post from post-generator",
+        "description": "Pub/Sub push endpoint for receiving individual generated posts from the post-generator service. Updates the pre-created post record by post_id with generated content (text, image, etc.).",
         "operationId": "receive_output_api_v2_outputs_post",
         "parameters": [
           {
@@ -4641,7 +4641,7 @@
           "outputs"
         ],
         "summary": "Receive content generation status pulse",
-        "description": "Pub/Sub push endpoint for receiving real-time status pulses from the content-generator service. Stores pulse in Redis for frontend polling. Issue #2428: Now uses unified key pattern pulse:{correlation_id}.",
+        "description": "Pub/Sub push endpoint for receiving real-time status pulses from the post-generator service. Stores pulse in Redis for frontend polling.Issue #2428: Now uses unified key pattern pulse:{correlation_id}.",
         "operationId": "receive_content_pulse_api_v2_content_pulses_post",
         "parameters": [
           {
@@ -7020,8 +7020,8 @@
         "tags": [
           "scenes"
         ],
-        "summary": "Receive scene mix plan from content-generator",
-        "description": "Pub/Sub push endpoint for receiving scene mix plans from the content-generator service. Stores the plan in the database using UPSERT to handle both new and updated plans.",
+        "summary": "Receive scene mix plan from post-generator",
+        "description": "Pub/Sub push endpoint for receiving scene mix plans from the post-generator service. Stores the plan in the database using UPSERT to handle both new and updated plans.",
         "operationId": "receive_scene_mix_api_v2_scenes_post",
         "parameters": [
           {
