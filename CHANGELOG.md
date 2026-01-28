@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.867] - 2026-01-28
+
+### Changes
+- fix: Add graceful error handling and test coverage for learning state (#2644 follow-up) (#2647)
+
+**Source:** project-beta-api@eae8ff9b
+
 ## [v0.7.866] - 2026-01-28
 
 ### Changes
