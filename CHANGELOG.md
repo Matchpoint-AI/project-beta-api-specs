@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.866] - 2026-01-28
+
+### Changes
+- chore: Remove dead SSE endpoint - frontend uses polling (#2646)
+
+**Source:** project-beta-api@965002f4
+
 ## [v0.7.865] - 2026-01-28
 
 ### Changes
