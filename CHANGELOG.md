@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.858] - 2026-01-28
+
+### Changes
+- refactor: Remove unused WebSocket dead code (#2640)
+
+**Source:** project-beta-api@2ac300dd
+
 ## [v0.7.857] - 2026-01-27
 
 ### Changes
