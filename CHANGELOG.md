@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.878] - 2026-01-28
+
+### Changes
+- refactor(db): Extract scene_type from Post.data JSON to dedicated column (#2662)
+
+**Source:** project-beta-api@b046650e
+
 ## [v0.7.877] - 2026-01-28
 
 ### Changes
