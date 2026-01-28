@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.874] - 2026-01-28
+
+### Changes
+- feat: Implement Phase 4 Contextual Bandits + Advanced ML (#2654)
+
+**Source:** project-beta-api@2b37cb56
+
 ## [v0.7.873] - 2026-01-28
 
 ### Changes
