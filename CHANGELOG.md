@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.872] - 2026-01-28
+
+### Changes
+- feat(ml): Phase 3 - Schedule Optimization + Performance Prediction (#2653)
+
+**Source:** project-beta-api@d913ae42
+
 ## [v0.7.871] - 2026-01-28
 
 ### Changes

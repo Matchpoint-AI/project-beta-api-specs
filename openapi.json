@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.871"
+    "version": "0.7.872"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -7107,6 +7107,100 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/schedule/recommendations": {
+      "get": {
+        "tags": [
+          "schedule"
+        ],
+        "summary": "Get Schedule Recommendations",
+        "description": "Get optimal posting schedule recommendations for a brand.\n\nPhase 3 ML Feature: Analyzes historical engagement data to recommend\noptimal posting times based on (day_of_week, hour_of_day) patterns.\n\nAlgorithm:\n1. Fetches engagement history for the brand (up to 1000 records)\n2. Groups by (day_of_week, hour_of_day) and computes mean engagement\n3. Filters slots with insufficient data (< min_samples)\n4. Returns top N slots sorted by engagement score\n\nRMM Level 2 Compliance:\n- GET /brands/{brand_id}/schedule/recommendations\n- Resource-oriented URL structure\n- Query parameters for customization\n\nArgs:\n    brand_id: Brand ID to get recommendations for\n    posts_per_week: Number of recommended slots (default: 7)\n    min_samples: Minimum samples for trusted recommendations (default: 10)\n    firebase_user: Authenticated user from JWT\n    brand_repository: Repository for brand ownership verification\n    engagement_repository: Repository for engagement history\n\nReturns:\n    ScheduleRecommendationResponse with recommended slots and all scores",
+        "operationId": "get_schedule_recommendations_api_v2_brands__brand_id__schedule_recommendations_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "posts_per_week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 21,
+              "minimum": 1,
+              "description": "Number of recommended posting slots per week",
+              "default": 7,
+              "title": "Posts Per Week"
+            },
+            "description": "Number of recommended posting slots per week"
+          },
+          {
+            "name": "min_samples",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Minimum samples required to trust a slot score",
+              "default": 10,
+              "title": "Min Samples"
+            },
+            "description": "Minimum samples required to trust a slot score"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schedule recommendations returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleRecommendationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
@@ -18829,6 +18923,80 @@
         "title": "SceneTypeLearningSignal",
         "description": "Learning signal for a specific scene type."
       },
+      "ScheduleRecommendationResponse": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id",
+            "description": "Brand ID these recommendations are for"
+          },
+          "recommended_slots": {
+            "items": {
+              "$ref": "#/components/schemas/TimeSlot"
+            },
+            "type": "array",
+            "title": "Recommended Slots",
+            "description": "List of recommended posting time slots, sorted by score descending"
+          },
+          "all_slot_scores": {
+            "items": {
+              "$ref": "#/components/schemas/TimeSlotWithSampleCount"
+            },
+            "type": "array",
+            "title": "All Slot Scores",
+            "description": "All time slot scores for transparency and debugging"
+          },
+          "min_samples_threshold": {
+            "type": "integer",
+            "title": "Min Samples Threshold",
+            "description": "Minimum samples required to trust a slot score",
+            "default": 10
+          },
+          "total_records_analyzed": {
+            "type": "integer",
+            "title": "Total Records Analyzed",
+            "description": "Total engagement records analyzed",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id"
+        ],
+        "title": "ScheduleRecommendationResponse",
+        "description": "Response for schedule recommendations endpoint.\n\nReturns recommended posting times with all slot scores for transparency.",
+        "example": {
+          "all_slot_scores": [
+            {
+              "day_of_week": 2,
+              "hour": 12,
+              "sample_count": 25,
+              "score": 0.045
+            },
+            {
+              "day_of_week": 3,
+              "hour": 14,
+              "sample_count": 18,
+              "score": 0.042
+            }
+          ],
+          "brand_id": "brand_123",
+          "min_samples_threshold": 10,
+          "recommended_slots": [
+            {
+              "day_of_week": 2,
+              "hour": 12,
+              "score": 0.045
+            },
+            {
+              "day_of_week": 3,
+              "hour": 14,
+              "score": 0.042
+            }
+          ],
+          "total_records_analyzed": 500
+        }
+      },
       "ScheduledPostListResponse": {
         "properties": {
           "posts": {
@@ -19872,6 +20040,98 @@
         ],
         "title": "ThumbsFeedbackResponse",
         "description": "Response schema for thumbs feedback submission."
+      },
+      "TimeSlot": {
+        "properties": {
+          "day_of_week": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Day Of Week",
+            "description": "Day of week: 0=Monday, 6=Sunday"
+          },
+          "hour": {
+            "type": "integer",
+            "maximum": 23.0,
+            "minimum": 0.0,
+            "title": "Hour",
+            "description": "Hour of day (0-23)"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score",
+            "description": "Mean engagement rate for this slot (None if insufficient data)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day_of_week",
+          "hour"
+        ],
+        "title": "TimeSlot",
+        "description": "A posting time slot with optional engagement score.\n\nAttributes:\n    day_of_week: Day of week (0=Monday, 6=Sunday)\n    hour: Hour of day (0-23)\n    score: Mean engagement rate for this slot (None if insufficient data)",
+        "example": {
+          "day_of_week": 2,
+          "hour": 12,
+          "score": 0.045
+        }
+      },
+      "TimeSlotWithSampleCount": {
+        "properties": {
+          "day_of_week": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Day Of Week",
+            "description": "Day of week: 0=Monday, 6=Sunday"
+          },
+          "hour": {
+            "type": "integer",
+            "maximum": 23.0,
+            "minimum": 0.0,
+            "title": "Hour",
+            "description": "Hour of day (0-23)"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score",
+            "description": "Mean engagement rate for this slot (None if insufficient data)"
+          },
+          "sample_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sample Count",
+            "description": "Number of observations for this slot",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "day_of_week",
+          "hour"
+        ],
+        "title": "TimeSlotWithSampleCount",
+        "description": "A time slot with sample count for debugging/transparency.\n\nExtends TimeSlot with sample_count to help understand data quality.",
+        "example": {
+          "day_of_week": 2,
+          "hour": 12,
+          "sample_count": 25,
+          "score": 0.045
+        }
       },
       "ToneAttributesV2": {
         "properties": {
