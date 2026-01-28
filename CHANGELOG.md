@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.861] - 2026-01-28
+
+### Changes
+- chore(specs): Enforce folder-based specification structure (#2637)
+
+**Source:** project-beta-api@c2013349
+
 ## [v0.7.860] - 2026-01-28
 
 ### Changes
