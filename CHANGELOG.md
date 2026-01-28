@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.886] - 2026-01-28
+
+### Changes
+- docs(ml): Add unified ML data flow specification (#2679)
+
+**Source:** project-beta-api@49c24adc
+
 ## [v0.7.885] - 2026-01-28
 
 ### Changes
