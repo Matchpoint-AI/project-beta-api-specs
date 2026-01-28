@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.864] - 2026-01-28
+
+### Changes
+- docs: Emphasize API as hub in hub-and-spoke architecture (#2645)
+
+**Source:** project-beta-api@dbfa39b0
+
 ## [v0.7.863] - 2026-01-28
 
 ### Changes
