@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.865] - 2026-01-28
+
+### Changes
+- P0 Fix: Wire Thompson Sampling learning state to Content Designer (#2644)
+
+**Source:** project-beta-api@15368a95
+
 ## [v0.7.864] - 2026-01-28
 
 ### Changes
