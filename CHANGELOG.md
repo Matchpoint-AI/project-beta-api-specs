@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.887] - 2026-01-28
+
+### Changes
+- docs(specs): Add Phase 3/4 ML and post regeneration to agentic messages spec (#2680)
+
+**Source:** project-beta-api@a9581a29
+
 ## [v0.7.886] - 2026-01-28
 
 ### Changes
