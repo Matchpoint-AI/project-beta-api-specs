@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.877] - 2026-01-28
+
+### Changes
+- fix: add 10s timeout to Pub/Sub future.result() calls (#2660)
+
+**Source:** project-beta-api@9d5aecfe
+
 ## [v0.7.876] - 2026-01-28
 
 ### Changes
