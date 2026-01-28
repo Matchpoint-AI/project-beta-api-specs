@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.876] - 2026-01-28
+
+### Changes
+- docs: rename content-generator references to content-designer (#2659)
+
+**Source:** project-beta-api@5a9fd1a5
+
 ## [v0.7.875] - 2026-01-28
 
 ### Changes
