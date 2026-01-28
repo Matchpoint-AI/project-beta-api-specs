@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.883"
+    "version": "0.7.884"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -9593,7 +9593,7 @@
             "$ref": "#/components/schemas/BrandCrawlTimingInfo",
             "description": "Timing information"
           },
-          "currentPage": {
+          "page": {
             "anyOf": [
               {
                 "type": "string"
@@ -9602,8 +9602,8 @@
                 "type": "null"
               }
             ],
-            "title": "Currentpage",
-            "description": "URL of the page currently being crawled"
+            "title": "Page",
+            "description": "URL of the page being crawled"
           },
           "errorMessage": {
             "anyOf": [
@@ -10116,10 +10116,10 @@
             "title": "Brandid",
             "description": "Brand ID"
           },
-          "currentStep": {
+          "step": {
             "type": "string",
-            "title": "Currentstep",
-            "description": "Current step in the onboarding process"
+            "title": "Step",
+            "description": "Step in the onboarding process"
           },
           "completedSteps": {
             "items": {
@@ -10160,7 +10160,7 @@
         "type": "object",
         "required": [
           "brandId",
-          "currentStep",
+          "step",
           "updatedAt"
         ],
         "title": "BrandOnboardingProgressResponse",
@@ -10168,11 +10168,11 @@
       },
       "BrandOnboardingProgressUpdate": {
         "properties": {
-          "currentStep": {
+          "step": {
             "type": "string",
             "maxLength": 100,
-            "title": "Currentstep",
-            "description": "Current step in the onboarding process (e.g., 'brand-info', 'assets-upload', 'knowledge-review')"
+            "title": "Step",
+            "description": "Step in the onboarding process (e.g., 'brand-info', 'assets-upload', 'knowledge-review')"
           },
           "completedSteps": {
             "anyOf": [
@@ -10219,7 +10219,7 @@
         },
         "type": "object",
         "required": [
-          "currentStep"
+          "step"
         ],
         "title": "BrandOnboardingProgressUpdate",
         "description": "Schema for updating brand onboarding progress step."
@@ -11900,7 +11900,7 @@
             "title": "Generating Content Count",
             "default": 0
           },
-          "currentWeek": {
+          "week": {
             "anyOf": [
               {
                 "type": "integer"
@@ -11909,8 +11909,8 @@
                 "type": "null"
               }
             ],
-            "title": "Current Week Number",
-            "description": "Current week number in campaign (1-indexed), 0 if not started"
+            "title": "Week Number",
+            "description": "Week number in campaign (1-indexed), 0 if not started"
           },
           "formattedDateRange": {
             "anyOf": [
@@ -15869,10 +15869,10 @@
             "title": "Lastlearningrun",
             "description": "When learning was last run"
           },
-          "currentExplorationRate": {
+          "explorationRate": {
             "type": "number",
-            "title": "Currentexplorationrate",
-            "description": "Current epsilon for exploration",
+            "title": "Explorationrate",
+            "description": "Epsilon for exploration",
             "default": 0.0
           },
           "modelStatistics": {
@@ -16151,12 +16151,12 @@
             "title": "Scenetype",
             "description": "Scene type this recommendation applies to"
           },
-          "currentWeight": {
+          "weight": {
             "type": "number",
             "maximum": 1.0,
             "minimum": 0.0,
-            "title": "Currentweight",
-            "description": "Current weight in content mix"
+            "title": "Weight",
+            "description": "Weight in content mix"
           },
           "recommendedWeight": {
             "type": "number",
@@ -16181,7 +16181,7 @@
         "type": "object",
         "required": [
           "sceneType",
-          "currentWeight",
+          "weight",
           "recommendedWeight",
           "reason",
           "confidence"
@@ -16248,9 +16248,9 @@
             "type": "string",
             "title": "Policyid"
           },
-          "currentVersion": {
+          "latestVersion": {
             "type": "integer",
-            "title": "Currentversion"
+            "title": "Latestversion"
           },
           "totalVersions": {
             "type": "integer",
@@ -16267,7 +16267,7 @@
         "type": "object",
         "required": [
           "policyId",
-          "currentVersion",
+          "latestVersion",
           "totalVersions",
           "versions"
         ],
@@ -20195,7 +20195,7 @@
             "title": "Progresspct",
             "description": "Progress percentage (0-100)"
           },
-          "currentStep": {
+          "step": {
             "anyOf": [
               {
                 "type": "string"
@@ -20204,8 +20204,8 @@
                 "type": "null"
               }
             ],
-            "title": "Currentstep",
-            "description": "Current step name"
+            "title": "Step",
+            "description": "Step name"
           },
           "status": {
             "anyOf": [
@@ -20231,7 +20231,7 @@
             "title": "Campaignid",
             "description": "Campaign ID (content_generation only)"
           },
-          "currentPostId": {
+          "activePostId": {
             "anyOf": [
               {
                 "type": "string"
@@ -20240,8 +20240,8 @@
                 "type": "null"
               }
             ],
-            "title": "Currentpostid",
-            "description": "Current post being generated (content_generation only)"
+            "title": "Activepostid",
+            "description": "Post being generated (content_generation only)"
           }
         },
         "type": "object",
@@ -20526,9 +20526,9 @@
             "type": "string",
             "title": "Postid"
           },
-          "currentVersion": {
+          "latestVersion": {
             "type": "integer",
-            "title": "Currentversion"
+            "title": "Latestversion"
           },
           "totalVersions": {
             "type": "integer",
@@ -20545,7 +20545,7 @@
         "type": "object",
         "required": [
           "postId",
-          "currentVersion",
+          "latestVersion",
           "totalVersions",
           "versions"
         ],
@@ -21276,7 +21276,7 @@
             "title": "Progress",
             "description": "Overall progress percentage 0-100"
           },
-          "currentStep": {
+          "step": {
             "anyOf": [
               {
                 "type": "string"
@@ -21285,7 +21285,7 @@
                 "type": "null"
               }
             ],
-            "title": "Currentstep",
+            "title": "Step",
             "description": "Currently executing step"
           },
           "sources": {
@@ -21373,7 +21373,7 @@
             "description": "Human-readable status message (e.g., 'Generating post 10 of 21')",
             "default": ""
           },
-          "currentStep": {
+          "step": {
             "anyOf": [
               {
                 "type": "string"
@@ -21382,7 +21382,7 @@
                 "type": "null"
               }
             ],
-            "title": "Current Step",
+            "title": "Step",
             "description": "Name of the currently executing workflow step"
           },
           "workflowId": {
@@ -21563,7 +21563,7 @@
             "title": "Campaignid",
             "description": "Campaign ID"
           },
-          "currentStep": {
+          "step": {
             "anyOf": [
               {
                 "type": "string"
@@ -21572,8 +21572,8 @@
                 "type": "null"
               }
             ],
-            "title": "Currentstep",
-            "description": "Current step"
+            "title": "Step",
+            "description": "Step name"
           },
           "message": {
             "type": "string",
@@ -21585,7 +21585,7 @@
             "title": "Status",
             "description": "Current status"
           },
-          "currentPostId": {
+          "activePostId": {
             "anyOf": [
               {
                 "type": "string"
@@ -21594,7 +21594,7 @@
                 "type": "null"
               }
             ],
-            "title": "Currentpostid",
+            "title": "Activepostid",
             "description": "Post currently being generated"
           },
           "timestamp": {
@@ -21693,9 +21693,9 @@
             "maximum": 100.0,
             "minimum": 0.0,
             "title": "Progresspct",
-            "description": "Current progress percentage"
+            "description": "Progress percentage"
           },
-          "currentStep": {
+          "step": {
             "anyOf": [
               {
                 "type": "string"
@@ -21704,8 +21704,8 @@
                 "type": "null"
               }
             ],
-            "title": "Currentstep",
-            "description": "Current crawl step"
+            "title": "Step",
+            "description": "Crawl step"
           },
           "message": {
             "type": "string",

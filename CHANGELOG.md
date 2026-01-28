@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.884] - 2026-01-28
+
+### Changes
+- refactor: Remove current_ prefix from schema field names (#2667)
+
+**Source:** project-beta-api@40905afd
+
 ## [v0.7.883] - 2026-01-28
 
 ### Changes
