@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.882] - 2026-01-28
+
+### Changes
+- fix: Remove hardcoded 10% progress, align with pulse-message spec (#2658)
+
+**Source:** project-beta-api@cafc422f
+
 ## [v0.7.881] - 2026-01-28
 
 ### Changes

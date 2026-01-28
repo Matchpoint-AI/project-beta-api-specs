@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.881"
+    "version": "0.7.882"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -11054,13 +11054,13 @@
             "maximum": 100.0,
             "minimum": 0.0,
             "title": "Progress",
-            "description": "Generation completion percentage (0-100)",
+            "description": "Generation completion percentage (0-100). Per SPEC-CAMP-002, progress is primarily communicated via the 'message' field (descriptive pulse messages). Progress percentage is only meaningful when posts are completing; otherwise it remains 0 and the message should be used for user-facing display.",
             "default": 0
           },
           "message": {
             "type": "string",
             "title": "Message",
-            "description": "Human-readable status message",
+            "description": "Human-readable status message (primary progress indicator per SPEC-CAMP-002)",
             "default": ""
           },
           "correlationId": {
@@ -11160,7 +11160,7 @@
           "updatedAt"
         ],
         "title": "CampaignContentStatusResponse",
-        "description": "Response for campaign content generation status.\n\nProvides high-level progress tracking for campaign content generation.\nUsed by frontend to poll progress during async content generation.\n\nIssue #1484: GET /campaigns/{campaign_id}/content/status"
+        "description": "Response for campaign content generation status.\n\nProvides high-level progress tracking for campaign content generation.\nUsed by frontend to poll progress during async content generation.\n\nPer SPEC-CAMP-002: Progress is communicated via descriptive pulse messages,\nnot percentages. The 'message' field contains the user-facing status text.\n\nIssue #1484: GET /campaigns/{campaign_id}/content/status"
       },
       "CampaignCreateRequest": {
         "properties": {
@@ -13784,13 +13784,13 @@
             "maximum": 100.0,
             "minimum": 0.0,
             "title": "Progress",
-            "description": "Generation completion percentage (0-100)",
+            "description": "Generation completion percentage (0-100). Per SPEC-CAMP-002, progress is primarily communicated via the 'message' field (descriptive pulse messages). Progress percentage is only meaningful when posts are completing; otherwise it remains 0 and the message should be used for user-facing display.",
             "default": 0
           },
           "message": {
             "type": "string",
             "title": "Message",
-            "description": "Human-readable status message",
+            "description": "Human-readable status message (primary progress indicator per SPEC-CAMP-002)",
             "default": ""
           },
           "correlationId": {
@@ -13893,7 +13893,7 @@
           "updatedAt"
         ],
         "title": "ContentGenerationStatusResponse",
-        "description": "Detailed generation status for specific content.\n\nProvides granular status breakdown per post including text and image status.\nUsed for detailed progress tracking and debugging.\n\nIssue #1484: GET /content/{content_id}/generation-status"
+        "description": "Detailed generation status for specific content.\n\nProvides granular status breakdown per post including text and image status.\nUsed for detailed progress tracking and debugging.\n\nPer SPEC-CAMP-002: Progress is communicated via descriptive pulse messages,\nnot percentages. The 'message' field contains the user-facing status text.\n\nIssue #1484: GET /content/{content_id}/generation-status"
       },
       "ContentImageRequest": {
         "properties": {
