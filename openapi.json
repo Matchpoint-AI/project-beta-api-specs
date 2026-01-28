@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.888"
+    "version": "0.7.889"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5738,6 +5738,266 @@
         ]
       }
     },
+    "/api/v2/brands/{brand_id}/learning/health": {
+      "get": {
+        "tags": [
+          "ml-monitoring"
+        ],
+        "summary": "Get model health metrics",
+        "description": "Get comprehensive model health metrics for a brand including drift detection, exploration rate monitoring, and arm distribution analysis. Returns an overall health score and status to enable monitoring dashboards and alerting.",
+        "operationId": "get_model_health_api_v2_brands__brand_id__learning_health_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to get model health for",
+              "examples": [
+                "123",
+                "brand-abc"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to get model health for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Model health metrics retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelHealthMetrics"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid brand ID"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/learning/drift": {
+      "get": {
+        "tags": [
+          "ml-monitoring"
+        ],
+        "summary": "Get posterior drift analysis",
+        "description": "Detect sudden changes in the optimal arm distribution for a brand's Thompson Sampling model. Drift may indicate concept drift in user preferences, data quality issues, or genuine changes in content performance.",
+        "operationId": "get_posterior_drift_api_v2_brands__brand_id__learning_drift_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to analyze drift for",
+              "examples": [
+                "123",
+                "brand-abc"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to analyze drift for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Drift analysis retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DriftDetectionResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid brand ID"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/learning/exploration": {
+      "get": {
+        "tags": [
+          "ml-monitoring"
+        ],
+        "summary": "Get exploration rate metrics",
+        "description": "Monitor the actual exploration rate vs expected rate for a brand's model. Deviations may indicate epsilon decay issues or configuration mismatches.",
+        "operationId": "get_exploration_rate_api_v2_brands__brand_id__learning_exploration_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to analyze exploration rate for",
+              "examples": [
+                "123",
+                "brand-abc"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to analyze exploration rate for"
+          },
+          {
+            "name": "expected_rate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 1.0,
+                  "minimum": 0.0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Expected exploration rate to compare against",
+              "title": "Expected Rate"
+            },
+            "description": "Expected exploration rate to compare against"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exploration metrics retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExplorationRateMetrics"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid brand ID"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/learning/distribution": {
+      "get": {
+        "tags": [
+          "ml-monitoring"
+        ],
+        "summary": "Get arm distribution metrics",
+        "description": "Get arm selection distribution metrics for a brand's model. Analyzes diversity of selections and identifies dominant arms.",
+        "operationId": "get_arm_distribution_api_v2_brands__brand_id__learning_distribution_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to analyze distribution for",
+              "examples": [
+                "123",
+                "brand-abc"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to analyze distribution for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Distribution metrics retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArmDistributionMetrics"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid brand ID"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/policies/{policy_id}/versions": {
       "get": {
         "tags": [
@@ -8784,6 +9044,77 @@
         ],
         "title": "AnalyzeInstagramResponse",
         "description": "Response from Instagram analysis."
+      },
+      "ArmDistributionMetrics": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID analyzed"
+          },
+          "armDistribution": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Armdistribution",
+            "description": "Distribution of selections across arms (sums to 1.0)"
+          },
+          "expectedValues": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Expectedvalues",
+            "description": "Expected values (posterior means) for each arm"
+          },
+          "giniCoefficient": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Ginicoefficient",
+            "description": "Gini coefficient measuring selection inequality (0=equal, 1=concentrated)",
+            "default": 0.0
+          },
+          "dominantArm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dominantarm",
+            "description": "Arm receiving the most selections"
+          },
+          "dominantArmShare": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Dominantarmshare",
+            "description": "Share of selections going to dominant arm",
+            "default": 0.0
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable description of distribution status",
+            "default": ""
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "When the analysis was performed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId"
+        ],
+        "title": "ArmDistributionMetrics",
+        "description": "Metrics for arm selection distribution."
       },
       "AspectRatio": {
         "type": "string",
@@ -15090,6 +15421,107 @@
         "title": "DiversityMetrics",
         "description": "Diversity metrics for plan preview."
       },
+      "DriftDetectionResult": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID analyzed"
+          },
+          "driftDetected": {
+            "type": "boolean",
+            "title": "Driftdetected",
+            "description": "Whether significant drift was detected",
+            "default": false
+          },
+          "driftScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Driftscore",
+            "description": "Combined drift score (0=no drift, 1=maximum drift)",
+            "default": 0.0
+          },
+          "klDivergence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kldivergence",
+            "description": "KL divergence between baseline and current distributions"
+          },
+          "entropyChange": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entropychange",
+            "description": "Relative change in posterior entropy"
+          },
+          "baselineEntropy": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baselineentropy",
+            "description": "Entropy of baseline distribution"
+          },
+          "currentEntropy": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currententropy",
+            "description": "Entropy of current distribution"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable description of drift status",
+            "default": ""
+          },
+          "affectedArms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Affectedarms",
+            "description": "Arms with significant distribution changes"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "When the analysis was performed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId"
+        ],
+        "title": "DriftDetectionResult",
+        "description": "Result of posterior drift detection analysis."
+      },
       "EmailVerificationRequest": {
         "properties": {
           "token": {
@@ -15220,6 +15652,96 @@
         ],
         "title": "ExpediteResponse",
         "description": "Schema for expedite response."
+      },
+      "ExplorationRateMetrics": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID analyzed"
+          },
+          "actualRate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Actualrate",
+            "description": "Current exploration rate (epsilon)",
+            "default": 0.0
+          },
+          "expectedRate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Expectedrate",
+            "description": "Expected/configured exploration rate",
+            "default": 0.0
+          },
+          "deviation": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Deviation",
+            "description": "Absolute deviation from expected rate",
+            "default": 0.0
+          },
+          "withinTolerance": {
+            "type": "boolean",
+            "title": "Withintolerance",
+            "description": "Whether deviation is within acceptable tolerance",
+            "default": true
+          },
+          "selectionCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Selectioncount",
+            "description": "Total number of arm selections made",
+            "default": 0
+          },
+          "selectionEntropy": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selectionentropy",
+            "description": "Entropy of arm selection distribution"
+          },
+          "entropyRatio": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entropyratio",
+            "description": "Ratio of selection entropy to maximum possible entropy"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable description of exploration status",
+            "default": ""
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "When the analysis was performed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId"
+        ],
+        "title": "ExplorationRateMetrics",
+        "description": "Metrics for exploration rate monitoring."
       },
       "GeneratedContent": {
         "properties": {
@@ -15949,6 +16471,134 @@
         ],
         "title": "MessageType",
         "description": "Message type discriminator for topic routing."
+      },
+      "ModelHealthMetrics": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID analyzed"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ModelHealthStatus",
+            "description": "Overall health status category",
+            "default": "not_initialized"
+          },
+          "overallScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Overallscore",
+            "description": "Overall health score (0=unhealthy, 1=perfectly healthy)",
+            "default": 0.0
+          },
+          "driftMetrics": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DriftDetectionResult"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Posterior drift detection results"
+          },
+          "explorationMetrics": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExplorationRateMetrics"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Exploration rate monitoring results"
+          },
+          "armMetrics": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ArmDistributionMetrics"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Arm distribution metrics"
+          },
+          "totalObservations": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Totalobservations",
+            "description": "Total feedback observations across all arms",
+            "default": 0
+          },
+          "sceneTypes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scenetypes",
+            "description": "Scene types (arms) being tracked"
+          },
+          "currentEpsilon": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Currentepsilon",
+            "description": "Current exploration rate",
+            "default": 0.0
+          },
+          "selectionCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Selectioncount",
+            "description": "Total arm selections made",
+            "default": 0
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable health summary",
+            "default": ""
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "When the health check was performed"
+          },
+          "lastHealthCheck": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lasthealthcheck",
+            "description": "When the previous health check was performed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId"
+        ],
+        "title": "ModelHealthMetrics",
+        "description": "Comprehensive model health metrics."
+      },
+      "ModelHealthStatus": {
+        "type": "string",
+        "enum": [
+          "not_initialized",
+          "healthy",
+          "warning",
+          "degraded",
+          "critical"
+        ],
+        "title": "ModelHealthStatus",
+        "description": "Health status categories for ML models."
       },
       "NativeUserCreate": {
         "properties": {

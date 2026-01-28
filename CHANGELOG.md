@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.889] - 2026-01-28
+
+### Changes
+- feat(ml): Add ML model monitoring and alerting service (#2673)
+
+**Source:** project-beta-api@b00255e9
+
 ## [v0.7.888] - 2026-01-28
 
 ### Changes
