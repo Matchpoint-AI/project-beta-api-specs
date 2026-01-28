@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.885] - 2026-01-28
+
+### Changes
+- feat(ml): Add hierarchical priors for cold-start handling (#2674)
+
+**Source:** project-beta-api@734bbeb7
+
 ## [v0.7.884] - 2026-01-28
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.884"
+    "version": "0.7.885"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -15378,6 +15378,12 @@
             "title": "Initial Beta",
             "description": "Initial beta for all scene types (uniform prior = 1.0)",
             "default": 1.0
+          },
+          "use_hierarchical_priors": {
+            "type": "boolean",
+            "title": "Use Hierarchical Priors",
+            "description": "Whether to use industry-level hierarchical priors. When True, derives priors from aggregate industry data to accelerate cold-start convergence. When False, uses uniform Beta(initial_alpha, initial_beta) priors.",
+            "default": true
           }
         },
         "type": "object",
