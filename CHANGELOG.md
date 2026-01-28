@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.881] - 2026-01-28
+
+### Changes
+- feat(schemas): Add unified media fields for Post model unification (#2664)
+
+**Source:** project-beta-api@a583371e
+
 ## [v0.7.880] - 2026-01-28
 
 ### Changes
