@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.862] - 2026-01-28
+
+### Changes
+- chore: Enforce 90% test coverage threshold (#2643)
+
+**Source:** project-beta-api@16b15269
+
 ## [v0.7.861] - 2026-01-28
 
 ### Changes
