@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.873] - 2026-01-28
+
+### Changes
+- refactor: rename agentic-brand-crawler references to brand-crawler (#2652)
+
+**Source:** project-beta-api@8f043167
+
 ## [v0.7.872] - 2026-01-28
 
 ### Changes

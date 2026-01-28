@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.872"
+    "version": "0.7.873"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -633,7 +633,7 @@
           "brands"
         ],
         "summary": "Upload Brand Files",
-        "description": "Upload brand files (guidelines PDF and logo) with async LLM extraction.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\nIssue #2245: Migrated to AgenticBrandCrawlerPublisher.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines via agentic brand-crawler service (async).\n\nThe extraction is now async - file is uploaded immediately, and\nagentic-brand-crawler processes the PDF in the background.",
+        "description": "Upload brand files (guidelines PDF and logo) with async LLM extraction.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\nIssue #2245: Migrated to AgenticBrandCrawlerPublisher.\n\nProper REST endpoint for uploading brand files to an existing brand.\nExtracts structured brand information (colors, typography, photography)\nfrom PDF brand guidelines via agentic brand-crawler service (async).\n\nThe extraction is now async - file is uploaded immediately, and\nbrand-crawler processes the PDF in the background.",
         "operationId": "upload_brand_files",
         "security": [
           {
@@ -1067,7 +1067,7 @@
           "brand-crawl-output"
         ],
         "summary": "Receive brand crawl output from single topic",
-        "description": "Pub/Sub push endpoint for receiving brand crawl results from the simplified single output topic (agentic-brand-crawler-{env}-output). Updates brand record with brand_assets and sets knowledge status. Issue #184: Replaces dual CORE/DEEP topic system.",
+        "description": "Pub/Sub push endpoint for receiving brand crawl results from the simplified single output topic (brand-crawler-{env}-output). Updates brand record with brand_assets and sets knowledge status. Issue #184: Replaces dual CORE/DEEP topic system.",
         "operationId": "receive_brand_crawl_output_api_v2_webhooks_brand_crawl_output_post",
         "parameters": [
           {
@@ -1143,7 +1143,7 @@
           "brand-workflow"
         ],
         "summary": "Start Knowledge Workflow",
-        "description": "Start knowledge discovery workflow for a brand.\n\nPublishes a crawl request to the agentic-brand-crawler Pub/Sub topic.\nThe crawler orchestrates website crawling, content extraction, and\nknowledge storage. This is an explicit trigger following RMM Level 2 principles.\n\nThe crawl runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running\n\nIssue #2553: Added authentication and authorization checks.",
+        "description": "Start knowledge discovery workflow for a brand.\n\nPublishes a crawl request to the brand-crawler Pub/Sub topic.\nThe crawler orchestrates website crawling, content extraction, and\nknowledge storage. This is an explicit trigger following RMM Level 2 principles.\n\nThe crawl runs asynchronously. Poll the status endpoint to monitor progress.\n\nDesign Pattern (RMM L2):\n- POST creates a workflow resource (not an RPC \"scrape\" action)\n- Returns 202 Accepted (async processing)\n- Provides workflow_id for status polling\n- Idempotent: multiple POSTs return existing workflow if already running\n\nIssue #2553: Added authentication and authorization checks.",
         "operationId": "start_knowledge_workflow_api_v2_brands__brand_id__knowledge_workflows_post",
         "security": [
           {
