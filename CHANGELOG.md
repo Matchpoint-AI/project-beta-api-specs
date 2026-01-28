@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.888] - 2026-01-28
+
+### Changes
+- fix: reduce test connection pool size to prevent exhaustion (#2668)
+
+**Source:** project-beta-api@24a0ed46
+
 ## [v0.7.887] - 2026-01-28
 
 ### Changes
