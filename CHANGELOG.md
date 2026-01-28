@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.871] - 2026-01-28
+
+### Changes
+- chore: Rename AGENTIC_CONTENT_GENERATOR_TOPIC to CONTENT_DESIGNER_TOPIC (#2651)
+
+**Source:** project-beta-api@70abc153
+
 ## [v0.7.870] - 2026-01-28
 
 ### Changes
