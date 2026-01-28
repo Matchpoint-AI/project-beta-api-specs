@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.869] - 2026-01-28
+
+### Changes
+- chore: Remove pubsub webhook alias endpoint (#2649)
+
+**Source:** project-beta-api@4cebfe6f
+
 ## [v0.7.868] - 2026-01-28
 
 ### Changes

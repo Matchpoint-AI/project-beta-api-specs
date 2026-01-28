@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.868"
+    "version": "0.7.869"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -1069,82 +1069,6 @@
         "summary": "Receive brand crawl output from single topic",
         "description": "Pub/Sub push endpoint for receiving brand crawl results from the simplified single output topic (agentic-brand-crawler-{env}-output). Updates brand record with brand_assets and sets knowledge status. Issue #184: Replaces dual CORE/DEEP topic system.",
         "operationId": "receive_brand_crawl_output_api_v2_webhooks_brand_crawl_output_post",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          },
-          {
-            "name": "X-PubSub-Secret",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Pubsub-Secret"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BrandCrawlOutputEnvelope"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandCrawlOutputAckResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/pubsub/brand-crawl-output": {
-      "post": {
-        "tags": [
-          "brand-crawl-output"
-        ],
-        "summary": "Receive brand crawl output from Pub/Sub (alias)",
-        "description": "Alias endpoint for Pub/Sub push subscription. Routes to the same handler as /webhooks/brand-crawl-output.",
-        "operationId": "receive_brand_crawl_output_alias_api_v2_pubsub_brand_crawl_output_post",
         "parameters": [
           {
             "name": "Authorization",
@@ -6726,82 +6650,6 @@
         "summary": "Receive crawler status pulse",
         "description": "Pub/Sub push endpoint for receiving real-time status pulses from the agentic brand crawler. Stores pulse in Redis for frontend polling.",
         "operationId": "receive_pulse_api_v2_crawler_pulses_post",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          },
-          {
-            "name": "X-PubSub-Secret",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Pubsub-Secret"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/src__schemas__crawler_pulses__PubSubPushEnvelope"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/src__schemas__crawler_pulses__PulseAckResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/pubsub/agentic-brand-crawl-events": {
-      "post": {
-        "tags": [
-          "pulses"
-        ],
-        "summary": "Receive brand crawl events from Pub/Sub",
-        "description": "Pub/Sub push endpoint for receiving real-time brand crawl events. This is the primary endpoint for the agentic-brand-crawl-events subscription. Stores pulse in Redis for frontend polling via /pulses/{correlation_id}. Issue #2446: Missing endpoint causing 404 for brand analysis progress.",
-        "operationId": "receive_brand_crawl_event_api_v2_pubsub_agentic_brand_crawl_events_post",
         "parameters": [
           {
             "name": "Authorization",
