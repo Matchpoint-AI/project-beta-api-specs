@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.879] - 2026-01-28
+
+### Changes
+- fix(schemas): Add PARTIAL status and imagePromptUsed alias for E2E (#2661)
+
+**Source:** project-beta-api@386a986b
+
 ## [v0.7.878] - 2026-01-28
 
 ### Changes
