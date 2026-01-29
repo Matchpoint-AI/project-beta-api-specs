@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.893] - 2026-01-29
+
+### Changes
+- fix(di): Use interface instead of concrete class in Thompson provider (#2686)
+
+**Source:** project-beta-api@e48bf526
+
 ## [v0.7.892] - 2026-01-29
 
 ### Changes
