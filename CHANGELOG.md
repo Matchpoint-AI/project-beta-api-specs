@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.904] - 2026-01-29
+
+### Changes
+- fix: Add missing DI binding for AgenticContentGenerationPublisher (#2699)
+
+**Source:** project-beta-api@a8afb6d4
+
 ## [v0.7.903] - 2026-01-29
 
 ### Changes
