@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.903] - 2026-01-29
+
+### Changes
+- feat: Add API domains to CORS allowed origins (#2698)
+
+**Source:** project-beta-api@f41e3ea7
+
 ## [v0.7.902] - 2026-01-29
 
 ### Changes
