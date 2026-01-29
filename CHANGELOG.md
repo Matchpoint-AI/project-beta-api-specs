@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.895] - 2026-01-29
+
+### Changes
+- spec: ML UI Components for V2 Compliance (REQ-15) (#2685)
+
+**Source:** project-beta-api@c5fe910a
+
 ## [v0.7.894] - 2026-01-29
 
 ### Changes
