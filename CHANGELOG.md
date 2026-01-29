@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.905] - 2026-01-29
+
+### Changes
+- fix(schema): Handle None values in BrandVoice and TargetAudience (#2701)
+
+**Source:** project-beta-api@7eb4798b
+
 ## [v0.7.904] - 2026-01-29
 
 ### Changes
