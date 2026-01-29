@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.900] - 2026-01-29
+
+### Changes
+- spec: ML Rationale Explanation for Human-Readable Decisions (#2683)
+
+**Source:** project-beta-api@b3c297a4
+
 ## [v0.7.899] - 2026-01-29
 
 ### Changes
