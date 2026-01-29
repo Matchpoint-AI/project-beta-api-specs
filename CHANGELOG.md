@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.914] - 2026-01-29
+
+### Changes
+- fix: Remove 10 unused constants from constants.py (#2711)
+
+**Source:** project-beta-api@51391c3d
+
 ## [v0.7.913] - 2026-01-29
 
 ### Changes
