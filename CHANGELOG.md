@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.890] - 2026-01-29
+
+### Changes
+- feat: Wire Phase 3 and Phase 4 ML features to Pub/Sub messages (#2663)
+
+**Source:** project-beta-api@7003f582
+
 ## [v0.7.889] - 2026-01-28
 
 ### Changes
