@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.901] - 2026-01-29
+
+### Changes
+- perf(tests): Use DROP TABLE instead of DROP/CREATE SCHEMA for test isolation (#2694)
+
+**Source:** project-beta-api@ea4d7b27
+
 ## [v0.7.900] - 2026-01-29
 
 ### Changes
