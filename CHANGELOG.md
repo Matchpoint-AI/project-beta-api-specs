@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.897] - 2026-01-29
+
+### Changes
+- fix(di): Add ContextualBanditService dependency injection binding (#2696)
+
+**Source:** project-beta-api@cc652c22
+
 ## [v0.7.896] - 2026-01-29
 
 ### Changes
