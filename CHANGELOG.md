@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.902] - 2026-01-29
+
+### Changes
+- feat(tests): Auto-mark tests for fast local iteration (#2695)
+
+**Source:** project-beta-api@29b035b7
+
 ## [v0.7.901] - 2026-01-29
 
 ### Changes
