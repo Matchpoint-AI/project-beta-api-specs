@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.912] - 2026-01-29
+
+### Changes
+- fix: Remove unused metrics functions (0 callers) (#2708)
+
+**Source:** project-beta-api@cf1eb4d4
+
 ## [v0.7.911] - 2026-01-29
 
 ### Changes
