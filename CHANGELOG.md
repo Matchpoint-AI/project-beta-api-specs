@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.913] - 2026-01-29
+
+### Changes
+- refactor: Clean dead code comments from dependencies.py (#2706)
+
+**Source:** project-beta-api@86959db3
+
 ## [v0.7.912] - 2026-01-29
 
 ### Changes
