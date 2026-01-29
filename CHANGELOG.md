@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.898] - 2026-01-29
+
+### Changes
+- perf(tests): Replace time.sleep with freezegun for instant time control (#2693)
+
+**Source:** project-beta-api@c8fb2aef
+
 ## [v0.7.897] - 2026-01-29
 
 ### Changes
