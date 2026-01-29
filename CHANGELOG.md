@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.909] - 2026-01-29
+
+### Changes
+- fix: Remove dead research_summary.py schema (0 imports, feature never implemented) (#2707)
+
+**Source:** project-beta-api@5d596e0d
+
 ## [v0.7.908] - 2026-01-29
 
 ### Changes
