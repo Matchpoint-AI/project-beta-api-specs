@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.908] - 2026-01-29
+
+### Changes
+- fix: Remove dead pubsub_video_processing_publisher.py (0 imports, no consumer) (#2703)
+
+**Source:** project-beta-api@c8779df6
+
 ## [v0.7.907] - 2026-01-29
 
 ### Changes
