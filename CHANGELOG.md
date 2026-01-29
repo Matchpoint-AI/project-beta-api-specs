@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.892] - 2026-01-29
+
+### Changes
+- fix: register contextual bandit controller (#2671)
+
+**Source:** project-beta-api@fff812f9
+
 ## [v0.7.891] - 2026-01-29
 
 ### Changes

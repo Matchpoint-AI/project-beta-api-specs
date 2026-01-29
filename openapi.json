@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.891"
+    "version": "0.7.892"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -4861,6 +4861,353 @@
         }
       }
     },
+    "/api/v2/brands/{brand_id}/contextual/bandit/models": {
+      "get": {
+        "tags": [
+          "contextual-bandit"
+        ],
+        "summary": "Get contextual bandit models",
+        "description": "Get current contextual bandit model info for all arms",
+        "operationId": "get_contextual_bandit_models_api_v2_brands__brand_id__contextual_bandit_models_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to get models for",
+              "examples": [
+                "brand-123",
+                "abc-def-ghi"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to get models for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Models retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContextualBanditModelResponse"
+                  },
+                  "title": "Response 200 Get Contextual Bandit Models Api V2 Brands  Brand Id  Contextual Bandit Models Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/contextual/bandit/recommend": {
+      "post": {
+        "tags": [
+          "contextual-bandit"
+        ],
+        "summary": "Get contextual bandit recommendation",
+        "description": "Get arm recommendation based on current context",
+        "operationId": "get_recommendation_api_v2_brands__brand_id__contextual_bandit_recommend_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to get recommendation for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to get recommendation for"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetRecommendationRequest",
+                "description": "Context features and epsilon for recommendation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Recommendation generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContextualBanditRecommendation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/contextual/bandit/feedback": {
+      "post": {
+        "tags": [
+          "contextual-bandit"
+        ],
+        "summary": "Update contextual bandit model",
+        "description": "Update model with engagement feedback",
+        "operationId": "update_contextual_bandit_api_v2_brands__brand_id__contextual_bandit_feedback_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to update model for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to update model for"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateContextualBanditRequest",
+                "description": "Update request with arm, context, and reward"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Model updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateContextualBanditResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/contextual/bandit/initialize": {
+      "post": {
+        "tags": [
+          "contextual-bandit"
+        ],
+        "summary": "Initialize contextual bandit models",
+        "description": "Initialize contextual bandit models for a new brand",
+        "operationId": "initialize_contextual_bandit_api_v2_brands__brand_id__contextual_bandit_initialize_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to initialize models for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to initialize models for"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitializeContextualBanditRequest",
+                "description": "Optional initialization parameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Models initialized successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContextualBanditModelResponse"
+                  },
+                  "title": "Response 201 Initialize Contextual Bandit Api V2 Brands  Brand Id  Contextual Bandit Initialize Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/contextual/bandit/state": {
+      "post": {
+        "tags": [
+          "contextual-bandit"
+        ],
+        "summary": "Get agentic contextual bandit state",
+        "description": "Get contextual bandit state formatted for fat message embedding",
+        "operationId": "get_agentic_state_api_v2_brands__brand_id__contextual_bandit_state_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to get agentic state for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to get agentic state for"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetRecommendationRequest",
+                "description": "Context features for state computation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Agentic state retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgenticContextualBanditState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/crawls": {
       "get": {
         "tags": [
@@ -9034,6 +9381,43 @@
   },
   "components": {
     "schemas": {
+      "AgenticContextualBanditState": {
+        "properties": {
+          "recommended_arm": {
+            "type": "string",
+            "title": "Recommended Arm",
+            "description": "Pre-computed arm recommendation based on current context"
+          },
+          "arm_probabilities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Arm Probabilities",
+            "description": "Predicted success probability for each arm"
+          },
+          "context_features": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Context Features",
+            "description": "Current context features used for prediction"
+          },
+          "exploration_mode": {
+            "type": "boolean",
+            "title": "Exploration Mode",
+            "description": "Whether recommendation was made in exploration mode",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "recommended_arm"
+        ],
+        "title": "AgenticContextualBanditState",
+        "description": "Contextual bandit state for embedding in fat Pub/Sub message.\n\nThis is fetched by the API and embedded in the content generation\nmessage. The content generator does NOT fetch this directly."
+      },
       "AgenticLearningState": {
         "properties": {
           "scene_posteriors": {
@@ -13634,6 +14018,86 @@
         "title": "ContentApprovalResponse",
         "description": "Response schema for content approval.\n\nReturns the updated day data after approval/unapproval."
       },
+      "ContentContext": {
+        "properties": {
+          "day_of_week": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Day Of Week",
+            "description": "Day of week (0=Monday, 6=Sunday)"
+          },
+          "hour_of_day": {
+            "type": "integer",
+            "maximum": 23.0,
+            "minimum": 0.0,
+            "title": "Hour Of Day",
+            "description": "Hour of day (0-23)"
+          },
+          "is_weekend": {
+            "type": "boolean",
+            "title": "Is Weekend",
+            "description": "Whether it's a weekend day"
+          },
+          "brand_industry": {
+            "type": "string",
+            "title": "Brand Industry",
+            "description": "Brand industry category"
+          },
+          "brand_audience_size": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Brand Audience Size",
+            "description": "Estimated audience size"
+          },
+          "days_since_last_post": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Days Since Last Post",
+            "description": "Days since last content post"
+          },
+          "recent_scene_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Recent Scene Types",
+            "description": "Last 5 scene types used (for fatigue detection)"
+          },
+          "scene_fatigue_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Scene Fatigue Score",
+            "description": "Content fatigue score (0=fresh, 1=oversaturated)",
+            "default": 0.0
+          },
+          "rolling_engagement_rate_7d": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Rolling Engagement Rate 7D",
+            "description": "7-day rolling engagement rate",
+            "default": 0.0
+          },
+          "engagement_trend": {
+            "type": "number",
+            "title": "Engagement Trend",
+            "description": "Engagement trend (positive=improving)",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "day_of_week",
+          "hour_of_day",
+          "is_weekend",
+          "brand_industry",
+          "brand_audience_size",
+          "days_since_last_post"
+        ],
+        "title": "ContentContext",
+        "description": "Context features for contextual bandit arm selection.\n\nThis represents the feature vector used to predict optimal scene types.\nFeatures are normalized and encoded before being passed to the model."
+      },
       "ContentExport": {
         "properties": {
           "id": {
@@ -15202,6 +15666,101 @@
         "title": "ContentUpdate",
         "description": "Schema for updating content."
       },
+      "ContextualBanditModelResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id"
+          },
+          "arm": {
+            "type": "string",
+            "title": "Arm",
+            "description": "Scene type/arm this model is for"
+          },
+          "feature_names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Feature Names",
+            "description": "Feature names for weights"
+          },
+          "observation_count": {
+            "type": "integer",
+            "title": "Observation Count",
+            "description": "Training observations count"
+          },
+          "is_initialized": {
+            "type": "boolean",
+            "title": "Is Initialized",
+            "description": "Whether model has been trained"
+          },
+          "last_updated": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "brand_id",
+          "arm",
+          "feature_names",
+          "observation_count",
+          "is_initialized",
+          "last_updated"
+        ],
+        "title": "ContextualBanditModelResponse",
+        "description": "Response schema for contextual bandit model info."
+      },
+      "ContextualBanditRecommendation": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id"
+          },
+          "recommended_arm": {
+            "type": "string",
+            "title": "Recommended Arm",
+            "description": "Scene type selected by contextual bandit"
+          },
+          "arm_probabilities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Arm Probabilities",
+            "description": "Predicted success probability for each arm"
+          },
+          "exploration_mode": {
+            "type": "boolean",
+            "title": "Exploration Mode",
+            "description": "Whether this was an exploration (random) selection"
+          },
+          "context_summary": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Context Summary",
+            "description": "Summary of context features used for prediction"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "recommended_arm",
+          "arm_probabilities",
+          "exploration_mode"
+        ],
+        "title": "ContextualBanditRecommendation",
+        "description": "Response schema for contextual bandit recommendation."
+      },
       "CostType": {
         "type": "string",
         "enum": [
@@ -16136,6 +16695,28 @@
         "title": "GeneratedContent",
         "description": "Schema for generated content with nested structure."
       },
+      "GetRecommendationRequest": {
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/ContentContext",
+            "description": "Current context features"
+          },
+          "epsilon": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Epsilon",
+            "description": "Exploration probability (0=pure exploitation, 1=pure exploration)",
+            "default": 0.1
+          }
+        },
+        "type": "object",
+        "required": [
+          "context"
+        ],
+        "title": "GetRecommendationRequest",
+        "description": "Request schema for getting contextual bandit recommendation."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -16182,6 +16763,28 @@
         ],
         "title": "ImageGenerationStatus",
         "description": "Image generation status values for individual posts."
+      },
+      "InitializeContextualBanditRequest": {
+        "properties": {
+          "arms": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arms",
+            "description": "Arms to initialize. If None, uses default scene types."
+          }
+        },
+        "type": "object",
+        "title": "InitializeContextualBanditRequest",
+        "description": "Request to initialize contextual bandit for a new brand."
       },
       "InitializeLearningStateRequest": {
         "properties": {
@@ -21287,6 +21890,71 @@
         ],
         "title": "UnifiedPulseStatusResponse",
         "description": "Unified response for GET /pulses/{correlation_id} endpoint.\n\nThis schema provides a consistent response format for pulses from\nany agentic service. The service_type field indicates the source.\n\nIssue #2428: Frontend polls single endpoint for all agentic status."
+      },
+      "UpdateContextualBanditRequest": {
+        "properties": {
+          "arm": {
+            "type": "string",
+            "title": "Arm",
+            "description": "Arm (scene type) that received feedback",
+            "examples": [
+              "lifestyle",
+              "product",
+              "testimonial",
+              "educational"
+            ]
+          },
+          "context": {
+            "$ref": "#/components/schemas/ContentContext",
+            "description": "Context at time of decision"
+          },
+          "reward": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Reward",
+            "description": "Engagement reward signal (0=negative, 1=positive)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "arm",
+          "context",
+          "reward"
+        ],
+        "title": "UpdateContextualBanditRequest",
+        "description": "Request schema for updating contextual bandit after feedback."
+      },
+      "UpdateContextualBanditResponse": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id"
+          },
+          "arm": {
+            "type": "string",
+            "title": "Arm"
+          },
+          "observation_count": {
+            "type": "integer",
+            "title": "Observation Count",
+            "description": "Total observations after update"
+          },
+          "model_updated": {
+            "type": "boolean",
+            "title": "Model Updated",
+            "description": "Whether model weights were updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "arm",
+          "observation_count",
+          "model_updated"
+        ],
+        "title": "UpdateContextualBanditResponse",
+        "description": "Response schema after updating contextual bandit model."
       },
       "UpdateLearningStateRequest": {
         "properties": {
