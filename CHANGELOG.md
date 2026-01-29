@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.896] - 2026-01-29
+
+### Changes
+- perf(tests): Make coverage collection optional for faster local runs (#2692)
+
+**Source:** project-beta-api@75d04406
+
 ## [v0.7.895] - 2026-01-29
 
 ### Changes
