@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.894] - 2026-01-29
+
+### Changes
+- feat: Add API fan-out from Content Designer to Post Generator (#2676)
+
+**Source:** project-beta-api@c1a6b042
+
 ## [v0.7.893] - 2026-01-29
 
 ### Changes

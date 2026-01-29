@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.893"
+    "version": "0.7.894"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5305,6 +5305,82 @@
                     }
                   ],
                   "title": "Response Get Crawl Stats Api V2 Crawls Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/designer/prompts": {
+      "post": {
+        "tags": [
+          "designer prompts"
+        ],
+        "summary": "Receive prompts from Content Designer",
+        "description": "Pub/Sub push endpoint for receiving prompts from the Content Designer service. Fans out individual post generation requests to Post Generator.",
+        "operationId": "receive_designer_prompts_api_v2_designer_prompts_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DesignerOutputAckResponse"
                 }
               }
             }
@@ -16089,6 +16165,39 @@
         ],
         "title": "DayContent",
         "description": "Schema for daily content."
+      },
+      "DesignerOutputAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID from message"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "postsFannedOut": {
+            "type": "integer",
+            "title": "Postsfannedout",
+            "description": "Number of posts fanned out to Post Generator"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "campaignId",
+          "postsFannedOut"
+        ],
+        "title": "DesignerOutputAckResponse",
+        "description": "Response for successful designer output processing."
       },
       "DiffLineResponse": {
         "properties": {
