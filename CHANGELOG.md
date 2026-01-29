@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.911] - 2026-01-29
+
+### Changes
+- fix: Remove duplicate utils/logging_config.py superseded by config version (#2705)
+
+**Source:** project-beta-api@7b188b7d
+
 ## [v0.7.910] - 2026-01-29
 
 ### Changes
