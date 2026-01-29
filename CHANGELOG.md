@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.899] - 2026-01-29
+
+### Changes
+- docs(specs): Add post regeneration action types to agentic messages spec (#2681)
+
+**Source:** project-beta-api@b1f9bbc4
+
 ## [v0.7.898] - 2026-01-29
 
 ### Changes
