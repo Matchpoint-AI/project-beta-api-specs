@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.910] - 2026-01-29
+
+### Changes
+- fix: Remove dead LLMModelRegistry utility class (0 imports) (#2704)
+
+**Source:** project-beta-api@f4fdd0a1
+
 ## [v0.7.909] - 2026-01-29
 
 ### Changes
