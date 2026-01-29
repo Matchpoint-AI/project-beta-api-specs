@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.906] - 2026-01-29
+
+### Changes
+- spec: Complete Contextual Scene Policy (REQ-9A) (#2684)
+
+**Source:** project-beta-api@ff2cfd46
+
 ## [v0.7.905] - 2026-01-29
 
 ### Changes
