@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.890"
+    "version": "0.7.891"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -5712,6 +5712,146 @@
         }
       }
     },
+    "/api/v2/brands/{brand_id}/learning/engagement": {
+      "post": {
+        "tags": [
+          "learning-state"
+        ],
+        "summary": "Process single post engagement",
+        "description": "Process engagement metrics from a single post to update Thompson Sampling posteriors",
+        "operationId": "process_engagement_api_v2_brands__brand_id__learning_engagement_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to process engagement for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to process engagement for"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessEngagementRequest",
+                "description": "Engagement data to process"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Engagement processed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackProcessingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/learning/engagement/batch": {
+      "post": {
+        "tags": [
+          "learning-state"
+        ],
+        "summary": "Process batch engagement data",
+        "description": "Process engagement metrics from multiple posts at once",
+        "operationId": "process_engagement_batch_api_v2_brands__brand_id__learning_engagement_batch_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to process engagement for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to process engagement for"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessEngagementBatchRequest",
+                "description": "Batch engagement data to process"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch processed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchProcessingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/metrics": {
       "get": {
         "tags": [
@@ -9395,6 +9535,59 @@
         ],
         "title": "BatchPostSelectionResponse",
         "description": "Schema for batch selection response."
+      },
+      "BatchProcessingResponse": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id",
+            "description": "The brand ID"
+          },
+          "posts_processed": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Posts Processed",
+            "description": "Number of posts successfully processed"
+          },
+          "posts_skipped": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Posts Skipped",
+            "description": "Number of posts skipped (missing data)"
+          },
+          "total_reward": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Total Reward",
+            "description": "Sum of all rewards"
+          },
+          "average_reward": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Average Reward",
+            "description": "Average reward across processed posts"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/FeedbackProcessingResponse"
+            },
+            "type": "array",
+            "title": "Results",
+            "description": "Individual processing results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "posts_processed",
+          "posts_skipped",
+          "total_reward",
+          "average_reward",
+          "results"
+        ],
+        "title": "BatchProcessingResponse",
+        "description": "Response schema for batch engagement processing."
       },
       "Body_update_brand_files": {
         "properties": {
@@ -15589,6 +15782,55 @@
         "title": "EngagementAnalysis",
         "description": "Analysis of what drives engagement for a brand."
       },
+      "EngagementMetricsRequest": {
+        "properties": {
+          "impressions": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Impressions",
+            "description": "Total impressions/views",
+            "default": 0
+          },
+          "likes": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Likes",
+            "description": "Number of likes",
+            "default": 0
+          },
+          "comments": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Comments",
+            "description": "Number of comments",
+            "default": 0
+          },
+          "shares": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Shares",
+            "description": "Number of shares",
+            "default": 0
+          },
+          "saves": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Saves",
+            "description": "Number of saves",
+            "default": 0
+          },
+          "clicks": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Clicks",
+            "description": "Number of clicks",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "EngagementMetricsRequest",
+        "description": "Engagement metrics for a single post."
+      },
       "ExpediteRequest": {
         "properties": {
           "priority": {
@@ -15742,6 +15984,77 @@
         ],
         "title": "ExplorationRateMetrics",
         "description": "Metrics for exploration rate monitoring."
+      },
+      "FeedbackProcessingResponse": {
+        "properties": {
+          "post_id": {
+            "type": "string",
+            "title": "Post Id",
+            "description": "The post ID"
+          },
+          "scene_type": {
+            "type": "string",
+            "title": "Scene Type",
+            "description": "Scene type of the post"
+          },
+          "reward": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Reward",
+            "description": "Computed reward signal (0=bad, 1=good)"
+          },
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether reward >= 0.5 (positive outcome)"
+          },
+          "previous_alpha": {
+            "type": "number",
+            "title": "Previous Alpha",
+            "description": "Alpha before update"
+          },
+          "previous_beta": {
+            "type": "number",
+            "title": "Previous Beta",
+            "description": "Beta before update"
+          },
+          "new_alpha": {
+            "type": "number",
+            "title": "New Alpha",
+            "description": "Alpha after update"
+          },
+          "new_beta": {
+            "type": "number",
+            "title": "New Beta",
+            "description": "Beta after update"
+          },
+          "observation_count": {
+            "type": "integer",
+            "title": "Observation Count",
+            "description": "Total observations for this scene type"
+          },
+          "expected_success_rate": {
+            "type": "number",
+            "title": "Expected Success Rate",
+            "description": "Expected success rate after update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "post_id",
+          "scene_type",
+          "reward",
+          "success",
+          "previous_alpha",
+          "previous_beta",
+          "new_alpha",
+          "new_beta",
+          "observation_count",
+          "expected_success_rate"
+        ],
+        "title": "FeedbackProcessingResponse",
+        "description": "Response schema for single post engagement processing."
       },
       "GeneratedContent": {
         "properties": {
@@ -17682,6 +17995,71 @@
         ],
         "title": "PriorityUpdateRequest",
         "description": "Schema for updating post priority.\n\nUsed for PATCH /posts/{id}/priority endpoint."
+      },
+      "ProcessEngagementBatchRequest": {
+        "properties": {
+          "engagement_data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Engagement Data",
+            "description": "List of engagement records with post_id, scene_type, and metrics",
+            "examples": [
+              [
+                {
+                  "comments": 10,
+                  "impressions": 1000,
+                  "likes": 50,
+                  "post_id": "post-123",
+                  "scene_type": "lifestyle",
+                  "shares": 5
+                }
+              ]
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "engagement_data"
+        ],
+        "title": "ProcessEngagementBatchRequest",
+        "description": "Request schema for processing batch engagement data."
+      },
+      "ProcessEngagementRequest": {
+        "properties": {
+          "post_id": {
+            "type": "string",
+            "title": "Post Id",
+            "description": "The post ID",
+            "examples": [
+              "post-123"
+            ]
+          },
+          "scene_type": {
+            "type": "string",
+            "title": "Scene Type",
+            "description": "Scene type of the post",
+            "examples": [
+              "lifestyle",
+              "product",
+              "testimonial",
+              "educational"
+            ]
+          },
+          "engagement": {
+            "$ref": "#/components/schemas/EngagementMetricsRequest",
+            "description": "Engagement metrics for the post"
+          }
+        },
+        "type": "object",
+        "required": [
+          "post_id",
+          "scene_type",
+          "engagement"
+        ],
+        "title": "ProcessEngagementRequest",
+        "description": "Request schema for processing single post engagement."
       },
       "ProductV2": {
         "properties": {

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.891] - 2026-01-29
+
+### Changes
+- feat: Implement engagement feedback processor for Thompson Sampling (#2672)
+
+**Source:** project-beta-api@c15f1ee9
+
 ## [v0.7.890] - 2026-01-29
 
 ### Changes
