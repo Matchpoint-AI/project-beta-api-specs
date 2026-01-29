@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.907] - 2026-01-29
+
+### Changes
+- fix: Content generation E2E pipeline fixes (#2702)
+
+**Source:** project-beta-api@66fc3f0b
+
 ## [v0.7.906] - 2026-01-29
 
 ### Changes
