@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.917] - 2026-01-30
+
+### Changes
+- fix: Add json_typeof check before json_array_length to prevent scalar error (#2714)
+
+**Source:** project-beta-api@29448cab
+
 ## [v0.7.916] - 2026-01-30
 
 ### Changes
