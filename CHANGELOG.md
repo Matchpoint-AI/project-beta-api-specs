@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.918] - 2026-01-30
+
+### Changes
+- fix: Use session_maker pattern in BrandEngagementHistoryRepository (#2715)
+
+**Source:** project-beta-api@46456369
+
 ## [v0.7.917] - 2026-01-30
 
 ### Changes
