@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.915] - 2026-01-30
+
+### Changes
+- feat: Emit workflow events to Pub/Sub for pulse-manager (#2710)
+
+**Source:** project-beta-api@984fee81
+
 ## [v0.7.914] - 2026-01-29
 
 ### Changes

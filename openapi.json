@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.914"
+    "version": "0.7.915"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -4489,7 +4489,7 @@
           "outputs"
         ],
         "summary": "Receive generated post from post-generator",
-        "description": "Pub/Sub push endpoint for receiving individual generated posts from the post-generator service. Updates the pre-created post record by post_id with generated content (text, image, etc.).",
+        "description": "Pub/Sub push endpoint for receiving individual generated posts from the post-generator service. Updates the pre-created post record by post_id with generated content (text, image, etc.). Emits POST_COMPLETE, WORKFLOW_COMPLETE, or WORKFLOW_FAILED events.",
         "operationId": "receive_output_api_v2_outputs_post",
         "parameters": [
           {
@@ -4542,82 +4542,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OutputAckResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/pulses": {
-      "post": {
-        "tags": [
-          "outputs"
-        ],
-        "summary": "Receive content generation status pulse",
-        "description": "Pub/Sub push endpoint for receiving real-time status pulses from the post-generator service. Stores pulse in Redis for frontend polling.Issue #2428: Now uses unified key pattern pulse:{correlation_id}.",
-        "operationId": "receive_content_pulse_api_v2_content_pulses_post",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          },
-          {
-            "name": "X-PubSub-Secret",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Pubsub-Secret"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PulseAckResponse"
                 }
               }
             }
@@ -7523,7 +7447,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/src__schemas__crawler_pulses__PulseAckResponse"
+                  "$ref": "#/components/schemas/PulseAckResponse"
                 }
               }
             }
@@ -19029,6 +18953,33 @@
         "title": "PublishedPostSummary",
         "description": "Summary of a single published post within a publication."
       },
+      "PulseAckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status",
+            "default": "acknowledged"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID from message"
+          },
+          "progressPct": {
+            "type": "integer",
+            "title": "Progresspct",
+            "description": "Progress percentage received"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "progressPct"
+        ],
+        "title": "PulseAckResponse",
+        "description": "Response for successful pulse processing."
+      },
       "RejectionReason": {
         "type": "string",
         "enum": [
@@ -23335,33 +23286,6 @@
         "title": "PubSubPushEnvelope",
         "description": "Pub/Sub push subscription envelope format."
       },
-      "src__schemas__content_generator_pubsub__PulseAckResponse": {
-        "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Processing status",
-            "default": "acknowledged"
-          },
-          "correlationId": {
-            "type": "string",
-            "title": "Correlationid",
-            "description": "Correlation ID from message"
-          },
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid",
-            "description": "Campaign ID"
-          }
-        },
-        "type": "object",
-        "required": [
-          "correlationId",
-          "campaignId"
-        ],
-        "title": "PulseAckResponse",
-        "description": "Response for successful pulse processing."
-      },
       "src__schemas__content_generator_pubsub__PulseStatusResponse": {
         "properties": {
           "correlationId": {
@@ -23464,33 +23388,6 @@
         ],
         "title": "PubSubPushEnvelope",
         "description": "Pub/Sub push subscription envelope format."
-      },
-      "src__schemas__crawler_pulses__PulseAckResponse": {
-        "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Processing status",
-            "default": "acknowledged"
-          },
-          "correlationId": {
-            "type": "string",
-            "title": "Correlationid",
-            "description": "Correlation ID from message"
-          },
-          "progressPct": {
-            "type": "integer",
-            "title": "Progresspct",
-            "description": "Progress percentage received"
-          }
-        },
-        "type": "object",
-        "required": [
-          "correlationId",
-          "progressPct"
-        ],
-        "title": "PulseAckResponse",
-        "description": "Response for successful pulse processing."
       },
       "src__schemas__crawler_pulses__PulseStatusResponse": {
         "properties": {
