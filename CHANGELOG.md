@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.919] - 2026-01-30
+
+### Changes
+- fix: Return 500 for batch publish failures to trigger Pub/Sub retry (#2716)
+
+**Source:** project-beta-api@a7099530
+
 ## [v0.7.918] - 2026-01-30
 
 ### Changes
