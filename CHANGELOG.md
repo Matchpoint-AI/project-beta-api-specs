@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.916] - 2026-01-30
+
+### Changes
+- fix: Inject BrandEngagementHistoryRepository into ScheduleOptimizerService (#2713)
+
+**Source:** project-beta-api@1a3f6dc4
+
 ## [v0.7.915] - 2026-01-30
 
 ### Changes
