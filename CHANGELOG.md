@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.923] - 2026-02-01
+
+### Changes
+- feat: Add callbacks controller for async fal.ai webhooks (#2737)
+
+**Source:** project-beta-api@806a02b8
+
 ## [v0.7.922] - 2026-02-01
 
 ### Changes
