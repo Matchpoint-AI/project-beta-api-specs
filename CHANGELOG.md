@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.921] - 2026-02-01
+
+### Changes
+- feat: Add user-friendly prompt support for media items (#2738)
+
+**Source:** project-beta-api@980acd62
+
 ## [v0.7.920] - 2026-02-01
 
 ### Changes
