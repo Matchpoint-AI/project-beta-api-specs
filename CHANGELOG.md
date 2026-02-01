@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.924] - 2026-02-01
+
+### Changes
+- feat: Media-centric progress tracking and async media handling (#2739)
+
+**Source:** project-beta-api@e73202ba
+
 ## [v0.7.923] - 2026-02-01
 
 ### Changes
