@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.920] - 2026-02-01
+
+### Changes
+- spec: Add async media generation with fal.ai webhooks (#2735)
+
+**Source:** project-beta-api@39ef2c74
+
 ## [v0.7.919] - 2026-01-30
 
 ### Changes
