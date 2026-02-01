@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.922] - 2026-02-01
+
+### Changes
+- feat(media): Add external_request_id for async webhook callbacks (#2736)
+
+**Source:** project-beta-api@f496e0e1
+
 ## [v0.7.921] - 2026-02-01
 
 ### Changes
