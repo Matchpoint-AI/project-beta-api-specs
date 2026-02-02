@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.931] - 2026-02-02
+
+### Changes
+- fix: Handle schema mismatches in Content Designer output parsing (#2746)
+
+**Source:** project-beta-api@cbc8554c
+
 ## [v0.7.930] - 2026-02-02
 
 ### Changes
