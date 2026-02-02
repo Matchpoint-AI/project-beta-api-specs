@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.930] - 2026-02-02
+
+### Changes
+- fix: Add missing controllers to asgi.py (content generation broken) (#2745)
+
+**Source:** project-beta-api@6538f710
+
 ## [v0.7.929] - 2026-02-02
 
 ### Changes
