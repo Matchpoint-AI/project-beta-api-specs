@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.925] - 2026-02-02
+
+### Changes
+- fix: Remove model overrides from API messages to post-generator (#2740)
+
+**Source:** project-beta-api@0ccaff82
+
 ## [v0.7.924] - 2026-02-01
 
 ### Changes
