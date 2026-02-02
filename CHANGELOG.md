@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.929] - 2026-02-02
+
+### Changes
+- fix(cost): Change default FAL models to cheap alternatives (#2733)
+
+**Source:** project-beta-api@99650b3a
+
 ## [v0.7.928] - 2026-02-02
 
 ### Changes
