@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.932] - 2026-02-02
+
+### Changes
+- fix: bypass content-designer for image regeneration and use correct models (#2748)
+
+**Source:** project-beta-api@02011150
+
 ## [v0.7.931] - 2026-02-02
 
 ### Changes
