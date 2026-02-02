@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.926] - 2026-02-02
+
+### Changes
+- feat: Add media sync and parallel content generation improvements (#2741)
+
+**Source:** project-beta-api@976946a7
+
 ## [v0.7.925] - 2026-02-02
 
 ### Changes
