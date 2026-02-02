@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.928] - 2026-02-02
+
+### Changes
+- fix(cost): Add billing exhaustion detection to video_generation_client (#2734)
+
+**Source:** project-beta-api@3668b319
+
 ## [v0.7.927] - 2026-02-02
 
 ### Changes
