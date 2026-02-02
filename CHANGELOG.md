@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.927] - 2026-02-02
+
+### Changes
+- fix: Sync media URLs to Posts.image_urls on generation completion
+
+**Source:** project-beta-api@996fb7d8
+
 ## [v0.7.926] - 2026-02-02
 
 ### Changes
