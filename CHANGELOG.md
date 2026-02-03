@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.939] - 2026-02-03
+
+### Changes
+- fix: Update deprecated gemini model to gemini-3-flash-preview
+
+**Source:** project-beta-api@594b19fa
+
 ## [v0.7.938] - 2026-02-03
 
 ### Changes
