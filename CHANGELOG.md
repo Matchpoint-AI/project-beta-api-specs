@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.942] - 2026-02-03
+
+### Changes
+- docs(specs): add CI/CD bypass policy for dev environment (#2766)
+
+**Source:** project-beta-api@120c26d2
+
 ## [v0.7.941] - 2026-02-03
 
 ### Changes
