@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.933] - 2026-02-03
+
+### Changes
+- fix: Use campaign.platforms (list) not campaign.platform (500 error) (#2749)
+
+**Source:** project-beta-api@2450004a
+
 ## [v0.7.932] - 2026-02-02
 
 ### Changes
