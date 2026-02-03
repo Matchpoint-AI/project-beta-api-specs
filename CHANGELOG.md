@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.943] - 2026-02-03
+
+### Changes
+- docs(specs): add logging requirements for troubleshooting (#2767)
+
+**Source:** project-beta-api@6388e5f4
+
 ## [v0.7.942] - 2026-02-03
 
 ### Changes
