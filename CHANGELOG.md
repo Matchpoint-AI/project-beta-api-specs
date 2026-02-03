@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.945] - 2026-02-03
+
+### Changes
+- fix(db): add lowercase values to mediatype enum (#2769)
+
+**Source:** project-beta-api@7052cd8d
+
 ## [v0.7.944] - 2026-02-03
 
 ### Changes
