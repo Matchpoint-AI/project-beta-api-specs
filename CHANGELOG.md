@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.935] - 2026-02-03
+
+### Changes
+- fix: Return null instead of 404 for missing campaign policy (#2755)
+
+**Source:** project-beta-api@8e3f7e33
+
 ## [v0.7.934] - 2026-02-03
 
 ### Changes

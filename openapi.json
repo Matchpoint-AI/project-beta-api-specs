@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.934"
+    "version": "0.7.935"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -2607,7 +2607,7 @@
           "campaigns"
         ],
         "summary": "Get Scene Mix Policy",
-        "description": "Get scene mix policy for a campaign.\n\nReturns the content mixing policy configuration for the specified campaign.\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.",
+        "description": "Get scene mix policy for a campaign.\n\nReturns the content mixing policy configuration for the specified campaign,\nor null if no policy has been created yet. This allows the frontend to\ngracefully handle campaigns that don't have a policy configured.\n\nRequires authentication and ownership of the campaign.\n\nIssue #1551: Added authentication and ownership verification.\nIssue #2753: Return null instead of 404 for missing policy.",
         "operationId": "get_scene_mix_policy_api_v2_campaigns__campaign_id__policy_get",
         "security": [
           {
@@ -2629,11 +2629,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Policy returned successfully",
+            "description": "Policy returned successfully (or null if not created yet)",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SceneMixPolicyResponse"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/SceneMixPolicyResponse"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Response Get Scene Mix Policy Api V2 Campaigns  Campaign Id  Policy Get"
                 }
               }
             }
@@ -2643,9 +2651,6 @@
           },
           "403": {
             "description": "Forbidden - user does not own this campaign"
-          },
-          "404": {
-            "description": "Policy not found"
           },
           "422": {
             "description": "Validation Error",
