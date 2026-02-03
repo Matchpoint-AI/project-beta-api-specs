@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.941] - 2026-02-03
+
+### Changes
+- fix(api): remove model passthrough to Post Generator (#2765)
+
+**Source:** project-beta-api@a9f81fd5
+
 ## [v0.7.940] - 2026-02-03
 
 ### Changes
