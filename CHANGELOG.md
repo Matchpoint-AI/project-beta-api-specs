@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.946] - 2026-02-03
+
+### Changes
+- docs(specs): add checkmark format for implementation tracking (#2770)
+
+**Source:** project-beta-api@56cae638
+
 ## [v0.7.945] - 2026-02-03
 
 ### Changes
