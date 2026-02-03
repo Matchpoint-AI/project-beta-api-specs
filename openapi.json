@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.936"
+    "version": "0.7.937"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -9756,50 +9756,50 @@
       },
       "AssignPostRequest": {
         "properties": {
-          "assignee_id": {
+          "assigneeId": {
             "type": "string",
             "minLength": 1,
-            "title": "Assignee Id",
+            "title": "Assigneeid",
             "description": "User ID of the reviewer to assign this post to"
           }
         },
         "type": "object",
         "required": [
-          "assignee_id"
+          "assigneeId"
         ],
         "title": "AssignPostRequest",
         "description": "Request schema for assigning a post to a reviewer.\n\nIssue #2060: Enables post assignment to specific reviewers."
       },
       "AssignPostResponse": {
         "properties": {
-          "post_id": {
+          "postId": {
             "type": "string",
-            "title": "Post Id",
+            "title": "Postid",
             "description": "ID of the assigned post"
           },
-          "assigned_to": {
+          "assignedTo": {
             "type": "string",
-            "title": "Assigned To",
+            "title": "Assignedto",
             "description": "User ID of the assigned reviewer"
           },
-          "assigned_by": {
+          "assignedBy": {
             "type": "string",
-            "title": "Assigned By",
+            "title": "Assignedby",
             "description": "User ID who made the assignment"
           },
-          "assigned_at": {
+          "assignedAt": {
             "type": "string",
             "format": "date-time",
-            "title": "Assigned At",
+            "title": "Assignedat",
             "description": "Timestamp of assignment"
           }
         },
         "type": "object",
         "required": [
-          "post_id",
-          "assigned_to",
-          "assigned_by",
-          "assigned_at"
+          "postId",
+          "assignedTo",
+          "assignedBy",
+          "assignedAt"
         ],
         "title": "AssignPostResponse",
         "description": "Response schema for post assignment operation.\n\nIssue #2060: Returns assignment details."
@@ -11838,16 +11838,16 @@
       },
       "BulkAssignPostsRequest": {
         "properties": {
-          "post_ids": {
+          "postIds": {
             "items": {
               "type": "string"
             },
             "type": "array",
             "minItems": 1,
-            "title": "Post Ids",
+            "title": "Postids",
             "description": "List of post IDs to assign"
           },
-          "assignee_id": {
+          "assigneeId": {
             "anyOf": [
               {
                 "type": "string"
@@ -11856,16 +11856,16 @@
                 "type": "null"
               }
             ],
-            "title": "Assignee Id",
+            "title": "Assigneeid",
             "description": "User ID to assign all posts to (optional if auto_assign=True)"
           },
-          "auto_assign": {
+          "autoAssign": {
             "type": "boolean",
-            "title": "Auto Assign",
+            "title": "Autoassign",
             "description": "If True, uses load-balanced auto-assignment algorithm",
             "default": false
           },
-          "reviewer_ids": {
+          "reviewerIds": {
             "anyOf": [
               {
                 "items": {
@@ -11877,37 +11877,37 @@
                 "type": "null"
               }
             ],
-            "title": "Reviewer Ids",
+            "title": "Reviewerids",
             "description": "List of reviewer IDs for auto-assignment (required if auto_assign=True)"
           }
         },
         "type": "object",
         "required": [
-          "post_ids"
+          "postIds"
         ],
         "title": "BulkAssignPostsRequest",
         "description": "Request schema for bulk post assignment.\n\nIssue #2060: Enables bulk assignment to specific reviewer or auto-assignment."
       },
       "BulkAssignPostsResponse": {
         "properties": {
-          "assigned_count": {
+          "assignedCount": {
             "type": "integer",
             "minimum": 0.0,
-            "title": "Assigned Count",
+            "title": "Assignedcount",
             "description": "Number of posts successfully assigned"
           },
-          "failed_count": {
+          "failedCount": {
             "type": "integer",
             "minimum": 0.0,
-            "title": "Failed Count",
+            "title": "Failedcount",
             "description": "Number of posts that failed to assign"
           },
-          "failed_ids": {
+          "failedIds": {
             "items": {
               "type": "string"
             },
             "type": "array",
-            "title": "Failed Ids",
+            "title": "Failedids",
             "description": "List of post IDs that failed to assign"
           },
           "assignments": {
@@ -11921,36 +11921,36 @@
         },
         "type": "object",
         "required": [
-          "assigned_count",
-          "failed_count"
+          "assignedCount",
+          "failedCount"
         ],
         "title": "BulkAssignPostsResponse",
         "description": "Response schema for bulk post assignment.\n\nIssue #2060: Returns assignment results."
       },
       "BulkAssignmentDetail": {
         "properties": {
-          "post_id": {
+          "postId": {
             "type": "string",
-            "title": "Post Id",
+            "title": "Postid",
             "description": "ID of the assigned post"
           },
-          "assigned_to": {
+          "assignedTo": {
             "type": "string",
-            "title": "Assigned To",
+            "title": "Assignedto",
             "description": "User ID of the assigned reviewer"
           }
         },
         "type": "object",
         "required": [
-          "post_id",
-          "assigned_to"
+          "postId",
+          "assignedTo"
         ],
         "title": "BulkAssignmentDetail",
         "description": "Details of a single assignment in bulk operation.\n\nIssue #2060: Part of bulk assignment response."
       },
       "BulkContentApprovalRequest": {
         "properties": {
-          "content_ids": {
+          "contentIds": {
             "anyOf": [
               {
                 "items": {
@@ -11962,7 +11962,7 @@
                 "type": "null"
               }
             ],
-            "title": "Content Ids",
+            "title": "Contentids",
             "description": "Optional list of specific content IDs to approve. If empty, approves all campaign content."
           }
         },
@@ -11972,31 +11972,31 @@
       },
       "BulkContentApprovalResponse": {
         "properties": {
-          "approved_count": {
+          "approvedCount": {
             "type": "integer",
             "minimum": 0.0,
-            "title": "Approved Count",
+            "title": "Approvedcount",
             "description": "Number of content items successfully approved"
           },
-          "failed_count": {
+          "failedCount": {
             "type": "integer",
             "minimum": 0.0,
-            "title": "Failed Count",
+            "title": "Failedcount",
             "description": "Number of content items that failed to approve"
           },
-          "failed_ids": {
+          "failedIds": {
             "items": {
               "type": "string"
             },
             "type": "array",
-            "title": "Failed Ids",
+            "title": "Failedids",
             "description": "List of content IDs that failed to approve"
           }
         },
         "type": "object",
         "required": [
-          "approved_count",
-          "failed_count"
+          "approvedCount",
+          "failedCount"
         ],
         "title": "BulkContentApprovalResponse",
         "description": "Response schema for bulk content approval operation.\n\nReturns counts and any failed IDs."
@@ -12517,32 +12517,32 @@
             "title": "Approved",
             "description": "Whether all content is approved for export"
           },
-          "approved_content": {
+          "approvedContent": {
             "type": "integer",
             "minimum": 0.0,
-            "title": "Approved Content",
+            "title": "Approvedcontent",
             "description": "Number of approved posts"
           },
-          "total_content": {
+          "totalContent": {
             "type": "integer",
             "minimum": 0.0,
-            "title": "Total Content",
+            "title": "Totalcontent",
             "description": "Total number of posts"
           },
-          "unapproved_content_ids": {
+          "unapprovedContentIds": {
             "items": {
               "type": "string"
             },
             "type": "array",
-            "title": "Unapproved Content Ids",
+            "title": "Unapprovedcontentids",
             "description": "List of unapproved content IDs"
           }
         },
         "type": "object",
         "required": [
           "approved",
-          "approved_content",
-          "total_content"
+          "approvedContent",
+          "totalContent"
         ],
         "title": "CampaignExportApprovalStatus",
         "description": "Response schema for campaign export approval status.\n\nReturns detailed approval status for export functionality including\nlist of unapproved content IDs."
@@ -14147,9 +14147,9 @@
       },
       "ContentApprovalRequest": {
         "properties": {
-          "campaign_content_id": {
+          "campaignContentId": {
             "type": "string",
-            "title": "Campaign Content Id",
+            "title": "Campaigncontentid",
             "description": "ID of the content document"
           },
           "week": {
@@ -14188,7 +14188,7 @@
         },
         "type": "object",
         "required": [
-          "campaign_content_id",
+          "campaignContentId",
           "week",
           "day",
           "approved",
@@ -14196,7 +14196,7 @@
           "posts"
         ],
         "title": "ContentApprovalRequest",
-        "description": "Request schema for approving/unapproving content for a specific day.\n\nThis is a direct port of V1's ApproveRequest schema."
+        "description": "Request schema for approving/unapproving content for a specific day.\n\nThis is a direct port of V1's ApproveRequest schema.\n\nIssue #2751: Added populate_by_name=True and camelCase aliases to accept\nboth snake_case (Python) and camelCase (JavaScript) field names in requests."
       },
       "ContentApprovalResponse": {
         "properties": {
@@ -18174,7 +18174,7 @@
       },
       "PostContent": {
         "properties": {
-          "selected_image": {
+          "selectedImage": {
             "anyOf": [
               {
                 "type": "string",
@@ -18186,7 +18186,7 @@
                 "type": "null"
               }
             ],
-            "title": "Selected Image",
+            "title": "Selectedimage",
             "description": "URL of the selected image (optional - can be set later)"
           },
           "text": {
@@ -19253,9 +19253,9 @@
       },
       "RevertApprovalResponse": {
         "properties": {
-          "post_id": {
+          "postId": {
             "type": "string",
-            "title": "Post Id",
+            "title": "Postid",
             "description": "ID of the reverted post"
           },
           "reverted": {
@@ -19263,47 +19263,47 @@
             "title": "Reverted",
             "description": "Whether the revert was successful"
           },
-          "previous_status": {
+          "previousStatus": {
             "type": "boolean",
-            "title": "Previous Status",
+            "title": "Previousstatus",
             "description": "Previous approval status before revert"
           },
-          "new_status": {
+          "newStatus": {
             "type": "boolean",
-            "title": "New Status",
+            "title": "Newstatus",
             "description": "New approval status after revert"
           },
-          "reverted_by": {
+          "revertedBy": {
             "type": "string",
-            "title": "Reverted By",
+            "title": "Revertedby",
             "description": "User ID who performed the revert"
           },
-          "revert_reason": {
+          "revertReason": {
             "type": "string",
-            "title": "Revert Reason",
+            "title": "Revertreason",
             "description": "Reason for the revert"
           }
         },
         "type": "object",
         "required": [
-          "post_id",
+          "postId",
           "reverted",
-          "previous_status",
-          "new_status",
-          "reverted_by",
-          "revert_reason"
+          "previousStatus",
+          "newStatus",
+          "revertedBy",
+          "revertReason"
         ],
         "title": "RevertApprovalResponse",
         "description": "Response schema for revert approval operation.\n\nIssue #2062: Returns the reverted post status."
       },
       "ReviewerQueueItem": {
         "properties": {
-          "post_id": {
+          "postId": {
             "type": "string",
-            "title": "Post Id",
+            "title": "Postid",
             "description": "ID of the post"
           },
-          "campaign_id": {
+          "campaignId": {
             "anyOf": [
               {
                 "type": "integer"
@@ -19312,7 +19312,7 @@
                 "type": "null"
               }
             ],
-            "title": "Campaign Id",
+            "title": "Campaignid",
             "description": "Campaign ID"
           },
           "text": {
@@ -19332,7 +19332,7 @@
             "title": "Approved",
             "description": "Whether post is approved"
           },
-          "assigned_at": {
+          "assignedAt": {
             "anyOf": [
               {
                 "type": "string",
@@ -19342,10 +19342,10 @@
                 "type": "null"
               }
             ],
-            "title": "Assigned At",
+            "title": "Assignedat",
             "description": "When assigned"
           },
-          "week_number": {
+          "weekNumber": {
             "anyOf": [
               {
                 "type": "integer"
@@ -19354,10 +19354,10 @@
                 "type": "null"
               }
             ],
-            "title": "Week Number",
+            "title": "Weeknumber",
             "description": "Week number"
           },
-          "day_number": {
+          "dayNumber": {
             "anyOf": [
               {
                 "type": "integer"
@@ -19366,10 +19366,10 @@
                 "type": "null"
               }
             ],
-            "title": "Day Number",
+            "title": "Daynumber",
             "description": "Day number"
           },
-          "post_number": {
+          "postNumber": {
             "anyOf": [
               {
                 "type": "integer"
@@ -19378,13 +19378,13 @@
                 "type": "null"
               }
             ],
-            "title": "Post Number",
+            "title": "Postnumber",
             "description": "Post number"
           }
         },
         "type": "object",
         "required": [
-          "post_id",
+          "postId",
           "approved"
         ],
         "title": "ReviewerQueueItem",
@@ -19400,23 +19400,23 @@
             "title": "Posts",
             "description": "Posts assigned for review"
           },
-          "total_count": {
+          "totalCount": {
             "type": "integer",
             "minimum": 0.0,
-            "title": "Total Count",
+            "title": "Totalcount",
             "description": "Total number of assigned posts"
           },
-          "pending_count": {
+          "pendingCount": {
             "type": "integer",
             "minimum": 0.0,
-            "title": "Pending Count",
+            "title": "Pendingcount",
             "description": "Number of posts pending review"
           }
         },
         "type": "object",
         "required": [
-          "total_count",
-          "pending_count"
+          "totalCount",
+          "pendingCount"
         ],
         "title": "ReviewerQueueResponse",
         "description": "Response schema for reviewer queue.\n\nIssue #2060: Returns list of posts assigned to the reviewer."

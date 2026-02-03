@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.937] - 2026-02-03
+
+### Changes
+- fix: Add camelCase aliases to content approval schemas (#2751) (#2756)
+
+**Source:** project-beta-api@a0a0e856
+
 ## [v0.7.936] - 2026-02-03
 
 ### Changes
