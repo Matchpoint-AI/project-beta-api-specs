@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.938] - 2026-02-03
+
+### Changes
+- fix: Remove webhook callback endpoints (sync architecture) (#2759)
+
+**Source:** project-beta-api@a3cd97e4
+
 ## [v0.7.937] - 2026-02-03
 
 ### Changes
