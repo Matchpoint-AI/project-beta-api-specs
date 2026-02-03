@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.940] - 2026-02-03
+
+### Changes
+- fix: Use claude-sonnet-4.5 as default text model (INVARIANT) (#2764)
+
+**Source:** project-beta-api@d5bf9402
+
 ## [v0.7.939] - 2026-02-03
 
 ### Changes
