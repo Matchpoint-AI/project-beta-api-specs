@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.936] - 2026-02-03
+
+### Changes
+- fix: Add PostExportService and PostExportRepository DI bindings (#2757)
+
+**Source:** project-beta-api@5f339da5
+
 ## [v0.7.935] - 2026-02-03
 
 ### Changes
