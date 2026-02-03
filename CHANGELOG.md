@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.934] - 2026-02-03
+
+### Changes
+- fix: Ensure text_prompt is never empty for image generation (#2750)
+
+**Source:** project-beta-api@217aa4b7
+
 ## [v0.7.933] - 2026-02-03
 
 ### Changes
