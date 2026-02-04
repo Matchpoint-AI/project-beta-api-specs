@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.950] - 2026-02-04
+
+### Changes
+- feat(gate-8): Add content_type to post placeholders for video campaigns (#2774)
+
+**Source:** project-beta-api@e29d24a2
+
 ## [v0.7.949] - 2026-02-04
 
 ### Changes
