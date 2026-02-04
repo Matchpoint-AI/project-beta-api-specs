@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.949] - 2026-02-04
+
+### Changes
+- fix(db): add missing mediastatus enum values (#2773)
+
+**Source:** project-beta-api@cc880812
+
 ## [v0.7.948] - 2026-02-04
 
 ### Changes
