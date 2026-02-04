@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.947] - 2026-02-04
+
+### Changes
+- fix(db): update migration dependency to fix multiple heads (#2771)
+
+**Source:** project-beta-api@a75f22d1
+
 ## [v0.7.946] - 2026-02-03
 
 ### Changes
