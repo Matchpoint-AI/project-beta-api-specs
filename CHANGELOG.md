@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.951] - 2026-02-04
+
+### Changes
+- feat(video): add video fields to content API (GATE 8) (#2775)
+
+**Source:** project-beta-api@6981c5b0
+
 ## [v0.7.950] - 2026-02-04
 
 ### Changes
