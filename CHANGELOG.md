@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.948] - 2026-02-04
+
+### Changes
+- chore(db): add missing migration files (#2772)
+
+**Source:** project-beta-api@661ed18d
+
 ## [v0.7.947] - 2026-02-04
 
 ### Changes
