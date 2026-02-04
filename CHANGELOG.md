@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.952] - 2026-02-04
+
+### Changes
+- feat(api): Add GET /brands/{id}/summary endpoint (Issue A.1)
+
+**Source:** project-beta-api@412cfbd2
+
 ## [v0.7.951] - 2026-02-04
 
 ### Changes

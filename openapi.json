@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.951"
+    "version": "0.7.952"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -532,6 +532,65 @@
         "responses": {
           "204": {
             "description": "Brand deleted successfully"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/summary": {
+      "get": {
+        "tags": [
+          "brands"
+        ],
+        "summary": "Get Brand Summary",
+        "description": "Get brand summary view showing what the system understood about the brand.\n\nIssue A (User Testing Feedback): After brand scraping, users need to see\nwhat the system understood about the brand. This endpoint returns a\nstructured view of:\n- Brand attributes, tone, positioning\n- Product focus areas\n- What context is being passed to content generation\n\nThis is a synchronous endpoint that extracts data from the brand's\nexisting crawl_data field. For triggering new summary generation,\nuse POST /brands/{brand_id}/summaries instead.\n\nRMM Level 2 Compliance:\n- GET retrieves the brand summary sub-resource\n- Resource-oriented hierarchical URL structure",
+        "operationId": "get_brand_summary_api_v2_brands__brand_id__summary_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand summary returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandSummaryView"
+                }
+              }
+            }
           },
           "401": {
             "description": "Authentication required"
@@ -10175,6 +10234,92 @@
         "title": "BrandArchetype",
         "description": "Brand archetype classification for content tone and style."
       },
+      "BrandAudienceSummary": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Target audience description"
+          },
+          "ageRange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agerange",
+            "description": "Age range"
+          },
+          "interests": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Interests",
+            "description": "Key interests"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Values",
+            "description": "Core values"
+          }
+        },
+        "type": "object",
+        "title": "BrandAudienceSummary",
+        "description": "Target audience in the summary view."
+      },
+      "BrandColorSummary": {
+        "properties": {
+          "hex": {
+            "type": "string",
+            "title": "Hex",
+            "description": "Hex color code (e.g., #FF0000)"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Color name if available"
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usage",
+            "description": "Color usage (primary, secondary, accent)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hex"
+        ],
+        "title": "BrandColorSummary",
+        "description": "Brand color in the summary view."
+      },
       "BrandCostsResponse": {
         "properties": {
           "brandId": {
@@ -11137,6 +11282,45 @@
         "title": "BrandOnboardingProgressUpdate",
         "description": "Schema for updating brand onboarding progress step."
       },
+      "BrandProductSummary": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Product name"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Product category"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Brief product description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "BrandProductSummary",
+        "description": "Product in the summary view."
+      },
       "BrandProfileExport": {
         "properties": {
           "id": {
@@ -11482,6 +11666,250 @@
         ],
         "title": "BrandSummaryResponse",
         "description": "Schema for brand summary response.\n\nIssue #1386: Updated to support async pattern with optional summary.\n\nReturns a generated cohesive brand summary paragraph based on the brand's\nmission, vision, values, tone/voice, persona, industry, and vertical.\n\nFor async operations:\n- summary is None (generation in progress)\n- message contains status info\n- correlation_id can be used for tracking\n\nFollowing V1 implementation (ReviewForm.tsx):\n- Generated via LLM (brand-crawler service)\n- 60 words or less\n- Single cohesive paragraph\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location"
+      },
+      "BrandSummaryView": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "brandName": {
+            "type": "string",
+            "title": "Brandname",
+            "description": "Brand name"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "Brand website URL"
+          },
+          "brandDescription": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branddescription",
+            "description": "1-2 sentence brand description"
+          },
+          "valueProposition": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valueproposition",
+            "description": "What makes this brand unique"
+          },
+          "mission": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mission",
+            "description": "Brand mission statement"
+          },
+          "tagline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tagline",
+            "description": "Brand tagline/slogan"
+          },
+          "industry": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry",
+            "description": "Industry category"
+          },
+          "industryVertical": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industryvertical",
+            "description": "Industry vertical"
+          },
+          "brandArchetype": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandarchetype",
+            "description": "Brand archetype (e.g., tech, luxury, playful)"
+          },
+          "colors": {
+            "items": {
+              "$ref": "#/components/schemas/BrandColorSummary"
+            },
+            "type": "array",
+            "title": "Colors",
+            "description": "Brand color palette"
+          },
+          "logoUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logourl",
+            "description": "Primary logo URL"
+          },
+          "tone": {
+            "$ref": "#/components/schemas/BrandToneSummary",
+            "description": "Brand tone attributes"
+          },
+          "keyPhrases": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keyphrases",
+            "description": "Signature brand phrases"
+          },
+          "thingsToAvoid": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Thingstoavoid",
+            "description": "Words/phrases to avoid in content"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/BrandProductSummary"
+            },
+            "type": "array",
+            "title": "Products",
+            "description": "Key products/services"
+          },
+          "audience": {
+            "$ref": "#/components/schemas/BrandAudienceSummary",
+            "description": "Target audience information"
+          },
+          "knowledgeStatus": {
+            "type": "string",
+            "title": "Knowledgestatus",
+            "description": "Status of brand knowledge extraction"
+          },
+          "isComplete": {
+            "type": "boolean",
+            "title": "Iscomplete",
+            "description": "Whether crawl is complete and data is available"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "brandName",
+          "knowledgeStatus",
+          "isComplete"
+        ],
+        "title": "BrandSummaryView",
+        "description": "Synchronous brand summary view for Issue A (user testing feedback).\n\nThis schema extracts and displays what the system understood about the brand\nafter scraping. It enables users to:\n- See brand attributes, tone, positioning\n- Understand product focus areas\n- Know what context is being passed to content generation\n\nExtracted from the brand's crawl_data field which contains BrandAssets."
+      },
+      "BrandToneSummary": {
+        "properties": {
+          "formality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Formality",
+            "description": "Formality level (casual, semi-formal, formal)"
+          },
+          "enthusiasm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enthusiasm",
+            "description": "Enthusiasm level (low, medium, high)"
+          },
+          "expertise": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expertise",
+            "description": "Expertise level (beginner, intermediate, authoritative)"
+          },
+          "personality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Personality",
+            "description": "Brand personality description"
+          },
+          "personalityTraits": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Personalitytraits",
+            "description": "List of personality trait adjectives"
+          }
+        },
+        "type": "object",
+        "title": "BrandToneSummary",
+        "description": "Brand tone attributes in the summary view."
       },
       "BrandUpdate": {
         "properties": {
@@ -18342,6 +18770,48 @@
             "type": "array",
             "title": "Gcsurls"
           },
+          "videoUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Videourls"
+          },
+          "videoGcsUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Videogcsurls"
+          },
+          "videoThumbnailUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videothumbnailurl"
+          },
+          "videoDurationSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videodurationseconds"
+          },
+          "mediaType": {
+            "type": "string",
+            "title": "Mediatype",
+            "description": "Content type: 'image' or 'video'",
+            "default": "image"
+          },
           "textVersions": {
             "items": {
               "type": "string"
@@ -18372,6 +18842,11 @@
           "selectedImageIndex": {
             "type": "integer",
             "title": "Selectedimageindex",
+            "default": 0
+          },
+          "selectedVideoIndex": {
+            "type": "integer",
+            "title": "Selectedvideoindex",
             "default": 0
           },
           "qualityScore": {
