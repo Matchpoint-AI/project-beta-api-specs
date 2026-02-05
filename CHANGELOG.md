@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.954] - 2026-02-05
+
+### Changes
+- fix: Handle None values in TargetAudience.description field (#2778)
+
+**Source:** project-beta-api@98f23e21
+
 ## [v0.7.953] - 2026-02-05
 
 ### Changes
