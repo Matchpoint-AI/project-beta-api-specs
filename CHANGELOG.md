@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.953] - 2026-02-05
+
+### Changes
+- fix: Make BrandCrawlOutput schema compatible with brand-crawler output (#2777)
+
+**Source:** project-beta-api@eacb1f51
+
 ## [v0.7.952] - 2026-02-04
 
 ### Changes
