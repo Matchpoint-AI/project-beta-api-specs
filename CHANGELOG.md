@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.969] - 2026-02-05
+
+### Changes
+- fix(db): add missing 'text' value to versionrequesttarget enum (#2793)
+
+**Source:** project-beta-api@7d974b0e
+
 ## [v0.7.968] - 2026-02-05
 
 ### Changes
