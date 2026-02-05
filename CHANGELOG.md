@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.967] - 2026-02-05
+
+### Changes
+- feat(gate-10): add experience prompt edit endpoint (#2791)
+
+**Source:** project-beta-api@c01741bd
+
 ## [v0.7.966] - 2026-02-05
 
 ### Changes
