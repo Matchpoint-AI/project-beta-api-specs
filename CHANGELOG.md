@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.971] - 2026-02-05
+
+### Changes
+- fix(gate-10): use non-empty brand_id for Post Generator fan-out (#2795)
+
+**Source:** project-beta-api@b2f7cb2f
+
 ## [v0.7.970] - 2026-02-05
 
 ### Changes
