@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.963] - 2026-02-05
+
+### Changes
+- fix(docker): Include fix_alembic_state.py in image (#2787)
+
+**Source:** project-beta-api@56845fc8
+
 ## [v0.7.962] - 2026-02-05
 
 ### Changes
