@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.964] - 2026-02-05
+
+### Changes
+- fix: Update version request status when post-generator outputs arrive (#2788)
+
+**Source:** project-beta-api@39c1ca5d
+
 ## [v0.7.963] - 2026-02-05
 
 ### Changes
