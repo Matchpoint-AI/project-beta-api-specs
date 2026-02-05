@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.960] - 2026-02-05
+
+### Changes
+- fix(db): Add script to fix stale alembic_version entries (#2784)
+
+**Source:** project-beta-api@c0f00b69
+
 ## [v0.7.959] - 2026-02-05
 
 ### Changes
