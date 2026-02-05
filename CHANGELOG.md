@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.970] - 2026-02-05
+
+### Changes
+- fix(gate-10): handle experience_prompt_interpreted messages in designer_prompts_controller (#2794)
+
+**Source:** project-beta-api@689a9cf0
+
 ## [v0.7.969] - 2026-02-05
 
 ### Changes
