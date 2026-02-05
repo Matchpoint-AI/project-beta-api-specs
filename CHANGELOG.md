@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.968] - 2026-02-05
+
+### Changes
+- Merge pull request #2792 from Matchpoint-AI/slim-docker-image
+
+**Source:** project-beta-api@d7965bb5
+
 ## [v0.7.967] - 2026-02-05
 
 ### Changes
