@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.959] - 2026-02-05
+
+### Changes
+- fix(db): Correct add_experience_prompt to depend on fix_mediastatus_enum (#2783)
+
+**Source:** project-beta-api@25974318
+
 ## [v0.7.958] - 2026-02-05
 
 ### Changes
