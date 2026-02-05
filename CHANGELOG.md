@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.955] - 2026-02-05
+
+### Changes
+- feat(gate-10): Add experience_prompt field to Posts model and schemas (#2779)
+
+**Source:** project-beta-api@b78a0949
+
 ## [v0.7.954] - 2026-02-05
 
 ### Changes
