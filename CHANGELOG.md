@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.965] - 2026-02-05
+
+### Changes
+- feat: Add content regeneration endpoint (GATE 7) (#2789)
+
+**Source:** project-beta-api@2c25d069
+
 ## [v0.7.964] - 2026-02-05
 
 ### Changes
