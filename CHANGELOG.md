@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.962] - 2026-02-05
+
+### Changes
+- fix(docker): Include all scripts in image (#2786)
+
+**Source:** project-beta-api@d33f3cf5
+
 ## [v0.7.961] - 2026-02-05
 
 ### Changes
