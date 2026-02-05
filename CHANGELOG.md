@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.957] - 2026-02-05
+
+### Changes
+- fix(gate-10): Add experience_prompt to PostSchema (#2781)
+
+**Source:** project-beta-api@5bcef4c8
+
 ## [v0.7.956] - 2026-02-05
 
 ### Changes
