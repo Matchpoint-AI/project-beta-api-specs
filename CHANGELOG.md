@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.961] - 2026-02-05
+
+### Changes
+- chore: Trigger rebuild for fix_alembic_state.py (#2785)
+
+**Source:** project-beta-api@d083ace9
+
 ## [v0.7.960] - 2026-02-05
 
 ### Changes
