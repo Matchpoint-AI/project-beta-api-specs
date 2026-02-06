@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.976] - 2026-02-06
+
+### Changes
+- fix(gate-13): add products and key_phrases to Content Designer fat message (#2800)
+
+**Source:** project-beta-api@a1fd9792
+
 ## [v0.7.975] - 2026-02-06
 
 ### Changes
