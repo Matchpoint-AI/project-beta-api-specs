@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.979] - 2026-02-06
+
+### Changes
+- fix: filter terminal messages in content_outputs_controller (#2803)
+
+**Source:** project-beta-api@9bafa98f
+
 ## [v0.7.978] - 2026-02-06
 
 ### Changes
