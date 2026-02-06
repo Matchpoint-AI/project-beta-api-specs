@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.978] - 2026-02-06
+
+### Changes
+- fix: coerce unknown color types from brand-crawler to valid enum values (#2802)
+
+**Source:** project-beta-api@9c87a20a
+
 ## [v0.7.977] - 2026-02-06
 
 ### Changes
