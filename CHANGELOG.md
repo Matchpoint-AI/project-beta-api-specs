@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.975] - 2026-02-06
+
+### Changes
+- Merge pull request #2799 from Matchpoint-AI/fix/audience-fields-missing
+
+**Source:** project-beta-api@b3a76c67
+
 ## [v0.7.974] - 2026-02-06
 
 ### Changes
