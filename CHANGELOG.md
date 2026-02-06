@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.973] - 2026-02-06
+
+### Changes
+- feat(schema): add missing brand fields for Content Designer (#2797)
+
+**Source:** project-beta-api@5d500166
+
 ## [v0.7.972] - 2026-02-06
 
 ### Changes
