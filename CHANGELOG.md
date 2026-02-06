@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.974] - 2026-02-06
+
+### Changes
+- fix: use getattr for brand.description to avoid AttributeError (#2798)
+
+**Source:** project-beta-api@7f86cd27
+
 ## [v0.7.973] - 2026-02-06
 
 ### Changes
