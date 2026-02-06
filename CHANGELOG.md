@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.972] - 2026-02-06
+
+### Changes
+- fix(bug-001): race condition where posts not created before Content Designer runs (#2796)
+
+**Source:** project-beta-api@91de0948
+
 ## [v0.7.971] - 2026-02-05
 
 ### Changes
