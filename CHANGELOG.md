@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.984] - 2026-02-07
+
+### Changes
+- fix: make content generation Pub/Sub publish synchronous in create_campaign (#2812)
+
+**Source:** project-beta-api@8c099d55
+
 ## [v0.7.983] - 2026-02-07
 
 ### Changes
