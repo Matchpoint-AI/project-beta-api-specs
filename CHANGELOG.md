@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.982] - 2026-02-07
+
+### Changes
+- feat: consolidate to single message per campaign (remove per-week fan-out) (#2810)
+
+**Source:** project-beta-api@ae89224d
+
 ## [v0.7.981] - 2026-02-07
 
 ### Changes
