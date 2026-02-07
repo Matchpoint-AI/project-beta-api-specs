@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.983] - 2026-02-07
+
+### Changes
+- fix: drop _week_N backward compatibility from content_outputs_controller (#2811)
+
+**Source:** project-beta-api@3f2cc433
+
 ## [v0.7.982] - 2026-02-07
 
 ### Changes
