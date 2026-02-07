@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.981] - 2026-02-07
+
+### Changes
+- fix(rate-limiter): exempt all Pub/Sub push endpoints from rate limiting (#2809)
+
+**Source:** project-beta-api@bd2794c9
+
 ## [v0.7.980] - 2026-02-07
 
 ### Changes
