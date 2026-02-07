@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.980] - 2026-02-07
+
+### Changes
+- fix(rate-limiter): exclude Pub/Sub output endpoints from rate limiting (#2808)
+
+**Source:** project-beta-api@f16f8ae4
+
 ## [v0.7.979] - 2026-02-06
 
 ### Changes
