@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.990] - 2026-02-08
+
+### Changes
+- feat: add handlers for multi-message designer prompts (#2817)
+
+**Source:** project-beta-api@ec68e70f
+
 ## [v0.7.989] - 2026-02-08
 
 ### Changes
