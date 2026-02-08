@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.988] - 2026-02-08
+
+### Changes
+- docs: add 4 missing specs (schema, endpoints, versioning, data model) (#2823)
+
+**Source:** project-beta-api@910a93e8
+
 ## [v0.7.987] - 2026-02-08
 
 ### Changes
