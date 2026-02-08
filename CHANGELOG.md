@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.986] - 2026-02-08
+
+### Changes
+- fix: prevent Pub/Sub poison pill when post not found (#2807)
+
+**Source:** project-beta-api@11c30736
+
 ## [v0.7.985] - 2026-02-08
 
 ### Changes
