@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.987] - 2026-02-08
+
+### Changes
+- feat: add POST /content/pulses endpoint for heartbeat messages (#2815)
+
+**Source:** project-beta-api@7e34c27b
+
 ## [v0.7.986] - 2026-02-08
 
 ### Changes
