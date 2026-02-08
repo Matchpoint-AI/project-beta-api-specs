@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.991] - 2026-02-08
+
+### Changes
+- fix: resolve pre-existing test failures across multiple test files (#2821)
+
+**Source:** project-beta-api@4b478735
+
 ## [v0.7.990] - 2026-02-08
 
 ### Changes
