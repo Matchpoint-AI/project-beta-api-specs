@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.992] - 2026-02-08
+
+### Changes
+- fix: correct authorization error message for campaign endpoints (#2825)
+
+**Source:** project-beta-api@4f009210
+
 ## [v0.7.991] - 2026-02-08
 
 ### Changes
