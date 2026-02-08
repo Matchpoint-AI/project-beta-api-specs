@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.988"
+    "version": "0.7.989"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -1584,7 +1584,7 @@
           "campaigns"
         ],
         "summary": "Create Campaign",
-        "description": "Create a new campaign and auto-trigger content generation.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.\nUser ID is extracted from the authenticated user's JWT token for security.\n\nAfter successful campaign creation, automatically triggers content generation\nin the background using FastAPI BackgroundTasks. This ensures the API\nreturns immediately (< 1 second) while content generation runs asynchronously.\n\nArchitecture Note (Issue #2192):\n- Uses AgenticContentGenerationPublisher for agentic content generation\n- Fat message pattern: all brand/campaign context included in message\n- Agentic service has no database access\n- Frontend polls /campaigns/{id}/workflow/status for progress\n\nArgs:\n    background_tasks: FastAPI background tasks for async content generation\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Campaign creation request (user_id extracted from JWT, not body)\n    brand_repository: Repository for brand data access\n    campaign_service: Service for campaign CRUD operations\n    agentic_publisher: Publisher for agentic content generation requests\n    brand_knowledge_service: Service for brand knowledge retrieval\n\nReturns:\n    CampaignResponse: The created campaign (content generation runs in background)\n\nRaises:\n    HTTPException: 401 if authentication fails, 400 for invalid data",
+        "description": "Create a new campaign and auto-trigger content generation.\n\nCreates a new campaign with server-generated ID. The campaign name should be unique.\nUser ID is extracted from the authenticated user's JWT token for security.\n\nAfter successful campaign creation, automatically triggers content generation\nby publishing to Pub/Sub synchronously before returning the response.\nIssue #2837: Changed from BackgroundTasks to synchronous publish because\nCloud Run CPU throttling prevented background tasks from completing.\n\nArchitecture Note (Issue #2192):\n- Uses AgenticContentGenerationPublisher for agentic content generation\n- Fat message pattern: all brand/campaign context included in message\n- Agentic service has no database access\n- Frontend polls /campaigns/{id}/workflow/status for progress\n\nArgs:\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    request: Campaign creation request (user_id extracted from JWT, not body)\n    brand_repository: Repository for brand data access\n    campaign_service: Service for campaign CRUD operations\n    agentic_publisher: Publisher for agentic content generation requests\n    brand_knowledge_service: Service for brand knowledge retrieval\n    brand_guardrail_repository: Repository for brand guardrails\n\nReturns:\n    CampaignResponse: The created campaign (content generation runs in background)\n\nRaises:\n    HTTPException: 401 if authentication fails, 400 for invalid data",
         "operationId": "create_campaign_api_v2_campaigns_post",
         "security": [
           {
@@ -2270,7 +2270,7 @@
           "campaigns"
         ],
         "summary": "Generate Campaign Specifications",
-        "description": "Trigger async campaign specification generation.\n\nIssue #2192: Uses agentic content generation with fat message pattern.\n\nPublishes a content generation request to the post-generator service.\nThe agentic service handles specifications as part of its strategy phase.\nThe request is processed asynchronously - this endpoint returns immediately\nwith a 202 Accepted response.\n\nArgs:\n    campaign_id: The campaign ID to generate specifications for\n    firebase_user: Authenticated user (from JWT token)\n    request: Request data (currently unused, reserved for future use)\n    campaign_service: Service for campaign operations\n    brand_repository: Repository for brand data access\n    agentic_publisher: Publisher for agentic content generation\n    brand_knowledge_service: Service for brand knowledge retrieval\n\nReturns:\n    CampaignSpecificationAsyncResponse with message_id for tracking\n\nRaises:\n    HTTPException: 404 if campaign not found, 500 if publishing fails",
+        "description": "Trigger async campaign specification generation.\n\nIssue #2192: Uses agentic content generation with fat message pattern.\n\nPublishes a content generation request to the post-generator service.\nThe agentic service handles specifications as part of its strategy phase.\nThe request is processed asynchronously - this endpoint returns immediately\nwith a 202 Accepted response.\n\nArgs:\n    campaign_id: The campaign ID to generate specifications for\n    firebase_user: Authenticated user (from JWT token)\n    request: Request data (currently unused, reserved for future use)\n    campaign_service: Service for campaign operations\n    brand_repository: Repository for brand data access\n    agentic_publisher: Publisher for agentic content generation\n    brand_knowledge_service: Service for brand knowledge retrieval\n    brand_guardrail_repository: Repository for brand guardrails\n\nReturns:\n    CampaignSpecificationAsyncResponse with message_id for tracking\n\nRaises:\n    HTTPException: 404 if campaign not found, 500 if publishing fails",
         "operationId": "generate_campaign_specifications_api_v2_campaigns__campaign_id__specifications_post",
         "security": [
           {
@@ -4555,6 +4555,82 @@
         "summary": "Receive generated post from post-generator",
         "description": "Pub/Sub push endpoint for receiving individual generated posts from the post-generator service. Updates the pre-created post record by post_id with generated content (text, image, etc.). Emits POST_COMPLETE, WORKFLOW_COMPLETE, or WORKFLOW_FAILED events.",
         "operationId": "receive_output_api_v2_outputs_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "X-PubSub-Secret",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Pubsub-Secret"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputAckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/content/pulses": {
+      "post": {
+        "tags": [
+          "outputs"
+        ],
+        "summary": "Receive pulse/heartbeat from Content Designer",
+        "description": "Pub/Sub push endpoint for receiving heartbeat messages from Content Designer. These heartbeats indicate the system is alive during long-running content planning. Caches the pulse in Redis for frontend polling.",
+        "operationId": "receive_pulse_api_v2_content_pulses_post",
         "parameters": [
           {
             "name": "Authorization",
@@ -7221,6 +7297,64 @@
         }
       }
     },
+    "/api/v2/posts/{post_id}/regenerate": {
+      "post": {
+        "tags": [
+          "post-versions"
+        ],
+        "summary": "Regenerate post content (GATE 7)",
+        "description": "Regenerate specific content of a post without regenerating the full campaign.\n\n        Returns 202 Accepted immediately. Use the status_url to poll for completion.\n\n        **Targets:**\n        - `image`: Regenerate image only (keeps existing text)\n        - `text`: Regenerate caption/text only (keeps existing image)\n        - `all`: Regenerate both image and text\n\n        **Use cases:**\n        - User wants a different image but likes the caption\n        - User wants to refine caption with feedback\n        - User wants completely fresh content for the post",
+        "operationId": "regenerate_post_content",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegenerateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegenerateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/versions/{request_id}/status": {
       "get": {
         "tags": [
@@ -7327,6 +7461,64 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VersionDiffResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/posts/{post_id}/experience-prompt": {
+      "patch": {
+        "tags": [
+          "post-versions"
+        ],
+        "summary": "Update experience prompt and trigger full regeneration (GATE 10)",
+        "description": "Update a post's experience prompt and trigger full content regeneration\n        through Content Designer interpretation.\n\n        The experience prompt is a user-facing description of the entire post.\n        When edited, the backend sends it to Content Designer for interpretation\n        into text_prompt and media_prompt, then triggers regeneration of both\n        text and media.\n\n        Returns 202 Accepted immediately. Use the status_url to poll for completion.\n\n        **Flow:**\n        1. Updates experience_prompt in database\n        2. Publishes to Content Designer for interpretation\n        3. Content Designer generates text_prompt + media_prompt\n        4. Post Generator creates new text and media\n        5. Version request completes when generation finishes",
+        "operationId": "update_experience_prompt",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Post Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperiencePromptUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegenerateResponse"
                 }
               }
             }
@@ -16920,6 +17112,23 @@
         "title": "ExpediteResponse",
         "description": "Schema for expedite response."
       },
+      "ExperiencePromptUpdate": {
+        "properties": {
+          "experiencePrompt": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1,
+            "title": "Experienceprompt",
+            "description": "New experience prompt describing the desired post content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "experiencePrompt"
+        ],
+        "title": "ExperiencePromptUpdate",
+        "description": "Request body for updating a post's experience prompt (GATE 10 Phase 2).\n\nThe experience prompt is a user-facing description of the entire post.\nWhen edited, the backend sends it to Content Designer for interpretation\ninto text_prompt and media_prompt, then triggers full regeneration."
+      },
       "ExplorationRateMetrics": {
         "properties": {
           "brandId": {
@@ -18756,6 +18965,17 @@
             "title": "Imageprompt",
             "default": ""
           },
+          "experiencePrompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experienceprompt"
+          },
           "imageUrls": {
             "items": {
               "type": "string"
@@ -19459,6 +19679,87 @@
         ],
         "title": "PulseAckResponse",
         "description": "Response for successful pulse processing."
+      },
+      "RegenerateRequest": {
+        "properties": {
+          "target": {
+            "$ref": "#/components/schemas/RegenerationTarget",
+            "description": "What to regenerate: image, text, or all"
+          },
+          "feedback": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback",
+            "description": "User feedback to incorporate in regeneration"
+          },
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt",
+            "description": "Custom prompt for image regeneration"
+          }
+        },
+        "type": "object",
+        "required": [
+          "target"
+        ],
+        "title": "RegenerateRequest",
+        "description": "Request to regenerate post content (GATE 7).\n\nSimpler interface than CreateVersionRequest for direct regeneration.\nUses 'image' instead of 'media' for user-friendliness."
+      },
+      "RegenerateResponse": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "title": "Requestid",
+            "description": "UUID of the regeneration request"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Initial status",
+            "default": "pending"
+          },
+          "statusUrl": {
+            "type": "string",
+            "title": "Statusurl",
+            "description": "URL to poll for status"
+          },
+          "estimatedCompletionSeconds": {
+            "type": "integer",
+            "title": "Estimatedcompletionseconds",
+            "description": "Estimated seconds to completion",
+            "default": 30
+          }
+        },
+        "type": "object",
+        "required": [
+          "requestId",
+          "statusUrl"
+        ],
+        "title": "RegenerateResponse",
+        "description": "Response when regeneration request is accepted (202 Accepted) - GATE 7."
+      },
+      "RegenerationTarget": {
+        "type": "string",
+        "enum": [
+          "image",
+          "text",
+          "all"
+        ],
+        "title": "RegenerationTarget",
+        "description": "Target type for content regeneration (GATE 7).\n\nUses user-friendly terminology:\n- image: Regenerate image only\n- text: Regenerate caption/text only\n- all: Regenerate both image and text"
       },
       "RejectionReason": {
         "type": "string",

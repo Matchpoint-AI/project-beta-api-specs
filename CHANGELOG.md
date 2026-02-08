@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.989] - 2026-02-08
+
+### Changes
+- fix(ci): align job check names with branch protection requirements (#2824)
+
+**Source:** project-beta-api@459ecd4e
+
 ## [v0.7.988] - 2026-02-08
 
 ### Changes
