@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.993] - 2026-02-08
+
+### Changes
+- feat: wire brand guardrails into Content Designer fat message (#2816)
+
+**Source:** project-beta-api@08c59833
+
 ## [v0.7.992] - 2026-02-08
 
 ### Changes
