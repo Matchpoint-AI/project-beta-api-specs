@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.985] - 2026-02-08
+
+### Changes
+- feat: add planning heartbeat message handler (#2813)
+
+**Source:** project-beta-api@e4732fb9
+
 ## [v0.7.984] - 2026-02-07
 
 ### Changes
