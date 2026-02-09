@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1014] - 2026-02-09
+
+### Changes
+- refactor: eliminate controller-to-repository layering violations (#2846)
+
+**Source:** project-beta-api@87380ed3
+
 ## [v0.7.1013] - 2026-02-09
 
 ### Changes
