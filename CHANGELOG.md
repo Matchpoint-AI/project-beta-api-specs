@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1016] - 2026-02-09
+
+### Changes
+- refactor: split dependencies.py god module into domain modules (#2848)
+
+**Source:** project-beta-api@c958fef0
+
 ## [v0.7.1015] - 2026-02-09
 
 ### Changes
