@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1003] - 2026-02-09
+
+### Changes
+- refactor: replace custom retry logic with tenacity (#2835)
+
+**Source:** project-beta-api@e4127f51
+
 ## [v0.7.1002] - 2026-02-09
 
 ### Changes
