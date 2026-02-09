@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1008] - 2026-02-09
+
+### Changes
+- ci: Bump paulhatch/semantic-version from 5.4.0 to 6.0.1 (#2722)
+
+**Source:** project-beta-api@454f300b
+
 ## [v0.7.1007] - 2026-02-09
 
 ### Changes
