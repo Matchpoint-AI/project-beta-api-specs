@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.994] - 2026-02-09
+
+### Changes
+- docs: update functional-requirements-v2 with current implementation (REQ-9B) (#2827)
+
+**Source:** project-beta-api@e4a2d9f3
+
 ## [v0.7.993] - 2026-02-08
 
 ### Changes
