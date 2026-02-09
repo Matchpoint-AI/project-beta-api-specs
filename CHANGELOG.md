@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1010] - 2026-02-09
+
+### Changes
+- deps(deps-dev): Bump pytest-xdist from 3.5.0 to 3.8.0 (#2724)
+
+**Source:** project-beta-api@970fc973
+
 ## [v0.7.1009] - 2026-02-09
 
 ### Changes
