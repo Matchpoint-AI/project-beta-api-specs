@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1006] - 2026-02-09
+
+### Changes
+- refactor: replace custom LRU cache with cachetools.LRUCache (#2834)
+
+**Source:** project-beta-api@96290723
+
 ## [v0.7.1005] - 2026-02-09
 
 ### Changes
