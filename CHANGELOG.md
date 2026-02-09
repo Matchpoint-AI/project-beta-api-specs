@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1001] - 2026-02-09
+
+### Changes
+- refactor: decompose campaign_controller into domain sub-controllers (#2836)
+
+**Source:** project-beta-api@aed01ab0
+
 ## [v0.7.1000] - 2026-02-09
 
 ### Changes
