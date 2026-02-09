@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1009] - 2026-02-09
+
+### Changes
+- deps(deps-dev): Bump pytest-cov from 5.0.0 to 7.0.0 (#2723)
+
+**Source:** project-beta-api@ea249f69
+
 ## [v0.7.1008] - 2026-02-09
 
 ### Changes
