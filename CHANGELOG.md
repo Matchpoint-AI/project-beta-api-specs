@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1002] - 2026-02-09
+
+### Changes
+- refactor: decompose brand_controller into domain sub-controllers (#2837)
+
+**Source:** project-beta-api@d092188d
+
 ## [v0.7.1001] - 2026-02-09
 
 ### Changes
