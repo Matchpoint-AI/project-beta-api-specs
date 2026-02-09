@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1007] - 2026-02-09
+
+### Changes
+- fix(auth): Normalize email verification tokens to handle URL encoding and whitespace (#2743)
+
+**Source:** project-beta-api@b929047e
+
 ## [v0.7.1006] - 2026-02-09
 
 ### Changes
