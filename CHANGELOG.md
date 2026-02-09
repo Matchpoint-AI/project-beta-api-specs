@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.995] - 2026-02-09
+
+### Changes
+- fix: resolve 4 API bugs - post ID, counter, correlation_id, session leak (#2828)
+
+**Source:** project-beta-api@c3e4555e
+
 ## [v0.7.994] - 2026-02-09
 
 ### Changes

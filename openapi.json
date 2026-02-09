@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.994"
+    "version": "0.7.995"
   },
   "paths": {
     "/api/v2/auth/session": {
@@ -17330,6 +17330,17 @@
             },
             "type": "array",
             "title": "Weeks"
+          },
+          "correlationId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlationid"
           },
           "createdAt": {
             "anyOf": [
