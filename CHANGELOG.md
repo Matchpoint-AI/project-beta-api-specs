@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.999] - 2026-02-09
+
+### Changes
+- fix(P0): populate content_data when content outputs received (#2831)
+
+**Source:** project-beta-api@94083b4c
+
 ## [v0.7.998] - 2026-02-09
 
 ### Changes
