@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.997] - 2026-02-09
+
+### Changes
+- fix(P0): handle scalar image_urls in post content counts query (#2829)
+
+**Source:** project-beta-api@fc1eb97d
+
 ## [v0.7.996] - 2026-02-09
 
 ### Changes
