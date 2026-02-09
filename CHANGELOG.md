@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1013] - 2026-02-09
+
+### Changes
+- deps(deps-dev): Bump pytest-asyncio from 0.24.0 to 1.3.0 (#2729)
+
+**Source:** project-beta-api@0ec610c7
+
 ## [v0.7.1012] - 2026-02-09
 
 ### Changes
