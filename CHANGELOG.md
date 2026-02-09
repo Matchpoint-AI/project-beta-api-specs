@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1015] - 2026-02-09
+
+### Changes
+- refactor: fix controller Protocol mismatch and deduplicate brand crawl logic (#2847)
+
+**Source:** project-beta-api@967749c2
+
 ## [v0.7.1014] - 2026-02-09
 
 ### Changes
