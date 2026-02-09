@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.998] - 2026-02-09
+
+### Changes
+- fix(P1): handle missing brands in brand_knowledge updates (#2830)
+
+**Source:** project-beta-api@6b601244
+
 ## [v0.7.997] - 2026-02-09
 
 ### Changes
