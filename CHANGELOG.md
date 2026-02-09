@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1000] - 2026-02-09
+
+### Changes
+- fix(tests): align e2e assertions with controller response format (#2833)
+
+**Source:** project-beta-api@51ee1216
+
 ## [v0.7.999] - 2026-02-09
 
 ### Changes
