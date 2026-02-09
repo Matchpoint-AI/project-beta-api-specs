@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1012] - 2026-02-09
+
+### Changes
+- deps(deps-dev): Bump pytest-mock from 3.14.0 to 3.15.1 (#2725)
+
+**Source:** project-beta-api@b6d4f158
+
 ## [v0.7.1011] - 2026-02-09
 
 ### Changes
