@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.996] - 2026-02-09
+
+### Changes
+- test: raise API coverage from 85.5% toward 90% with 58 new test files (#2826)
+
+**Source:** project-beta-api@d60635e0
+
 ## [v0.7.995] - 2026-02-09
 
 ### Changes
