@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1004] - 2026-02-09
+
+### Changes
+- refactor: remove 15k lines of dead API code (#2841)
+
+**Source:** project-beta-api@152d62f8
+
 ## [v0.7.1003] - 2026-02-09
 
 ### Changes

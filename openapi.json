@@ -3,185 +3,9 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1003"
+    "version": "0.7.1004"
   },
   "paths": {
-    "/api/v2/auth/session": {
-      "post": {
-        "tags": [
-          "auth-session"
-        ],
-        "summary": "Create Session",
-        "description": "Create a server-side session with httpOnly cookie.\n\nIssue #2549: This endpoint now supports two authentication methods:\n\n1. **Direct Login (email/password in request body)**:\n   - Send email and password in JSON body\n   - No Authorization header needed\n   - Returns session cookie directly\n\n2. **JWT Token (Authorization header)**:\n   - Send JWT in Authorization: Bearer <token> header\n   - Request body can be empty or omitted\n   - Converts existing JWT to session cookie\n\nThe session ID is NOT returned in the response body - it's only\naccessible via the httpOnly cookie to prevent XSS attacks.\n\nExample request for direct login:\n```\nPOST /api/v2/auth/session\nContent-Type: application/json\n\n{\"email\": \"user@example.com\", \"password\": \"secret\"}\n```\n\nExample request with JWT:\n```\nPOST /api/v2/auth/session\nAuthorization: Bearer eyJ...\n```\n\nRMM Level 2 Compliance:\n- POST to /auth/session creates new session resource\n- HTTP verb (POST) indicates create action\n- No verbs in URL path\n\nArgs:\n    request: FastAPI request object (for client info)\n    response: FastAPI response object (for setting cookie)\n    login_request: Optional login credentials (email/password)\n    credentials: Optional JWT token from Authorization header\n    session_service: Injected session service\n    user_service: Injected user service (for password login)\n    auth_service: Injected auth service (for JWT validation)\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    SessionCreatedResponse confirming session creation\n\nRaises:\n    HTTPException 400: If neither credentials nor JWT provided\n    HTTPException 401: If credentials or JWT token is invalid\n    HTTPException 429: If account is locked (too many failed attempts)\n    HTTPException 500: If session creation fails",
-        "operationId": "create_session_api_v2_auth_session_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "anyOf": [
-                  {
-                    "$ref": "#/components/schemas/AuthSessionLoginRequest"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Login Request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Session created successfully, httpOnly cookie set",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SessionCreatedResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request (missing credentials)"
-          },
-          "401": {
-            "description": "Invalid credentials or JWT token"
-          },
-          "429": {
-            "description": "Account locked due to too many failed login attempts"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "auth-session"
-        ],
-        "summary": "Revoke Current Session",
-        "description": "Revoke the current session (logout).\n\nInvalidates the current user's session and clears the httpOnly cookie.\nAfter this, the session ID will be rejected by the authentication\nmiddleware.\n\nRMM Level 2 Compliance:\n- DELETE to /auth/session deletes the current session resource\n- HTTP verb (DELETE) indicates delete action\n- No verbs in URL path\n\nArgs:\n    response: FastAPI response object (for clearing cookie)\n    session_id: Session ID from cookie\n    session_service: Injected session service\n\nReturns:\n    SessionRevokedResponse confirming session revocation\n\nRaises:\n    HTTPException 401: If no valid session cookie\n    HTTPException 500: If revocation fails",
-        "operationId": "revoke_current_session_api_v2_auth_session_delete",
-        "parameters": [
-          {
-            "name": "session_id",
-            "in": "cookie",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Session Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Session revoked successfully, cookie cleared",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SessionRevokedResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "No valid session"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/auth/sessions": {
-      "delete": {
-        "tags": [
-          "auth-session"
-        ],
-        "summary": "Revoke All Sessions",
-        "description": "Revoke all sessions for the current user (logout from all devices).\n\nInvalidates all sessions for the authenticated user. Use this\nfor \"logout from all devices\" functionality.\n\nRMM Level 2 Compliance:\n- DELETE to /auth/sessions deletes all session resources\n- HTTP verb (DELETE) indicates delete action\n- No verbs in URL path\n\nArgs:\n    response: FastAPI response object (for clearing cookie)\n    user_context: Authenticated user context from session\n    session_service: Injected session service\n\nReturns:\n    AllSessionsRevokedResponse with count of revoked sessions\n\nRaises:\n    HTTPException 401: If not authenticated\n    HTTPException 500: If revocation fails",
-        "operationId": "revoke_all_sessions_api_v2_auth_sessions_delete",
-        "parameters": [
-          {
-            "name": "session_id",
-            "in": "cookie",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Session Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "All sessions revoked successfully, current cookie cleared",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AllSessionsRevokedResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "500": {
-            "description": "Internal server error"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/auth/forgot-password": {
       "post": {
         "tags": [
@@ -992,114 +816,6 @@
           },
           "401": {
             "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/costs": {
-      "get": {
-        "tags": [
-          "brand-costs"
-        ],
-        "summary": "Get Brand Costs",
-        "description": "Get aggregated costs for a brand.\n\nRetrieves cost information for the specified brand and period.\nDefaults to current month if no period is specified.\n\nIssue #1952: Implements GET /brands/{brand_id}/costs endpoint with\nRMM L2 compliant naming (single-word noun \"costs\").\n\nArgs:\n    brand_id: ID of the brand to get costs for\n    cost_type: Type of costs to retrieve (default: video)\n    period_start: Start date of period (default: first of current month)\n    period_end: End date of period (default: last of current month)\n    firebase_user: Authenticated user from JWT token\n    brand_repository: Repository for brand lookup\n    video_cost_recorder: Service for cost retrieval\n\nReturns:\n    BrandCostsResponse with aggregated cost data\n\nRaises:\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the brand\n    HTTPException 404: If brand not found",
-        "operationId": "get_brand_costs_api_v2_brands__brand_id__costs_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/CostType",
-              "description": "Type of costs to retrieve (default: video)",
-              "default": "video"
-            },
-            "description": "Type of costs to retrieve (default: video)"
-          },
-          {
-            "name": "periodStart",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "date"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Start date of cost period (default: first day of current month)",
-              "title": "Periodstart"
-            },
-            "description": "Start date of cost period (default: first day of current month)"
-          },
-          {
-            "name": "periodEnd",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "date"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "End date of cost period (default: last day of current month)",
-              "title": "Periodend"
-            },
-            "description": "End date of cost period (default: last day of current month)"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Brand costs retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandCostsResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - authentication required"
           },
           "403": {
             "description": "Forbidden - user does not own this brand"
@@ -1983,68 +1699,6 @@
           },
           "404": {
             "description": "Campaign not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/workflow/status": {
-      "get": {
-        "tags": [
-          "campaigns"
-        ],
-        "summary": "Get Campaign Workflow Status",
-        "description": "Get workflow status for a campaign's content generation.\n\nReturns the current status of the campaign's content generation workflow.\nUsed by the frontend to poll for progress during content generation.\nRequires authentication and ownership of the campaign.\n\nIssue #1227: Missing workflow-status endpoint for campaigns.\nIssue #1298: DB-based status for Pub/Sub content generation.\nIssue #1268: Removed WorkflowService - fully DB-based now.\nIssue #1736: Added authorization check to prevent IDOR vulnerability.\n\nThis endpoint uses a DB-first approach:\n1. Query database for content generation status\n2. Calculate progress from Content record counts\n3. Return pending status if workflow started but no content yet\n\nThe workflow status includes:\n- status: pending, running, completed, or failed\n- progress: completion percentage (0-100)\n- message: human-readable progress message (e.g., \"Generating post 10 of 21\")\n- current_step: the currently executing workflow step\n\nArgs:\n    campaign_id: The campaign ID\n    firebase_user: Authenticated user (from JWT token)\n    campaign_service: Service for campaign CRUD operations\n    post_repository: Repository for post data (to get post counts)\n\nReturns:\n    WorkflowStatusResponse with status, progress, and message\n\nRaises:\n    HTTPException: 404 if campaign not found or no workflow started",
-        "operationId": "get_campaign_workflow_status_api_v2_campaigns__campaign_id__workflow_status_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Workflow status returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WorkflowStatusResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid campaign ID format"
-          },
-          "401": {
-            "description": "Unauthorized - authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this campaign"
-          },
-          "404": {
-            "description": "Campaign not found or no workflow started"
           },
           "422": {
             "description": "Validation Error",
@@ -3343,328 +2997,6 @@
         }
       }
     },
-    "/api/v2/campaigns/{campaign_id}/content/approvals": {
-      "post": {
-        "tags": [
-          "content-approval"
-        ],
-        "summary": "Create bulk content approvals",
-        "description": "Bulk approve all content for a campaign. Creates approval records for multiple content items atomically.",
-        "operationId": "create_content_approvals_api_v2_campaigns__campaign_id__content_approvals_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "Campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "Campaign ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BulkContentApprovalRequest",
-                "description": "Bulk approval request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Bulk approval completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BulkContentApprovalResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this campaign"
-          },
-          "404": {
-            "description": "Campaign or content not found"
-          },
-          "400": {
-            "description": "Invalid request data"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/posts/{post_id}/assign": {
-      "post": {
-        "tags": [
-          "content-approval"
-        ],
-        "summary": "Assign post to reviewer",
-        "description": "Assign a post to a specific reviewer for approval.",
-        "operationId": "assign_post_api_v2_posts__post_id__assign_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "ID of the post to assign",
-              "title": "Post Id"
-            },
-            "description": "ID of the post to assign"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AssignPostRequest",
-                "description": "Assignment request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Post assigned successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssignPostResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this post"
-          },
-          "404": {
-            "description": "Post not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/reviewers/me/posts": {
-      "get": {
-        "tags": [
-          "content-approval"
-        ],
-        "summary": "Get reviewer queue",
-        "description": "Get posts assigned to the authenticated user for review.",
-        "operationId": "get_my_queue_api_v2_reviewers_me_posts_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "include_approved",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false,
-              "title": "Include Approved"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Reviewer queue retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReviewerQueueResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - authentication required"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/posts/assignments": {
-      "post": {
-        "tags": [
-          "content-approval"
-        ],
-        "summary": "Bulk assign posts to reviewers",
-        "description": "Assign multiple posts to reviewers. Supports manual assignment to a single reviewer or load-balanced auto-assignment across multiple reviewers.",
-        "operationId": "bulk_assign_posts_api_v2_posts_assignments_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BulkAssignPostsRequest",
-                "description": "Bulk assignment request"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Bulk assignment completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BulkAssignPostsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request parameters"
-          },
-          "401": {
-            "description": "Unauthorized - authentication required"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v2/posts/{post_id}/revert": {
-      "post": {
-        "tags": [
-          "content-approval"
-        ],
-        "summary": "Revert post approval",
-        "description": "Revert an approval decision on a post, restoring it to pending review status.",
-        "operationId": "revert_post_approval_api_v2_posts__post_id__revert_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "ID of the post to revert",
-              "title": "Post Id"
-            },
-            "description": "ID of the post to revert"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RevertApprovalRequest",
-                "description": "Revert request with reason"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Post approval reverted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RevertApprovalResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Post is not approved or invalid request"
-          },
-          "401": {
-            "description": "Unauthorized - authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this post"
-          },
-          "404": {
-            "description": "Post not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/content/{content_id}": {
       "patch": {
         "tags": [
@@ -3860,63 +3192,6 @@
             }
           }
         }
-      },
-      "get": {
-        "tags": [
-          "content-generation-status"
-        ],
-        "summary": "Get Content Generation Status",
-        "description": "Get detailed generation status for specific content.\n\nIssue #2306: Added authentication and ownership verification.\n\nThis endpoint provides granular status including per-post breakdown\nfor text and image generation status.\n\nIssue #1484: Part of LLM decoupling async infrastructure.",
-        "operationId": "get_content_generation_status_api_v2_content__content_id__status_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "Content ID",
-              "title": "Content Id"
-            },
-            "description": "Content ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detailed content generation status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentGenerationDetailStatus"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this content"
-          },
-          "404": {
-            "description": "Content not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/api/v2/content/{content_id}/generation/status": {
@@ -4088,217 +3363,6 @@
         }
       }
     },
-    "/api/v2/outputs/{pair_id}/feedback": {
-      "post": {
-        "tags": [
-          "feedback"
-        ],
-        "summary": "Submit feedback for content",
-        "description": "Submit user feedback (thumbs up/down, tags, ratings, comments) for a specific content/post pair. Feeds online learning system.",
-        "operationId": "submit_feedback_api_v2_outputs__pair_id__feedback_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "pair_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Content/Post ID to provide feedback for",
-              "title": "Pair Id"
-            },
-            "description": "Content/Post ID to provide feedback for"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentFeedbackCreate",
-                "description": "Feedback submission data"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentFeedbackResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "feedback"
-        ],
-        "summary": "Get feedback for content",
-        "description": "Retrieve all feedback submissions for a specific content/post pair.",
-        "operationId": "get_feedback_for_pair_api_v2_outputs__pair_id__feedback_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "pair_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Content/Post ID to get feedback for",
-              "title": "Pair Id"
-            },
-            "description": "Content/Post ID to get feedback for"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ContentFeedbackResponse"
-                  },
-                  "title": "Response Get Feedback For Pair Api V2 Outputs  Pair Id  Feedback Get"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/feedback/aggregates": {
-      "get": {
-        "tags": [
-          "feedback"
-        ],
-        "summary": "Get feedback aggregates",
-        "description": "Get aggregated feedback statistics for a campaign including thumbs up/down counts, average ratings, tag distribution, and accuracy metrics.",
-        "operationId": "get_feedback_aggregates_api_v2_feedback_aggregates_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaignId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Campaign ID to get aggregates for",
-              "title": "Campaignid"
-            },
-            "description": "Campaign ID to get aggregates for"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentFeedbackAggregates"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/feedback/batch/collect": {
-      "post": {
-        "tags": [
-          "feedback"
-        ],
-        "summary": "Submit batch feedback",
-        "description": "Submit multiple feedback items in a single request for bulk processing.",
-        "operationId": "submit_batch_feedback_api_v2_feedback_batch_collect_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentFeedbackBatchCreate",
-                "description": "Batch of feedback items to submit"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BatchFeedbackResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
     "/api/v2/campaigns/{campaign_id}/posts/{post_id}/feedback": {
       "post": {
         "tags": [
@@ -4463,68 +3527,6 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/content/{content_id}/images/{image_id}": {
-      "patch": {
-        "tags": [
-          "content-images"
-        ],
-        "summary": "Update Image Prompt",
-        "description": "Update the prompt for an existing image (does not regenerate).\n\nRMM L2: PATCH for partial resource update.\n\nThis endpoint allows updating the image prompt without triggering\nregeneration. Use POST /posts/{post_id}/versions with target=\"media\" to regenerate.\n\nArgs:\n    content_id: Content ID (path parameter, for URL consistency)\n    image_id: Image ID to update\n    request: Image update request with new prompt\n    service: Injected content image service\n\nReturns:\n    Updated content image response\n\nRaises:\n    HTTPException: 404 if image not found\n    HTTPException: 422 if validation fails",
-        "operationId": "update_image_prompt_api_v2_content__content_id__images__image_id__patch",
-        "parameters": [
-          {
-            "name": "content_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Content Id"
-            }
-          },
-          {
-            "name": "image_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Image Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContentImageUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -6625,547 +5627,6 @@
         }
       }
     },
-    "/api/v2/policies/{policy_id}/versions": {
-      "get": {
-        "tags": [
-          "policy-versions"
-        ],
-        "summary": "Get version history for a policy",
-        "description": "Returns complete version history with change tracking.",
-        "operationId": "get_policy_versions",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "policy_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Policy Id"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "description": "Max versions to return",
-              "default": 50,
-              "title": "Limit"
-            },
-            "description": "Max versions to return"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PolicyVersionHistoryListResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/policies/{policy_id}/versions/{version_number}": {
-      "get": {
-        "tags": [
-          "policy-versions"
-        ],
-        "summary": "Get specific version of a policy",
-        "description": "Returns a specific version by version number.",
-        "operationId": "get_policy_version",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "policy_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Policy Id"
-            }
-          },
-          {
-            "name": "version_number",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Version Number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PolicyVersionItemResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/policies/{policy_id}/rollback": {
-      "post": {
-        "tags": [
-          "policy-versions"
-        ],
-        "summary": "Rollback policy to previous version",
-        "description": "Rollback a policy to a previous version.\n\n        Creates a new version with the snapshot from the target version,\n        and updates the actual policy record with the rolled-back values.\n\n        **Parameters:**\n        - `targetVersionNumber`: Version number to rollback to\n        - `reason`: Optional reason for the rollback",
-        "operationId": "rollback_policy",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "policy_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Policy Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PolicyRollbackApiRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PolicyRollbackApiResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/posts/{post_id}/expedite": {
-      "post": {
-        "tags": [
-          "Post Priority"
-        ],
-        "summary": "Expedite a post in review queue",
-        "description": "Bump a post to higher priority for expedited review.",
-        "operationId": "expedite_post_api_v2_posts__post_id__expedite_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Post Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ExpediteRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpediteResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/posts/{post_id}/priority": {
-      "patch": {
-        "tags": [
-          "Post Priority"
-        ],
-        "summary": "Update post priority",
-        "description": "Update the review priority for a specific post.",
-        "operationId": "update_priority_api_v2_posts__post_id__priority_patch",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Post Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PriorityUpdateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpediteResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/posts/reviews/queue": {
-      "get": {
-        "tags": [
-          "Post Priority"
-        ],
-        "summary": "Get review queue ordered by priority",
-        "description": "Get posts pending review, ordered by priority (highest first).",
-        "operationId": "get_review_queue_api_v2_posts_reviews_queue_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaignId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Filter by campaign ID",
-              "title": "Campaignid"
-            },
-            "description": "Filter by campaign ID"
-          },
-          {
-            "name": "minPriority",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 5,
-              "minimum": 1,
-              "description": "Minimum priority level to include",
-              "default": 1,
-              "title": "Minpriority"
-            },
-            "description": "Minimum priority level to include"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "description": "Maximum number of posts to return",
-              "default": 50,
-              "title": "Limit"
-            },
-            "description": "Maximum number of posts to return"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PostPriorityResponse"
-                  },
-                  "title": "Response Get Review Queue Api V2 Posts Reviews Queue Get"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/outputs/batch/select": {
-      "post": {
-        "tags": [
-          "Post Selection"
-        ],
-        "summary": "Batch update post selection status",
-        "description": "Update selection status for multiple posts in a single request.",
-        "operationId": "batch_update_selections_api_v2_outputs_batch_select_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BatchPostSelectionRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BatchPostSelectionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v2/outputs/{post_id}/select": {
-      "post": {
-        "tags": [
-          "Post Selection"
-        ],
-        "summary": "Update post selection status",
-        "description": "Update the selection status (approved/rejected) for a single post.",
-        "operationId": "update_selection_api_v2_outputs__post_id__select_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Post Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PostSelectionUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostSelectionResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/outputs/selection/rates": {
-      "get": {
-        "tags": [
-          "Post Selection"
-        ],
-        "summary": "Get selection rates by scene type",
-        "description": "Get selection rate aggregates grouped by scene_type for a campaign.",
-        "operationId": "get_selection_rates_api_v2_outputs_selection_rates_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaignId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "Campaign ID to get rates for",
-              "title": "Campaignid"
-            },
-            "description": "Campaign ID to get rates for"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SelectionRateBySceneType"
-                  },
-                  "title": "Response Get Selection Rates Api V2 Outputs Selection Rates Get"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/posts/{post_id}/versions": {
       "post": {
         "tags": [
@@ -7297,64 +5758,6 @@
         }
       }
     },
-    "/api/v2/posts/{post_id}/regenerate": {
-      "post": {
-        "tags": [
-          "post-versions"
-        ],
-        "summary": "Regenerate post content (GATE 7)",
-        "description": "Regenerate specific content of a post without regenerating the full campaign.\n\n        Returns 202 Accepted immediately. Use the status_url to poll for completion.\n\n        **Targets:**\n        - `image`: Regenerate image only (keeps existing text)\n        - `text`: Regenerate caption/text only (keeps existing image)\n        - `all`: Regenerate both image and text\n\n        **Use cases:**\n        - User wants a different image but likes the caption\n        - User wants to refine caption with feedback\n        - User wants completely fresh content for the post",
-        "operationId": "regenerate_post_content",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Post Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegenerateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegenerateResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/versions/{request_id}/status": {
       "get": {
         "tags": [
@@ -7386,81 +5789,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VersionStatusResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/posts/{post_id}/versions/{version_id}/diff": {
-      "get": {
-        "tags": [
-          "post-versions"
-        ],
-        "summary": "Get diff between a version and its parent",
-        "description": "Calculate and return the diff between a specific version and its parent.\n\n        Shows what changed between versions, including:\n        - Line-by-line text diff with additions/deletions\n        - Similarity ratio (0-1) to detect edits vs regeneration\n        - Media change detection\n\n        **Change Types:**\n        - `no_change`: No differences\n        - `text_edit`: Manual text edits (high similarity)\n        - `regenerate`: Full regeneration (low similarity)\n        - `media_change`: Only media changed\n        - `both`: Both text and media changed",
-        "operationId": "get_version_diff",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Post Id"
-            }
-          },
-          {
-            "name": "version_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Version Id"
-            }
-          },
-          {
-            "name": "compareTo",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Version to compare against (default: parent version)",
-              "title": "Compareto"
-            },
-            "description": "Version to compare against (default: parent version)"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VersionDiffResponse"
                 }
               }
             }
@@ -7892,332 +6220,6 @@
         }
       }
     },
-    "/api/v2/scenes/performance": {
-      "post": {
-        "tags": [
-          "scenes"
-        ],
-        "summary": "Ingest performance metric",
-        "description": "Ingest a single scene performance metric from external analytics. Used to track CTR, engagement rate, and conversion rate by scene type.",
-        "operationId": "ingest_metric_api_v2_scenes_performance_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ScenePerformanceMetricCreate",
-                "description": "Performance metric data"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ScenePerformanceMetricResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "scenes"
-        ],
-        "summary": "Get metrics by campaign",
-        "description": "Retrieve all performance metrics for a campaign with pagination.",
-        "operationId": "get_metrics_by_campaign_api_v2_scenes_performance_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaignId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "Campaign ID to get metrics for",
-              "title": "Campaignid"
-            },
-            "description": "Campaign ID to get metrics for"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 1000,
-              "minimum": 1,
-              "description": "Maximum results to return",
-              "default": 100,
-              "title": "Limit"
-            },
-            "description": "Maximum results to return"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "description": "Results to skip",
-              "default": 0,
-              "title": "Offset"
-            },
-            "description": "Results to skip"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ScenePerformanceMetricResponse"
-                  },
-                  "title": "Response Get Metrics By Campaign Api V2 Scenes Performance Get"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/scenes/performance/batch": {
-      "post": {
-        "tags": [
-          "scenes"
-        ],
-        "summary": "Ingest batch metrics",
-        "description": "Ingest multiple performance metrics in a single request.",
-        "operationId": "ingest_batch_metrics_api_v2_scenes_performance_batch_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ScenePerformanceMetricBatchCreate",
-                "description": "Batch of metrics to ingest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BatchMetricResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v2/scenes/performance/aggregates": {
-      "get": {
-        "tags": [
-          "scenes"
-        ],
-        "summary": "Get aggregated metrics by scene type",
-        "description": "Get aggregated performance statistics grouped by scene type. Optionally filter by campaign ID.",
-        "operationId": "get_aggregates_by_scene_type_api_v2_scenes_performance_aggregates_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaignId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Optional campaign ID to filter by",
-              "title": "Campaignid"
-            },
-            "description": "Optional campaign ID to filter by"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ScenePerformanceAggregates"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/schedule/recommendations": {
-      "get": {
-        "tags": [
-          "schedule"
-        ],
-        "summary": "Get Schedule Recommendations",
-        "description": "Get optimal posting schedule recommendations for a brand.\n\nPhase 3 ML Feature: Analyzes historical engagement data to recommend\noptimal posting times based on (day_of_week, hour_of_day) patterns.\n\nAlgorithm:\n1. Fetches engagement history for the brand (up to 1000 records)\n2. Groups by (day_of_week, hour_of_day) and computes mean engagement\n3. Filters slots with insufficient data (< min_samples)\n4. Returns top N slots sorted by engagement score\n\nRMM Level 2 Compliance:\n- GET /brands/{brand_id}/schedule/recommendations\n- Resource-oriented URL structure\n- Query parameters for customization\n\nArgs:\n    brand_id: Brand ID to get recommendations for\n    posts_per_week: Number of recommended slots (default: 7)\n    min_samples: Minimum samples for trusted recommendations (default: 10)\n    firebase_user: Authenticated user from JWT\n    brand_repository: Repository for brand ownership verification\n    engagement_repository: Repository for engagement history\n\nReturns:\n    ScheduleRecommendationResponse with recommended slots and all scores",
-        "operationId": "get_schedule_recommendations_api_v2_brands__brand_id__schedule_recommendations_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          },
-          {
-            "name": "posts_per_week",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 21,
-              "minimum": 1,
-              "description": "Number of recommended posting slots per week",
-              "default": 7,
-              "title": "Posts Per Week"
-            },
-            "description": "Number of recommended posting slots per week"
-          },
-          {
-            "name": "min_samples",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "integer",
-                  "maximum": 100,
-                  "minimum": 1
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Minimum samples required to trust a slot score",
-              "default": 10,
-              "title": "Min Samples"
-            },
-            "description": "Minimum samples required to trust a slot score"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Schedule recommendations returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ScheduleRecommendationResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/scheduled-posts": {
       "get": {
         "tags": [
@@ -8557,85 +6559,6 @@
           },
           "500": {
             "description": "Internal server error"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/social/instagram/analyze": {
-      "post": {
-        "tags": [
-          "social-media"
-        ],
-        "summary": "Analyze Instagram Profile",
-        "description": "Analyze a brand's Instagram presence.\n\nFetches profile information and recent posts from Instagram Graph API,\nthen extracts insights including:\n- Posting patterns and frequency\n- Best posting times and days\n- Engagement analysis (likes, comments, rates)\n- Content themes and hashtag strategy\n- Top performing content types\n\nThe analysis results are stored in brand knowledge for use in\ncontent generation.\n\nArgs:\n    brand_id: The brand to analyze\n    request: Optional analysis parameters (defaults to include_posts=True, max_posts=25)\n    social_media_service: Injected social media analyzer service\n\nReturns:\n    Complete Instagram analysis including engagement metrics,\n    posting patterns, and content insights",
-        "operationId": "analyze_instagram_profile_api_v2_brands__brand_id__social_instagram_analyze_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID to analyze",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID to analyze"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "anyOf": [
-                  {
-                    "$ref": "#/components/schemas/AnalyzeInstagramRequest"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Analysis completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnalyzeInstagramResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Not authorized to access this brand"
-          },
-          "404": {
-            "description": "Brand not found or no Instagram integration"
-          },
-          "500": {
-            "description": "Analysis failed"
           },
           "422": {
             "description": "Validation Error",
@@ -9731,100 +7654,6 @@
         "title": "AgenticScenePosterior",
         "description": "Beta distribution parameters for embedding in fat message.\n\nThis schema is used when building the Pub/Sub message for the\npost-generator. The post-generator does NOT call this API."
       },
-      "AllSessionsRevokedResponse": {
-        "properties": {
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Confirmation message",
-            "default": "All sessions revoked successfully"
-          },
-          "sessionsRevoked": {
-            "type": "integer",
-            "title": "Sessionsrevoked",
-            "description": "Number of sessions that were revoked"
-          }
-        },
-        "type": "object",
-        "required": [
-          "sessionsRevoked"
-        ],
-        "title": "AllSessionsRevokedResponse",
-        "description": "Schema for revoking all sessions response."
-      },
-      "AnalyzeInstagramRequest": {
-        "properties": {
-          "brand_id": {
-            "type": "integer",
-            "title": "Brand Id",
-            "description": "Brand ID to analyze"
-          },
-          "include_posts": {
-            "type": "boolean",
-            "title": "Include Posts",
-            "description": "Whether to fetch and analyze recent posts",
-            "default": true
-          },
-          "max_posts": {
-            "type": "integer",
-            "maximum": 100.0,
-            "minimum": 1.0,
-            "title": "Max Posts",
-            "description": "Maximum number of posts to analyze",
-            "default": 25
-          }
-        },
-        "type": "object",
-        "required": [
-          "brand_id"
-        ],
-        "title": "AnalyzeInstagramRequest",
-        "description": "Request to analyze an Instagram profile."
-      },
-      "AnalyzeInstagramResponse": {
-        "properties": {
-          "brand_id": {
-            "type": "integer",
-            "title": "Brand Id",
-            "description": "Brand ID that was analyzed"
-          },
-          "analysis": {
-            "$ref": "#/components/schemas/SocialAnalysis",
-            "description": "Social media analysis results"
-          },
-          "posts_analyzed": {
-            "type": "integer",
-            "title": "Posts Analyzed",
-            "description": "Number of posts analyzed",
-            "default": 0
-          },
-          "success": {
-            "type": "boolean",
-            "title": "Success",
-            "description": "Whether analysis succeeded",
-            "default": true
-          },
-          "message": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Message",
-            "description": "Status message"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brand_id",
-          "analysis"
-        ],
-        "title": "AnalyzeInstagramResponse",
-        "description": "Response from Instagram analysis."
-      },
       "ArmDistributionMetrics": {
         "properties": {
           "brandId": {
@@ -9945,143 +7774,6 @@
         "title": "AssetAvailability",
         "description": "Asset availability schema for brand resources."
       },
-      "AssignPostRequest": {
-        "properties": {
-          "assigneeId": {
-            "type": "string",
-            "minLength": 1,
-            "title": "Assigneeid",
-            "description": "User ID of the reviewer to assign this post to"
-          }
-        },
-        "type": "object",
-        "required": [
-          "assigneeId"
-        ],
-        "title": "AssignPostRequest",
-        "description": "Request schema for assigning a post to a reviewer.\n\nIssue #2060: Enables post assignment to specific reviewers."
-      },
-      "AssignPostResponse": {
-        "properties": {
-          "postId": {
-            "type": "string",
-            "title": "Postid",
-            "description": "ID of the assigned post"
-          },
-          "assignedTo": {
-            "type": "string",
-            "title": "Assignedto",
-            "description": "User ID of the assigned reviewer"
-          },
-          "assignedBy": {
-            "type": "string",
-            "title": "Assignedby",
-            "description": "User ID who made the assignment"
-          },
-          "assignedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Assignedat",
-            "description": "Timestamp of assignment"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postId",
-          "assignedTo",
-          "assignedBy",
-          "assignedAt"
-        ],
-        "title": "AssignPostResponse",
-        "description": "Response schema for post assignment operation.\n\nIssue #2060: Returns assignment details."
-      },
-      "AuthSessionLoginRequest": {
-        "properties": {
-          "email": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "email"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Email",
-            "description": "User email address (required for password login)"
-          },
-          "password": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Password",
-            "description": "User password (required for password login)"
-          }
-        },
-        "type": "object",
-        "title": "AuthSessionLoginRequest",
-        "description": "Schema for direct login via POST /auth/session.\n\nIssue #2549: Support direct login with email/password.\nThis allows creating a session directly without first obtaining a JWT.\n\nEither provide email/password credentials OR an Authorization header with JWT.\nIf neither is provided, the request will fail with 401."
-      },
-      "BatchFeedbackResponse": {
-        "properties": {
-          "submittedCount": {
-            "type": "integer",
-            "title": "Submittedcount",
-            "description": "Number of feedback items successfully submitted",
-            "default": 0
-          },
-          "failedCount": {
-            "type": "integer",
-            "title": "Failedcount",
-            "description": "Number of feedback items that failed to submit",
-            "default": 0
-          },
-          "feedbackIds": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Feedbackids",
-            "description": "IDs of successfully submitted feedback"
-          }
-        },
-        "type": "object",
-        "title": "BatchFeedbackResponse",
-        "description": "Schema for batch feedback submission response."
-      },
-      "BatchMetricResponse": {
-        "properties": {
-          "ingestedCount": {
-            "type": "integer",
-            "title": "Ingestedcount",
-            "description": "Number of metrics successfully ingested",
-            "default": 0
-          },
-          "failedCount": {
-            "type": "integer",
-            "title": "Failedcount",
-            "description": "Number of metrics that failed to ingest",
-            "default": 0
-          },
-          "metricIds": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "title": "Metricids",
-            "description": "IDs of successfully ingested metrics"
-          }
-        },
-        "type": "object",
-        "title": "BatchMetricResponse",
-        "description": "Schema for batch metric ingestion response."
-      },
       "BatchPerformanceCreate": {
         "properties": {
           "posts": {
@@ -10127,54 +7819,6 @@
         "type": "object",
         "title": "BatchPerformanceResponse",
         "description": "Response schema for batch performance submission."
-      },
-      "BatchPostSelectionRequest": {
-        "properties": {
-          "selections": {
-            "items": {
-              "$ref": "#/components/schemas/PostSelectionItem"
-            },
-            "type": "array",
-            "title": "Selections",
-            "description": "List of post selections to apply"
-          }
-        },
-        "type": "object",
-        "required": [
-          "selections"
-        ],
-        "title": "BatchPostSelectionRequest",
-        "description": "Schema for batch post selection.\n\nUsed for POST /outputs/batch/select endpoint."
-      },
-      "BatchPostSelectionResponse": {
-        "properties": {
-          "updatedCount": {
-            "type": "integer",
-            "title": "Updatedcount",
-            "description": "Number of posts updated"
-          },
-          "failedCount": {
-            "type": "integer",
-            "title": "Failedcount",
-            "description": "Number of posts that failed to update",
-            "default": 0
-          },
-          "results": {
-            "items": {
-              "$ref": "#/components/schemas/PostSelectionResponse"
-            },
-            "type": "array",
-            "title": "Results",
-            "description": "List of updated post results"
-          }
-        },
-        "type": "object",
-        "required": [
-          "updatedCount",
-          "results"
-        ],
-        "title": "BatchPostSelectionResponse",
-        "description": "Schema for batch selection response."
       },
       "BatchProcessingResponse": {
         "properties": {
@@ -10511,90 +8155,6 @@
         ],
         "title": "BrandColorSummary",
         "description": "Brand color in the summary view."
-      },
-      "BrandCostsResponse": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "costType": {
-            "$ref": "#/components/schemas/CostType",
-            "description": "Type of costs"
-          },
-          "periodStart": {
-            "type": "string",
-            "format": "date",
-            "title": "Periodstart",
-            "description": "Start date of cost period"
-          },
-          "periodEnd": {
-            "type": "string",
-            "format": "date",
-            "title": "Periodend",
-            "description": "End date of cost period"
-          },
-          "totalJobs": {
-            "type": "integer",
-            "title": "Totaljobs",
-            "description": "Total number of jobs in period"
-          },
-          "totalSeconds": {
-            "type": "integer",
-            "title": "Totalseconds",
-            "description": "Total video seconds generated"
-          },
-          "totalCredits": {
-            "type": "string",
-            "title": "Totalcredits",
-            "description": "Total credits consumed"
-          },
-          "totalCostUsd": {
-            "type": "string",
-            "title": "Totalcostusd",
-            "description": "Total cost in USD"
-          },
-          "createdAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Createdat",
-            "description": "When the cost record was created"
-          },
-          "updatedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Updatedat",
-            "description": "When the cost record was last updated"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "costType",
-          "periodStart",
-          "periodEnd",
-          "totalJobs",
-          "totalSeconds",
-          "totalCredits",
-          "totalCostUsd"
-        ],
-        "title": "BrandCostsResponse",
-        "description": "Response schema for brand costs query.\n\nIssue #1952: Returns aggregated costs for a brand within a specified period.\n\nAttributes:\n    brand_id: The brand ID\n    cost_type: Type of costs (video, content, etc.)\n    period_start: Start date of the cost period\n    period_end: End date of the cost period\n    total_jobs: Total number of jobs in the period\n    total_seconds: Total video seconds generated\n    total_credits: Total credits consumed\n    total_cost_usd: Total cost in USD\n    created_at: When the cost record was first created\n    updated_at: When the cost record was last updated"
       },
       "BrandCrawlAssetsInfo": {
         "properties": {
@@ -11049,6 +8609,7 @@
           "extractedData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11148,6 +8709,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11390,6 +8952,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11456,6 +9019,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -11763,6 +9327,7 @@
           "crawlData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12396,171 +9961,6 @@
         "title": "BriefSummary",
         "description": "Summary of a single brief."
       },
-      "BulkAssignPostsRequest": {
-        "properties": {
-          "postIds": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "minItems": 1,
-            "title": "Postids",
-            "description": "List of post IDs to assign"
-          },
-          "assigneeId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Assigneeid",
-            "description": "User ID to assign all posts to (optional if auto_assign=True)"
-          },
-          "autoAssign": {
-            "type": "boolean",
-            "title": "Autoassign",
-            "description": "If True, uses load-balanced auto-assignment algorithm",
-            "default": false
-          },
-          "reviewerIds": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Reviewerids",
-            "description": "List of reviewer IDs for auto-assignment (required if auto_assign=True)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postIds"
-        ],
-        "title": "BulkAssignPostsRequest",
-        "description": "Request schema for bulk post assignment.\n\nIssue #2060: Enables bulk assignment to specific reviewer or auto-assignment."
-      },
-      "BulkAssignPostsResponse": {
-        "properties": {
-          "assignedCount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Assignedcount",
-            "description": "Number of posts successfully assigned"
-          },
-          "failedCount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Failedcount",
-            "description": "Number of posts that failed to assign"
-          },
-          "failedIds": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Failedids",
-            "description": "List of post IDs that failed to assign"
-          },
-          "assignments": {
-            "items": {
-              "$ref": "#/components/schemas/BulkAssignmentDetail"
-            },
-            "type": "array",
-            "title": "Assignments",
-            "description": "Details of each successful assignment"
-          }
-        },
-        "type": "object",
-        "required": [
-          "assignedCount",
-          "failedCount"
-        ],
-        "title": "BulkAssignPostsResponse",
-        "description": "Response schema for bulk post assignment.\n\nIssue #2060: Returns assignment results."
-      },
-      "BulkAssignmentDetail": {
-        "properties": {
-          "postId": {
-            "type": "string",
-            "title": "Postid",
-            "description": "ID of the assigned post"
-          },
-          "assignedTo": {
-            "type": "string",
-            "title": "Assignedto",
-            "description": "User ID of the assigned reviewer"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postId",
-          "assignedTo"
-        ],
-        "title": "BulkAssignmentDetail",
-        "description": "Details of a single assignment in bulk operation.\n\nIssue #2060: Part of bulk assignment response."
-      },
-      "BulkContentApprovalRequest": {
-        "properties": {
-          "contentIds": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Contentids",
-            "description": "Optional list of specific content IDs to approve. If empty, approves all campaign content."
-          }
-        },
-        "type": "object",
-        "title": "BulkContentApprovalRequest",
-        "description": "Request schema for bulk approving all campaign content.\n\nSimplified version for approving all content items in a campaign."
-      },
-      "BulkContentApprovalResponse": {
-        "properties": {
-          "approvedCount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Approvedcount",
-            "description": "Number of content items successfully approved"
-          },
-          "failedCount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Failedcount",
-            "description": "Number of content items that failed to approve"
-          },
-          "failedIds": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Failedids",
-            "description": "List of content IDs that failed to approve"
-          }
-        },
-        "type": "object",
-        "required": [
-          "approvedCount",
-          "failedCount"
-        ],
-        "title": "BulkContentApprovalResponse",
-        "description": "Response schema for bulk content approval operation.\n\nReturns counts and any failed IDs."
-      },
       "CTAType": {
         "type": "string",
         "enum": [
@@ -12579,7 +9979,7 @@
             "description": "Campaign ID"
           },
           "status": {
-            "$ref": "#/components/schemas/src__schemas__generation_status__GenerationStatus",
+            "$ref": "#/components/schemas/GenerationStatus",
             "description": "Overall generation status: pending/generating/completed/failed"
           },
           "progress": {
@@ -12770,6 +10170,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -12998,6 +10399,7 @@
             "title": "Postsperday"
           },
           "campaignVariables": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Campaignvariables"
           },
@@ -13191,6 +10593,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -13691,6 +11094,7 @@
           },
           "platformStats": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -13720,6 +11124,7 @@
           },
           "topPerformingPosts": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -13923,6 +11328,7 @@
           "campaignVariables": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14514,6 +11920,7 @@
             "description": "Last update timestamp"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional metadata"
@@ -14628,6 +12035,7 @@
           },
           "posts": {
             "additionalProperties": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "object",
@@ -14746,6 +12154,7 @@
             "title": "Approved"
           },
           "contentData": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Contentdata"
           },
@@ -14789,6 +12198,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14868,6 +12278,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -14890,315 +12301,6 @@
         "title": "ContentExportResponse",
         "description": "Schema for content export response.\n\nRMM L2: Response includes the created export resource with its ID.\nIssue #2547: Changed id and content_id from UUID to int to match database."
       },
-      "ContentFeedbackAggregates": {
-        "properties": {
-          "campaignId": {
-            "type": "string",
-            "title": "Campaignid"
-          },
-          "totalFeedbackCount": {
-            "type": "integer",
-            "title": "Totalfeedbackcount",
-            "description": "Total number of feedback submissions",
-            "default": 0
-          },
-          "thumbsUpCount": {
-            "type": "integer",
-            "title": "Thumbsupcount",
-            "description": "Number of thumbs up ratings",
-            "default": 0
-          },
-          "thumbsDownCount": {
-            "type": "integer",
-            "title": "Thumbsdowncount",
-            "description": "Number of thumbs down ratings",
-            "default": 0
-          },
-          "averageQualityRating": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Averagequalityrating",
-            "description": "Average quality rating (1-5)"
-          },
-          "averageDiversityRating": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Averagediversityrating",
-            "description": "Average diversity rating (1-5)"
-          },
-          "tagDistribution": {
-            "type": "object",
-            "title": "Tagdistribution",
-            "description": "Count of each tag used"
-          },
-          "sceneTypeAccuracy": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Scenetypeaccuracy",
-            "description": "Percentage of correct scene type classifications"
-          }
-        },
-        "type": "object",
-        "required": [
-          "campaignId"
-        ],
-        "title": "ContentFeedbackAggregates",
-        "description": "Schema for aggregated feedback statistics.\n\nUsed for GET /feedback/aggregates endpoint."
-      },
-      "ContentFeedbackBatchCreate": {
-        "properties": {
-          "feedbackItems": {
-            "items": {
-              "$ref": "#/components/schemas/ContentFeedbackCreate"
-            },
-            "type": "array",
-            "title": "Feedbackitems",
-            "description": "List of feedback items to submit"
-          }
-        },
-        "type": "object",
-        "required": [
-          "feedbackItems"
-        ],
-        "title": "ContentFeedbackBatchCreate",
-        "description": "Schema for batch feedback submission.\n\nUsed for POST /feedback/batch/collect endpoint."
-      },
-      "ContentFeedbackCreate": {
-        "properties": {
-          "pairId": {
-            "type": "string",
-            "title": "Pairid",
-            "description": "Content/Post ID being reviewed"
-          },
-          "thumbs": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "up",
-                  "down"
-                ]
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Thumbs",
-            "description": "Thumbs up/down rating"
-          },
-          "tags": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Tags",
-            "description": "Feedback tags like 'diversity', 'on-brand', 'low-quality'"
-          },
-          "qualityRating": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 5.0,
-                "minimum": 1.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Qualityrating",
-            "description": "1-5 star quality rating"
-          },
-          "diversityRating": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 5.0,
-                "minimum": 1.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Diversityrating",
-            "description": "1-5 star diversity rating"
-          },
-          "comments": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comments",
-            "description": "Free-form text feedback"
-          },
-          "sceneTypeCorrect": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Scenetypecorrect",
-            "description": "Whether scene type classification was correct"
-          },
-          "subtypeMatch": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Subtypematch",
-            "description": "Subtype match feedback"
-          }
-        },
-        "type": "object",
-        "required": [
-          "pairId"
-        ],
-        "title": "ContentFeedbackCreate",
-        "description": "Schema for creating content feedback.\n\nUsed for POST /outputs/{pair_id}/feedback endpoint."
-      },
-      "ContentFeedbackResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "pairId": {
-            "type": "string",
-            "title": "Pairid"
-          },
-          "campaignId": {
-            "type": "string",
-            "title": "Campaignid"
-          },
-          "userId": {
-            "type": "string",
-            "title": "Userid"
-          },
-          "thumbs": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Thumbs"
-          },
-          "tags": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Tags"
-          },
-          "qualityRating": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Qualityrating"
-          },
-          "diversityRating": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Diversityrating"
-          },
-          "comments": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Comments"
-          },
-          "sceneTypeCorrect": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Scenetypecorrect"
-          },
-          "subtypeMatch": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Subtypematch"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Createdat"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "pairId",
-          "campaignId",
-          "userId",
-          "createdAt"
-        ],
-        "title": "ContentFeedbackResponse",
-        "description": "Schema for content feedback response."
-      },
       "ContentFocus": {
         "type": "string",
         "enum": [
@@ -15210,132 +12312,6 @@
         ],
         "title": "ContentFocus",
         "description": "Content focus area options for captions.\n\nDefines the primary focus/theme of the caption content.\n- PRODUCT: Focus on product features/benefits\n- BRAND: Brand story/values emphasis\n- COMMUNITY: Audience engagement/connection\n- PROMOTION: Offer/discount/sale focus\n- EDUCATION: Tips/how-to/informative content"
-      },
-      "ContentGenerationDetailStatus": {
-        "properties": {
-          "contentId": {
-            "type": "integer",
-            "title": "Contentid",
-            "description": "Content ID"
-          },
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid",
-            "description": "Campaign ID"
-          },
-          "status": {
-            "$ref": "#/components/schemas/src__schemas__content_generation_status__GenerationStatus",
-            "description": "Overall generation status"
-          },
-          "progress": {
-            "type": "number",
-            "maximum": 100.0,
-            "minimum": 0.0,
-            "title": "Progress",
-            "description": "Progress percentage (0-100)"
-          },
-          "textGenerationStatus": {
-            "$ref": "#/components/schemas/src__schemas__content_generation_status__GenerationStatus",
-            "description": "Status of text content generation",
-            "default": "pending"
-          },
-          "imageGenerationStatus": {
-            "$ref": "#/components/schemas/src__schemas__content_generation_status__GenerationStatus",
-            "description": "Status of image generation",
-            "default": "pending"
-          },
-          "posts": {
-            "items": {
-              "$ref": "#/components/schemas/src__schemas__content_generation_status__PostGenerationStatus"
-            },
-            "type": "array",
-            "title": "Posts",
-            "description": "Per-post generation status breakdown"
-          },
-          "correlationId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Correlationid",
-            "description": "Correlation ID from original request for tracing"
-          },
-          "startedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Startedat",
-            "description": "When generation started"
-          },
-          "completedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Completedat",
-            "description": "When generation completed (if finished)"
-          },
-          "errorDetails": {
-            "anyOf": [
-              {
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Errordetails",
-            "description": "Detailed error information if generation failed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "contentId",
-          "campaignId",
-          "status",
-          "progress"
-        ],
-        "title": "ContentGenerationDetailStatus",
-        "description": "Detailed generation status for a specific content record.\n\nGET /content/{content_id}/generation-status\n\nProvides granular status including per-post breakdown for text\nand image generation.",
-        "example": {
-          "campaignId": 123,
-          "contentId": 456,
-          "correlationId": "abc-123-def",
-          "imageGenerationStatus": "generating",
-          "posts": [
-            {
-              "imageCount": 1,
-              "imageStatus": "completed",
-              "postId": "w1d1p1",
-              "textStatus": "completed"
-            },
-            {
-              "imageCount": 0,
-              "imageStatus": "generating",
-              "postId": "w1d1p2",
-              "textStatus": "completed"
-            }
-          ],
-          "progress": 60.0,
-          "startedAt": "2026-01-02T10:30:00Z",
-          "status": "generating",
-          "textGenerationStatus": "completed"
-        }
       },
       "ContentGenerationResponse": {
         "properties": {
@@ -15389,7 +12365,7 @@
             "description": "Associated campaign ID"
           },
           "status": {
-            "$ref": "#/components/schemas/src__schemas__generation_status__GenerationStatus",
+            "$ref": "#/components/schemas/GenerationStatus",
             "description": "Overall generation status: pending/generating/completed/failed"
           },
           "progress": {
@@ -15446,7 +12422,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/src__schemas__generation_status__PostGenerationStatus"
+                  "$ref": "#/components/schemas/PostGenerationStatus"
                 },
                 "type": "array"
               },
@@ -15799,21 +12775,6 @@
         "title": "ContentImageResponse",
         "description": "Schema for content image response."
       },
-      "ContentImageUpdate": {
-        "properties": {
-          "imagePrompt": {
-            "type": "string",
-            "title": "Imageprompt",
-            "description": "New prompt for image regeneration"
-          }
-        },
-        "type": "object",
-        "required": [
-          "imagePrompt"
-        ],
-        "title": "ContentImageUpdate",
-        "description": "Schema for updating a content image."
-      },
       "ContentPromptResponse": {
         "properties": {
           "contentId": {
@@ -15972,6 +12933,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -16265,6 +13227,7 @@
           "contentData": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -16385,15 +13348,6 @@
         ],
         "title": "ContextualBanditRecommendation",
         "description": "Response schema for contextual bandit recommendation."
-      },
-      "CostType": {
-        "type": "string",
-        "enum": [
-          "video"
-        ],
-        "const": "video",
-        "title": "CostType",
-        "description": "Types of costs that can be queried."
       },
       "CrawlErrorSummary": {
         "properties": {
@@ -16748,48 +13702,6 @@
         "title": "DesignerOutputAckResponse",
         "description": "Response for successful designer output processing."
       },
-      "DiffLineResponse": {
-        "properties": {
-          "operation": {
-            "type": "string",
-            "title": "Operation",
-            "description": "'+' add, '-' remove, ' ' unchanged"
-          },
-          "content": {
-            "type": "string",
-            "title": "Content"
-          },
-          "lineNumberOld": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Linenumberold"
-          },
-          "lineNumberNew": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Linenumbernew"
-          }
-        },
-        "type": "object",
-        "required": [
-          "operation",
-          "content"
-        ],
-        "title": "DiffLineResponse",
-        "description": "Single line in diff output."
-      },
       "DiversityMetrics": {
         "properties": {
           "contentTypeDiversity": {
@@ -16958,47 +13870,6 @@
         "title": "EmojiUsage",
         "description": "Emoji usage options for captions.\n\nControls the frequency of emoji usage in generated captions.\n- NONE: No emojis\n- MINIMAL: 1-2 emojis, strategic placement\n- MODERATE: 3-5 emojis, natural integration"
       },
-      "EngagementAnalysis": {
-        "properties": {
-          "avg_engagement_rate": {
-            "type": "number",
-            "title": "Avg Engagement Rate",
-            "description": "Average engagement rate (likes + comments / followers)",
-            "default": 0.0
-          },
-          "avg_likes_per_post": {
-            "type": "number",
-            "title": "Avg Likes Per Post",
-            "description": "Average likes per post",
-            "default": 0.0
-          },
-          "avg_comments_per_post": {
-            "type": "number",
-            "title": "Avg Comments Per Post",
-            "description": "Average comments per post",
-            "default": 0.0
-          },
-          "top_performing_content_types": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Top Performing Content Types",
-            "description": "Content types with highest engagement (e.g., ['carousel', 'reel', 'image'])"
-          },
-          "top_hashtags": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Top Hashtags",
-            "description": "Most effective hashtags by engagement"
-          }
-        },
-        "type": "object",
-        "title": "EngagementAnalysis",
-        "description": "Analysis of what drives engagement for a brand."
-      },
       "EngagementMetricsRequest": {
         "properties": {
           "impressions": {
@@ -17047,70 +13918,6 @@
         "type": "object",
         "title": "EngagementMetricsRequest",
         "description": "Engagement metrics for a single post."
-      },
-      "ExpediteRequest": {
-        "properties": {
-          "priority": {
-            "type": "integer",
-            "maximum": 5.0,
-            "minimum": 1.0,
-            "title": "Priority",
-            "description": "Priority level (1=low, 2=normal, 3=high, 4=urgent, 5=critical)",
-            "default": 4
-          },
-          "reason": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 500
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Reason",
-            "description": "Reason for expediting (e.g., 'Campaign deadline in 24h')"
-          }
-        },
-        "type": "object",
-        "title": "ExpediteRequest",
-        "description": "Schema for expediting a post in the review queue.\n\nUsed for POST /posts/{id}/expedite endpoint."
-      },
-      "ExpediteResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "reviewPriority": {
-            "type": "integer",
-            "title": "Reviewpriority"
-          },
-          "priorityReason": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Priorityreason"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Status message",
-            "default": "Post priority updated successfully"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "reviewPriority"
-        ],
-        "title": "ExpediteResponse",
-        "description": "Schema for expedite response."
       },
       "ExperiencePromptUpdate": {
         "properties": {
@@ -17381,6 +14188,17 @@
         "title": "GeneratedContent",
         "description": "Schema for generated content with nested structure."
       },
+      "GenerationStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "generating",
+          "completed",
+          "failed"
+        ],
+        "title": "GenerationStatus",
+        "description": "Content generation status values."
+      },
       "GetRecommendationRequest": {
         "properties": {
           "context": {
@@ -17639,6 +14457,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -17798,6 +14617,7 @@
             "description": "Last update time"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Platform-specific data"
@@ -18006,6 +14826,7 @@
             "default": 0.0
           },
           "modelStatistics": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Modelstatistics",
             "description": "Current model statistics"
@@ -18447,180 +15268,6 @@
         "title": "PolicyRecommendation",
         "description": "Recommendation for policy update."
       },
-      "PolicyRollbackApiRequest": {
-        "properties": {
-          "targetVersionNumber": {
-            "type": "integer",
-            "title": "Targetversionnumber"
-          },
-          "reason": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Reason"
-          }
-        },
-        "type": "object",
-        "required": [
-          "targetVersionNumber"
-        ],
-        "title": "PolicyRollbackApiRequest",
-        "description": "Rollback request with camelCase aliases."
-      },
-      "PolicyRollbackApiResponse": {
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "title": "Success"
-          },
-          "newVersion": {
-            "$ref": "#/components/schemas/PolicyVersionItemResponse"
-          },
-          "rolledBackFrom": {
-            "type": "integer",
-            "title": "Rolledbackfrom"
-          },
-          "rolledBackTo": {
-            "type": "integer",
-            "title": "Rolledbackto"
-          }
-        },
-        "type": "object",
-        "required": [
-          "success",
-          "newVersion",
-          "rolledBackFrom",
-          "rolledBackTo"
-        ],
-        "title": "PolicyRollbackApiResponse",
-        "description": "Rollback response with camelCase aliases."
-      },
-      "PolicyVersionHistoryListResponse": {
-        "properties": {
-          "policyId": {
-            "type": "string",
-            "title": "Policyid"
-          },
-          "latestVersion": {
-            "type": "integer",
-            "title": "Latestversion"
-          },
-          "totalVersions": {
-            "type": "integer",
-            "title": "Totalversions"
-          },
-          "versions": {
-            "items": {
-              "$ref": "#/components/schemas/PolicyVersionItemResponse"
-            },
-            "type": "array",
-            "title": "Versions"
-          }
-        },
-        "type": "object",
-        "required": [
-          "policyId",
-          "latestVersion",
-          "totalVersions",
-          "versions"
-        ],
-        "title": "PolicyVersionHistoryListResponse",
-        "description": "Version history response with camelCase aliases."
-      },
-      "PolicyVersionItemResponse": {
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "Id"
-          },
-          "policyId": {
-            "type": "string",
-            "title": "Policyid"
-          },
-          "versionNumber": {
-            "type": "integer",
-            "title": "Versionnumber"
-          },
-          "parentVersionId": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Parentversionid"
-          },
-          "changeReason": {
-            "type": "string",
-            "title": "Changereason"
-          },
-          "changeDescription": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Changedescription"
-          },
-          "policySnapshot": {
-            "anyOf": [
-              {
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Policysnapshot"
-          },
-          "metricsAtChange": {
-            "anyOf": [
-              {
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Metricsatchange"
-          },
-          "createdBy": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Createdby"
-          },
-          "createdAt": {
-            "type": "string",
-            "title": "Createdat"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "policyId",
-          "versionNumber",
-          "changeReason",
-          "createdAt"
-        ],
-        "title": "PolicyVersionItemResponse",
-        "description": "Single version in history response with camelCase aliases."
-      },
       "PostContent": {
         "properties": {
           "selectedImage": {
@@ -18648,6 +15295,62 @@
         "type": "object",
         "title": "PostContent",
         "description": "Schema for post content in approval request."
+      },
+      "PostGenerationStatus": {
+        "properties": {
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "Unique identifier for the post"
+          },
+          "textGenerated": {
+            "type": "boolean",
+            "title": "Textgenerated",
+            "description": "Whether post text has been generated",
+            "default": false
+          },
+          "imageGenerationStatus": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ImageGenerationStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Status of image generation: pending/generating/completed/failed"
+          },
+          "imageGenerationAttempts": {
+            "type": "integer",
+            "title": "Imagegenerationattempts",
+            "description": "Number of image generation attempts",
+            "default": 0
+          },
+          "hasImages": {
+            "type": "boolean",
+            "title": "Hasimages",
+            "description": "Whether post has generated images",
+            "default": false
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error message if generation failed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postId"
+        ],
+        "title": "PostGenerationStatus",
+        "description": "Status of a single post's generation.\n\nProvides granular status for text and image generation per post."
       },
       "PostPerformanceMetric": {
         "properties": {
@@ -18802,6 +15505,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -18880,85 +15584,6 @@
         ],
         "title": "PostPlan",
         "description": "Individual post within a week."
-      },
-      "PostPriorityResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "campaignId": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Campaignid"
-          },
-          "reviewPriority": {
-            "type": "integer",
-            "title": "Reviewpriority"
-          },
-          "priorityReason": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Priorityreason"
-          },
-          "selectionStatus": {
-            "type": "string",
-            "title": "Selectionstatus"
-          },
-          "weekNumber": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Weeknumber"
-          },
-          "dayNumber": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Daynumber"
-          },
-          "postNumber": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Postnumber"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "reviewPriority",
-          "selectionStatus"
-        ],
-        "title": "PostPriorityResponse",
-        "description": "Schema for post priority in queue listings."
       },
       "PostSchema": {
         "properties": {
@@ -19112,92 +15737,6 @@
         "title": "PostSchema",
         "description": "Schema for individual social media post."
       },
-      "PostSelectionItem": {
-        "properties": {
-          "postId": {
-            "type": "string",
-            "title": "Postid",
-            "description": "Post ID to update"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "approved",
-              "rejected"
-            ],
-            "title": "Status",
-            "description": "Selection decision"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postId",
-          "status"
-        ],
-        "title": "PostSelectionItem",
-        "description": "Individual post selection item for batch operations."
-      },
-      "PostSelectionResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "selectionStatus": {
-            "type": "string",
-            "title": "Selectionstatus"
-          },
-          "selectedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Selectedat"
-          },
-          "selectedBy": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Selectedby"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "selectionStatus"
-        ],
-        "title": "PostSelectionResponse",
-        "description": "Schema for post selection response."
-      },
-      "PostSelectionUpdate": {
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "approved",
-              "rejected"
-            ],
-            "title": "Status",
-            "description": "Selection decision (approved or rejected)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "status"
-        ],
-        "title": "PostSelectionUpdate",
-        "description": "Schema for updating post selection status.\n\nUsed for POST /outputs/{id}/select endpoint."
-      },
       "PostVersionItemResponse": {
         "properties": {
           "id": {
@@ -19241,6 +15780,7 @@
           "mediaSnapshot": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -19276,77 +15816,11 @@
         "title": "PostVersionItemResponse",
         "description": "Single version in history response with camelCase aliases."
       },
-      "PostingPatterns": {
-        "properties": {
-          "posting_frequency": {
-            "type": "string",
-            "title": "Posting Frequency",
-            "description": "Posting frequency (e.g., 'daily', '3x_week', 'weekly')"
-          },
-          "best_posting_times": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Best Posting Times",
-            "description": "Best times to post (e.g., ['9:00 AM', '6:00 PM'])"
-          },
-          "best_posting_days": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Best Posting Days",
-            "description": "Best days to post (e.g., ['Monday', 'Wednesday'])"
-          },
-          "avg_posts_per_week": {
-            "type": "number",
-            "title": "Avg Posts Per Week",
-            "description": "Average posts per week",
-            "default": 0.0
-          }
-        },
-        "type": "object",
-        "required": [
-          "posting_frequency"
-        ],
-        "title": "PostingPatterns",
-        "description": "Analysis of when and how frequently a brand posts."
-      },
-      "PriorityUpdateRequest": {
-        "properties": {
-          "priority": {
-            "type": "integer",
-            "maximum": 5.0,
-            "minimum": 1.0,
-            "title": "Priority",
-            "description": "Priority level (1=low, 2=normal, 3=high, 4=urgent, 5=critical)"
-          },
-          "reason": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 500
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Reason",
-            "description": "Reason for priority change"
-          }
-        },
-        "type": "object",
-        "required": [
-          "priority"
-        ],
-        "title": "PriorityUpdateRequest",
-        "description": "Schema for updating post priority.\n\nUsed for PATCH /posts/{id}/priority endpoint."
-      },
       "ProcessEngagementBatchRequest": {
         "properties": {
           "engagement_data": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -19691,44 +16165,6 @@
         "title": "PulseAckResponse",
         "description": "Response for successful pulse processing."
       },
-      "RegenerateRequest": {
-        "properties": {
-          "target": {
-            "$ref": "#/components/schemas/RegenerationTarget",
-            "description": "What to regenerate: image, text, or all"
-          },
-          "feedback": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Feedback",
-            "description": "User feedback to incorporate in regeneration"
-          },
-          "prompt": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Prompt",
-            "description": "Custom prompt for image regeneration"
-          }
-        },
-        "type": "object",
-        "required": [
-          "target"
-        ],
-        "title": "RegenerateRequest",
-        "description": "Request to regenerate post content (GATE 7).\n\nSimpler interface than CreateVersionRequest for direct regeneration.\nUses 'image' instead of 'media' for user-friendliness."
-      },
       "RegenerateResponse": {
         "properties": {
           "requestId": {
@@ -19761,16 +16197,6 @@
         ],
         "title": "RegenerateResponse",
         "description": "Response when regeneration request is accepted (202 Accepted) - GATE 7."
-      },
-      "RegenerationTarget": {
-        "type": "string",
-        "enum": [
-          "image",
-          "text",
-          "all"
-        ],
-        "title": "RegenerationTarget",
-        "description": "Target type for content regeneration (GATE 7).\n\nUses user-friendly terminology:\n- image: Regenerate image only\n- text: Regenerate caption/text only\n- all: Regenerate both image and text"
       },
       "RejectionReason": {
         "type": "string",
@@ -19821,193 +16247,6 @@
         "type": "object",
         "title": "ResendVerificationResponse",
         "description": "Schema for resend verification email response.\n\nReturned after resending verification email.\nReturns generic message to prevent email enumeration attacks."
-      },
-      "RevertApprovalRequest": {
-        "properties": {
-          "reason": {
-            "type": "string",
-            "maxLength": 500,
-            "minLength": 1,
-            "title": "Reason",
-            "description": "Reason for reverting the approval"
-          }
-        },
-        "type": "object",
-        "required": [
-          "reason"
-        ],
-        "title": "RevertApprovalRequest",
-        "description": "Request schema for reverting a post approval decision.\n\nIssue #2062: Allows undoing approval decisions within a time window."
-      },
-      "RevertApprovalResponse": {
-        "properties": {
-          "postId": {
-            "type": "string",
-            "title": "Postid",
-            "description": "ID of the reverted post"
-          },
-          "reverted": {
-            "type": "boolean",
-            "title": "Reverted",
-            "description": "Whether the revert was successful"
-          },
-          "previousStatus": {
-            "type": "boolean",
-            "title": "Previousstatus",
-            "description": "Previous approval status before revert"
-          },
-          "newStatus": {
-            "type": "boolean",
-            "title": "Newstatus",
-            "description": "New approval status after revert"
-          },
-          "revertedBy": {
-            "type": "string",
-            "title": "Revertedby",
-            "description": "User ID who performed the revert"
-          },
-          "revertReason": {
-            "type": "string",
-            "title": "Revertreason",
-            "description": "Reason for the revert"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postId",
-          "reverted",
-          "previousStatus",
-          "newStatus",
-          "revertedBy",
-          "revertReason"
-        ],
-        "title": "RevertApprovalResponse",
-        "description": "Response schema for revert approval operation.\n\nIssue #2062: Returns the reverted post status."
-      },
-      "ReviewerQueueItem": {
-        "properties": {
-          "postId": {
-            "type": "string",
-            "title": "Postid",
-            "description": "ID of the post"
-          },
-          "campaignId": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Campaignid",
-            "description": "Campaign ID"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text",
-            "description": "Post text/caption"
-          },
-          "approved": {
-            "type": "boolean",
-            "title": "Approved",
-            "description": "Whether post is approved"
-          },
-          "assignedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Assignedat",
-            "description": "When assigned"
-          },
-          "weekNumber": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Weeknumber",
-            "description": "Week number"
-          },
-          "dayNumber": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Daynumber",
-            "description": "Day number"
-          },
-          "postNumber": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Postnumber",
-            "description": "Post number"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postId",
-          "approved"
-        ],
-        "title": "ReviewerQueueItem",
-        "description": "Schema for a single item in the reviewer's queue.\n\nIssue #2060: Represents a post assigned for review."
-      },
-      "ReviewerQueueResponse": {
-        "properties": {
-          "posts": {
-            "items": {
-              "$ref": "#/components/schemas/ReviewerQueueItem"
-            },
-            "type": "array",
-            "title": "Posts",
-            "description": "Posts assigned for review"
-          },
-          "totalCount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Totalcount",
-            "description": "Total number of assigned posts"
-          },
-          "pendingCount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Pendingcount",
-            "description": "Number of posts pending review"
-          }
-        },
-        "type": "object",
-        "required": [
-          "totalCount",
-          "pendingCount"
-        ],
-        "title": "ReviewerQueueResponse",
-        "description": "Response schema for reviewer queue.\n\nIssue #2060: Returns list of posts assigned to the reviewer."
       },
       "SceneMixAckResponse": {
         "properties": {
@@ -20397,6 +16636,7 @@
           "executionStats": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -20734,6 +16974,7 @@
           "diversitySettings": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -20850,369 +17091,6 @@
         "title": "SceneMixPolicyResponse",
         "description": "Schema for scene mix policy response."
       },
-      "ScenePerformanceAggregates": {
-        "properties": {
-          "campaignId": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Campaignid",
-            "description": "Campaign ID if filtered by campaign"
-          },
-          "sceneTypes": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/SceneTypeAggregates"
-            },
-            "type": "object",
-            "title": "Scenetypes",
-            "description": "Aggregates by scene type"
-          },
-          "overallAvgCtr": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Overallavgctr",
-            "description": "Overall average click-through rate"
-          },
-          "overallAvgEr": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Overallavger",
-            "description": "Overall average engagement rate"
-          },
-          "overallAvgCvr": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Overallavgcvr",
-            "description": "Overall average conversion rate"
-          },
-          "totalMetrics": {
-            "type": "integer",
-            "title": "Totalmetrics",
-            "description": "Total number of metric records",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "title": "ScenePerformanceAggregates",
-        "description": "Schema for aggregated performance statistics by scene type.\n\nUsed for GET /performance-metrics/by-scene-type endpoint."
-      },
-      "ScenePerformanceMetricBatchCreate": {
-        "properties": {
-          "metrics": {
-            "items": {
-              "$ref": "#/components/schemas/ScenePerformanceMetricCreate"
-            },
-            "type": "array",
-            "title": "Metrics",
-            "description": "List of metrics to ingest"
-          }
-        },
-        "type": "object",
-        "required": [
-          "metrics"
-        ],
-        "title": "ScenePerformanceMetricBatchCreate",
-        "description": "Schema for batch metric ingestion.\n\nUsed for POST /performance-metrics/batch endpoint."
-      },
-      "ScenePerformanceMetricCreate": {
-        "properties": {
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid",
-            "description": "Campaign ID for this metric"
-          },
-          "sceneType": {
-            "type": "string",
-            "enum": [
-              "human",
-              "product",
-              "ingredient"
-            ],
-            "title": "Scenetype",
-            "description": "Scene type category"
-          },
-          "ctr": {
-            "anyOf": [
-              {
-                "type": "number",
-                "maximum": 1.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ctr",
-            "description": "Click-through rate (0.0 - 1.0)"
-          },
-          "er": {
-            "anyOf": [
-              {
-                "type": "number",
-                "maximum": 1.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Er",
-            "description": "Engagement rate (0.0 - 1.0)"
-          },
-          "cvr": {
-            "anyOf": [
-              {
-                "type": "number",
-                "maximum": 1.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Cvr",
-            "description": "Conversion rate (0.0 - 1.0)"
-          },
-          "impressions": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Impressions",
-            "description": "Total impressions count"
-          },
-          "clicks": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Clicks",
-            "description": "Total clicks count"
-          },
-          "engagements": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Engagements",
-            "description": "Total engagements (likes, comments, shares)"
-          },
-          "conversions": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Conversions",
-            "description": "Total conversions count"
-          },
-          "measuredAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Measuredat",
-            "description": "When these metrics were measured"
-          },
-          "source": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 100
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source",
-            "description": "Analytics platform source (e.g., 'instagram_insights', 'meta_business')"
-          }
-        },
-        "type": "object",
-        "required": [
-          "campaignId",
-          "sceneType"
-        ],
-        "title": "ScenePerformanceMetricCreate",
-        "description": "Schema for creating a scene performance metric.\n\nUsed for POST /performance-metrics endpoint."
-      },
-      "ScenePerformanceMetricResponse": {
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "Id"
-          },
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid"
-          },
-          "sceneType": {
-            "type": "string",
-            "title": "Scenetype"
-          },
-          "ctr": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ctr"
-          },
-          "er": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Er"
-          },
-          "cvr": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Cvr"
-          },
-          "impressions": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Impressions"
-          },
-          "clicks": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Clicks"
-          },
-          "engagements": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Engagements"
-          },
-          "conversions": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Conversions"
-          },
-          "measuredAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Measuredat"
-          },
-          "source": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Createdat"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "campaignId",
-          "sceneType",
-          "createdAt"
-        ],
-        "title": "ScenePerformanceMetricResponse",
-        "description": "Schema for scene performance metric response."
-      },
       "ScenePolicy": {
         "properties": {
           "sceneType": {
@@ -21251,87 +17129,6 @@
         ],
         "title": "ScenePolicy",
         "description": "Schema for individual scene policy configuration."
-      },
-      "SceneTypeAggregates": {
-        "properties": {
-          "sceneType": {
-            "type": "string",
-            "title": "Scenetype",
-            "description": "Scene type category"
-          },
-          "avgCtr": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Avgctr",
-            "description": "Average click-through rate"
-          },
-          "avgEr": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Avger",
-            "description": "Average engagement rate"
-          },
-          "avgCvr": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Avgcvr",
-            "description": "Average conversion rate"
-          },
-          "totalImpressions": {
-            "type": "integer",
-            "title": "Totalimpressions",
-            "description": "Total impressions",
-            "default": 0
-          },
-          "totalClicks": {
-            "type": "integer",
-            "title": "Totalclicks",
-            "description": "Total clicks",
-            "default": 0
-          },
-          "totalEngagements": {
-            "type": "integer",
-            "title": "Totalengagements",
-            "description": "Total engagements",
-            "default": 0
-          },
-          "totalConversions": {
-            "type": "integer",
-            "title": "Totalconversions",
-            "description": "Total conversions",
-            "default": 0
-          },
-          "metricCount": {
-            "type": "integer",
-            "title": "Metriccount",
-            "description": "Number of metric records",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "required": [
-          "sceneType"
-        ],
-        "title": "SceneTypeAggregates",
-        "description": "Aggregated metrics for a single scene type."
       },
       "SceneTypeLearningSignal": {
         "properties": {
@@ -21411,80 +17208,6 @@
         ],
         "title": "SceneTypeLearningSignal",
         "description": "Learning signal for a specific scene type."
-      },
-      "ScheduleRecommendationResponse": {
-        "properties": {
-          "brand_id": {
-            "type": "string",
-            "title": "Brand Id",
-            "description": "Brand ID these recommendations are for"
-          },
-          "recommended_slots": {
-            "items": {
-              "$ref": "#/components/schemas/TimeSlot"
-            },
-            "type": "array",
-            "title": "Recommended Slots",
-            "description": "List of recommended posting time slots, sorted by score descending"
-          },
-          "all_slot_scores": {
-            "items": {
-              "$ref": "#/components/schemas/TimeSlotWithSampleCount"
-            },
-            "type": "array",
-            "title": "All Slot Scores",
-            "description": "All time slot scores for transparency and debugging"
-          },
-          "min_samples_threshold": {
-            "type": "integer",
-            "title": "Min Samples Threshold",
-            "description": "Minimum samples required to trust a slot score",
-            "default": 10
-          },
-          "total_records_analyzed": {
-            "type": "integer",
-            "title": "Total Records Analyzed",
-            "description": "Total engagement records analyzed",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "required": [
-          "brand_id"
-        ],
-        "title": "ScheduleRecommendationResponse",
-        "description": "Response for schedule recommendations endpoint.\n\nReturns recommended posting times with all slot scores for transparency.",
-        "example": {
-          "all_slot_scores": [
-            {
-              "day_of_week": 2,
-              "hour": 12,
-              "sample_count": 25,
-              "score": 0.045
-            },
-            {
-              "day_of_week": 3,
-              "hour": 14,
-              "sample_count": 18,
-              "score": 0.042
-            }
-          ],
-          "brand_id": "brand_123",
-          "min_samples_threshold": 10,
-          "recommended_slots": [
-            {
-              "day_of_week": 2,
-              "hour": 12,
-              "score": 0.045
-            },
-            {
-              "day_of_week": 3,
-              "hour": 14,
-              "score": 0.042
-            }
-          ],
-          "total_records_analyzed": 500
-        }
       },
       "ScheduledPostListResponse": {
         "properties": {
@@ -21757,57 +17480,6 @@
         "title": "ScheduledPostStatusUpdate",
         "description": "Request schema for updating scheduled post status.\n\nUsed by campaign-publisher worker to update status after publishing."
       },
-      "SelectionRateBySceneType": {
-        "properties": {
-          "sceneType": {
-            "type": "string",
-            "title": "Scenetype",
-            "description": "Scene type"
-          },
-          "totalCount": {
-            "type": "integer",
-            "title": "Totalcount",
-            "description": "Total posts with this scene_type",
-            "default": 0
-          },
-          "approvedCount": {
-            "type": "integer",
-            "title": "Approvedcount",
-            "description": "Number of approved posts",
-            "default": 0
-          },
-          "rejectedCount": {
-            "type": "integer",
-            "title": "Rejectedcount",
-            "description": "Number of rejected posts",
-            "default": 0
-          },
-          "pendingCount": {
-            "type": "integer",
-            "title": "Pendingcount",
-            "description": "Number of pending posts",
-            "default": 0
-          },
-          "approvalRate": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Approvalrate",
-            "description": "Approval rate (approved / (approved + rejected))"
-          }
-        },
-        "type": "object",
-        "required": [
-          "sceneType"
-        ],
-        "title": "SelectionRateBySceneType",
-        "description": "Schema for selection rate aggregated by scene_type.\n\nUsed for GET /outputs/selection-rates endpoint."
-      },
       "ServiceType": {
         "type": "string",
         "enum": [
@@ -21816,33 +17488,6 @@
         ],
         "title": "ServiceType",
         "description": "Type of agentic service that produced the pulse.\n\nUsed to distinguish pulses from different workflows while\nmaintaining a unified polling endpoint."
-      },
-      "SessionCreatedResponse": {
-        "properties": {
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Success confirmation message",
-            "default": "Session created successfully"
-          },
-          "userId": {
-            "type": "string",
-            "title": "Userid",
-            "description": "User ID associated with the session"
-          },
-          "expiresIn": {
-            "type": "integer",
-            "title": "Expiresin",
-            "description": "Session expiration time in seconds from now"
-          }
-        },
-        "type": "object",
-        "required": [
-          "userId",
-          "expiresIn"
-        ],
-        "title": "SessionCreatedResponse",
-        "description": "Schema for session creation response.\n\nThe actual session ID is NOT returned in the body - it's set\nvia httpOnly cookie. This response confirms session creation."
       },
       "SessionRequest": {
         "properties": {
@@ -21940,19 +17585,6 @@
         "title": "SessionResponse",
         "description": "Unified session response for RMM L2 compliant sessions endpoint.\n\nUsed by POST /api/v2/sessions for both login and token refresh.\nContains all fields needed for both use cases.\n\nFor password grant (login):\n- user: User profile data\n- access_token: JWT access token\n- refresh_token: Token for refreshing session\n- token_type: Always \"bearer\"\n- expires_in: Token expiration in seconds\n\nFor refresh_token grant:\n- access_token: New JWT access token\n- refresh_token: New refresh token\n- token_type: Always \"bearer\"\n- expires_in: Token expiration in seconds\n- user: Optional (may be omitted for refresh)"
       },
-      "SessionRevokedResponse": {
-        "properties": {
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Confirmation message",
-            "default": "Session revoked successfully"
-          }
-        },
-        "type": "object",
-        "title": "SessionRevokedResponse",
-        "description": "Schema for session revocation response."
-      },
       "SignupCreate": {
         "properties": {
           "name": {
@@ -22040,147 +17672,6 @@
         ],
         "title": "SignupResponse",
         "description": "Schema for signup responses.\n\nReturned after successful signup creation."
-      },
-      "SocialAnalysis": {
-        "properties": {
-          "platform": {
-            "type": "string",
-            "title": "Platform",
-            "description": "Social media platform",
-            "default": "instagram"
-          },
-          "account_id": {
-            "type": "string",
-            "title": "Account Id",
-            "description": "Platform account ID"
-          },
-          "username": {
-            "type": "string",
-            "title": "Username",
-            "description": "Platform username/handle"
-          },
-          "followers": {
-            "type": "integer",
-            "title": "Followers",
-            "description": "Number of followers",
-            "default": 0
-          },
-          "following": {
-            "type": "integer",
-            "title": "Following",
-            "description": "Number of accounts followed",
-            "default": 0
-          },
-          "media_count": {
-            "type": "integer",
-            "title": "Media Count",
-            "description": "Total number of posts",
-            "default": 0
-          },
-          "biography": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Biography",
-            "description": "Account biography"
-          },
-          "website": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Website",
-            "description": "Website URL from profile"
-          },
-          "avg_engagement_rate": {
-            "type": "number",
-            "title": "Avg Engagement Rate",
-            "description": "Average engagement rate across posts",
-            "default": 0.0
-          },
-          "top_performing_content_types": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Top Performing Content Types",
-            "description": "Best performing content types"
-          },
-          "posting_frequency": {
-            "type": "string",
-            "title": "Posting Frequency",
-            "description": "How often the brand posts",
-            "default": "unknown"
-          },
-          "best_posting_times": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Best Posting Times",
-            "description": "Optimal posting times"
-          },
-          "hashtag_strategy": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Hashtag Strategy",
-            "description": "Commonly used hashtags"
-          },
-          "content_themes": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Content Themes",
-            "description": "Main content themes identified"
-          },
-          "posting_patterns": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/PostingPatterns"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Detailed posting pattern analysis"
-          },
-          "engagement_analysis": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/EngagementAnalysis"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Detailed engagement analysis"
-          },
-          "analyzed_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Analyzed At",
-            "description": "When analysis was performed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "account_id",
-          "username"
-        ],
-        "title": "SocialAnalysis",
-        "description": "Complete social media analysis for a brand."
       },
       "StatusErrorResponse": {
         "properties": {
@@ -22287,43 +17778,6 @@
         ],
         "title": "StoryArc",
         "description": "Narrative structure options for captions.\n\nDefines the overall narrative flow of the caption.\n- PROBLEM_SOLUTION: Present problem, offer solution\n- BEFORE_AFTER: Transformation narrative\n- LIST_FORMAT: Numbered or bulleted points\n- TESTIMONIAL: Social proof/customer story\n- EDUCATIONAL: Teaching/informative structure"
-      },
-      "TextDiffResponse": {
-        "properties": {
-          "changeType": {
-            "type": "string",
-            "title": "Changetype"
-          },
-          "lines": {
-            "items": {
-              "$ref": "#/components/schemas/DiffLineResponse"
-            },
-            "type": "array",
-            "title": "Lines"
-          },
-          "additions": {
-            "type": "integer",
-            "title": "Additions"
-          },
-          "deletions": {
-            "type": "integer",
-            "title": "Deletions"
-          },
-          "similarityRatio": {
-            "type": "number",
-            "title": "Similarityratio"
-          }
-        },
-        "type": "object",
-        "required": [
-          "changeType",
-          "lines",
-          "additions",
-          "deletions",
-          "similarityRatio"
-        ],
-        "title": "TextDiffResponse",
-        "description": "Text diff details."
       },
       "TextPosition": {
         "type": "string",
@@ -22472,6 +17926,7 @@
           "metadata": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -22529,98 +17984,6 @@
         ],
         "title": "ThumbsFeedbackResponse",
         "description": "Response schema for thumbs feedback submission."
-      },
-      "TimeSlot": {
-        "properties": {
-          "day_of_week": {
-            "type": "integer",
-            "maximum": 6.0,
-            "minimum": 0.0,
-            "title": "Day Of Week",
-            "description": "Day of week: 0=Monday, 6=Sunday"
-          },
-          "hour": {
-            "type": "integer",
-            "maximum": 23.0,
-            "minimum": 0.0,
-            "title": "Hour",
-            "description": "Hour of day (0-23)"
-          },
-          "score": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Score",
-            "description": "Mean engagement rate for this slot (None if insufficient data)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "day_of_week",
-          "hour"
-        ],
-        "title": "TimeSlot",
-        "description": "A posting time slot with optional engagement score.\n\nAttributes:\n    day_of_week: Day of week (0=Monday, 6=Sunday)\n    hour: Hour of day (0-23)\n    score: Mean engagement rate for this slot (None if insufficient data)",
-        "example": {
-          "day_of_week": 2,
-          "hour": 12,
-          "score": 0.045
-        }
-      },
-      "TimeSlotWithSampleCount": {
-        "properties": {
-          "day_of_week": {
-            "type": "integer",
-            "maximum": 6.0,
-            "minimum": 0.0,
-            "title": "Day Of Week",
-            "description": "Day of week: 0=Monday, 6=Sunday"
-          },
-          "hour": {
-            "type": "integer",
-            "maximum": 23.0,
-            "minimum": 0.0,
-            "title": "Hour",
-            "description": "Hour of day (0-23)"
-          },
-          "score": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Score",
-            "description": "Mean engagement rate for this slot (None if insufficient data)"
-          },
-          "sample_count": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Sample Count",
-            "description": "Number of observations for this slot",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "required": [
-          "day_of_week",
-          "hour"
-        ],
-        "title": "TimeSlotWithSampleCount",
-        "description": "A time slot with sample count for debugging/transparency.\n\nExtends TimeSlot with sample_count to help understand data quality.",
-        "example": {
-          "day_of_week": 2,
-          "hour": 12,
-          "sample_count": 25,
-          "score": 0.045
-        }
       },
       "ToneAttributesV2": {
         "properties": {
@@ -23019,61 +18382,6 @@
         ],
         "title": "ValidationError"
       },
-      "VersionDiffResponse": {
-        "properties": {
-          "postId": {
-            "type": "string",
-            "title": "Postid"
-          },
-          "fromVersion": {
-            "type": "integer",
-            "title": "Fromversion"
-          },
-          "toVersion": {
-            "type": "integer",
-            "title": "Toversion"
-          },
-          "changeType": {
-            "type": "string",
-            "title": "Changetype"
-          },
-          "textDiff": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextDiffResponse"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "mediaChanged": {
-            "type": "boolean",
-            "title": "Mediachanged"
-          },
-          "mediaDiff": {
-            "anyOf": [
-              {
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Mediadiff"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postId",
-          "fromVersion",
-          "toVersion",
-          "changeType",
-          "mediaChanged"
-        ],
-        "title": "VersionDiffResponse",
-        "description": "Complete diff between two versions."
-      },
       "VersionHistoryResponse": {
         "properties": {
           "postId": {
@@ -23394,6 +18702,7 @@
           },
           "estimatedCostUsd": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Estimatedcostusd",
             "description": "Estimated cost in USD"
           },
@@ -23516,7 +18825,8 @@
           "costUsd": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -23885,6 +19195,7 @@
           "result": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -23905,59 +19216,6 @@
         ],
         "title": "WorkflowResponse",
         "description": "Response from workflow operations with detailed progress tracking."
-      },
-      "WorkflowStatusResponse": {
-        "properties": {
-          "status": {
-            "type": "string",
-            "title": "Workflow Status",
-            "description": "Current workflow status: pending, running, completed, or failed"
-          },
-          "progress": {
-            "type": "integer",
-            "maximum": 100.0,
-            "minimum": 0.0,
-            "title": "Progress Percentage",
-            "description": "Workflow completion percentage (0-100)",
-            "default": 0
-          },
-          "message": {
-            "type": "string",
-            "title": "Status Message",
-            "description": "Human-readable status message (e.g., 'Generating post 10 of 21')",
-            "default": ""
-          },
-          "step": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Step",
-            "description": "Name of the currently executing workflow step"
-          },
-          "workflowId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Workflow ID",
-            "description": "GCP Workflow execution ID for tracking"
-          }
-        },
-        "type": "object",
-        "required": [
-          "status"
-        ],
-        "title": "WorkflowStatusResponse",
-        "description": "Schema for workflow status response.\n\nProvides a simplified view of workflow execution status for polling.\nUsed by the frontend to monitor content generation progress.\n\nIssue #1227: Missing workflow-status endpoint for campaigns"
       },
       "WorkflowStep": {
         "properties": {
@@ -24003,60 +19261,6 @@
         ],
         "title": "WorkflowStep",
         "description": "Schema for workflow step tracking."
-      },
-      "src__schemas__content_generation_status__GenerationStatus": {
-        "type": "string",
-        "enum": [
-          "pending",
-          "generating",
-          "completed",
-          "failed"
-        ],
-        "title": "GenerationStatus",
-        "description": "Status values for content generation operations."
-      },
-      "src__schemas__content_generation_status__PostGenerationStatus": {
-        "properties": {
-          "postId": {
-            "type": "string",
-            "title": "Postid",
-            "description": "Post identifier"
-          },
-          "textStatus": {
-            "$ref": "#/components/schemas/src__schemas__content_generation_status__GenerationStatus",
-            "description": "Status of text generation",
-            "default": "pending"
-          },
-          "imageStatus": {
-            "$ref": "#/components/schemas/src__schemas__content_generation_status__GenerationStatus",
-            "description": "Status of image generation",
-            "default": "pending"
-          },
-          "imageCount": {
-            "type": "integer",
-            "title": "Imagecount",
-            "description": "Number of images generated",
-            "default": 0
-          },
-          "errorMessage": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Errormessage",
-            "description": "Error message if generation failed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postId"
-        ],
-        "title": "PostGenerationStatus",
-        "description": "Status details for an individual post's generation.\n\nTracks both text and image generation status separately to\nsupport partial completion states."
       },
       "src__schemas__content_generator_pubsub__PubSubPushEnvelope": {
         "properties": {
@@ -24227,73 +19431,6 @@
         ],
         "title": "PulseStatusResponse",
         "description": "Response for GET /pulses/{correlation_id} polling endpoint.\n\nIssue #2181: Frontend polling endpoint for crawl progress."
-      },
-      "src__schemas__generation_status__GenerationStatus": {
-        "type": "string",
-        "enum": [
-          "pending",
-          "generating",
-          "completed",
-          "failed"
-        ],
-        "title": "GenerationStatus",
-        "description": "Content generation status values."
-      },
-      "src__schemas__generation_status__PostGenerationStatus": {
-        "properties": {
-          "postId": {
-            "type": "string",
-            "title": "Postid",
-            "description": "Unique identifier for the post"
-          },
-          "textGenerated": {
-            "type": "boolean",
-            "title": "Textgenerated",
-            "description": "Whether post text has been generated",
-            "default": false
-          },
-          "imageGenerationStatus": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ImageGenerationStatus"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Status of image generation: pending/generating/completed/failed"
-          },
-          "imageGenerationAttempts": {
-            "type": "integer",
-            "title": "Imagegenerationattempts",
-            "description": "Number of image generation attempts",
-            "default": 0
-          },
-          "hasImages": {
-            "type": "boolean",
-            "title": "Hasimages",
-            "description": "Whether post has generated images",
-            "default": false
-          },
-          "errorMessage": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Errormessage",
-            "description": "Error message if generation failed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "postId"
-        ],
-        "title": "PostGenerationStatus",
-        "description": "Status of a single post's generation.\n\nProvides granular status for text and image generation per post."
       }
     },
     "securitySchemes": {
