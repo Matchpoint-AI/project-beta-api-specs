@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1005] - 2026-02-09
+
+### Changes
+- chore: raise coverage threshold to 90% and fix repo omits (#2832)
+
+**Source:** project-beta-api@0eb05ae4
+
 ## [v0.7.1004] - 2026-02-09
 
 ### Changes
