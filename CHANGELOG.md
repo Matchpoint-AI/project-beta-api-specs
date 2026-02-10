@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1020] - 2026-02-10
+
+### Changes
+- refactor: move crawler domain to src/domains/crawler/ (#2843) (#2852)
+
+**Source:** project-beta-api@65eaa223
+
 ## [v0.7.1019] - 2026-02-10
 
 ### Changes
