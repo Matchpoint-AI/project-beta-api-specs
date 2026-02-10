@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1019] - 2026-02-10
+
+### Changes
+- refactor: move auth/user domain to src/domains/auth/ (#2843) (#2851)
+
+**Source:** project-beta-api@0db76750
+
 ## [v0.7.1018] - 2026-02-10
 
 ### Changes
