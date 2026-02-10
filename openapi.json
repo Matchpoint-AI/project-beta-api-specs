@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1017"
+    "version": "0.7.1018"
   },
   "paths": {
     "/api/v2/auth/forgot-password": {
@@ -3268,6 +3268,7 @@
     "/api/v2/content/{content_id}/exports": {
       "post": {
         "tags": [
+          "content",
           "content-exports"
         ],
         "summary": "Create Content Export",
@@ -3321,6 +3322,7 @@
       },
       "get": {
         "tags": [
+          "content",
           "content-exports"
         ],
         "summary": "List Content Exports",

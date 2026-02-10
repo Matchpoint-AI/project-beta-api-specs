@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1018] - 2026-02-10
+
+### Changes
+- refactor: consolidate controllers — extract verify_brand_ownership + mount sub-router (#2842) (#2849)
+
+**Source:** project-beta-api@f578b272
+
 ## [v0.7.1017] - 2026-02-10
 
 ### Changes
