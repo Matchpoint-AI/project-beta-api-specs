@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1017] - 2026-02-10
+
+### Changes
+- refactor: move video, integration, scheduling domains to src/domains/ (#2843) (#2850)
+
+**Source:** project-beta-api@b27f99ed
+
 ## [v0.7.1016] - 2026-02-09
 
 ### Changes
