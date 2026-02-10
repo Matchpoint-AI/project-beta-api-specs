@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1022] - 2026-02-10
+
+### Changes
+- refactor: move brand domain to src/domains/brand/ (#2843) (#2854)
+
+**Source:** project-beta-api@08a63179
+
 ## [v0.7.1021] - 2026-02-10
 
 ### Changes
