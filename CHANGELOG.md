@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1021] - 2026-02-10
+
+### Changes
+- refactor: move ml/learning domain to src/domains/ml/ (#2843) (#2853)
+
+**Source:** project-beta-api@7adec979
+
 ## [v0.7.1020] - 2026-02-10
 
 ### Changes
