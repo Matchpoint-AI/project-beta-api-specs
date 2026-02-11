@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1033] - 2026-02-11
+
+### Changes
+- Merge pull request #2872 from Matchpoint-AI/fix/atomic-counters-race-condition
+
+**Source:** project-beta-api@7ff2752c
+
 ## [v0.7.1032] - 2026-02-11
 
 ### Changes
