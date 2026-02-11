@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1029] - 2026-02-11
+
+### Changes
+- Merge pull request #2867 from Matchpoint-AI/fix/campaign-polling-performance
+
+**Source:** project-beta-api@eb46e11b
+
 ## [v0.7.1028] - 2026-02-11
 
 ### Changes
