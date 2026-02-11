@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1028] - 2026-02-11
+
+### Changes
+- fix(security): add ownership verification to GET post versions (#2859) (#2862)
+
+**Source:** project-beta-api@5a2f623e
+
 ## [v0.7.1027] - 2026-02-11
 
 ### Changes
