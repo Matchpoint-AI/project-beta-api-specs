@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1023] - 2026-02-11
+
+### Changes
+- refactor: move campaign domain to src/domains/campaign/ (#2856)
+
+**Source:** project-beta-api@604119f7
+
 ## [v0.7.1022] - 2026-02-10
 
 ### Changes
