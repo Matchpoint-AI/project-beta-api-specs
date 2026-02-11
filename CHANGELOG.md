@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1027] - 2026-02-11
+
+### Changes
+- fix: validate crawl data before marking as complete (#2864)
+
+**Source:** project-beta-api@96de1d13
+
 ## [v0.7.1026] - 2026-02-11
 
 ### Changes
