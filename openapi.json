@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1031"
+    "version": "0.7.1032"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -475,7 +475,7 @@
           "admin-observability"
         ],
         "summary": "Get Credit Balances",
-        "description": "Check external API credit balances.\n\nReturns cached/estimated balances. Actual balance checks\nrequire external API calls which are done asynchronously.",
+        "description": "Check live external API credit balances.\n\nQueries OpenRouter and Firecrawl APIs concurrently for current\ncredit balances. Compares against configurable warning thresholds.\nReturns partial data with error messages if an API call fails.",
         "operationId": "get_credit_balances_api_v2_admin_observability_credits_get",
         "responses": {
           "200": {
@@ -14409,6 +14409,18 @@
             "description": "Below warning threshold",
             "default": false
           },
+          "firecrawl_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Firecrawl Error",
+            "description": "Error fetching Firecrawl balance"
+          },
           "openrouter_balance": {
             "anyOf": [
               {
@@ -14426,6 +14438,18 @@
             "title": "Openrouter Warning",
             "description": "Below warning threshold",
             "default": false
+          },
+          "openrouter_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Openrouter Error",
+            "description": "Error fetching OpenRouter balance"
           },
           "message": {
             "type": "string",

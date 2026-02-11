@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1032] - 2026-02-11
+
+### Changes
+- feat: implement live credit monitoring (OpenRouter + Firecrawl) (#2870)
+
+**Source:** project-beta-api@12fc0b11
+
 ## [v0.7.1031] - 2026-02-11
 
 ### Changes
