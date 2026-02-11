@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1025"
+    "version": "0.7.1026"
   },
   "paths": {
     "/api/v2/auth/forgot-password": {
@@ -6059,6 +6059,11 @@
         "summary": "Get crawler status by correlation ID",
         "description": "Polling endpoint for frontend to get current crawl progress. Returns the latest pulse for a given correlation ID from Redis. Note: Prefer using /pulses/{correlation_id} for unified access.",
         "operationId": "get_pulse_status_api_v2_crawler_pulses__correlation_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "correlation_id",

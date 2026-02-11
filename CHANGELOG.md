@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1026] - 2026-02-11
+
+### Changes
+- fix(security): add authentication to legacy crawler pulse endpoint (#2858) (#2861)
+
+**Source:** project-beta-api@48ad295e
+
 ## [v0.7.1025] - 2026-02-11
 
 ### Changes
