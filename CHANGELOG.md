@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1025] - 2026-02-11
+
+### Changes
+- fix: filter campaigns by user_id at DB level (#2860) (#2863)
+
+**Source:** project-beta-api@85582301
+
 ## [v0.7.1024] - 2026-02-11
 
 ### Changes
