@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1034] - 2026-02-11
+
+### Changes
+- fix: use experience_prompt as fallback when text/media prompts are empty (#2873)
+
+**Source:** project-beta-api@6ec4c83d
+
 ## [v0.7.1033] - 2026-02-11
 
 ### Changes
