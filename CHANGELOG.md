@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1031] - 2026-02-11
+
+### Changes
+- feat: restore Prometheus metrics for content generation pipeline (#2869)
+
+**Source:** project-beta-api@e625c3c8
+
 ## [v0.7.1030] - 2026-02-11
 
 ### Changes
