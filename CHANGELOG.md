@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1024] - 2026-02-11
+
+### Changes
+- refactor: move content/post domain to src/domains/content/ (#2843) (#2855)
+
+**Source:** project-beta-api@4db4fc02
+
 ## [v0.7.1023] - 2026-02-11
 
 ### Changes

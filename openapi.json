@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1023"
+    "version": "0.7.1024"
   },
   "paths": {
     "/api/v2/auth/forgot-password": {
@@ -3598,7 +3598,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope"
               }
             }
           }
@@ -3674,7 +3674,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope"
               }
             }
           }
@@ -3730,7 +3730,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PulseStatusResponse"
+                  "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PulseStatusResponse"
                 }
               }
             }
@@ -4437,7 +4437,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope"
               }
             }
           }
@@ -6193,7 +6193,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__schemas__content_generator_pubsub__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope"
               }
             }
           }
@@ -19264,6 +19264,89 @@
         "title": "WorkflowStep",
         "description": "Schema for workflow step tracking."
       },
+      "src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/PubSubMessage",
+            "description": "The Pub/Sub message"
+          },
+          "subscription": {
+            "type": "string",
+            "title": "Subscription",
+            "description": "Subscription name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "subscription"
+        ],
+        "title": "PubSubPushEnvelope",
+        "description": "Pub/Sub push subscription envelope format."
+      },
+      "src__domains__content__schemas__content_generator_pubsub__PulseStatusResponse": {
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "step": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step",
+            "description": "Step name"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current status"
+          },
+          "activePostId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activepostid",
+            "description": "Post currently being generated"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp",
+            "description": "ISO-8601 timestamp of last update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "campaignId",
+          "message",
+          "status",
+          "timestamp"
+        ],
+        "title": "PulseStatusResponse",
+        "description": "Response for GET /pulses/{correlation_id} polling endpoint."
+      },
       "src__domains__crawler__schemas__crawler_briefs__PubSubPushEnvelope": {
         "properties": {
           "message": {
@@ -19350,89 +19433,6 @@
         ],
         "title": "PulseStatusResponse",
         "description": "Response for GET /pulses/{correlation_id} polling endpoint.\n\nIssue #2181: Frontend polling endpoint for crawl progress."
-      },
-      "src__schemas__content_generator_pubsub__PubSubPushEnvelope": {
-        "properties": {
-          "message": {
-            "$ref": "#/components/schemas/PubSubMessage",
-            "description": "The Pub/Sub message"
-          },
-          "subscription": {
-            "type": "string",
-            "title": "Subscription",
-            "description": "Subscription name"
-          }
-        },
-        "type": "object",
-        "required": [
-          "message",
-          "subscription"
-        ],
-        "title": "PubSubPushEnvelope",
-        "description": "Pub/Sub push subscription envelope format."
-      },
-      "src__schemas__content_generator_pubsub__PulseStatusResponse": {
-        "properties": {
-          "correlationId": {
-            "type": "string",
-            "title": "Correlationid",
-            "description": "Correlation ID"
-          },
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid",
-            "description": "Campaign ID"
-          },
-          "step": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Step",
-            "description": "Step name"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Human-readable status message"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Current status"
-          },
-          "activePostId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Activepostid",
-            "description": "Post currently being generated"
-          },
-          "timestamp": {
-            "type": "string",
-            "title": "Timestamp",
-            "description": "ISO-8601 timestamp of last update"
-          }
-        },
-        "type": "object",
-        "required": [
-          "correlationId",
-          "campaignId",
-          "message",
-          "status",
-          "timestamp"
-        ],
-        "title": "PulseStatusResponse",
-        "description": "Response for GET /pulses/{correlation_id} polling endpoint."
       }
     },
     "securitySchemes": {
