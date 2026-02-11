@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1030] - 2026-02-11
+
+### Changes
+- feat: Admin portal backend - auth, config, health, observability (#2868)
+
+**Source:** project-beta-api@46fd1f13
+
 ## [v0.7.1029] - 2026-02-11
 
 ### Changes

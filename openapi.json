@@ -3,9 +3,532 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1029"
+    "version": "0.7.1030"
   },
   "paths": {
+    "/api/v2/admin/config": {
+      "get": {
+        "tags": [
+          "admin-config"
+        ],
+        "summary": "List All Config",
+        "description": "List all system configuration entries.",
+        "operationId": "list_all_config_api_v2_admin_config_get",
+        "responses": {
+          "200": {
+            "description": "All config entries returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemConfigListResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/config/categories/{category}": {
+      "get": {
+        "tags": [
+          "admin-config"
+        ],
+        "summary": "List Config By Category",
+        "description": "List system configuration entries by category.",
+        "operationId": "list_config_by_category_api_v2_admin_config_categories__category__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Config category",
+              "title": "Category"
+            },
+            "description": "Config category"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Config entries for category returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemConfigListResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/admin/config/{key}": {
+      "put": {
+        "tags": [
+          "admin-config"
+        ],
+        "summary": "Update Config",
+        "description": "Update a system configuration value.",
+        "operationId": "update_config_api_v2_admin_config__key__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Config key to update",
+              "title": "Key"
+            },
+            "description": "Config key to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemConfigUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Config updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemConfigResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/admin/guardrails/brands/{brand_id}": {
+      "get": {
+        "tags": [
+          "admin-guardrails"
+        ],
+        "summary": "Get Brand Guardrails",
+        "description": "Get all guardrails for a brand (admin view).",
+        "operationId": "get_brand_guardrails_api_v2_admin_guardrails_brands__brand_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID",
+              "title": "Brand Id"
+            },
+            "description": "Brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guardrails for brand returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandGuardrailListResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-guardrails"
+        ],
+        "summary": "Create Guardrail",
+        "description": "Create a new guardrail for a brand.",
+        "operationId": "create_guardrail_api_v2_admin_guardrails_brands__brand_id__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID",
+              "title": "Brand Id"
+            },
+            "description": "Brand ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandGuardrailBase"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Guardrail created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandGuardrailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/admin/guardrails/{guardrail_id}": {
+      "put": {
+        "tags": [
+          "admin-guardrails"
+        ],
+        "summary": "Update Guardrail",
+        "description": "Update a guardrail.",
+        "operationId": "update_guardrail_api_v2_admin_guardrails__guardrail_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "guardrail_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Guardrail ID",
+              "title": "Guardrail Id"
+            },
+            "description": "Guardrail ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandGuardrailUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Guardrail updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandGuardrailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "Guardrail not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admin-guardrails"
+        ],
+        "summary": "Delete Guardrail",
+        "description": "Delete a guardrail.",
+        "operationId": "delete_guardrail_api_v2_admin_guardrails__guardrail_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "guardrail_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Guardrail ID",
+              "title": "Guardrail Id"
+            },
+            "description": "Guardrail ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Guardrail deleted"
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "Guardrail not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/admin/health/overview": {
+      "get": {
+        "tags": [
+          "admin-health"
+        ],
+        "summary": "Get Health Overview",
+        "description": "Get system health overview with database metrics.",
+        "operationId": "get_health_overview_api_v2_admin_health_overview_get",
+        "responses": {
+          "200": {
+            "description": "Health overview returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthOverviewResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/health/pipeline": {
+      "get": {
+        "tags": [
+          "admin-health"
+        ],
+        "summary": "Get Pipeline Health",
+        "description": "Get recent content generation pipeline health.",
+        "operationId": "get_pipeline_health_api_v2_admin_health_pipeline_get",
+        "responses": {
+          "200": {
+            "description": "Pipeline health returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PipelineHealthResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/observability/generation/stats": {
+      "get": {
+        "tags": [
+          "admin-observability"
+        ],
+        "summary": "Get Generation Stats",
+        "description": "Get content generation success/failure statistics.",
+        "operationId": "get_generation_stats_api_v2_admin_observability_generation_stats_get",
+        "responses": {
+          "200": {
+            "description": "Generation statistics returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerationStatsResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/observability/credits": {
+      "get": {
+        "tags": [
+          "admin-observability"
+        ],
+        "summary": "Get Credit Balances",
+        "description": "Check external API credit balances.\n\nReturns cached/estimated balances. Actual balance checks\nrequire external API calls which are done asynchronously.",
+        "operationId": "get_credit_balances_api_v2_admin_observability_credits_get",
+        "responses": {
+          "200": {
+            "description": "Credit balances returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditBalanceResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/prompts/ecosystem": {
+      "get": {
+        "tags": [
+          "admin-prompts"
+        ],
+        "summary": "Get Prompts Ecosystem",
+        "description": "Get catalog of all prompts used across the platform.\n\nReturns static metadata about each prompt including which service\nowns it, what it does, and where it's located. Phase 3 will add\nedit capability for prompts marked as editable.",
+        "operationId": "get_prompts_ecosystem_api_v2_admin_prompts_ecosystem_get",
+        "responses": {
+          "200": {
+            "description": "Prompts ecosystem catalog returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromptsEcosystemResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/api/v2/auth/forgot-password": {
       "post": {
         "tags": [
@@ -8634,6 +9157,202 @@
         "title": "BrandFileUploadResponse",
         "description": "Response schema for brand file upload with LLM extraction."
       },
+      "BrandGuardrailBase": {
+        "properties": {
+          "guardrail_type": {
+            "type": "string",
+            "title": "Guardrail Type",
+            "description": "Type of guardrail: approved, avoid, negative_prompt",
+            "example": "approved"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Category: scenes, subjects, keywords, claims",
+            "example": "scenes"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "The guardrail value or text",
+            "example": "outdoor settings"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Reason for this guardrail",
+            "example": "Brand focuses on outdoor lifestyle"
+          }
+        },
+        "type": "object",
+        "required": [
+          "guardrail_type",
+          "value"
+        ],
+        "title": "BrandGuardrailBase",
+        "description": "Base schema for brand guardrails."
+      },
+      "BrandGuardrailListResponse": {
+        "properties": {
+          "guardrails": {
+            "items": {
+              "$ref": "#/components/schemas/BrandGuardrailResponse"
+            },
+            "type": "array",
+            "title": "Guardrails",
+            "description": "List of brand guardrails"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of guardrails"
+          }
+        },
+        "type": "object",
+        "required": [
+          "guardrails",
+          "total"
+        ],
+        "title": "BrandGuardrailListResponse",
+        "description": "Schema for list of brand guardrails."
+      },
+      "BrandGuardrailResponse": {
+        "properties": {
+          "guardrail_type": {
+            "type": "string",
+            "title": "Guardrail Type",
+            "description": "Type of guardrail: approved, avoid, negative_prompt",
+            "example": "approved"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Category: scenes, subjects, keywords, claims",
+            "example": "scenes"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "The guardrail value or text",
+            "example": "outdoor settings"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Reason for this guardrail",
+            "example": "Brand focuses on outdoor lifestyle"
+          },
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Guardrail ID"
+          },
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id",
+            "description": "Brand ID this guardrail belongs to"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Creation timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "guardrail_type",
+          "value",
+          "id",
+          "brand_id",
+          "created_at"
+        ],
+        "title": "BrandGuardrailResponse",
+        "description": "Schema for brand guardrail responses."
+      },
+      "BrandGuardrailUpdate": {
+        "properties": {
+          "guardrail_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Guardrail Type",
+            "description": "Type of guardrail: approved, avoid, negative_prompt"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Category: scenes, subjects, keywords, claims"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value",
+            "description": "The guardrail value or text"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Reason for this guardrail"
+          }
+        },
+        "type": "object",
+        "title": "BrandGuardrailUpdate",
+        "description": "Schema for updating a brand guardrail."
+      },
       "BrandKnowledgeBrandSummaryResponse": {
         "properties": {
           "brandId": {
@@ -11215,6 +11934,25 @@
         "title": "CampaignStatus",
         "description": "Campaign status enumeration."
       },
+      "CampaignStatusCount": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "count"
+        ],
+        "title": "CampaignStatusCount",
+        "description": "Campaign count by status."
+      },
       "CampaignType": {
         "type": "string",
         "enum": [
@@ -13651,6 +14389,55 @@
         "title": "CreateVersionResponse",
         "description": "Response when version request is accepted (202 Accepted)."
       },
+      "CreditBalanceResponse": {
+        "properties": {
+          "firecrawl_balance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Firecrawl Balance",
+            "description": "Firecrawl credit balance"
+          },
+          "firecrawl_warning": {
+            "type": "boolean",
+            "title": "Firecrawl Warning",
+            "description": "Below warning threshold",
+            "default": false
+          },
+          "openrouter_balance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Openrouter Balance",
+            "description": "OpenRouter credit balance"
+          },
+          "openrouter_warning": {
+            "type": "boolean",
+            "title": "Openrouter Warning",
+            "description": "Below warning threshold",
+            "default": false
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Status message",
+            "default": "Credit balance check requires external API calls. Values shown are from last known state."
+          }
+        },
+        "type": "object",
+        "title": "CreditBalanceResponse",
+        "description": "Response schema for external API credit balances."
+      },
       "DayContent": {
         "properties": {
           "dayNumber": {
@@ -14201,6 +14988,37 @@
         "title": "GeneratedContent",
         "description": "Schema for generated content with nested structure."
       },
+      "GenerationStatsResponse": {
+        "properties": {
+          "total_generations": {
+            "type": "integer",
+            "title": "Total Generations",
+            "description": "Total content generations",
+            "default": 0
+          },
+          "successful": {
+            "type": "integer",
+            "title": "Successful",
+            "description": "Successful generations",
+            "default": 0
+          },
+          "failed": {
+            "type": "integer",
+            "title": "Failed",
+            "description": "Failed generations",
+            "default": 0
+          },
+          "success_rate": {
+            "type": "number",
+            "title": "Success Rate",
+            "description": "Success rate percentage",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "title": "GenerationStatsResponse",
+        "description": "Response schema for generation statistics."
+      },
       "GenerationStatus": {
         "type": "string",
         "enum": [
@@ -14257,6 +15075,65 @@
         ],
         "title": "HashtagDensity",
         "description": "Hashtag density options for captions.\n\nControls how many hashtags are included in the caption.\n- NONE: No hashtags\n- LIGHT: 1-3 hashtags\n- MODERATE: 4-8 hashtags\n- HEAVY: 9+ hashtags"
+      },
+      "HealthOverviewResponse": {
+        "properties": {
+          "total_users": {
+            "type": "integer",
+            "title": "Total Users",
+            "description": "Total registered users"
+          },
+          "active_users_7d": {
+            "type": "integer",
+            "title": "Active Users 7D",
+            "description": "Users active in last 7 days"
+          },
+          "total_brands": {
+            "type": "integer",
+            "title": "Total Brands",
+            "description": "Total brands"
+          },
+          "total_campaigns": {
+            "type": "integer",
+            "title": "Total Campaigns",
+            "description": "Total campaigns"
+          },
+          "total_posts": {
+            "type": "integer",
+            "title": "Total Posts",
+            "description": "Total posts"
+          },
+          "campaigns_by_status": {
+            "items": {
+              "$ref": "#/components/schemas/CampaignStatusCount"
+            },
+            "type": "array",
+            "title": "Campaigns By Status",
+            "description": "Campaign counts by status"
+          },
+          "generations_today_success": {
+            "type": "integer",
+            "title": "Generations Today Success",
+            "description": "Successful generations today",
+            "default": 0
+          },
+          "generations_today_failed": {
+            "type": "integer",
+            "title": "Generations Today Failed",
+            "description": "Failed generations today",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_users",
+          "active_users_7d",
+          "total_brands",
+          "total_campaigns",
+          "total_posts"
+        ],
+        "title": "HealthOverviewResponse",
+        "description": "Response schema for admin health overview."
       },
       "HookStyle": {
         "type": "string",
@@ -15154,6 +16031,68 @@
         "title": "PasswordResetUpdateResponse",
         "description": "Schema for password reset completion response (RMM L2 compliant).\n\nReturns success message after password is reset."
       },
+      "PipelineHealthResponse": {
+        "properties": {
+          "recent_jobs": {
+            "items": {
+              "$ref": "#/components/schemas/PipelineJobSummary"
+            },
+            "type": "array",
+            "title": "Recent Jobs",
+            "description": "Recent content generation jobs"
+          },
+          "total_recent": {
+            "type": "integer",
+            "title": "Total Recent",
+            "description": "Total recent jobs count",
+            "default": 0
+          },
+          "failed_recent": {
+            "type": "integer",
+            "title": "Failed Recent",
+            "description": "Failed jobs in recent window",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "PipelineHealthResponse",
+        "description": "Response schema for pipeline health."
+      },
+      "PipelineJobSummary": {
+        "properties": {
+          "correlation_id": {
+            "type": "string",
+            "title": "Correlation Id"
+          },
+          "campaign_id": {
+            "type": "integer",
+            "title": "Campaign Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlation_id",
+          "campaign_id",
+          "status"
+        ],
+        "title": "PipelineJobSummary",
+        "description": "Summary of a recent pipeline job."
+      },
       "PlanGenerationAcceptedResponse": {
         "properties": {
           "message": {
@@ -15981,6 +16920,45 @@
           "version": "1.0.0"
         }
       },
+      "PromptEntry": {
+        "properties": {
+          "service_name": {
+            "type": "string",
+            "title": "Service Name",
+            "description": "Service that owns this prompt"
+          },
+          "prompt_name": {
+            "type": "string",
+            "title": "Prompt Name",
+            "description": "Human-readable prompt name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "What this prompt does"
+          },
+          "location": {
+            "type": "string",
+            "title": "Location",
+            "description": "File or config reference"
+          },
+          "editable": {
+            "type": "boolean",
+            "title": "Editable",
+            "description": "Whether admins can edit this prompt (Phase 3)",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "service_name",
+          "prompt_name",
+          "description",
+          "location"
+        ],
+        "title": "PromptEntry",
+        "description": "A single prompt in the ecosystem catalog."
+      },
       "PromptResponse": {
         "properties": {
           "id": {
@@ -16044,6 +17022,30 @@
           ],
           "version": "1.0.0"
         }
+      },
+      "PromptsEcosystemResponse": {
+        "properties": {
+          "prompts": {
+            "items": {
+              "$ref": "#/components/schemas/PromptEntry"
+            },
+            "type": "array",
+            "title": "Prompts",
+            "description": "All prompts in the platform"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total prompt count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "prompts",
+          "total"
+        ],
+        "title": "PromptsEcosystemResponse",
+        "description": "Response schema for the prompts ecosystem catalog."
       },
       "PromptsListResponse": {
         "properties": {
@@ -17791,6 +18793,115 @@
         ],
         "title": "StoryArc",
         "description": "Narrative structure options for captions.\n\nDefines the overall narrative flow of the caption.\n- PROBLEM_SOLUTION: Present problem, offer solution\n- BEFORE_AFTER: Transformation narrative\n- LIST_FORMAT: Numbered or bulleted points\n- TESTIMONIAL: Social proof/customer story\n- EDUCATIONAL: Teaching/informative structure"
+      },
+      "SystemConfigListResponse": {
+        "properties": {
+          "configs": {
+            "items": {
+              "$ref": "#/components/schemas/SystemConfigResponse"
+            },
+            "type": "array",
+            "title": "Configs",
+            "description": "List of config entries"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "configs",
+          "total"
+        ],
+        "title": "SystemConfigListResponse",
+        "description": "Response schema for list of config entries."
+      },
+      "SystemConfigResponse": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key",
+            "description": "Config key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Config value"
+          },
+          "value_type": {
+            "type": "string",
+            "title": "Value Type",
+            "description": "Value type: string, integer, boolean, json"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Config category"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Human-readable description"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated By",
+            "description": "User ID who last updated"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "Last update timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "value",
+          "value_type",
+          "category"
+        ],
+        "title": "SystemConfigResponse",
+        "description": "Response schema for a system config entry."
+      },
+      "SystemConfigUpdateRequest": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "New value for the config key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "title": "SystemConfigUpdateRequest",
+        "description": "Request schema for updating a config value."
       },
       "TextPosition": {
         "type": "string",
