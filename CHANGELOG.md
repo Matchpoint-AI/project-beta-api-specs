@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1055] - 2026-02-15
+
+### Changes
+- fix: emit POST_FAILED for individual failures, reserve WORKFLOW_FAILED for threshold (#2899) (#2960)
+
+**Source:** project-beta-api@be4a5458
+
 ## [v0.7.1054] - 2026-02-15
 
 ### Changes
