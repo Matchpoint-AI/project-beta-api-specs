@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1043] - 2026-02-15
+
+### Changes
+- fix: clean up campaigns when deleting brand (#2880) (#2934)
+
+**Source:** project-beta-api@453f8ec5
+
 ## [v0.7.1042] - 2026-02-15
 
 ### Changes
