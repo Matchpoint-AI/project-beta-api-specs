@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1073] - 2026-02-15
+
+### Changes
+- fix: migrate datetime.utcnow() to timezone-aware datetime.now(UTC) (#2981) (#2991)
+
+**Source:** project-beta-api@1606c7b4
+
 ## [v0.7.1072] - 2026-02-15
 
 ### Changes
