@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1048] - 2026-02-15
+
+### Changes
+- chore: regenerate stale openapi.json (#2955)
+
+**Source:** project-beta-api@f2cabf3c
+
 ## [v0.7.1047] - 2026-02-15
 
 ### Changes
