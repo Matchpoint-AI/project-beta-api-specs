@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1063] - 2026-02-15
+
+### Changes
+- fix: migrate datetime.utcnow() and fix campaign statistics calculation (#2885, #2878) (#2990)
+
+**Source:** project-beta-api@b4dce645
+
 ## [v0.7.1062] - 2026-02-15
 
 ### Changes
