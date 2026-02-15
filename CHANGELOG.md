@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1046] - 2026-02-15
+
+### Changes
+- fix: clean up old placeholder posts before retrigger (#2882) (#2951)
+
+**Source:** project-beta-api@d7238d9a
+
 ## [v0.7.1045] - 2026-02-15
 
 ### Changes
