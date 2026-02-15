@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1049] - 2026-02-15
+
+### Changes
+- fix: add ownership verification to ML and monitoring controllers (#2948) (#2956)
+
+**Source:** project-beta-api@0b6b0eda
+
 ## [v0.7.1048] - 2026-02-15
 
 ### Changes
