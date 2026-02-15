@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1040] - 2026-02-15
+
+### Changes
+- fix: return 400 when brand not found during campaign creation (#2892) (#2919)
+
+**Source:** project-beta-api@aeeff1ac
+
 ## [v0.7.1039] - 2026-02-15
 
 ### Changes

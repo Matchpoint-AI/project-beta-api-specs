@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1039"
+    "version": "0.7.1040"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -1852,7 +1852,7 @@
             }
           },
           "400": {
-            "description": "Invalid request data"
+            "description": "Invalid request data or brand not found for content generation"
           },
           "401": {
             "description": "Unauthorized - invalid or missing authentication token"
