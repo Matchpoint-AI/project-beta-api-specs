@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1051] - 2026-02-15
+
+### Changes
+- security: rename _decode_jwt_payload to _decode_jwt_payload_unverified (#2959)
+
+**Source:** project-beta-api@3ee8041c
+
 ## [v0.7.1050] - 2026-02-15
 
 ### Changes
