@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1036"
+    "version": "0.7.1037"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -4234,6 +4234,11 @@
         "summary": "Get content generation status by correlation ID",
         "description": "Polling endpoint for frontend to get current content generation progress. Returns the latest pulse for a given correlation ID from Redis. Note: Prefer using /pulses/{correlation_id} for unified access (Issue #2428).",
         "operationId": "get_content_pulse_status_api_v2_content_pulses__correlation_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "correlation_id",

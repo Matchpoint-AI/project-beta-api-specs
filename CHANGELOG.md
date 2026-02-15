@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1037] - 2026-02-15
+
+### Changes
+- fix: add authentication to content pulses endpoint (#2877) (#2918)
+
+**Source:** project-beta-api@dd65bb5c
+
 ## [v0.7.1036] - 2026-02-15
 
 ### Changes
