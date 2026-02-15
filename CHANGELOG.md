@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1047] - 2026-02-15
+
+### Changes
+- fix: sanitize error_type in production error responses (#2904) (#2954)
+
+**Source:** project-beta-api@3af71abe
+
 ## [v0.7.1046] - 2026-02-15
 
 ### Changes
