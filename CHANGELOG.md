@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1064] - 2026-02-15
+
+### Changes
+- fix: add Redis idempotency for Pub/Sub content completion tracking (#2898) (#2992)
+
+**Source:** project-beta-api@306ad5cf
+
 ## [v0.7.1063] - 2026-02-15
 
 ### Changes
