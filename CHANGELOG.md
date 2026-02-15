@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1042] - 2026-02-15
+
+### Changes
+- fix: publish brand crawl synchronously instead of BackgroundTask (#2896) (#2922)
+
+**Source:** project-beta-api@53b0df06
+
 ## [v0.7.1041] - 2026-02-15
 
 ### Changes
