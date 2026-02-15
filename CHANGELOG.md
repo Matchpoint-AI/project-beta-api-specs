@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1057] - 2026-02-15
+
+### Changes
+- fix: update brand crawl result handler for single output message (#2591) (#2949)
+
+**Source:** project-beta-api@62497eaa
+
 ## [v0.7.1056] - 2026-02-15
 
 ### Changes

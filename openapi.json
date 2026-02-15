@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1056"
+    "version": "0.7.1057"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -1435,7 +1435,7 @@
           "brand-crawl-output"
         ],
         "summary": "Receive brand crawl output from single topic",
-        "description": "Pub/Sub push endpoint for receiving brand crawl results from the simplified single output topic (brand-crawler-{env}-output). Updates brand record with brand_assets and sets knowledge status. Issue #184: Replaces dual CORE/DEEP topic system.",
+        "description": "Pub/Sub push endpoint for receiving brand crawl results from the agentic-brand-crawler-{env}-output topic. Receives a single consolidated message with complete brand_assets. Issue #2591: Single output message replaces CORE/DEEP handlers.",
         "operationId": "receive_brand_crawl_output_api_v2_webhooks_brand_crawl_output_post",
         "parameters": [
           {
