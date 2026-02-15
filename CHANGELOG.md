@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1071] - 2026-02-15
+
+### Changes
+- chore: add pytest markers to split unit and integration tests (#3026) (#3033)
+
+**Source:** project-beta-api@6c7ecdf3
+
 ## [v0.7.1070] - 2026-02-15
 
 ### Changes
