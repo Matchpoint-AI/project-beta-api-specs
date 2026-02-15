@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1056] - 2026-02-15
+
+### Changes
+- fix: add stale video job detection and cleanup (#2905) (#2945)
+
+**Source:** project-beta-api@e4663c3e
+
 ## [v0.7.1055] - 2026-02-15
 
 ### Changes

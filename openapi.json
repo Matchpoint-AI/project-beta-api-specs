@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1055"
+    "version": "0.7.1056"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -8227,6 +8227,40 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/video-jobs/cleanup": {
+      "post": {
+        "tags": [
+          "video-generation"
+        ],
+        "summary": "Cleanup Stale Video Jobs",
+        "description": "Clean up stale video generation jobs.\n\nFinds video generation jobs stuck in 'processing' or 'queued' status\nbeyond the configured timeout and transitions them to 'failed'.\n\nIssue #2905: Endpoint for stale video job cleanup.\n\nThis endpoint can be called by:\n- Cloud Scheduler for periodic cleanup\n- Admin users for manual cleanup\n- Health check systems\n\nArgs:\n    firebase_user: Authenticated user from JWT token\n    cleanup_service: Service for stale job cleanup\n\nReturns:\n    Dict with cleaned_count and status\n\nRaises:\n    HTTPException 401: If not authenticated\n    HTTPException 500: If cleanup fails",
+        "operationId": "cleanup_stale_video_jobs_api_v2_video_jobs_cleanup_post",
+        "responses": {
+          "200": {
+            "description": "Stale video job cleanup completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Cleanup Stale Video Jobs Api V2 Video Jobs Cleanup Post"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "500": {
+            "description": "Cleanup failed"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     }
   },
