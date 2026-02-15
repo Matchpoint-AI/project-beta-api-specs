@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1062] - 2026-02-15
+
+### Changes
+- fix: correct malformed ISO 8601 timestamp in PostService (#2886) (#2989)
+
+**Source:** project-beta-api@9a33bc3e
+
 ## [v0.7.1061] - 2026-02-15
 
 ### Changes
