@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1074] - 2026-02-15
+
+### Changes
+- fix: extract shared CORS origins config to eliminate drift (#2970) (#2988)
+
+**Source:** project-beta-api@cfad4754
+
 ## [v0.7.1073] - 2026-02-15
 
 ### Changes
