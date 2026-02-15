@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1058] - 2026-02-15
+
+### Changes
+- security: remove API subdomains from CORS allowed origins (#2961)
+
+**Source:** project-beta-api@e8f6d0d7
+
 ## [v0.7.1057] - 2026-02-15
 
 ### Changes

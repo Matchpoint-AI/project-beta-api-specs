@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1057"
+    "version": "0.7.1058"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -424,6 +424,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PipelineHealthResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/health/processes/stuck": {
+      "get": {
+        "tags": [
+          "admin-health"
+        ],
+        "summary": "Get Stuck Processes",
+        "description": "Detect and return all stuck processes across pipelines.\n\nIssue #2937: Checks for stalled brand crawls, content generation,\nvideo jobs, and quality gate revision loops. Thresholds are\nconfigurable via environment variables.",
+        "operationId": "get_stuck_processes_api_v2_admin_health_processes_stuck_get",
+        "responses": {
+          "200": {
+            "description": "Stuck process report returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StuckProcessesResponse"
                 }
               }
             }
@@ -19000,6 +19030,131 @@
         ],
         "title": "StoryArc",
         "description": "Narrative structure options for captions.\n\nDefines the overall narrative flow of the caption.\n- PROBLEM_SOLUTION: Present problem, offer solution\n- BEFORE_AFTER: Transformation narrative\n- LIST_FORMAT: Numbered or bulleted points\n- TESTIMONIAL: Social proof/customer story\n- EDUCATIONAL: Teaching/informative structure"
+      },
+      "StuckProcessCategorySummary": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "description": "Number of stuck processes in this category"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StuckProcessItem"
+            },
+            "type": "array",
+            "title": "Items",
+            "description": "Stuck process details"
+          }
+        },
+        "type": "object",
+        "required": [
+          "count"
+        ],
+        "title": "StuckProcessCategorySummary",
+        "description": "Summary for a single category of stuck processes."
+      },
+      "StuckProcessItem": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Process category (brand_crawl, content_generation, video_job, quality_gate_loop)"
+          },
+          "entity_id": {
+            "type": "string",
+            "title": "Entity Id",
+            "description": "ID of the stuck entity (brand ID, content ID, job ID, or post ID)"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Human-readable description of the stuck state"
+          },
+          "stuck_since": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stuck Since",
+            "description": "ISO-8601 timestamp when the process was last updated"
+          },
+          "duration_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Seconds",
+            "description": "How long the process has been stuck (seconds)"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Additional context-specific metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "entity_id",
+          "description"
+        ],
+        "title": "StuckProcessItem",
+        "description": "A single stuck process entry."
+      },
+      "StuckProcessesResponse": {
+        "properties": {
+          "checked_at": {
+            "type": "string",
+            "title": "Checked At",
+            "description": "ISO-8601 timestamp of when the check was performed"
+          },
+          "total_stuck": {
+            "type": "integer",
+            "title": "Total Stuck",
+            "description": "Total number of stuck processes across all categories"
+          },
+          "brand_crawls": {
+            "$ref": "#/components/schemas/StuckProcessCategorySummary",
+            "description": "Stuck brand crawl processes"
+          },
+          "content_generation": {
+            "$ref": "#/components/schemas/StuckProcessCategorySummary",
+            "description": "Stuck content generation processes"
+          },
+          "video_jobs": {
+            "$ref": "#/components/schemas/StuckProcessCategorySummary",
+            "description": "Stuck video generation jobs"
+          },
+          "quality_gate_loops": {
+            "$ref": "#/components/schemas/StuckProcessCategorySummary",
+            "description": "Posts stuck in quality gate revision loops"
+          },
+          "thresholds": {
+            "type": "object",
+            "title": "Thresholds",
+            "description": "Active threshold configuration used for detection"
+          }
+        },
+        "type": "object",
+        "required": [
+          "checked_at",
+          "total_stuck",
+          "brand_crawls",
+          "content_generation",
+          "video_jobs",
+          "quality_gate_loops"
+        ],
+        "title": "StuckProcessesResponse",
+        "description": "Response schema for GET /admin/health/processes/stuck."
       },
       "SystemConfigListResponse": {
         "properties": {
