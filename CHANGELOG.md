@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1072] - 2026-02-15
+
+### Changes
+- fix: replace hardcoded contextual bandit defaults with real data (#2889) (#2993)
+
+**Source:** project-beta-api@e2a48311
+
 ## [v0.7.1071] - 2026-02-15
 
 ### Changes
