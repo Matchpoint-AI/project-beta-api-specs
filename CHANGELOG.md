@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1069] - 2026-02-15
+
+### Changes
+- refactor: consolidate ownership checks and user_id extraction (#2926, #2927) (#2964)
+
+**Source:** project-beta-api@9a501af8
+
 ## [v0.7.1068] - 2026-02-15
 
 ### Changes
