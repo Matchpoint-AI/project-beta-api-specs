@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1039] - 2026-02-15
+
+### Changes
+- fix: propagate database errors in CampaignService instead of silently returning empty results (#2881) (#2920)
+
+**Source:** project-beta-api@12b88114
+
 ## [v0.7.1038] - 2026-02-15
 
 ### Changes
