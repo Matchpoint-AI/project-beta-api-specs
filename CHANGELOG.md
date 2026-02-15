@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1052] - 2026-02-15
+
+### Changes
+- fix: standardize OpenAPI tags and mask email in verify_email logs (#2957)
+
+**Source:** project-beta-api@b2c8f658
+
 ## [v0.7.1051] - 2026-02-15
 
 ### Changes
