@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1044] - 2026-02-15
+
+### Changes
+- fix: fail-closed Pub/Sub auth when no settings configured (#2894) (#2933)
+
+**Source:** project-beta-api@404cfcf9
+
 ## [v0.7.1043] - 2026-02-15
 
 ### Changes
