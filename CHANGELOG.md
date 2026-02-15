@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1065] - 2026-02-15
+
+### Changes
+- fix: add security headers middleware for defense in depth (#2314) (#2994)
+
+**Source:** project-beta-api@41c63189
+
 ## [v0.7.1064] - 2026-02-15
 
 ### Changes
