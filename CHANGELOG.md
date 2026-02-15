@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1045] - 2026-02-15
+
+### Changes
+- fix: remove duplicate designer_post_prompt routing (#2887) (#2944)
+
+**Source:** project-beta-api@8ee2e7e5
+
 ## [v0.7.1044] - 2026-02-15
 
 ### Changes
