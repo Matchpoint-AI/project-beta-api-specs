@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1038] - 2026-02-15
+
+### Changes
+- fix: hide AI prompt fields from public PostResponse schema (#2890) (#2914)
+
+**Source:** project-beta-api@a74da0d1
+
 ## [v0.7.1037] - 2026-02-15
 
 ### Changes

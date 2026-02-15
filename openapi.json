@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1037"
+    "version": "0.7.1038"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -3593,7 +3593,7 @@
           "content"
         ],
         "summary": "Get Campaign Content",
-        "description": "Get content for a campaign.\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\nIssue #2137: Removed self-healing retry logic (moved to post-generator).\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.\n\nStatus codes:\n- 200: Content exists and is returned\n- 204: Campaign exists but content not generated yet (poll again)\n- 401: Not authenticated\n- 403: Not authorized to access this campaign\n- 404: Campaign does not exist",
+        "description": "Get content for a campaign.\n\nIssue #1737: Added authorization check to prevent IDOR vulnerability.\nIssue #2137: Removed self-healing retry logic (moved to post-generator).\nIssue #2890: Returns GeneratedContentPublic to hide AI prompt fields.\n\nThis is the RMM Level 2 compliant endpoint for retrieving campaign content.\nReturns the full content structure with weeks, days, and posts.\nAI prompt fields (image_prompt, experience_prompt) are excluded.\n\nStatus codes:\n- 200: Content exists and is returned\n- 204: Campaign exists but content not generated yet (poll again)\n- 401: Not authenticated\n- 403: Not authorized to access this campaign\n- 404: Campaign does not exist",
         "operationId": "get_campaign_content_api_v2_campaigns__campaign_id__content_get",
         "security": [
           {
@@ -3617,7 +3617,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GeneratedContent"
+                  "$ref": "#/components/schemas/GeneratedContentPublic"
                 }
               }
             }
@@ -14926,7 +14926,7 @@
         "title": "FeedbackProcessingResponse",
         "description": "Response schema for single post engagement processing."
       },
-      "GeneratedContent": {
+      "GeneratedContentPublic": {
         "properties": {
           "id": {
             "type": "integer",
@@ -15014,8 +15014,8 @@
           "published",
           "totalPosts"
         ],
-        "title": "GeneratedContent",
-        "description": "Schema for generated content with nested structure."
+        "title": "GeneratedContentPublic",
+        "description": "Public schema for generated content (Issue #2890).\n\nExcludes AI-internal prompt fields (image_prompt, experience_prompt)\nfrom nested PostSchema objects in user-facing API responses.\nStakeholder requirement: AI prompts must be hidden from users.\n\nAdmin endpoints retain the full GeneratedContent with prompt fields."
       },
       "GenerationStatsResponse": {
         "properties": {
