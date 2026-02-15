@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1060] - 2026-02-15
+
+### Changes
+- refactor: deprecate content-level generation status endpoint (#2965)
+
+**Source:** project-beta-api@8ae695e3
+
 ## [v0.7.1059] - 2026-02-15
 
 ### Changes
