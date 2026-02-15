@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1053"
+    "version": "0.7.1054"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -1849,6 +1849,11 @@
         "summary": "Get crawl status by correlation_id",
         "description": "Query the status of a brand crawl by correlation_id. Returns aggregated status derived from received briefs (CORE/DEEP), allowing frontend to track crawl progress in real-time.",
         "operationId": "get_brief_status_api_v2_briefs__correlation_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "correlation_id",
@@ -1870,6 +1875,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "No briefs found for correlation_id"
@@ -7008,8 +7016,13 @@
           "scheduled-posts"
         ],
         "summary": "Get Scheduled Post",
-        "description": "Get a scheduled post by its unique post ID.\n\nArgs:\n    post_id: Unique post identifier\n\nReturns:\n    ScheduledPostResponse with post details\n\nRaises:\n    404: If post not found",
+        "description": "Get a scheduled post by its unique post ID.\n\nIssue #2946: Requires authentication to prevent information disclosure.\n\nArgs:\n    post_id: Unique post identifier\n    firebase_user: Authenticated user from JWT (Issue #2946)\n\nReturns:\n    ScheduledPostResponse with post details\n\nRaises:\n    401: If not authenticated\n    404: If post not found",
         "operationId": "get_scheduled_post_api_v2_scheduled_posts__post_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "post_id",
@@ -7033,6 +7046,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Scheduled post not found"
@@ -7121,8 +7137,13 @@
           "scheduled-posts"
         ],
         "summary": "Update Scheduled Post Status",
-        "description": "Update the status of a scheduled post.\n\nThis endpoint is primarily used by the campaign-publisher worker\nto update status after publishing attempts.\n\nArgs:\n    post_id: Unique post identifier\n    request: Status update with optional error message and Instagram post ID\n\nReturns:\n    Updated ScheduledPostResponse\n\nRaises:\n    404: If post not found",
+        "description": "Update the status of a scheduled post.\n\nThis endpoint is primarily used by the campaign-publisher worker\nto update status after publishing attempts.\n\nIssue #2946: Requires authentication to prevent unauthenticated status updates.\n\nArgs:\n    post_id: Unique post identifier\n    request: Status update with optional error message and Instagram post ID\n    firebase_user: Authenticated user from JWT (Issue #2946)\n\nReturns:\n    Updated ScheduledPostResponse\n\nRaises:\n    401: If not authenticated\n    404: If post not found",
         "operationId": "update_scheduled_post_status_api_v2_scheduled_posts__post_id__status_patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "post_id",
@@ -7156,6 +7177,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Scheduled post not found"

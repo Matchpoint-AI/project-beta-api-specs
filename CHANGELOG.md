@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1054] - 2026-02-15
+
+### Changes
+- fix: add missing authentication to scheduled post and briefs endpoints (#2946, #2947) (#2953)
+
+**Source:** project-beta-api@e8129ead
+
 ## [v0.7.1053] - 2026-02-15
 
 ### Changes
