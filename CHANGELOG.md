@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1068] - 2026-02-15
+
+### Changes
+- perf: add selectinload to campaign and brand list queries (#3023) (#3032)
+
+**Source:** project-beta-api@b42c39bc
+
 ## [v0.7.1067] - 2026-02-15
 
 ### Changes
