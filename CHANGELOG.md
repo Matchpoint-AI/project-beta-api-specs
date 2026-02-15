@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1050] - 2026-02-15
+
+### Changes
+- feat: add POST /brands/{brand_id}/crawls re-crawl endpoint (#2935) (#2950)
+
+**Source:** project-beta-api@9b50bae1
+
 ## [v0.7.1049] - 2026-02-15
 
 ### Changes
