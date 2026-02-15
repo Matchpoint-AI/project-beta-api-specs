@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1067] - 2026-02-15
+
+### Changes
+- fix: align PostSchema response fields with frontend Post type (#3027) (#3030)
+
+**Source:** project-beta-api@0771b674
+
 ## [v0.7.1066] - 2026-02-15
 
 ### Changes

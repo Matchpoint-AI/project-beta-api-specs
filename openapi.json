@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1066"
+    "version": "0.7.1067"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -16947,6 +16947,30 @@
             ],
             "title": "Modelused",
             "description": "Image generation model used (e.g., 'fal-ai/nano-banana-pro')"
+          },
+          "platform": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Platform",
+            "description": "Target social media platform (e.g., 'instagram', 'linkedin', 'twitter')"
+          },
+          "postNumber": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postnumber",
+            "description": "1-based post index within a day (maps to frontend postIndex)"
           }
         },
         "type": "object",
