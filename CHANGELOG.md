@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1070] - 2026-02-15
+
+### Changes
+- perf: convert API Dockerfile to multi-stage build (#3210) (#3034)
+
+**Source:** project-beta-api@5757da69
+
 ## [v0.7.1069] - 2026-02-15
 
 ### Changes
