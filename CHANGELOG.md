@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1059] - 2026-02-15
+
+### Changes
+- ci: mark e2e-tests as continue-on-error to unblock automerge (#2963)
+
+**Source:** project-beta-api@ab0c21a3
+
 ## [v0.7.1058] - 2026-02-15
 
 ### Changes
