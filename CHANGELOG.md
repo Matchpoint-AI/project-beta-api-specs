@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1066] - 2026-02-15
+
+### Changes
+- docs: add spec documentation for scene-mix Pub/Sub endpoint (#2470) (#3029)
+
+**Source:** project-beta-api@6e7299a9
+
 ## [v0.7.1065] - 2026-02-15
 
 ### Changes
