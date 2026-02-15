@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1061] - 2026-02-15
+
+### Changes
+- fix: deprecate PUT /campaigns/{id} — keep PATCH as canonical endpoint (#2962)
+
+**Source:** project-beta-api@d934d9d9
+
 ## [v0.7.1060] - 2026-02-15
 
 ### Changes

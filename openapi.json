@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1060"
+    "version": "0.7.1061"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -2070,8 +2070,9 @@
           "campaigns"
         ],
         "summary": "Update Campaign",
-        "description": "Update an existing campaign (full update).\n\nUpdates an existing campaign. Returns 404 if the campaign doesn't exist.\nOnly provided fields will be updated (partial update).\nRequires authentication and ownership of the campaign.\n\nIssue #1736: Added authorization check to prevent IDOR vulnerability.",
+        "description": "Partially update a campaign (deprecated — use PATCH instead).\n\n.. deprecated::\n    This endpoint performs a partial update identical to PATCH.\n    Use ``PATCH /campaigns/{campaign_id}`` instead.\n\nDespite being a PUT endpoint, this performs a **partial** update:\nonly the fields provided in the request body are changed. This violates\nREST semantics where PUT should replace the entire resource.\n\nKept for backward compatibility with existing frontend clients.\nWill be removed in a future API version.\n\nIssue #1736: Added authorization check to prevent IDOR vulnerability.\nIssue #2925: Marked as deprecated — identical to PATCH endpoint.",
         "operationId": "update_campaign_api_v2_campaigns__campaign_id__put",
+        "deprecated": true,
         "security": [
           {
             "HTTPBearer": []
