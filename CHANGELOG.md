@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1053] - 2026-02-15
+
+### Changes
+- fix: sanitize Pub/Sub error responses and update deprecated asyncio call (#2958)
+
+**Source:** project-beta-api@20fa749f
+
 ## [v0.7.1052] - 2026-02-15
 
 ### Changes
