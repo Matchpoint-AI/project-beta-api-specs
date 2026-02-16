@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1078"
+    "version": "0.7.1079"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -4258,6 +4258,69 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v2/content/{content_id}/media/{media_id}/url": {
+      "get": {
+        "tags": [
+          "content-media"
+        ],
+        "summary": "Get signed URL for content media",
+        "description": "Generate a short-lived (1 hour) signed URL for a GCS-hosted media object. The media must belong to a post within the specified content, and the authenticated user must own the content's campaign. Issue #3028: Added for serving persisted content media.",
+        "operationId": "get_media_signed_url_api_v2_content__content_id__media__media_id__url_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "content_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Content ID",
+              "title": "Content Id"
+            },
+            "description": "Content ID"
+          },
+          {
+            "name": "media_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Media ID",
+              "title": "Media Id"
+            },
+            "description": "Media ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Signed URL generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaSignedUrlResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this content"
+          },
+          "404": {
+            "description": "Content or media not found"
+          },
+          "422": {
+            "description": "Media has no GCS URL to sign"
           }
         }
       }
@@ -16053,6 +16116,51 @@
         ],
         "title": "LogoutResponse",
         "description": "Schema for logout response.\n\nConfirms successful token invalidation (logout)."
+      },
+      "MediaSignedUrlResponse": {
+        "properties": {
+          "mediaId": {
+            "type": "integer",
+            "title": "Mediaid",
+            "description": "Media ID"
+          },
+          "signedUrl": {
+            "type": "string",
+            "title": "Signedurl",
+            "description": "Short-lived signed URL for the media"
+          },
+          "expiresInSeconds": {
+            "type": "integer",
+            "title": "Expiresinseconds",
+            "description": "Seconds until the signed URL expires",
+            "default": 3600
+          },
+          "mediaType": {
+            "type": "string",
+            "title": "Mediatype",
+            "description": "Type of media (image, video, carousel)"
+          },
+          "contentType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contenttype",
+            "description": "MIME content type if known"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mediaId",
+          "signedUrl",
+          "mediaType"
+        ],
+        "title": "MediaSignedUrlResponse",
+        "description": "Response schema for media signed URL endpoint.\n\nReturns the signed URL along with metadata about the media and expiration."
       },
       "MessageType": {
         "type": "string",

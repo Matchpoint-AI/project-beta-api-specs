@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1079] - 2026-02-16
+
+### Changes
+- feat: add GCS signed URL endpoint for content media (#3028) (#3031)
+
+**Source:** project-beta-api@8db65c18
+
 ## [v0.7.1078] - 2026-02-16
 
 ### Changes
