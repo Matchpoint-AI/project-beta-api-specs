@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1076] - 2026-02-16
+
+### Changes
+- fix: add selectinload to post detail and content generation endpoints (#3024) (#3043)
+
+**Source:** project-beta-api@e95959f2
+
 ## [v0.7.1075] - 2026-02-16
 
 ### Changes
