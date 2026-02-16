@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1089] - 2026-02-16
+
+### Changes
+- feat: add SoftDeleteMixin to Integration, ScheduledPost, AuditLog (#3126) (#3139)
+
+**Source:** project-beta-api@7e0b0636
+
 ## [v0.7.1088] - 2026-02-16
 
 ### Changes
