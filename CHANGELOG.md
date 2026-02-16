@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1083] - 2026-02-16
+
+### Changes
+- fix: enable parallel test execution via pytest-xdist in Makefile (#2985) (#3054)
+
+**Source:** project-beta-api@248f9460
+
 ## [v0.7.1082] - 2026-02-16
 
 ### Changes
