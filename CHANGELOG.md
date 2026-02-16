@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1085] - 2026-02-16
+
+### Changes
+- refactor: extract analytics queries into PostStatsRepository (#3021) (#3036)
+
+**Source:** project-beta-api@c18e6b98
+
 ## [v0.7.1084] - 2026-02-16
 
 ### Changes
