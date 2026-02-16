@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1076"
+    "version": "0.7.1077"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -668,7 +668,7 @@
           "brands"
         ],
         "summary": "List Brands",
-        "description": "List brands belonging to the authenticated user.\n\nReturns a list of brands owned by the authenticated user with pagination support.\nSecurity: Only returns brands belonging to the authenticated user.",
+        "description": "List brands belonging to the authenticated user.\n\nIssue #2924: Returns a PaginatedResponse with data, total, limit, offset\ninstead of a raw array.\n\nReturns a paginated list of brands owned by the authenticated user.\nSecurity: Only returns brands belonging to the authenticated user.",
         "operationId": "list_brands_api_v2_brands_get",
         "security": [
           {
@@ -706,15 +706,11 @@
         ],
         "responses": {
           "200": {
-            "description": "List of brands returned",
+            "description": "Paginated list of brands returned",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BrandResponse"
-                  },
-                  "title": "Response List Brands Api V2 Brands Get"
+                  "$ref": "#/components/schemas/PaginatedResponse_BrandResponse_"
                 }
               }
             }
@@ -1986,7 +1982,7 @@
           "campaigns"
         ],
         "summary": "List Campaigns",
-        "description": "List all campaigns for the authenticated user.\n\nArgs:\n    user_id: Authenticated user's ID (from JWT token)\n    brand_id: Optional brand ID to filter campaigns by\n    limit: Maximum number of campaigns to return (default 20, max 100)\n    offset: Number of campaigns to skip for pagination (default 0)\n\nReturns:\n    List of campaigns for the authenticated user, optionally filtered by brand",
+        "description": "List all campaigns for the authenticated user.\n\nIssue #2924: Returns a PaginatedResponse with data, total, limit, offset\ninstead of a raw array.\n\nArgs:\n    user_id: Authenticated user's ID (from JWT token)\n    brand_id: Optional brand ID to filter campaigns by\n    limit: Maximum number of campaigns to return (default 20, max 100)\n    offset: Number of campaigns to skip for pagination (default 0)\n\nReturns:\n    PaginatedResponse with campaigns for the authenticated user",
         "operationId": "list_campaigns_api_v2_campaigns_get",
         "security": [
           {
@@ -2042,15 +2038,11 @@
         ],
         "responses": {
           "200": {
-            "description": "List of campaigns returned",
+            "description": "Paginated list of campaigns returned",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CampaignResponse"
-                  },
-                  "title": "Response List Campaigns Api V2 Campaigns Get"
+                  "$ref": "#/components/schemas/PaginatedResponse_CampaignResponse_"
                 }
               }
             }
@@ -16245,6 +16237,82 @@
         "title": "OutputAckResponse",
         "description": "Response for successful output processing."
       },
+      "PaginatedResponse_BrandResponse_": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/BrandResponse"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "List of items for the current page"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total",
+            "description": "Total number of items matching the query"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Maximum number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Number of items skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "PaginatedResponse[BrandResponse]"
+      },
+      "PaginatedResponse_CampaignResponse_": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/CampaignResponse"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "List of items for the current page"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total",
+            "description": "Total number of items matching the query"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Maximum number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Number of items skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "PaginatedResponse[CampaignResponse]"
+      },
       "PasswordResetCreateRequest": {
         "properties": {
           "email": {
@@ -19151,6 +19219,7 @@
             "description": "How long the process has been stuck (seconds)"
           },
           "metadata": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Metadata",
             "description": "Additional context-specific metadata"
@@ -19194,6 +19263,7 @@
             "description": "Posts stuck in quality gate revision loops"
           },
           "thresholds": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Thresholds",
             "description": "Active threshold configuration used for detection"

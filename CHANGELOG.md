@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1077] - 2026-02-16
+
+### Changes
+- fix: timestamp format, campaign stats, and dead code cleanup (#2975)
+
+**Source:** project-beta-api@734a8d69
+
 ## [v0.7.1076] - 2026-02-16
 
 ### Changes
