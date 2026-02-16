@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1075] - 2026-02-16
+
+### Changes
+- fix: add authentication to content export endpoints (#2968) (#2987)
+
+**Source:** project-beta-api@a90c4756
+
 ## [v0.7.1074] - 2026-02-15
 
 ### Changes
