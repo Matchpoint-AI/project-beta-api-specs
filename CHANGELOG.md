@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1088] - 2026-02-16
+
+### Changes
+- fix(security): convert admin raw SQL text() to ORM queries (#3128)
+
+**Source:** project-beta-api@318f248b
+
 ## [v0.7.1087] - 2026-02-16
 
 ### Changes
