@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1084] - 2026-02-16
+
+### Changes
+- fix: set lazy='raise' on all SQLAlchemy relationships to prevent N+1 queries (#3050)
+
+**Source:** project-beta-api@2a9f0c89
+
 ## [v0.7.1083] - 2026-02-16
 
 ### Changes
