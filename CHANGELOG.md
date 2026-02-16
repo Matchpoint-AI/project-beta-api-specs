@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1086] - 2026-02-16
+
+### Changes
+- fix: disable API docs in production environment (#3106) (#3132)
+
+**Source:** project-beta-api@ab0836f5
+
 ## [v0.7.1085] - 2026-02-16
 
 ### Changes
