@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1087] - 2026-02-16
+
+### Changes
+- refactor: extract bulk/batch ops into PostBulkRepository (#3060) (#3131)
+
+**Source:** project-beta-api@b2810d94
+
 ## [v0.7.1086] - 2026-02-16
 
 ### Changes
