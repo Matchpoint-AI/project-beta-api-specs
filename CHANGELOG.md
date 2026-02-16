@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1080] - 2026-02-16
+
+### Changes
+- fix: generate distinct refresh token with longer expiry (#2876) (#3041)
+
+**Source:** project-beta-api@416f8cee
+
 ## [v0.7.1079] - 2026-02-16
 
 ### Changes
