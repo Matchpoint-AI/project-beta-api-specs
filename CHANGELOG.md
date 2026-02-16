@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1078] - 2026-02-16
+
+### Changes
+- fix: add authentication to content images endpoint (#2969) (#2986)
+
+**Source:** project-beta-api@8964b8b1
+
 ## [v0.7.1077] - 2026-02-16
 
 ### Changes

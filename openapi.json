@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1077"
+    "version": "0.7.1078"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -4201,8 +4201,13 @@
           "content-images"
         ],
         "summary": "Create Content Image",
-        "description": "Create a content image via upload.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nIssue #2190: Direct image generation removed (LLM code moved to workers).\nIssue #2506: Regenerations endpoint removed.\nTo generate/regenerate images, use POST /posts/{post_id}/versions with target=\"media\".\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image request with URL for upload\n    response: FastAPI response object for headers\n    service: Injected content image service\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 422 if validation fails or generation requested",
+        "description": "Create a content image via upload.\n\nRMM L2: Resource creation via POST with 201 status and Location header.\n\nIssue #2190: Direct image generation removed (LLM code moved to workers).\nIssue #2506: Regenerations endpoint removed.\nIssue #2969: Added authentication and ownership verification.\nTo generate/regenerate images, use POST /posts/{post_id}/versions with target=\"media\".\n\nArgs:\n    content_id: Content ID (path parameter)\n    request: Image request with URL for upload\n    response: FastAPI response object for headers\n    firebase_user: Authenticated Firebase user (injected by auth dependency)\n    service: Injected content image service\n    post_service: Post service for content lookup\n    campaign_service: Campaign service for ownership verification\n\nReturns:\n    Created content image response\n\nRaises:\n    HTTPException: 401/403 for auth errors, 404 if content not found, 422 if validation fails",
         "operationId": "create_content_image_api_v2_content__content_id__images_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "content_id",
@@ -4226,7 +4231,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Response",
+            "description": "Image uploaded successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -4234,6 +4239,15 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this content"
+          },
+          "404": {
+            "description": "Content not found"
           },
           "422": {
             "description": "Validation Error",
