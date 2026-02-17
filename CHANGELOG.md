@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1107] - 2026-02-17
+
+### Changes
+- fix: add maximum refresh window to JWT token refresh (#2897) (#3153)
+
+**Source:** project-beta-api@1cfffdb5
+
 ## [v0.7.1106] - 2026-02-17
 
 ### Changes
