@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1099] - 2026-02-17
+
+### Changes
+- fix: resolve 500 on GET /api/v2/integrations (#3144) (#3163)
+
+**Source:** project-beta-api@fee92c50
+
 ## [v0.7.1098] - 2026-02-17
 
 ### Changes
