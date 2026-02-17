@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1104] - 2026-02-17
+
+### Changes
+- fix(security): enforce Pub/Sub push endpoint authentication (#3138)
+
+**Source:** project-beta-api@9fcfd066
+
 ## [v0.7.1103] - 2026-02-17
 
 ### Changes
