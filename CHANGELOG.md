@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1106] - 2026-02-17
+
+### Changes
+- fix: make Trivy vulnerability scan non-blocking in release workflow (#3196) (#3198)
+
+**Source:** project-beta-api@e861c409
+
 ## [v0.7.1105] - 2026-02-17
 
 ### Changes
