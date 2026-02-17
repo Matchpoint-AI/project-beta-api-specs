@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1098] - 2026-02-17
+
+### Changes
+- feat: enrich fat message with real content patterns and posterior logging (#3152) (#3160)
+
+**Source:** project-beta-api@2b897c54
+
 ## [v0.7.1097] - 2026-02-17
 
 ### Changes
