@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1092] - 2026-02-17
+
+### Changes
+- ci: add Trivy container security scanning to release pipeline (#3209) (#3148)
+
+**Source:** project-beta-api@2e2c2e0e
+
 ## [v0.7.1091] - 2026-02-17
 
 ### Changes
