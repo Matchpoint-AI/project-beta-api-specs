@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1100] - 2026-02-17
+
+### Changes
+- fix: implement distinct refresh token with rotation (#3018) (#3162)
+
+**Source:** project-beta-api@3ce59417
+
 ## [v0.7.1099] - 2026-02-17
 
 ### Changes
