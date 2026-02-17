@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1101] - 2026-02-17
+
+### Changes
+- fix: add PR comment when E2E tests fail (#3115) (#3173)
+
+**Source:** project-beta-api@da625307
+
 ## [v0.7.1100] - 2026-02-17
 
 ### Changes
