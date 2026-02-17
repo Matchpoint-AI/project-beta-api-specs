@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1096] - 2026-02-17
+
+### Changes
+- fix: migrate JWT signing from HS256 to RS256 with backward compat (#3159)
+
+**Source:** project-beta-api@d65f59ea
+
 ## [v0.7.1095] - 2026-02-17
 
 ### Changes
