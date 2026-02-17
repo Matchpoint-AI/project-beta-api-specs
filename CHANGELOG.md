@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1094] - 2026-02-17
+
+### Changes
+- feat: add per-generation cost tracking metrics (#3101) (#3146)
+
+**Source:** project-beta-api@242a486d
+
 ## [v0.7.1093] - 2026-02-17
 
 ### Changes
