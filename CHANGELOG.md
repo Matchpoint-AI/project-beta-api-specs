@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1093] - 2026-02-17
+
+### Changes
+- test: add auth flow integration tests (#3104) (#3147)
+
+**Source:** project-beta-api@8d8730df
+
 ## [v0.7.1092] - 2026-02-17
 
 ### Changes
