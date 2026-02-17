@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1097] - 2026-02-17
+
+### Changes
+- feat: add lifecycle email notifications (#3103) (#3155)
+
+**Source:** project-beta-api@c7b32879
+
 ## [v0.7.1096] - 2026-02-17
 
 ### Changes
