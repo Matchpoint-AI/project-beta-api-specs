@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1095] - 2026-02-17
+
+### Changes
+- feat: add authentication event audit logging (#3120) (#3154)
+
+**Source:** project-beta-api@4f116d05
+
 ## [v0.7.1094] - 2026-02-17
 
 ### Changes
