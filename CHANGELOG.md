@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1105] - 2026-02-17
+
+### Changes
+- fix: add GET endpoint for campaign performance metrics (#3192) (#3193)
+
+**Source:** project-beta-api@06b6d503
+
 ## [v0.7.1104] - 2026-02-17
 
 ### Changes

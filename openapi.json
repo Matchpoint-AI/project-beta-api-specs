@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1104"
+    "version": "0.7.1105"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -4259,6 +4259,99 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Get campaign performance metrics",
+        "description": "Retrieve post performance metrics for a campaign with per-post breakdown and aggregate summary.",
+        "operationId": "get_campaign_performance_api_v2_campaigns__campaign_id__performance_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Campaign ID to get performance for",
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID to get performance for"
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by platform (instagram, tiktok, linkedin, twitter)",
+              "title": "Platform"
+            },
+            "description": "Filter by platform (instagram, tiktok, linkedin, twitter)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Max records to return",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Max records to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of records to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of records to skip"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignPerformanceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/content/{content_id}/images": {
@@ -4438,7 +4531,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/PubSubPushEnvelope"
               }
             }
           }
@@ -4514,7 +4607,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/PubSubPushEnvelope"
               }
             }
           }
@@ -5282,7 +5375,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/PubSubPushEnvelope"
               }
             }
           }
@@ -6867,7 +6960,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PubSubPushEnvelope"
+                "$ref": "#/components/schemas/src__domains__crawler__schemas__crawler_pulses__PubSubPushEnvelope"
               }
             }
           }
@@ -7043,7 +7136,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/PubSubPushEnvelope"
               }
             }
           }
@@ -11613,6 +11706,59 @@
         ],
         "title": "CampaignExportData",
         "description": "Complete campaign data for export documents."
+      },
+      "CampaignPerformanceResponse": {
+        "properties": {
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "totalImpressions": {
+            "type": "integer",
+            "title": "Totalimpressions",
+            "description": "Sum of impressions across all posts",
+            "default": 0
+          },
+          "totalEngagement": {
+            "type": "integer",
+            "title": "Totalengagement",
+            "description": "Sum of likes, comments, shares, saves, clicks",
+            "default": 0
+          },
+          "averageEngagementRate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Averageengagementrate",
+            "description": "Average engagement rate across posts"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "title": "Totalrecords",
+            "description": "Total number of performance records",
+            "default": 0
+          },
+          "posts": {
+            "items": {
+              "$ref": "#/components/schemas/PostPerformanceResponse"
+            },
+            "type": "array",
+            "title": "Posts",
+            "description": "Per-post performance breakdown"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId"
+        ],
+        "title": "CampaignPerformanceResponse",
+        "description": "Response schema for campaign performance with aggregated metrics.\n\nIssue #3192: GET /api/v2/campaigns/{campaign_id}/performance\nReturns per-post breakdown and aggregate summary."
       },
       "CampaignPublicationCreate": {
         "properties": {
@@ -17067,6 +17213,169 @@
         "title": "PostPerformanceMetric",
         "description": "Schema for a single post's performance metrics.\n\nPhase 1 ML improvements: Used within batch performance submission."
       },
+      "PostPerformanceResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "postId": {
+            "type": "string",
+            "title": "Postid"
+          },
+          "campaignId": {
+            "type": "string",
+            "title": "Campaignid"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform"
+          },
+          "impressions": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impressions"
+          },
+          "engagementRate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engagementrate"
+          },
+          "likes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Likes"
+          },
+          "comments": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comments"
+          },
+          "shares": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shares"
+          },
+          "saves": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Saves"
+          },
+          "clicks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clicks"
+          },
+          "reach": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reach"
+          },
+          "videoViews": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videoviews"
+          },
+          "videoCompletionRate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videocompletionrate"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Recordedat"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "postId",
+          "campaignId",
+          "platform",
+          "recordedAt",
+          "createdAt"
+        ],
+        "title": "PostPerformanceResponse",
+        "description": "Response schema for post performance data."
+      },
       "PostPlan": {
         "properties": {
           "day": {
@@ -21209,26 +21518,6 @@
         "title": "WorkflowStep",
         "description": "Schema for workflow step tracking."
       },
-      "src__domains__content__schemas__content_generator_pubsub__PubSubPushEnvelope": {
-        "properties": {
-          "message": {
-            "$ref": "#/components/schemas/PubSubMessage",
-            "description": "The Pub/Sub message"
-          },
-          "subscription": {
-            "type": "string",
-            "title": "Subscription",
-            "description": "Subscription name"
-          }
-        },
-        "type": "object",
-        "required": [
-          "message",
-          "subscription"
-        ],
-        "title": "PubSubPushEnvelope",
-        "description": "Pub/Sub push subscription envelope format."
-      },
       "src__domains__crawler__schemas__crawler_briefs__PubSubPushEnvelope": {
         "properties": {
           "message": {
@@ -21248,6 +21537,26 @@
         ],
         "title": "PubSubPushEnvelope",
         "description": "Pub/Sub push subscription envelope format.\n\nThis is the outer wrapper that Pub/Sub sends to push endpoints.\nThe actual message data is base64-encoded inside message.data."
+      },
+      "src__domains__crawler__schemas__crawler_pulses__PubSubPushEnvelope": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/PubSubMessage",
+            "description": "The Pub/Sub message"
+          },
+          "subscription": {
+            "type": "string",
+            "title": "Subscription",
+            "description": "Subscription name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "subscription"
+        ],
+        "title": "PubSubPushEnvelope",
+        "description": "Pub/Sub push subscription envelope format."
       },
       "src__domains__crawler__schemas__crawler_pulses__PulseStatusResponse": {
         "properties": {
