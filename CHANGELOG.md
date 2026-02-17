@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1103] - 2026-02-17
+
+### Changes
+- fix: add manual-complete endpoint for brand knowledge status (#3423) (#3178)
+
+**Source:** project-beta-api@f3c78db8
+
 ## [v0.7.1102] - 2026-02-17
 
 ### Changes
