@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1102] - 2026-02-17
+
+### Changes
+- fix: add comprehensive .env.example template for standalone development (#3081) (#3175)
+
+**Source:** project-beta-api@8d642ac2
+
 ## [v0.7.1101] - 2026-02-17
 
 ### Changes
