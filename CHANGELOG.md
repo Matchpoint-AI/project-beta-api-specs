@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1091] - 2026-02-17
+
+### Changes
+- fix: brand crawl stuck at 5% — status string mismatch (#226) (#3141)
+
+**Source:** project-beta-api@c42955e1
+
 ## [v0.7.1090] - 2026-02-17
 
 ### Changes
