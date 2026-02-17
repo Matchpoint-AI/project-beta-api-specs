@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1090] - 2026-02-17
+
+### Changes
+- fix: use crawl_complete status in brand crawl output handler (#226) (#3140)
+
+**Source:** project-beta-api@ab756901
+
 ## [v0.7.1089] - 2026-02-16
 
 ### Changes
