@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1139"
+    "version": "0.7.1140"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -8994,6 +8994,9 @@
           }
         },
         "security": [
+          {
+            "HTTPBearer": []
+          },
           {
             "HTTPBearer": []
           }

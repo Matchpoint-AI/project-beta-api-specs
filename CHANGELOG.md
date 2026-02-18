@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1140] - 2026-02-18
+
+### Changes
+- feat: add httpOnly cookie-based JWT transport (#3017) (#3166)
+
+**Source:** project-beta-api@3a173518
+
 ## [v0.7.1139] - 2026-02-18
 
 ### Changes
