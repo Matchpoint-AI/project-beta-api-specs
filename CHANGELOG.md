@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1139] - 2026-02-18
+
+### Changes
+- feat: add GET /api/v2/users/me/data-export endpoint for GDPR data portability (#3171)
+
+**Source:** project-beta-api@1e2b42f3
+
 ## [v0.7.1138] - 2026-02-18
 
 ### Changes

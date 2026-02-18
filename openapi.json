@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1138"
+    "version": "0.7.1139"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -5137,6 +5137,125 @@
         }
       }
     },
+    "/api/v2/ml/patterns/{brand_id}": {
+      "get": {
+        "tags": [
+          "content-patterns"
+        ],
+        "summary": "Get content patterns for a brand",
+        "description": "Get extracted content patterns from high-performing posts for a brand. Returns cached patterns if available, otherwise extracts fresh patterns. Patterns include copyFramework, emotionalTrigger, scene_type, and cta_style.",
+        "operationId": "get_content_patterns_api_v2_ml_patterns__brand_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to get content patterns for",
+              "examples": [
+                "brand-123",
+                "abc-def-ghi"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to get content patterns for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Content patterns retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentPatternsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/ml/patterns/{brand_id}/refresh": {
+      "post": {
+        "tags": [
+          "content-patterns"
+        ],
+        "summary": "Refresh content patterns for a brand",
+        "description": "Re-extract content patterns from the latest high-performing posts. This invalidates any cached patterns and performs a fresh analysis.",
+        "operationId": "refresh_content_patterns_api_v2_ml_patterns__brand_id__refresh_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to refresh content patterns for",
+              "examples": [
+                "brand-123"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to refresh content patterns for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patterns refreshed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatternRefreshResponse-Input"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/content/{content_id}/prompt": {
       "get": {
         "tags": [
@@ -8953,6 +9072,40 @@
         ]
       }
     },
+    "/api/v2/users/me/data/export": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Export User Data",
+        "description": "Export authenticated user's personal data (GDPR Article 20).\n\nCollects the user's profile information, brands, and campaigns\ninto a single JSON file for download. Only exports the authenticated\nuser's own data.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /users/me/data/export\n- HTTP method (GET) indicates read action\n- No verbs in URL path\n- Uses /me convention for current authenticated user\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    export_service: Injected user data export service\n\nReturns:\n    JSONResponse with Content-Disposition header for file download\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 404: If user not found\n    HTTPException 500: If export fails due to server error",
+        "operationId": "export_user_data_api_v2_users_me_data_export_get",
+        "responses": {
+          "200": {
+            "description": "User data exported successfully as JSON",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or token invalid"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error during data export"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/api/v2/posts/{post_id}/videos": {
       "post": {
         "tags": [
@@ -9410,125 +9563,6 @@
           }
         ]
       }
-    },
-    "/api/v2/ml/patterns/{brand_id}": {
-      "get": {
-        "tags": [
-          "content-patterns"
-        ],
-        "summary": "Get content patterns for a brand",
-        "description": "Get extracted content patterns from high-performing posts for a brand. Returns cached patterns if available, otherwise extracts fresh patterns. Patterns include copyFramework, emotionalTrigger, scene_type, and cta_style.",
-        "operationId": "get_content_patterns_api_v2_ml_patterns__brand_id__get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Brand ID to get content patterns for",
-              "examples": [
-                "brand-123",
-                "abc-def-ghi"
-              ],
-              "title": "Brand Id"
-            },
-            "description": "Brand ID to get content patterns for"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Content patterns retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentPatternsResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/ml/patterns/{brand_id}/refresh": {
-      "post": {
-        "tags": [
-          "content-patterns"
-        ],
-        "summary": "Refresh content patterns for a brand",
-        "description": "Re-extract content patterns from the latest high-performing posts. This invalidates any cached patterns and performs a fresh analysis.",
-        "operationId": "refresh_content_patterns_api_v2_ml_patterns__brand_id__refresh_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Brand ID to refresh content patterns for",
-              "examples": [
-                "brand-123"
-              ],
-              "title": "Brand Id"
-            },
-            "description": "Brand ID to refresh content patterns for"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Patterns refreshed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PatternRefreshResponse-Input"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -9580,6 +9614,35 @@
         ],
         "title": "AccountDeletionResponse",
         "description": "Schema for account deletion response (GDPR Article 17).\n\nReturns confirmation of scheduled deletion with grace period details.\nHTTP 202 Accepted - deletion is scheduled, not immediate."
+      },
+      "AgenticContentPattern": {
+        "properties": {
+          "pattern_type": {
+            "type": "string",
+            "title": "Pattern Type",
+            "description": "Pattern type (opening, cta, trigger, framework)"
+          },
+          "pattern_value": {
+            "type": "string",
+            "title": "Pattern Value",
+            "description": "The actual pattern text"
+          },
+          "success_rate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Success Rate",
+            "description": "Success rate 0-1",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "pattern_type",
+          "pattern_value"
+        ],
+        "title": "AgenticContentPattern",
+        "description": "Successful content pattern for a brand."
       },
       "AgenticContextualBanditState": {
         "properties": {
@@ -15338,6 +15401,104 @@
         "title": "ContentOutputAudit",
         "description": "Audit view of a content generator output."
       },
+      "ContentPatternResponse": {
+        "properties": {
+          "patternType": {
+            "type": "string",
+            "title": "Patterntype",
+            "description": "Pattern category: copyFramework, emotionalTrigger, scene_type, cta_style"
+          },
+          "patternValue": {
+            "type": "string",
+            "title": "Patternvalue",
+            "description": "The pattern value (e.g., 'AIDA', 'urgency')"
+          },
+          "successRate": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Successrate",
+            "description": "Success rate for this pattern (0.0-1.0)"
+          },
+          "occurrenceCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Occurrencecount",
+            "description": "How many times this pattern appeared in top posts",
+            "default": 0
+          },
+          "totalPostsAnalyzed": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Totalpostsanalyzed",
+            "description": "Total posts analyzed for this pattern type",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "patternType",
+          "patternValue",
+          "successRate"
+        ],
+        "title": "ContentPatternResponse",
+        "description": "Response schema for a single content pattern."
+      },
+      "ContentPatternsResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID these patterns belong to"
+          },
+          "patterns": {
+            "items": {
+              "$ref": "#/components/schemas/ContentPatternResponse"
+            },
+            "type": "array",
+            "title": "Patterns",
+            "description": "Extracted content patterns"
+          },
+          "agenticPatterns": {
+            "items": {
+              "$ref": "#/components/schemas/AgenticContentPattern"
+            },
+            "type": "array",
+            "title": "Agenticpatterns",
+            "description": "Patterns formatted for fat message embedding"
+          },
+          "totalPostsAnalyzed": {
+            "type": "integer",
+            "title": "Totalpostsanalyzed",
+            "description": "Total posts analyzed for pattern extraction",
+            "default": 0
+          },
+          "highPerformingCount": {
+            "type": "integer",
+            "title": "Highperformingcount",
+            "description": "Number of high-performing posts (top 20%)",
+            "default": 0
+          },
+          "extractedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Extractedat",
+            "description": "When the patterns were extracted"
+          },
+          "cached": {
+            "type": "boolean",
+            "title": "Cached",
+            "description": "Whether these patterns came from cache",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId"
+        ],
+        "title": "ContentPatternsResponse",
+        "description": "Response schema for content patterns extraction."
+      },
       "ContentPromptResponse": {
         "properties": {
           "contentId": {
@@ -18215,6 +18376,82 @@
         "type": "object",
         "title": "PasswordResetUpdateResponse",
         "description": "Schema for password reset completion response (RMM L2 compliant).\n\nReturns success message after password is reset."
+      },
+      "PatternRefreshResponse-Input": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Refresh status: success, no_data, error"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "patterns": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ContentPatternsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Newly extracted patterns (if successful)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "status",
+          "message"
+        ],
+        "title": "PatternRefreshResponse",
+        "description": "Response schema for pattern refresh endpoint."
+      },
+      "PatternRefreshResponse-Output": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Refresh status: success, no_data, error"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "patterns": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ContentPatternsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Newly extracted patterns (if successful)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "status",
+          "message"
+        ],
+        "title": "PatternRefreshResponse",
+        "description": "Response schema for pattern refresh endpoint."
       },
       "PipelineHealthResponse": {
         "properties": {
@@ -23446,209 +23683,6 @@
         ],
         "title": "PulseStatusResponse",
         "description": "Response for GET /pulses/{correlation_id} polling endpoint.\n\nIssue #2181: Frontend polling endpoint for crawl progress."
-      },
-      "AgenticContentPattern": {
-        "properties": {
-          "pattern_type": {
-            "type": "string",
-            "title": "Pattern Type",
-            "description": "Pattern type (opening, cta, trigger, framework)"
-          },
-          "pattern_value": {
-            "type": "string",
-            "title": "Pattern Value",
-            "description": "The actual pattern text"
-          },
-          "success_rate": {
-            "type": "number",
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Success Rate",
-            "description": "Success rate 0-1",
-            "default": 0.0
-          }
-        },
-        "type": "object",
-        "required": [
-          "pattern_type",
-          "pattern_value"
-        ],
-        "title": "AgenticContentPattern",
-        "description": "Successful content pattern for a brand."
-      },
-      "ContentPatternResponse": {
-        "properties": {
-          "patternType": {
-            "type": "string",
-            "title": "Patterntype",
-            "description": "Pattern category: copyFramework, emotionalTrigger, scene_type, cta_style"
-          },
-          "patternValue": {
-            "type": "string",
-            "title": "Patternvalue",
-            "description": "The pattern value (e.g., 'AIDA', 'urgency')"
-          },
-          "successRate": {
-            "type": "number",
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Successrate",
-            "description": "Success rate for this pattern (0.0-1.0)"
-          },
-          "occurrenceCount": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Occurrencecount",
-            "description": "How many times this pattern appeared in top posts",
-            "default": 0
-          },
-          "totalPostsAnalyzed": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Totalpostsanalyzed",
-            "description": "Total posts analyzed for this pattern type",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "required": [
-          "patternType",
-          "patternValue",
-          "successRate"
-        ],
-        "title": "ContentPatternResponse",
-        "description": "Response schema for a single content pattern."
-      },
-      "ContentPatternsResponse": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID these patterns belong to"
-          },
-          "patterns": {
-            "items": {
-              "$ref": "#/components/schemas/ContentPatternResponse"
-            },
-            "type": "array",
-            "title": "Patterns",
-            "description": "Extracted content patterns"
-          },
-          "agenticPatterns": {
-            "items": {
-              "$ref": "#/components/schemas/AgenticContentPattern"
-            },
-            "type": "array",
-            "title": "Agenticpatterns",
-            "description": "Patterns formatted for fat message embedding"
-          },
-          "totalPostsAnalyzed": {
-            "type": "integer",
-            "title": "Totalpostsanalyzed",
-            "description": "Total posts analyzed for pattern extraction",
-            "default": 0
-          },
-          "highPerformingCount": {
-            "type": "integer",
-            "title": "Highperformingcount",
-            "description": "Number of high-performing posts (top 20%)",
-            "default": 0
-          },
-          "extractedAt": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Extractedat",
-            "description": "When the patterns were extracted"
-          },
-          "cached": {
-            "type": "boolean",
-            "title": "Cached",
-            "description": "Whether these patterns came from cache",
-            "default": false
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId"
-        ],
-        "title": "ContentPatternsResponse",
-        "description": "Response schema for content patterns extraction."
-      },
-      "PatternRefreshResponse-Input": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Refresh status: success, no_data, error"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Human-readable status message"
-          },
-          "patterns": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ContentPatternsResponse"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Newly extracted patterns (if successful)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "status",
-          "message"
-        ],
-        "title": "PatternRefreshResponse",
-        "description": "Response schema for pattern refresh endpoint."
-      },
-      "PatternRefreshResponse-Output": {
-        "properties": {
-          "brandId": {
-            "type": "string",
-            "title": "Brandid",
-            "description": "Brand ID"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Refresh status: success, no_data, error"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Human-readable status message"
-          },
-          "patterns": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ContentPatternsResponse"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Newly extracted patterns (if successful)"
-          }
-        },
-        "type": "object",
-        "required": [
-          "brandId",
-          "status",
-          "message"
-        ],
-        "title": "PatternRefreshResponse",
-        "description": "Response schema for pattern refresh endpoint."
       }
     },
     "securitySchemes": {
