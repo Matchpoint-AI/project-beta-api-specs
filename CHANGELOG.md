@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1138] - 2026-02-18
+
+### Changes
+- fix: merge Alembic migration heads to resolve schema drift (#3223) (#3225)
+
+**Source:** project-beta-api@25cc14db
+
 ## [v0.7.1137] - 2026-02-18
 
 ### Changes
