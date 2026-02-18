@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1129"
+    "version": "0.7.1130"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -1633,321 +1633,6 @@
         }
       }
     },
-    "/api/v2/brands/{brand_id}/summaries": {
-      "post": {
-        "tags": [
-          "brands",
-          "brand-status"
-        ],
-        "summary": "Generate Brand Summary",
-        "description": "Trigger brand summary generation via agentic brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1102: RMM L2 compliance - renamed from /summary to /summaries.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\nIssue #2245: Migrated to AgenticBrandCrawlerPublisher.\n\n**RMM L2 Compliance**: POST /api/v2/brands/{brand_id}/summaries\n- Summaries modeled as a resource collection\n- POST creates a new summary generation request\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by agentic brand-crawler:\n- The agentic service extracts brand assets and generates summaries\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
-        "operationId": "generate_brand_summary_api_v2_brands__brand_id__summaries_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Brand summary generation triggered",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandSummaryResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "500": {
-            "description": "Failed to trigger summary generation"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/knowledge/status": {
-      "get": {
-        "tags": [
-          "brands",
-          "brand-status"
-        ],
-        "summary": "Get Brand Knowledge Status",
-        "description": "Get the status of brand knowledge extraction (Phase 1: Progressive Brand Knowledge).\n\nReturns the current status and progress of the brand's knowledge extraction workflow,\nincluding whether quick extraction and deep crawl phases are complete.\n\nThis endpoint enables the frontend to:\n- Show instant brand creation feedback\n- Display real-time progress of knowledge extraction\n- Determine when to enable features that require knowledge data\n- Poll for updates during background processing\n\nPhase Architecture:\n- Phase 1 (Instant): Brand created in < 1 second with status \"not_started\"\n- Phase 2 (Quick): Quick extraction adds colors/industry in < 3 seconds\n- Phase 3 (Deep): Deep crawl runs in background (minutes to hours)\n- Phase 4 (Enhancement): Campaigns improve as brand knowledge grows\n\nRMM Level 2 Compliance:\n- GET to /brands/{brand_id}/knowledge/status retrieves status resource\n- Resource-oriented URL structure\n- No verbs in URL path\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.",
-        "operationId": "get_brand_knowledge_status_api_v2_brands__brand_id__knowledge_status_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Knowledge extraction status returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandKnowledgeStatusResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/crawl/status": {
-      "get": {
-        "tags": [
-          "brands",
-          "brand-status"
-        ],
-        "summary": "Get Brand Crawl Status",
-        "description": "Get real-time brand crawl progress (Issue #1279).\n\nReturns comprehensive crawl status information so the frontend can show\nusers real-time progress during website crawling operations.\n\nStatus Values:\n- not_started: No crawl has been initiated\n- pending: Crawl queued but not yet started\n- estimating: Analyzing website structure\n- crawling: Actively crawling pages\n- extracting: Extracting brand assets from crawled content\n- uploading: Saving extracted assets\n- complete: Crawl finished successfully\n- failed: Crawl encountered an error\n\nRMM Level 2 Compliance:\n- GET retrieves crawl status sub-resource\n- Resource-oriented hierarchical URL structure\n- /crawl/status follows RMM-2 path pattern\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.",
-        "operationId": "get_brand_crawl_status_api_v2_brands__brand_id__crawl_status_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Brand crawl status returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandCrawlStatusResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/crawls": {
-      "post": {
-        "tags": [
-          "brands",
-          "brand-status"
-        ],
-        "summary": "Trigger Brand Recrawl",
-        "description": "Trigger a re-crawl for a brand whose crawl has failed or become stuck.\n\nIssue #2935: Dedicated endpoint for re-crawling brands. This provides a\nclear mechanism for users to restart brand crawls without the confusion\nof using the POST /brands/{brand_id}/summaries endpoint.\n\nThis endpoint:\n1. Validates brand ownership (user must own the brand)\n2. Rate-limits re-crawl requests (max 1 per 5 minutes per brand)\n3. Resets brand knowledge_status to 'pending'\n4. Re-publishes crawl message to Pub/Sub\n5. Returns 202 Accepted with correlation info\n\nRMM Level 2 Compliance:\n- POST /brands/{brand_id}/crawls creates a new crawl resource\n- Returns 202 Accepted for async operation",
-        "operationId": "trigger_brand_recrawl_api_v2_brands__brand_id__crawls_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Brand re-crawl triggered successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandRecrawlResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "429": {
-            "description": "Rate limit exceeded - re-crawl too frequent"
-          },
-          "500": {
-            "description": "Failed to trigger re-crawl"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/brands/{brand_id}/manual-complete": {
-      "post": {
-        "tags": [
-          "brands",
-          "brand-status"
-        ],
-        "summary": "Mark Brand Manual Complete",
-        "description": "Mark a manually-entered brand as ready for campaign creation.\n\nIssue #3423: Manual brand entry (without website crawl) does not update\nknowledge_status, so campaign creation remains disabled. This endpoint\nsets knowledge_status to 'crawl_complete' and knowledge_progress to 100,\nenabling campaign creation for manually-entered brands.\n\nPattern #130: Manual bypass paths must replicate async workflow state transitions.\n\nThis endpoint:\n1. Validates brand ownership (user must own the brand)\n2. Updates knowledge_status to 'crawl_complete'\n3. Sets knowledge_progress to 100\n4. Sets last_crawled_at to current timestamp\n5. Returns the updated status\n\nRMM Level 2 Compliance:\n- POST /brands/{brand_id}/manual-complete is a dedicated action endpoint\n- Returns 200 OK with updated status",
-        "operationId": "mark_brand_manual_complete_api_v2_brands__brand_id__manual_complete_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "brand_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The brand ID",
-              "title": "Brand Id"
-            },
-            "description": "The brand ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Brand knowledge marked as complete",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrandManualCompleteResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Forbidden - user does not own this brand"
-          },
-          "404": {
-            "description": "Brand not found"
-          },
-          "409": {
-            "description": "Brand knowledge already complete"
-          },
-          "500": {
-            "description": "Failed to update brand knowledge status"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/webhooks/brand-crawl-output": {
       "post": {
         "tags": [
@@ -2270,6 +1955,316 @@
           },
           "404": {
             "description": "Brand knowledge not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/summaries": {
+      "post": {
+        "tags": [
+          "brand-status"
+        ],
+        "summary": "Generate Brand Summary",
+        "description": "Trigger brand summary generation via agentic brand-crawler.\n\nIssue #1386: Migrated to brand-crawler publisher pattern.\nIssue #1102: RMM L2 compliance - renamed from /summary to /summaries.\nIssue #1655: Added authorization check to prevent IDOR vulnerability.\nIssue #2245: Migrated to AgenticBrandCrawlerPublisher.\n\n**RMM L2 Compliance**: POST /api/v2/brands/{brand_id}/summaries\n- Summaries modeled as a resource collection\n- POST creates a new summary generation request\n- Returns 202 Accepted with correlation info\n\nSummary is generated asynchronously by agentic brand-crawler:\n- The agentic service extracts brand assets and generates summaries\n- Includes: mission, vision, values, tone/voice, persona, industry, vertical\n- Excludes: brand colors, service lists, location\n- Brand record is updated with summary when complete",
+        "operationId": "generate_brand_summary_api_v2_brands__brand_id__summaries_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Brand summary generation triggered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandSummaryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "500": {
+            "description": "Failed to trigger summary generation"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/knowledge/status": {
+      "get": {
+        "tags": [
+          "brand-status"
+        ],
+        "summary": "Get Brand Knowledge Status",
+        "description": "Get the status of brand knowledge extraction (Phase 1: Progressive Brand Knowledge).\n\nReturns the current status and progress of the brand's knowledge extraction workflow,\nincluding whether quick extraction and deep crawl phases are complete.\n\nThis endpoint enables the frontend to:\n- Show instant brand creation feedback\n- Display real-time progress of knowledge extraction\n- Determine when to enable features that require knowledge data\n- Poll for updates during background processing\n\nPhase Architecture:\n- Phase 1 (Instant): Brand created in < 1 second with status \"not_started\"\n- Phase 2 (Quick): Quick extraction adds colors/industry in < 3 seconds\n- Phase 3 (Deep): Deep crawl runs in background (minutes to hours)\n- Phase 4 (Enhancement): Campaigns improve as brand knowledge grows\n\nRMM Level 2 Compliance:\n- GET to /brands/{brand_id}/knowledge/status retrieves status resource\n- Resource-oriented URL structure\n- No verbs in URL path\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.",
+        "operationId": "get_brand_knowledge_status_api_v2_brands__brand_id__knowledge_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Knowledge extraction status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandKnowledgeStatusResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/crawl/status": {
+      "get": {
+        "tags": [
+          "brand-status"
+        ],
+        "summary": "Get Brand Crawl Status",
+        "description": "Get real-time brand crawl progress (Issue #1279).\n\nReturns comprehensive crawl status information so the frontend can show\nusers real-time progress during website crawling operations.\n\nStatus Values:\n- not_started: No crawl has been initiated\n- pending: Crawl queued but not yet started\n- estimating: Analyzing website structure\n- crawling: Actively crawling pages\n- extracting: Extracting brand assets from crawled content\n- uploading: Saving extracted assets\n- complete: Crawl finished successfully\n- failed: Crawl encountered an error\n\nRMM Level 2 Compliance:\n- GET retrieves crawl status sub-resource\n- Resource-oriented hierarchical URL structure\n- /crawl/status follows RMM-2 path pattern\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.",
+        "operationId": "get_brand_crawl_status_api_v2_brands__brand_id__crawl_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand crawl status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandCrawlStatusResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/crawls": {
+      "post": {
+        "tags": [
+          "brand-status"
+        ],
+        "summary": "Trigger Brand Recrawl",
+        "description": "Trigger a re-crawl for a brand whose crawl has failed or become stuck.\n\nIssue #2935: Dedicated endpoint for re-crawling brands. This provides a\nclear mechanism for users to restart brand crawls without the confusion\nof using the POST /brands/{brand_id}/summaries endpoint.\n\nThis endpoint:\n1. Validates brand ownership (user must own the brand)\n2. Rate-limits re-crawl requests (max 1 per 5 minutes per brand)\n3. Resets brand knowledge_status to 'pending'\n4. Re-publishes crawl message to Pub/Sub\n5. Returns 202 Accepted with correlation info\n\nRMM Level 2 Compliance:\n- POST /brands/{brand_id}/crawls creates a new crawl resource\n- Returns 202 Accepted for async operation",
+        "operationId": "trigger_brand_recrawl_api_v2_brands__brand_id__crawls_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Brand re-crawl triggered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandRecrawlResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "429": {
+            "description": "Rate limit exceeded - re-crawl too frequent"
+          },
+          "500": {
+            "description": "Failed to trigger re-crawl"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/manual-complete": {
+      "post": {
+        "tags": [
+          "brand-status"
+        ],
+        "summary": "Mark Brand Manual Complete",
+        "description": "Mark a manually-entered brand as ready for campaign creation.\n\nIssue #3423: Manual brand entry (without website crawl) does not update\nknowledge_status, so campaign creation remains disabled. This endpoint\nsets knowledge_status to 'crawl_complete' and knowledge_progress to 100,\nenabling campaign creation for manually-entered brands.\n\nPattern #130: Manual bypass paths must replicate async workflow state transitions.\n\nThis endpoint:\n1. Validates brand ownership (user must own the brand)\n2. Updates knowledge_status to 'crawl_complete'\n3. Sets knowledge_progress to 100\n4. Sets last_crawled_at to current timestamp\n5. Returns the updated status\n\nRMM Level 2 Compliance:\n- POST /brands/{brand_id}/manual-complete is a dedicated action endpoint\n- Returns 200 OK with updated status",
+        "operationId": "mark_brand_manual_complete_api_v2_brands__brand_id__manual_complete_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand knowledge marked as complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandManualCompleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "409": {
+            "description": "Brand knowledge already complete"
+          },
+          "500": {
+            "description": "Failed to update brand knowledge status"
           },
           "422": {
             "description": "Validation Error",

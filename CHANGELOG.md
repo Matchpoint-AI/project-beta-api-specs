@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1130] - 2026-02-18
+
+### Changes
+- fix: register brand_status_controller in main.py (#3210) (#3215)
+
+**Source:** project-beta-api@d22658ab
+
 ## [v0.7.1129] - 2026-02-18
 
 ### Changes
