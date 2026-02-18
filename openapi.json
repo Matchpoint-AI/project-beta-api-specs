@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1108"
+    "version": "0.7.1109"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -8047,6 +8047,53 @@
           },
           "401": {
             "description": "Authentication required or token invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update Current User",
+        "description": "Update current authenticated user profile.\n\nUpdates the profile of the currently authenticated user. Supports\nupdating name, email, and password. Password is hashed before storage.\n\nRMM Level 2 Compliance:\n- Resource-based URL: /users/me\n- HTTP method (PUT) indicates update action\n- No verbs in URL path\n- Uses /me convention for current authenticated user\n\nArgs:\n    request: Profile update data (name, email, password — all optional)\n    firebase_user: Decoded token claims (injected by auth dependency)\n    user_service: Injected user service\n\nReturns:\n    UserResponse with updated user profile data\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 404: If user not found\n    HTTPException 500: If database or server error occurs",
+        "operationId": "update_current_user_api_v2_users_me_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserProfileUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or token invalid"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "422": {
+            "description": "Validation error in request body"
           },
           "500": {
             "description": "Internal server error"
@@ -20421,6 +20468,54 @@
         ],
         "title": "UpdateLearningStateResponse",
         "description": "Response schema after updating learning state."
+      },
+      "UserProfileUpdateRequest": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "User full name"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "User email address"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 8
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Password",
+            "description": "New password (optional). Must meet complexity requirements."
+          }
+        },
+        "type": "object",
+        "title": "UserProfileUpdateRequest",
+        "description": "Schema for user self-service profile update via PUT /users/me.\n\nAccepts the fields that the frontend profile form submits.\nPassword is optional and handled separately from the UserUpdate fields\n(hashed via AuthService before persistence)."
       },
       "UserRegistrationResponse": {
         "properties": {
