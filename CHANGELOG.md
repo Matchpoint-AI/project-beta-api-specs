@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1134] - 2026-02-18
+
+### Changes
+- feat: add GDPR cascade soft-delete service for user data (#3134)
+
+**Source:** project-beta-api@c11392e8
+
 ## [v0.7.1133] - 2026-02-18
 
 ### Changes
