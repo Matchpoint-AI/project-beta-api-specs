@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1145] - 2026-02-18
+
+### Changes
+- fix: return 409 Conflict for duplicate email in signup endpoint (#3565) (#3232)
+
+**Source:** project-beta-api@e1e46a10
+
 ## [v0.7.1144] - 2026-02-18
 
 ### Changes
