@@ -3,9 +3,282 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1120"
+    "version": "0.7.1121"
   },
   "paths": {
+    "/api/v2/admin/audit/generations/{campaign_id}": {
+      "get": {
+        "tags": [
+          "admin-audit"
+        ],
+        "summary": "Get Campaign Generation Audit",
+        "description": "Get full generation audit trail for a campaign.\n\nReturns all prompt revisions, LLM models used, generation times,\nquality scores, and which revisions passed quality gates.",
+        "operationId": "get_campaign_generation_audit_api_v2_admin_audit_generations__campaign_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign generation audit trail returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignGenerationAudit"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "No generation data found for campaign"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/admin/audit/posts/{post_id}": {
+      "get": {
+        "tags": [
+          "admin-audit"
+        ],
+        "summary": "Get Post Generation Trace",
+        "description": "Get the generation trace for a specific post.\n\nShows the prompt that generated this post, the model used,\nthe quality score, and any revisions that were attempted.",
+        "operationId": "get_post_generation_trace_api_v2_admin_audit_posts__post_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Post ID",
+              "title": "Post Id"
+            },
+            "description": "Post ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post generation trace returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostGenerationTrace"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/admin/audit/recent": {
+      "get": {
+        "tags": [
+          "admin-audit"
+        ],
+        "summary": "Get Recent Generations",
+        "description": "Get a paginated list of recent content generations with filters.\n\nSupports filtering by time range, brand, model used, and status.",
+        "operationId": "get_recent_generations_api_v2_admin_audit_recent_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "description": "Page size",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Page size"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Page offset",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Page offset"
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter: start of time range (ISO 8601)",
+              "title": "Start Time"
+            },
+            "description": "Filter: start of time range (ISO 8601)"
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter: end of time range (ISO 8601)",
+              "title": "End Time"
+            },
+            "description": "Filter: end of time range (ISO 8601)"
+          },
+          {
+            "name": "brand_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter: brand ID",
+              "title": "Brand Id"
+            },
+            "description": "Filter: brand ID"
+          },
+          {
+            "name": "model_used",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter: LLM model name",
+              "title": "Model Used"
+            },
+            "description": "Filter: LLM model name"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter: status (received/processing/completed/failed)",
+              "title": "Status"
+            },
+            "description": "Filter: status (received/processing/completed/failed)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recent generations list returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecentGenerationsResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/admin/config": {
       "get": {
         "tags": [
@@ -12017,6 +12290,57 @@
         "title": "CampaignExportData",
         "description": "Complete campaign data for export documents."
       },
+      "CampaignGenerationAudit": {
+        "properties": {
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "promptRevisions": {
+            "items": {
+              "$ref": "#/components/schemas/PromptRevisionAudit"
+            },
+            "type": "array",
+            "title": "Promptrevisions",
+            "description": "All prompt revisions for this campaign"
+          },
+          "contentOutputs": {
+            "items": {
+              "$ref": "#/components/schemas/ContentOutputAudit"
+            },
+            "type": "array",
+            "title": "Contentoutputs",
+            "description": "All content generator outputs for this campaign"
+          },
+          "totalRevisions": {
+            "type": "integer",
+            "title": "Totalrevisions",
+            "description": "Total revision attempts",
+            "default": 0
+          },
+          "successfulRevisions": {
+            "type": "integer",
+            "title": "Successfulrevisions",
+            "description": "Revisions that passed quality gates",
+            "default": 0
+          },
+          "modelsUsed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Modelsused",
+            "description": "Distinct LLM models used across revisions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "campaignId"
+        ],
+        "title": "CampaignGenerationAudit",
+        "description": "Full audit trail for a campaign's content generation."
+      },
       "CampaignPerformanceResponse": {
         "properties": {
           "campaignId": {
@@ -14466,6 +14790,107 @@
         ],
         "title": "ContentImageResponse",
         "description": "Schema for content image response."
+      },
+      "ContentOutputAudit": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Output ID"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID for tracing"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status"
+          },
+          "generationStatus": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generationstatus",
+            "description": "Status from post-generator"
+          },
+          "totalPosts": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Totalposts",
+            "description": "Total posts in output"
+          },
+          "postsPersisted": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postspersisted",
+            "description": "Posts successfully persisted"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error message if failed"
+          },
+          "generatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generatedat",
+            "description": "When generation completed"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "When output was received"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "correlationId",
+          "campaignId",
+          "status",
+          "createdAt"
+        ],
+        "title": "ContentOutputAudit",
+        "description": "Audit view of a content generator output."
       },
       "ContentPromptResponse": {
         "properties": {
@@ -17505,6 +17930,64 @@
         "title": "PostGenerationStatus",
         "description": "Status of a single post's generation.\n\nProvides granular status for text and image generation per post."
       },
+      "PostGenerationTrace": {
+        "properties": {
+          "postId": {
+            "type": "string",
+            "title": "Postid",
+            "description": "Post ID"
+          },
+          "campaignId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "brandId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "promptRevisions": {
+            "items": {
+              "$ref": "#/components/schemas/PromptRevisionAudit"
+            },
+            "type": "array",
+            "title": "Promptrevisions",
+            "description": "Prompt revisions related to this post's campaign"
+          },
+          "contentOutput": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ContentOutputAudit"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Content generator output for this post's campaign"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postId"
+        ],
+        "title": "PostGenerationTrace",
+        "description": "Generation trace for a single post."
+      },
       "PostPerformanceMetric": {
         "properties": {
           "postId": {
@@ -18423,6 +18906,140 @@
           "version": "1.0.0"
         }
       },
+      "PromptRevisionAudit": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Prompt revision ID"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "outputIndex": {
+            "type": "integer",
+            "title": "Outputindex",
+            "description": "Position in output set (0-11)"
+          },
+          "revisionNum": {
+            "type": "integer",
+            "title": "Revisionnum",
+            "description": "Revision attempt number (0 = initial)"
+          },
+          "llmModel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llmmodel",
+            "description": "LLM model used"
+          },
+          "generationTimeMs": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generationtimems",
+            "description": "Generation time in milliseconds"
+          },
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether revision passed quality gates"
+          },
+          "averageQuality": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Averagequality",
+            "description": "Average quality score (0.0-1.0)"
+          },
+          "diversityContribution": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diversitycontribution",
+            "description": "Diversity contribution score (0.0-1.0)"
+          },
+          "qualityViolations": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualityviolations",
+            "description": "List of quality violations"
+          },
+          "critique": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Critique",
+            "description": "Diff-style critique"
+          },
+          "imagePromptJson": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Imagepromptjson",
+            "description": "Image prompt snapshot"
+          },
+          "captionJson": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Captionjson",
+            "description": "Caption snapshot"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "When revision was created"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "campaignId",
+          "outputIndex",
+          "revisionNum",
+          "success",
+          "createdAt"
+        ],
+        "title": "PromptRevisionAudit",
+        "description": "Audit view of a single prompt revision attempt."
+      },
       "PromptsListResponse": {
         "properties": {
           "prompts": {
@@ -18555,6 +19172,166 @@
         ],
         "title": "PulseAckResponse",
         "description": "Response for successful pulse processing."
+      },
+      "RecentGenerationEntry": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Output ID"
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "brandId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandid",
+            "description": "Brand ID"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Processing status"
+          },
+          "generationStatus": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generationstatus",
+            "description": "Status from post-generator"
+          },
+          "totalPosts": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Totalposts",
+            "description": "Total posts in output"
+          },
+          "postsPersisted": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postspersisted",
+            "description": "Posts persisted"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage",
+            "description": "Error if failed"
+          },
+          "modelsUsed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Modelsused",
+            "description": "LLM models used in revisions for this campaign"
+          },
+          "generatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generatedat",
+            "description": "Generation timestamp"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "When output was received"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "correlationId",
+          "campaignId",
+          "status",
+          "createdAt"
+        ],
+        "title": "RecentGenerationEntry",
+        "description": "A single entry in the recent generations list."
+      },
+      "RecentGenerationsResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/RecentGenerationEntry"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "List of recent generation entries"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total",
+            "description": "Total matching entries"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Page size"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Page offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "RecentGenerationsResponse",
+        "description": "Paginated response for recent generations."
       },
       "RegenerateResponse": {
         "properties": {

@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1121] - 2026-02-18
+
+### Changes
+- feat: add admin audit trail endpoints for generation traceability (#2940) (#3188)
+
+**Source:** project-beta-api@f4987e74
+
 ## [v0.7.1120] - 2026-02-18
 
 ### Changes
