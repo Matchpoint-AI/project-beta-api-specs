@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1119] - 2026-02-18
+
+### Changes
+- fix: resolve schema drift — register RefreshToken model and add scene_type migration (#3216)
+
+**Source:** project-beta-api@480c50f6
+
 ## [v0.7.1118] - 2026-02-18
 
 ### Changes
