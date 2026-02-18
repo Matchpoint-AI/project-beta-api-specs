@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1137] - 2026-02-18
+
+### Changes
+- fix: handle all ProgrammingError and OperationalError in get_user_integrations (#3219) (#3220)
+
+**Source:** project-beta-api@f32a40fb
+
 ## [v0.7.1136] - 2026-02-18
 
 ### Changes
