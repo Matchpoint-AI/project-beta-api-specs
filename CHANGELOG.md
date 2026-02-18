@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1143] - 2026-02-18
+
+### Changes
+- fix: support cookie-based JWT tokens in DELETE /sessions logout (#3228) (#3229)
+
+**Source:** project-beta-api@332be639
+
 ## [v0.7.1142] - 2026-02-18
 
 ### Changes
