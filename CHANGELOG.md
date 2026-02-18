@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1115] - 2026-02-18
+
+### Changes
+- fix: add readiness and dependency health check endpoints (#3085) (#3181)
+
+**Source:** project-beta-api@838253f5
+
 ## [v0.7.1114] - 2026-02-18
 
 ### Changes

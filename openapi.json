@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1114"
+    "version": "0.7.1115"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -5515,8 +5515,48 @@
           "health"
         ],
         "summary": "Health Check",
-        "description": "Health check endpoint with database write verification.\n\nPerforms comprehensive database health check:\n1. Writes a test record to verify DB accepts writes\n2. Reads it back to verify data persistence\n3. Deletes it to clean up\n\nReturns:\n    200 OK with {\"status\": \"healthy\", \"database\": {...}, \"version\": {...}} if all checks pass\n    503 Service Unavailable with error details if any check fails",
+        "description": "Liveness probe -- lightweight database write verification.\n\nPerforms database health check:\n1. Writes a test record to verify DB accepts writes\n2. Reads it back to verify data persistence\n3. Deletes it to clean up\n\nReturns:\n    200 OK with {\"status\": \"healthy\", ...} if all checks pass\n    503 Service Unavailable with error details if any check fails",
         "operationId": "health_check_api_v2_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/health/ready": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Readiness Check",
+        "description": "Readiness probe -- checks DB + Redis + Pub/Sub.\n\nEach dependency check is independent and wrapped in try/except.\nOne failing dependency does not crash the entire check.\n\nReturns:\n    200 OK with {\"status\": \"ready\"} if all core deps are healthy\n    503 Service Unavailable with {\"status\": \"not_ready\"} if any is down",
+        "operationId": "readiness_check_api_v2_health_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/health/dependencies": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Dependencies Check",
+        "description": "Dependency health endpoint -- checks ALL external dependencies.\n\nFor debugging and observability only. NOT for probes.\nIncludes slow external API checks (OpenRouter, FAL, Firecrawl, GCS).\nEach check has an individual timeout.\n\nReturns:\n    200 OK with all dependency statuses (always 200 for debugging)",
+        "operationId": "dependencies_check_api_v2_health_dependencies_get",
         "responses": {
           "200": {
             "description": "Successful Response",
