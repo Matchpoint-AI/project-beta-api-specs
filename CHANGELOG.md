@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1144] - 2026-02-18
+
+### Changes
+- fix: convert brand name IntegrityError to ValueError in update() (#3593) (#3231)
+
+**Source:** project-beta-api@d1ddfb8a
+
 ## [v0.7.1143] - 2026-02-18
 
 ### Changes
