@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1127] - 2026-02-18
+
+### Changes
+- fix: add POST /auth/reset-password compat endpoint (#3207) (#3212)
+
+**Source:** project-beta-api@e6e0ae46
+
 ## [v0.7.1126] - 2026-02-18
 
 ### Changes

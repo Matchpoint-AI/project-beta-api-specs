@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1126"
+    "version": "0.7.1127"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -965,6 +965,54 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/auth/reset-password": {
+      "post": {
+        "tags": [
+          "auth-session"
+        ],
+        "summary": "Reset Password",
+        "description": "Complete password reset using token (compatibility endpoint).\n\nThis endpoint provides backward compatibility for frontend code that\ncalls POST /auth/reset-password with {token, newPassword} in the body.\nThe canonical RMM L2 endpoint is PUT /passwords/{token} in user_controller.\n\nArgs:\n    request: Password reset request with token and new password\n    user_service: Injected user service\n    audit_service: Injected audit service\n\nReturns:\n    PasswordResetUpdateResponse with success message\n\nRaises:\n    HTTPException 400: If the token is invalid or expired\n    HTTPException 500: On unexpected server errors",
+        "operationId": "reset_password_api_v2_auth_reset_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetCompatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordResetUpdateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired reset token"
           },
           "500": {
             "description": "Internal server error"
@@ -17719,6 +17767,30 @@
           "offset"
         ],
         "title": "PaginatedResponse[SystemConfigResponse]"
+      },
+      "PasswordResetCompatRequest": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Token",
+            "description": "Password reset token from email link"
+          },
+          "newPassword": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Newpassword",
+            "description": "New password. Must contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "newPassword"
+        ],
+        "title": "PasswordResetCompatRequest",
+        "description": "Schema for backward-compatible POST /auth/reset-password endpoint.\n\nIssue #3207: The RMM L2 endpoint PUT /passwords/{token} takes the token\nin the URL path and new_password in the body. The legacy frontend sends\nboth token and newPassword in the request body.\n\nThis compat schema accepts both fields from the body so the compat shim\ncan extract them and forward to the service layer."
       },
       "PasswordResetCreateRequest": {
         "properties": {
