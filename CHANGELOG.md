@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1129] - 2026-02-18
+
+### Changes
+- feat: wire EngagementFeedbackProcessor to trigger on new performance data (#3158)
+
+**Source:** project-beta-api@0dd39e77
+
 ## [v0.7.1128] - 2026-02-18
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1128"
+    "version": "0.7.1129"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -6376,6 +6376,69 @@
           },
           "401": {
             "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/ml/learning/engagement/{brand_id}": {
+      "post": {
+        "tags": [
+          "learning"
+        ],
+        "summary": "Manually trigger engagement feedback processing",
+        "description": "Manually trigger the EngagementFeedbackProcessor for a brand. Processes unprocessed engagement data and updates Thompson Sampling posteriors in brand_learning_state.",
+        "operationId": "process_engagement_for_brand_api_v2_ml_learning_engagement__brand_id__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID to process engagement data for",
+              "examples": [
+                "brand-123",
+                "abc-def-ghi"
+              ],
+              "title": "Brand Id"
+            },
+            "description": "Brand ID to process engagement data for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Engagement feedback processing completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchProcessingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid brand ID"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "404": {
+            "description": "Brand not found"
           },
           "422": {
             "description": "Validation Error",
