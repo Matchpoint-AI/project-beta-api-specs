@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1135"
+    "version": "0.7.1136"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -935,6 +935,36 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/admin/purge/expired/deletions": {
+      "post": {
+        "tags": [
+          "admin-purge"
+        ],
+        "summary": "Purge Expired Deletions",
+        "description": "Permanently purge expired soft-deleted user data (GDPR compliance).\n\nFinds all users whose soft-delete grace period (30 days) has expired\nand permanently removes all their data from the database.\n\nIssue #3127: Required for GDPR Article 17 compliance.",
+        "operationId": "purge_expired_deletions_api_v2_admin_purge_expired_deletions_post",
+        "responses": {
+          "200": {
+            "description": "Purge cycle completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurgeExpiredDeletionsResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/auth/forgot-password": {
@@ -19701,6 +19731,35 @@
         ],
         "title": "PulseAckResponse",
         "description": "Response for successful pulse processing."
+      },
+      "PurgeExpiredDeletionsResponse": {
+        "properties": {
+          "users_purged": {
+            "type": "integer",
+            "title": "Users Purged",
+            "description": "Number of users permanently purged"
+          },
+          "users_failed": {
+            "type": "integer",
+            "title": "Users Failed",
+            "description": "Number of users that failed to purge",
+            "default": 0
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors",
+            "description": "Error messages for failed purges"
+          }
+        },
+        "type": "object",
+        "required": [
+          "users_purged"
+        ],
+        "title": "PurgeExpiredDeletionsResponse",
+        "description": "Response schema for the GDPR purge endpoint."
       },
       "RecentGenerationEntry": {
         "properties": {

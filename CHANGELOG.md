@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1136] - 2026-02-18
+
+### Changes
+- fix: add GDPR purge service for expired soft-deleted data (#3127) (#3137)
+
+**Source:** project-beta-api@ff359c27
+
 ## [v0.7.1135] - 2026-02-18
 
 ### Changes
