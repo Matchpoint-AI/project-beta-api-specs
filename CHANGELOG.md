@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1141] - 2026-02-18
+
+### Changes
+- fix: rollback session after ProgrammingError/OperationalError in get_user_integrations (#3144) (#3226)
+
+**Source:** project-beta-api@a375381d
+
 ## [v0.7.1140] - 2026-02-18
 
 ### Changes
