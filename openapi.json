@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1121"
+    "version": "0.7.1122"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -5273,6 +5273,33 @@
               "title": "Brand Id"
             },
             "description": "Brand ID to get models for"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum models to return",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum models to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of models to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of models to skip"
           }
         ],
         "responses": {
@@ -5281,11 +5308,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ContextualBanditModelResponse"
-                  },
-                  "title": "Response 200 Get Contextual Bandit Models Api V2 Brands  Brand Id  Contextual Bandit Models Get"
+                  "$ref": "#/components/schemas/PaginatedResponse_ContextualBanditModelResponse_"
                 }
               }
             }
@@ -6347,6 +6370,33 @@
               "title": "Brand Id"
             },
             "description": "Brand ID to get learning state for"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum states to return",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum states to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of states to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of states to skip"
           }
         ],
         "responses": {
@@ -6355,11 +6405,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BrandLearningStateResponse"
-                  },
-                  "title": "Response 200 Get Learning State Api V2 Brands  Brand Id  Learning State Get"
+                  "$ref": "#/components/schemas/PaginatedResponse_BrandLearningStateResponse_"
                 }
               }
             }
@@ -17446,6 +17492,44 @@
         "title": "OutputAckResponse",
         "description": "Response for successful output processing."
       },
+      "PaginatedResponse_BrandLearningStateResponse_": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/BrandLearningStateResponse"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "List of items for the current page"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total",
+            "description": "Total number of items matching the query"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Maximum number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Number of items skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "PaginatedResponse[BrandLearningStateResponse]"
+      },
       "PaginatedResponse_BrandResponse_": {
         "properties": {
           "data": {
@@ -17521,6 +17605,44 @@
           "offset"
         ],
         "title": "PaginatedResponse[CampaignResponse]"
+      },
+      "PaginatedResponse_ContextualBanditModelResponse_": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ContextualBanditModelResponse"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "List of items for the current page"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total",
+            "description": "Total number of items matching the query"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Maximum number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Number of items skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "PaginatedResponse[ContextualBanditModelResponse]"
       },
       "PaginatedResponse_PromptEntry_": {
         "properties": {

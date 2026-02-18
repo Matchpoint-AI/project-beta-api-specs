@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1122] - 2026-02-18
+
+### Changes
+- fix: standardize ML domain list endpoints with pagination envelope (#3092) (#3177)
+
+**Source:** project-beta-api@8971c30e
+
 ## [v0.7.1121] - 2026-02-18
 
 ### Changes
