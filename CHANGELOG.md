@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1110] - 2026-02-18
+
+### Changes
+- fix: remove user auth from Prometheus metrics endpoint (#3080) (#3176)
+
+**Source:** project-beta-api@82a95746
+
 ## [v0.7.1109] - 2026-02-18
 
 ### Changes

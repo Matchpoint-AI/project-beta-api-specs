@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1109"
+    "version": "0.7.1110"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -12,28 +12,67 @@
           "admin-config"
         ],
         "summary": "List All Config",
-        "description": "List all system configuration entries.",
+        "description": "List all system configuration entries.\n\nIssue #3093: Returns a PaginatedResponse with data, total, limit, offset\ninstead of the legacy SystemConfigListResponse wrapper.",
         "operationId": "list_all_config_api_v2_admin_config_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum configs to return",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "Maximum configs to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of configs to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of configs to skip"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "All config entries returned",
+            "description": "Paginated list of config entries returned",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SystemConfigListResponse"
+                  "$ref": "#/components/schemas/PaginatedResponse_SystemConfigResponse_"
                 }
               }
             }
           },
           "403": {
             "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v2/admin/config/categories/{category}": {
@@ -42,7 +81,7 @@
           "admin-config"
         ],
         "summary": "List Config By Category",
-        "description": "List system configuration entries by category.",
+        "description": "List system configuration entries by category.\n\nIssue #3093: Returns a PaginatedResponse with data, total, limit, offset\ninstead of the legacy SystemConfigListResponse wrapper.",
         "operationId": "list_config_by_category_api_v2_admin_config_categories__category__get",
         "security": [
           {
@@ -60,15 +99,42 @@
               "title": "Category"
             },
             "description": "Config category"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum configs to return",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "Maximum configs to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of configs to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of configs to skip"
           }
         ],
         "responses": {
           "200": {
-            "description": "Config entries for category returned",
+            "description": "Paginated config entries for category returned",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SystemConfigListResponse"
+                  "$ref": "#/components/schemas/PaginatedResponse_SystemConfigResponse_"
                 }
               }
             }
@@ -535,28 +601,67 @@
           "admin-prompts"
         ],
         "summary": "Get Prompts Ecosystem",
-        "description": "Get catalog of all prompts used across the platform.\n\nReturns static metadata about each prompt including which service\nowns it, what it does, and where it's located. Phase 3 will add\nedit capability for prompts marked as editable.",
+        "description": "Get catalog of all prompts used across the platform.\n\nIssue #3093: Returns a PaginatedResponse with data, total, limit, offset\ninstead of the legacy PromptsEcosystemResponse wrapper.\n\nReturns static metadata about each prompt including which service\nowns it, what it does, and where it's located. Phase 3 will add\nedit capability for prompts marked as editable.",
         "operationId": "get_prompts_ecosystem_api_v2_admin_prompts_ecosystem_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Maximum prompts to return",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "Maximum prompts to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of prompts to skip",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of prompts to skip"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Prompts ecosystem catalog returned",
+            "description": "Paginated prompts ecosystem catalog returned",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PromptsEcosystemResponse"
+                  "$ref": "#/components/schemas/PaginatedResponse_PromptEntry_"
                 }
               }
             }
           },
           "403": {
             "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v2/auth/forgot-password": {
@@ -6287,7 +6392,7 @@
           "metrics"
         ],
         "summary": "Prometheus Metrics",
-        "description": "Returns Prometheus-compatible metrics for monitoring. Requires authentication to prevent exposure of internal system information.",
+        "description": "Returns Prometheus-compatible metrics for monitoring. This endpoint is unauthenticated to allow Prometheus scraping.",
         "operationId": "get_metrics_api_v2_metrics_get",
         "responses": {
           "200": {
@@ -6295,16 +6400,8 @@
             "content": {
               "text/plain": {}
             }
-          },
-          "401": {
-            "description": "Authentication required"
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v2/brands/{brand_id}/learning/health": {
@@ -16755,6 +16852,82 @@
         ],
         "title": "PaginatedResponse[CampaignResponse]"
       },
+      "PaginatedResponse_PromptEntry_": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/PromptEntry"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "List of items for the current page"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total",
+            "description": "Total number of items matching the query"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Maximum number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Number of items skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "PaginatedResponse[PromptEntry]"
+      },
+      "PaginatedResponse_SystemConfigResponse_": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/SystemConfigResponse"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "List of items for the current page"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total",
+            "description": "Total number of items matching the query"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Maximum number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "Number of items skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "PaginatedResponse[SystemConfigResponse]"
+      },
       "PasswordResetCreateRequest": {
         "properties": {
           "email": {
@@ -17992,30 +18165,6 @@
           ],
           "version": "1.0.0"
         }
-      },
-      "PromptsEcosystemResponse": {
-        "properties": {
-          "prompts": {
-            "items": {
-              "$ref": "#/components/schemas/PromptEntry"
-            },
-            "type": "array",
-            "title": "Prompts",
-            "description": "All prompts in the platform"
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total",
-            "description": "Total prompt count"
-          }
-        },
-        "type": "object",
-        "required": [
-          "prompts",
-          "total"
-        ],
-        "title": "PromptsEcosystemResponse",
-        "description": "Response schema for the prompts ecosystem catalog."
       },
       "PromptsListResponse": {
         "properties": {
@@ -19889,30 +20038,6 @@
         ],
         "title": "StuckProcessesResponse",
         "description": "Response schema for GET /admin/health/processes/stuck."
-      },
-      "SystemConfigListResponse": {
-        "properties": {
-          "configs": {
-            "items": {
-              "$ref": "#/components/schemas/SystemConfigResponse"
-            },
-            "type": "array",
-            "title": "Configs",
-            "description": "List of config entries"
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total",
-            "description": "Total count"
-          }
-        },
-        "type": "object",
-        "required": [
-          "configs",
-          "total"
-        ],
-        "title": "SystemConfigListResponse",
-        "description": "Response schema for list of config entries."
       },
       "SystemConfigResponse": {
         "properties": {
