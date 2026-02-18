@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1142] - 2026-02-18
+
+### Changes
+- refactor: extract mutation methods from PostRepository into PostMutationRepository (#3100)
+
+**Source:** project-beta-api@4cf77e19
+
 ## [v0.7.1141] - 2026-02-18
 
 ### Changes
