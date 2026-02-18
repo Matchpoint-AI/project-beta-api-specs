@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1125] - 2026-02-18
+
+### Changes
+- fix: bridge structlog and stdlib correlation IDs (#3082) (#3183)
+
+**Source:** project-beta-api@0b640533
+
 ## [v0.7.1124] - 2026-02-18
 
 ### Changes
