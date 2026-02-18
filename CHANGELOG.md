@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1113] - 2026-02-18
+
+### Changes
+- feat: Add ETag/Last-Modified cache validation middleware (#3009) (#3187)
+
+**Source:** project-beta-api@90728144
+
 ## [v0.7.1112] - 2026-02-18
 
 ### Changes
