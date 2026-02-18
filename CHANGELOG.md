@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1116] - 2026-02-18
+
+### Changes
+- fix: Add user-friendly error messages to API responses (#3084) (#3182)
+
+**Source:** project-beta-api@647ac767
+
 ## [v0.7.1115] - 2026-02-18
 
 ### Changes

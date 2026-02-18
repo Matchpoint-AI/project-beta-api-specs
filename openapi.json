@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1115"
+    "version": "0.7.1116"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -5433,6 +5433,65 @@
         }
       }
     },
+    "/api/v2/admin/data/retention/cleanup": {
+      "post": {
+        "tags": [
+          "admin-data-retention"
+        ],
+        "summary": "Run Retention Cleanup",
+        "description": "Trigger data retention cleanup (admin-only).\n\nRuns all retention cleanup operations:\n- Deletes crawled pages older than configured retention period\n- Deletes expired/blacklisted tokens past retention period\n- Deletes expired/revoked sessions past retention period\n- Archives audit logs older than configured retention period\n\nUser-managed content (campaigns, posts) is NOT affected.\n\nReturns:\n    200 with cleanup summary if successful\n    500 with error details if cleanup fails",
+        "operationId": "run_retention_cleanup_api_v2_admin_data_retention_cleanup_post",
+        "responses": {
+          "200": {
+            "description": "Cleanup completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "500": {
+            "description": "Cleanup failed"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/data/retention/config": {
+      "get": {
+        "tags": [
+          "admin-data-retention"
+        ],
+        "summary": "Get Retention Config",
+        "description": "Get current data retention configuration (admin-only).\n\nReturns the configured retention periods for each data category.",
+        "operationId": "get_retention_config_api_v2_admin_data_retention_config_get",
+        "responses": {
+          "200": {
+            "description": "Current retention configuration",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/api/v2/designer/prompts": {
       "post": {
         "tags": [
@@ -5492,6 +5551,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DesignerOutputAckResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/ml/engagement/ingest": {
+      "post": {
+        "tags": [
+          "ml",
+          "engagement"
+        ],
+        "summary": "Trigger engagement data ingestion",
+        "description": "Manually trigger ingestion of engagement metrics from social media platforms for published posts. Issue #3149.",
+        "operationId": "trigger_engagement_ingestion_api_v2_ml_engagement_ingest_post",
+        "parameters": [
+          {
+            "name": "staleness_hours",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 168,
+              "minimum": 1,
+              "description": "Skip posts with metrics newer than this (hours)",
+              "default": 6,
+              "title": "Staleness Hours"
+            },
+            "description": "Skip posts with metrics newer than this (hours)"
+          },
+          {
+            "name": "batch_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Maximum posts to process per run",
+              "default": 50,
+              "title": "Batch Size"
+            },
+            "description": "Maximum posts to process per run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionTriggerResponse"
                 }
               }
             }
@@ -15947,6 +16069,45 @@
         "title": "ImageGenerationStatus",
         "description": "Image generation status values for individual posts."
       },
+      "IngestionTriggerResponse": {
+        "properties": {
+          "totalPosts": {
+            "type": "integer",
+            "title": "Totalposts",
+            "description": "Total posts found needing metrics",
+            "default": 0
+          },
+          "processedCount": {
+            "type": "integer",
+            "title": "Processedcount",
+            "description": "Posts successfully processed",
+            "default": 0
+          },
+          "failedCount": {
+            "type": "integer",
+            "title": "Failedcount",
+            "description": "Posts that failed processing",
+            "default": 0
+          },
+          "skippedCount": {
+            "type": "integer",
+            "title": "Skippedcount",
+            "description": "Posts skipped (no access token, etc.)",
+            "default": 0
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors",
+            "description": "Error messages (max 10)"
+          }
+        },
+        "type": "object",
+        "title": "IngestionTriggerResponse",
+        "description": "Response schema for engagement ingestion trigger."
+      },
       "InitializeContextualBanditRequest": {
         "properties": {
           "arms": {
@@ -17480,6 +17641,18 @@
           "platform": {
             "type": "string",
             "title": "Platform"
+          },
+          "sceneType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenetype",
+            "description": "Scene type from originating post (Issue #3149)"
           },
           "impressions": {
             "anyOf": [
