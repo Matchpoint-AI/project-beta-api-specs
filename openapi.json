@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1127"
+    "version": "0.7.1128"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -8730,6 +8730,67 @@
             "HTTPBearer": []
           }
         ]
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete Current User",
+        "description": "Delete current user account (GDPR Article 17).\n\nSchedules account deletion with a 30-day grace period.\nDuring the grace period, the user can cancel the deletion\nvia POST /users/me/deletion/cancellations.\n\nAfter scheduling deletion:\n- User data is soft-deleted (deleted_at timestamp set)\n- Current access token is blacklisted (user is logged out)\n- Permanent deletion occurs after 30 days\n\nRMM Level 2 Compliance:\n- DELETE to /users/me deletes the user resource\n- HTTP verb (DELETE) indicates delete action\n- Uses /me convention for current authenticated user\n- Returns 202 Accepted (deletion is scheduled, not immediate)\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    credentials: HTTP Bearer token credentials from request header\n    request: Optional deletion request with reason\n    user_service: Injected user service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    AccountDeletionResponse with deletion_date (30 days from now)\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 409: If account is already scheduled for deletion\n    HTTPException 500: If deletion scheduling fails",
+        "operationId": "delete_current_user_api_v2_users_me_delete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AccountDeletionRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Account deletion scheduled with 30-day grace period",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountDeletionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required or token invalid"
+          },
+          "409": {
+            "description": "Account is already scheduled for deletion"
+          },
+          "500": {
+            "description": "Internal server error during deletion"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/users/me/verifications": {
@@ -8759,6 +8820,42 @@
           },
           "500": {
             "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/users/me/deletion/cancellations": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Cancel User Deletion",
+        "description": "Cancel a pending account deletion during the grace period.\n\nRestores the user's account if deletion was previously scheduled\nand the 30-day grace period has not yet elapsed.\n\nRMM Level 2 Compliance:\n- POST to /users/me/deletion/cancellations creates a cancellation resource\n- HTTP verb (POST) indicates create action\n- Uses /me convention for current authenticated user\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    user_service: Injected user service\n\nReturns:\n    DeletionCancelResponse with confirmation message\n\nRaises:\n    HTTPException 400: If no pending deletion exists\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 500: If cancellation fails",
+        "operationId": "cancel_user_deletion_api_v2_users_me_deletion_cancellations_post",
+        "responses": {
+          "200": {
+            "description": "Account deletion cancelled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletionCancelResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No pending deletion to cancel"
+          },
+          "401": {
+            "description": "Authentication required or token invalid"
+          },
+          "500": {
+            "description": "Internal server error during cancellation"
           }
         },
         "security": [
@@ -9229,6 +9326,54 @@
   },
   "components": {
     "schemas": {
+      "AccountDeletionRequest": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Optional reason for account deletion (for internal tracking)"
+          }
+        },
+        "type": "object",
+        "title": "AccountDeletionRequest",
+        "description": "Schema for account deletion request (GDPR Article 17).\n\nFor DELETE /api/v2/users/me endpoint.\nAccepts an optional reason for deletion tracking."
+      },
+      "AccountDeletionResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "User-friendly deletion confirmation message",
+            "default": "Account deletion scheduled. Your data will be permanently deleted after the grace period."
+          },
+          "deletionDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Deletiondate",
+            "description": "Date when account data will be permanently deleted (30 days from now)"
+          },
+          "gracePeriodDays": {
+            "type": "integer",
+            "title": "Graceperioddays",
+            "description": "Number of days before permanent deletion",
+            "default": 30
+          }
+        },
+        "type": "object",
+        "required": [
+          "deletionDate"
+        ],
+        "title": "AccountDeletionResponse",
+        "description": "Schema for account deletion response (GDPR Article 17).\n\nReturns confirmation of scheduled deletion with grace period details.\nHTTP 202 Accepted - deletion is scheduled, not immediate."
+      },
       "AgenticContextualBanditState": {
         "properties": {
           "recommended_arm": {
@@ -15952,6 +16097,19 @@
         ],
         "title": "DayContent",
         "description": "Schema for daily content."
+      },
+      "DeletionCancelResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "User-friendly cancellation confirmation message",
+            "default": "Account deletion cancelled. Your account has been restored."
+          }
+        },
+        "type": "object",
+        "title": "DeletionCancelResponse",
+        "description": "Schema for deletion cancellation response.\n\nFor POST /api/v2/users/me/deletion_cancellations endpoint.\nReturns confirmation that the scheduled deletion has been cancelled."
       },
       "DesignerOutputAckResponse": {
         "properties": {

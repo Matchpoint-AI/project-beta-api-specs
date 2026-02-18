@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1128] - 2026-02-18
+
+### Changes
+- feat: add DELETE /users/me endpoint with 30-day grace period (#3123) (#3136)
+
+**Source:** project-beta-api@c34d4642
+
 ## [v0.7.1127] - 2026-02-18
 
 ### Changes
