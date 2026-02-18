@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1114] - 2026-02-18
+
+### Changes
+- fix: Add content quality validation gate before publishing (#2915) (#3195)
+
+**Source:** project-beta-api@679ebd83
+
 ## [v0.7.1113] - 2026-02-18
 
 ### Changes
