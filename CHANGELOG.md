@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1133] - 2026-02-18
+
+### Changes
+- feat: add ContentPatternExtractorService for high-performing post analysis (#3157)
+
+**Source:** project-beta-api@b5a925ec
+
 ## [v0.7.1132] - 2026-02-18
 
 ### Changes
