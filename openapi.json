@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1119"
+    "version": "0.7.1120"
   },
   "paths": {
     "/api/v2/admin/config": {
@@ -11862,6 +11862,20 @@
             "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'.",
             "default": "1080p"
           },
+          "aiDisclosureEnabled": {
+            "type": "boolean",
+            "title": "AI Disclosure Enabled",
+            "description": "Whether AI-generated content disclosure is appended to captions. Required for FTC/EU AI Act compliance. Default: True.",
+            "default": true
+          },
+          "aiDisclosureText": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "AI Disclosure Text",
+            "description": "Text appended to post captions for AI content disclosure. Configurable per campaign for brand voice consistency.",
+            "default": "Created with AI assistance"
+          },
           "startDate": {
             "anyOf": [
               {
@@ -12337,6 +12351,20 @@
             "title": "Video Resolution",
             "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'.",
             "default": "1080p"
+          },
+          "aiDisclosureEnabled": {
+            "type": "boolean",
+            "title": "AI Disclosure Enabled",
+            "description": "Whether AI-generated content disclosure is appended to captions. Required for FTC/EU AI Act compliance. Default: True.",
+            "default": true
+          },
+          "aiDisclosureText": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "AI Disclosure Text",
+            "description": "Text appended to post captions for AI content disclosure. Configurable per campaign for brand voice consistency.",
+            "default": "Created with AI assistance"
           },
           "startDate": {
             "anyOf": [
@@ -13101,6 +13129,32 @@
             ],
             "title": "Video Resolution",
             "description": "Video resolution (e.g., '720p', '1080p'). Only used when campaign_type is 'video'."
+          },
+          "aiDisclosureEnabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "AI Disclosure Enabled",
+            "description": "Whether AI-generated content disclosure is appended to captions."
+          },
+          "aiDisclosureText": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "AI Disclosure Text",
+            "description": "Text appended to post captions for AI content disclosure."
           },
           "startDate": {
             "anyOf": [

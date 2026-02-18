@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1120] - 2026-02-18
+
+### Changes
+- feat: add AI content disclosure for FTC/EU AI Act compliance (#3108) (#3133)
+
+**Source:** project-beta-api@530490b9
+
 ## [v0.7.1119] - 2026-02-18
 
 ### Changes
