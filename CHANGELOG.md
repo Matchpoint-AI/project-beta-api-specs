@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1118] - 2026-02-18
+
+### Changes
+- fix: add actions:read permission and continue-on-error for SARIF upload (#3200) (#3204)
+
+**Source:** project-beta-api@6dcd63e9
+
 ## [v0.7.1117] - 2026-02-18
 
 ### Changes
