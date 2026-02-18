@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1122"
+    "version": "0.7.1123"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -5993,7 +5993,7 @@
           "integrations"
         ],
         "summary": "Get Integration Redirects",
-        "description": "Get OAuth redirect URI for platform integration.\n\nThis is the RMM-2 compliant endpoint that replaces /integrations/redirect-uri.\nUses single-word resource name 'redirects' instead of hyphenated 'redirect-uri'.",
+        "description": "Get OAuth redirect URI for platform integration.\n\nThis is the RMM-2 compliant endpoint that replaces /integrations/redirect-uri.\nUses single-word resource name 'redirects' instead of hyphenated 'redirect-uri'.\n\nFor Instagram, constructs the proper Meta OAuth authorization URL\n(https://api.instagram.com/oauth/authorize) with client_id, redirect_uri,\nscope, response_type, and state parameters.",
         "operationId": "get_integration_redirects_api_v2_integrations_redirects_post",
         "requestBody": {
           "content": {

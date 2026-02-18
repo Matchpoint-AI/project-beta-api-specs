@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1123] - 2026-02-18
+
+### Changes
+- fix: Instagram OAuth redirect constructs proper Meta authorization URL (#3168) (#3172)
+
+**Source:** project-beta-api@63b6c59f
+
 ## [v0.7.1122] - 2026-02-18
 
 ### Changes
