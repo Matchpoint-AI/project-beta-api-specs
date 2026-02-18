@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1132] - 2026-02-18
+
+### Changes
+- fix: add PUT /users/me endpoint for profile editing (#3205) (#3208)
+
+**Source:** project-beta-api@e0a011ef
+
 ## [v0.7.1131] - 2026-02-18
 
 ### Changes
