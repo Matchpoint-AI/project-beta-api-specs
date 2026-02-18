@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1111] - 2026-02-18
+
+### Changes
+- fix: Prevent direct status bypass on PUT /brands/{id} (#3184) (#3190)
+
+**Source:** project-beta-api@8947d461
+
 ## [v0.7.1110] - 2026-02-18
 
 ### Changes
