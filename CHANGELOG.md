@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1146] - 2026-02-18
+
+### Changes
+- fix: return 503 when Instagram OAuth client_id is not configured (#3607) (#3233)
+
+**Source:** project-beta-api@384efe19
+
 ## [v0.7.1145] - 2026-02-18
 
 ### Changes
