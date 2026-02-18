@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1117] - 2026-02-18
+
+### Changes
+- feat: add RS256 key rotation and startup validation (Issue #3016) (#3164)
+
+**Source:** project-beta-api@12ca70d1
+
 ## [v0.7.1116] - 2026-02-18
 
 ### Changes
