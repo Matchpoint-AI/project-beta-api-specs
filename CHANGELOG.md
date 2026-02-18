@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1108] - 2026-02-18
+
+### Changes
+- fix: Fix DELETE /sessions 401 on logout (#3186) (#3191)
+
+**Source:** project-beta-api@4b31e4ee
+
 ## [v0.7.1107] - 2026-02-17
 
 ### Changes
