@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1135] - 2026-02-18
+
+### Changes
+- fix: inject APP_VERSION and GIT_SHA into Docker image at build time (#3221) (#3222)
+
+**Source:** project-beta-api@7d0fa4ac
+
 ## [v0.7.1134] - 2026-02-18
 
 ### Changes
