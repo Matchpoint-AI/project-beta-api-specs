@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1112] - 2026-02-18
+
+### Changes
+- fix: return empty list on schema drift in GET /api/v2/integrations (#3179) (#3180)
+
+**Source:** project-beta-api@7f0f14f2
+
 ## [v0.7.1111] - 2026-02-18
 
 ### Changes
