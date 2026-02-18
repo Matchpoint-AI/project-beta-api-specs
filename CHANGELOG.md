@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1124] - 2026-02-18
+
+### Changes
+- fix: Extend audit logging with auth events and admin actions (#3083) (#3185)
+
+**Source:** project-beta-api@46e5fc99
+
 ## [v0.7.1123] - 2026-02-18
 
 ### Changes

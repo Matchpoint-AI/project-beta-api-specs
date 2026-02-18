@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1123"
+    "version": "0.7.1124"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -1185,7 +1185,7 @@
           "brands"
         ],
         "summary": "Get Brand",
-        "description": "Get brand information.\n\nReturns the brand details and status.\nReturns 404 if brand doesn't exist.\n\nRMM-2 Compliant Pattern:\n- Use GET /brands/{brand_id} for basic brand data\n- Use GET /brands/{brand_id}?include=files to explicitly request file URLs\n- Replaces non-compliant pattern: GET /brands/{brand_id}/with-files (hyphenated segment)\n\nQuery Parameters:\n- include: Optional comma-separated list of additional data to include\n          Supported values: 'files' (includes brand_guidelines_url, logo_url)\n          Example: ?include=files\n\nNote: File URLs (brand_guidelines_url, logo_url) are always included in the\nresponse for backward compatibility. The include parameter is provided to\ndemonstrate RMM-2 best practices using query parameters instead of hyphenated\npath segments.\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.",
+        "description": "Get brand information.\n\nReturns the brand details and status.\nReturns 404 if brand doesn't exist.\n\nRMM-2 Compliant Pattern:\n- Use GET /brands/{brand_id} for basic brand data\n- Use GET /brands/{brand_id}?include=files to explicitly request file URLs\n- Replaces non-compliant pattern: GET /brands/{brand_id}/with-files (hyphenated segment)\n\nQuery Parameters:\n- include: Optional comma-separated list of additional data to include\n          Supported values: 'files' (includes brand_guidelines_url, logo_url)\n          Example: ?include=files\n\nNote: File URLs (brand_guidelines_url, logo_url) are always included in the\nresponse for backward compatibility. The include parameter is provided to\ndemonstrate RMM-2 best practices using query parameters instead of hyphenated\npath segments.\n\nIssue #1662: Added authorization check to prevent IDOR vulnerability.\nIssue #3083: Added data access audit logging for brand data.",
         "operationId": "get_brand_api_v2_brands__brand_id__get",
         "security": [
           {
@@ -8470,7 +8470,7 @@
           "users"
         ],
         "summary": "Delete Session",
-        "description": "Delete authentication session (logout).\n\nInvalidates the current user's token by adding it to the blacklist.\nAfter logout, the token will be rejected by the authentication middleware.\n\nIssue #3186: Uses require_auth_for_logout instead of require_auth to\nhandle cases where the JWT token has expired before the logout request\nreaches the API. This ensures server-side session cleanup even with\nexpired tokens.\n\nRMM Level 2 Compliance:\n- DELETE to /sessions deletes the session resource\n- HTTP verb (DELETE) indicates delete action\n- No verbs in URL path (not /logout, but DELETE /sessions)\n\nArgs:\n    firebase_user: Decoded token claims (from auth or expired token)\n    credentials: HTTP Bearer token credentials from request header\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    LogoutResponse with confirmation message\n\nRaises:\n    HTTPException 401: If no Bearer token provided or token already blacklisted\n    HTTPException 500: If logout fails due to server error",
+        "description": "Delete authentication session (logout).\n\nInvalidates the current user's token by adding it to the blacklist.\nAfter logout, the token will be rejected by the authentication middleware.\n\nIssue #3186: Uses require_auth_for_logout instead of require_auth to\nhandle cases where the JWT token has expired before the logout request\nreaches the API. This ensures server-side session cleanup even with\nexpired tokens.\n\nRMM Level 2 Compliance:\n- DELETE to /sessions deletes the session resource\n- HTTP verb (DELETE) indicates delete action\n- No verbs in URL path (not /logout, but DELETE /sessions)\n\nArgs:\n    firebase_user: Decoded token claims (from auth or expired token)\n    credentials: HTTP Bearer token credentials from request header\n    token_blacklist_service: Injected token blacklist service\n    audit_service: Injected audit service\n\nReturns:\n    LogoutResponse with confirmation message\n\nRaises:\n    HTTPException 401: If no Bearer token provided or token already blacklisted\n    HTTPException 500: If logout fails due to server error",
         "operationId": "delete_session_api_v2_sessions_delete",
         "responses": {
           "200": {
