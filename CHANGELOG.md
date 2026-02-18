@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1131] - 2026-02-18
+
+### Changes
+- fix: add OAuth authorize route for Instagram connect flow (#3211) (#3218)
+
+**Source:** project-beta-api@ee8ef54b
+
 ## [v0.7.1130] - 2026-02-18
 
 ### Changes
