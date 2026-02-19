@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1148] - 2026-02-19
+
+### Changes
+- fix: add PATCH /api/v2/users/me endpoint for profile updates (#3237) (#3238)
+
+**Source:** project-beta-api@31c02db7
+
 ## [v0.7.1147] - 2026-02-19
 
 ### Changes
