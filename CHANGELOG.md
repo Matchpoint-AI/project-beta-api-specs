@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1149] - 2026-02-19
+
+### Changes
+- fix: remove manual session.commit() from repositories, use session.begin() (#1775) (#3239)
+
+**Source:** project-beta-api@7d09005c
+
 ## [v0.7.1148] - 2026-02-19
 
 ### Changes
