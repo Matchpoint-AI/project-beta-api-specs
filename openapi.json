@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1146"
+    "version": "0.7.1147"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -8728,7 +8728,7 @@
           "users"
         ],
         "summary": "Delete Session",
-        "description": "Delete authentication session (logout).\n\nInvalidates the current user's token by adding it to the blacklist.\nAfter logout, the token will be rejected by the authentication middleware.\n\nIssue #3186: Uses require_auth_for_logout instead of require_auth to\nhandle cases where the JWT token has expired before the logout request\nreaches the API. This ensures server-side session cleanup even with\nexpired tokens.\n\nIssue #3228: Updated to support cookie-based JWT tokens (Issue #3017).\nPreviously required an Authorization header; now also accepts tokens\nfrom httpOnly cookies. The token is extracted from cookies first, then\nfalls back to the Authorization header.\n\nRMM Level 2 Compliance:\n- DELETE to /sessions deletes the session resource\n- HTTP verb (DELETE) indicates delete action\n- No verbs in URL path (not /logout, but DELETE /sessions)\n\nArgs:\n    request: FastAPI request object for cookie access\n    firebase_user: Decoded token claims (from auth or expired token)\n    credentials: Optional HTTP Bearer token from Authorization header\n    token_blacklist_service: Injected token blacklist service\n    audit_service: Injected audit service\n\nReturns:\n    LogoutResponse with confirmation message\n\nRaises:\n    HTTPException 401: If no token provided (cookie or header) or already blacklisted\n    HTTPException 500: If logout fails due to server error",
+        "description": "Delete authentication session (logout).\n\nInvalidates the current user's token by adding it to the blacklist.\nAfter logout, the token will be rejected by the authentication middleware.\n\nIssue #3186: Uses require_auth_for_logout instead of require_auth to\nhandle cases where the JWT token has expired before the logout request\nreaches the API. This ensures server-side session cleanup even with\nexpired tokens.\n\nIssue #3228: Updated to support cookie-based JWT tokens (Issue #3017).\nPreviously required an Authorization header; now also accepts tokens\nfrom httpOnly cookies. The token is extracted from cookies first, then\nfalls back to the Authorization header.\n\nIssue #3235: Logout is now idempotent. If the token is already blacklisted\n(e.g., double-logout from two browser tabs or a retry), the endpoint returns\n200 immediately rather than 401. The session is already invalidated, which\nis exactly the desired post-condition of logout.\n\nRMM Level 2 Compliance:\n- DELETE to /sessions deletes the session resource\n- HTTP verb (DELETE) indicates delete action\n- No verbs in URL path (not /logout, but DELETE /sessions)\n\nArgs:\n    request: FastAPI request object for cookie access\n    firebase_user: Decoded token claims (from auth or expired token)\n    credentials: Optional HTTP Bearer token from Authorization header\n    token_blacklist_service: Injected token blacklist service\n    audit_service: Injected audit service\n\nReturns:\n    LogoutResponse with confirmation message\n\nRaises:\n    HTTPException 401: If no token provided (cookie or header)\n    HTTPException 500: If logout fails due to server error",
         "operationId": "delete_session_api_v2_sessions_delete",
         "responses": {
           "200": {
