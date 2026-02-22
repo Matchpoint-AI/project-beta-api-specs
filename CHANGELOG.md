@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1150] - 2026-02-22
+
+### Changes
+- deps(deps-dev): Bump ruff from 0.7.0 to 0.15.2 (#3246)
+
+**Source:** project-beta-api@c62f77ed
+
 ## [v0.7.1149] - 2026-02-19
 
 ### Changes
