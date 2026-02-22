@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1153] - 2026-02-22
+
+### Changes
+- deps(deps-dev): Bump pytest-env from 1.1.0 to 1.5.0 (#3245)
+
+**Source:** project-beta-api@53a7c6a9
+
 ## [v0.7.1152] - 2026-02-22
 
 ### Changes
