@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1151] - 2026-02-22
+
+### Changes
+- ci: Bump actions/github-script from 7 to 8 (#3243)
+
+**Source:** project-beta-api@dbc3e00e
+
 ## [v0.7.1150] - 2026-02-22
 
 ### Changes
