@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1152] - 2026-02-22
+
+### Changes
+- fix: enable pre-commit auto-formatting for Black and Ruff (#3247) (#3248)
+
+**Source:** project-beta-api@564b4643
+
 ## [v0.7.1151] - 2026-02-22
 
 ### Changes
