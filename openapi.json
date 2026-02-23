@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1157"
+    "version": "0.7.1158"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -9241,7 +9241,7 @@
           "video-generation"
         ],
         "summary": "Create Video",
-        "description": "Queue video generation for a post.\n\nCreates a video generation job and publishes it to the video-generator\nworker via Pub/Sub. Returns immediately with job details including\ncost estimate.\n\nIssue #1701: Implements the POST /posts/{post_id}/videos endpoint.\n\nArgs:\n    post_id: ID of the post to generate video for\n    request: Video generation parameters\n    response: FastAPI response object for headers\n    user_id: Authenticated user ID (from JWT token)\n    post_repository: Repository for post lookup\n    job_repository: Repository for video job creation\n    publisher: Video generation publisher (Pub/Sub or direct HTTP)\n\nReturns:\n    VideoJobResponse with job ID and cost estimate\n\nRaises:\n    HTTPException 400: If post has no image\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the post\n    HTTPException 404: If post not found\n    HTTPException 500: If publishing fails",
+        "description": "Queue video generation for a post.\n\nCreates a video generation job and publishes it to the video-generator\nworker via Pub/Sub. Returns immediately with job details including\ncost estimate.\n\nIssue #1701: Implements the POST /posts/{post_id}/videos endpoint.\nIssue #2939: Checks video_generation_enabled from system_config at runtime,\n    falling back to VIDEO_PROCESSING_ENABLED env var.\n\nArgs:\n    post_id: ID of the post to generate video for\n    request: Video generation parameters\n    response: FastAPI response object for headers\n    user_id: Authenticated user ID (from JWT token)\n    post_repository: Repository for post lookup\n    job_repository: Repository for video job creation\n    publisher: Video generation publisher (Pub/Sub or direct HTTP)\n    system_config_service: Service for runtime system configuration\n\nReturns:\n    VideoJobResponse with job ID and cost estimate\n\nRaises:\n    HTTPException 400: If post has no image or video generation is disabled\n    HTTPException 401: If not authenticated\n    HTTPException 403: If user doesn't own the post\n    HTTPException 404: If post not found\n    HTTPException 500: If publishing fails",
         "operationId": "create_video_api_v2_posts__post_id__videos_post",
         "security": [
           {

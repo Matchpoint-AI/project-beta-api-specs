@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1158] - 2026-02-23
+
+### Changes
+- fix: add system_config toggles for content gen mode and video generation (#2939) (#3252)
+
+**Source:** project-beta-api@7afa3895
+
 ## [v0.7.1157] - 2026-02-23
 
 ### Changes
