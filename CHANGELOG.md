@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1159] - 2026-02-23
+
+### Changes
+- feat: add brand-scoped model config lookup (#3254) (#3259)
+
+**Source:** project-beta-api@e881ecfc
+
 ## [v0.7.1158] - 2026-02-23
 
 ### Changes
