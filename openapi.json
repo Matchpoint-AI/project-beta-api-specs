@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1154"
+    "version": "0.7.1155"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -5119,7 +5119,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PulseStatusResponse"
+                  "$ref": "#/components/schemas/PulseStatusResponse"
                 }
               }
             }
@@ -7793,7 +7793,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/src__domains__crawler__schemas__crawler_pulses__PubSubPushEnvelope"
+                "$ref": "#/components/schemas/PubSubPushEnvelope"
               }
             }
           }
@@ -8948,6 +8948,14 @@
         "summary": "Delete Current User",
         "description": "Delete current user account (GDPR Article 17).\n\nSchedules account deletion with a 30-day grace period.\nDuring the grace period, the user can cancel the deletion\nvia POST /users/me/deletion/cancellations.\n\nAfter scheduling deletion:\n- User data is soft-deleted (deleted_at timestamp set)\n- Current access token is blacklisted (user is logged out)\n- Permanent deletion occurs after 30 days\n\nRMM Level 2 Compliance:\n- DELETE to /users/me deletes the user resource\n- HTTP verb (DELETE) indicates delete action\n- Uses /me convention for current authenticated user\n- Returns 202 Accepted (deletion is scheduled, not immediate)\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    credentials: HTTP Bearer token credentials from request header\n    request: Optional deletion request with reason\n    user_service: Injected user service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    AccountDeletionResponse with deletion_date (30 days from now)\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 409: If account is already scheduled for deletion\n    HTTPException 500: If deletion scheduling fails",
         "operationId": "delete_current_user_api_v2_users_me_delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8995,15 +9003,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          },
-          {
-            "HTTPBearer": []
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -19955,6 +19955,26 @@
         "title": "PubSubMessage",
         "description": "Inner Pub/Sub message structure."
       },
+      "PubSubPushEnvelope": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/PubSubMessage",
+            "description": "The Pub/Sub message"
+          },
+          "subscription": {
+            "type": "string",
+            "title": "Subscription",
+            "description": "Subscription name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "subscription"
+        ],
+        "title": "PubSubPushEnvelope",
+        "description": "Pub/Sub push subscription envelope format."
+      },
       "PublishedPostSummary": {
         "properties": {
           "week_key": {
@@ -20021,6 +20041,69 @@
         ],
         "title": "PulseAckResponse",
         "description": "Response for successful pulse processing."
+      },
+      "PulseStatusResponse": {
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "step": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step",
+            "description": "Step name"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current status"
+          },
+          "activePostId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activepostid",
+            "description": "Post currently being generated"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp",
+            "description": "ISO-8601 timestamp of last update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "campaignId",
+          "message",
+          "status",
+          "timestamp"
+        ],
+        "title": "PulseStatusResponse",
+        "description": "Response for GET /pulses/{correlation_id} polling endpoint."
       },
       "PurgeExpiredDeletionsResponse": {
         "properties": {
@@ -22640,6 +22723,19 @@
             "format": "date-time",
             "title": "Updatedat",
             "description": "Last update timestamp"
+          },
+          "verificationTokenExpires": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verificationtokenexpires",
+            "description": "When the email verification token expires"
           }
         },
         "type": "object",
@@ -23587,69 +23683,6 @@
         "title": "PubSubPushEnvelope",
         "description": "Pub/Sub push subscription envelope format."
       },
-      "src__domains__content__schemas__content_generator_pubsub__PulseStatusResponse": {
-        "properties": {
-          "correlationId": {
-            "type": "string",
-            "title": "Correlationid",
-            "description": "Correlation ID"
-          },
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid",
-            "description": "Campaign ID"
-          },
-          "step": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Step",
-            "description": "Step name"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Human-readable status message"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Current status"
-          },
-          "activePostId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Activepostid",
-            "description": "Post currently being generated"
-          },
-          "timestamp": {
-            "type": "string",
-            "title": "Timestamp",
-            "description": "ISO-8601 timestamp of last update"
-          }
-        },
-        "type": "object",
-        "required": [
-          "correlationId",
-          "campaignId",
-          "message",
-          "status",
-          "timestamp"
-        ],
-        "title": "PulseStatusResponse",
-        "description": "Response for GET /pulses/{correlation_id} polling endpoint."
-      },
       "src__domains__crawler__schemas__crawler_briefs__PubSubPushEnvelope": {
         "properties": {
           "message": {
@@ -23669,26 +23702,6 @@
         ],
         "title": "PubSubPushEnvelope",
         "description": "Pub/Sub push subscription envelope format.\n\nThis is the outer wrapper that Pub/Sub sends to push endpoints.\nThe actual message data is base64-encoded inside message.data."
-      },
-      "src__domains__crawler__schemas__crawler_pulses__PubSubPushEnvelope": {
-        "properties": {
-          "message": {
-            "$ref": "#/components/schemas/PubSubMessage",
-            "description": "The Pub/Sub message"
-          },
-          "subscription": {
-            "type": "string",
-            "title": "Subscription",
-            "description": "Subscription name"
-          }
-        },
-        "type": "object",
-        "required": [
-          "message",
-          "subscription"
-        ],
-        "title": "PubSubPushEnvelope",
-        "description": "Pub/Sub push subscription envelope format."
       },
       "src__domains__crawler__schemas__crawler_pulses__PulseStatusResponse": {
         "properties": {

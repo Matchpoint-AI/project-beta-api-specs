@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1155] - 2026-02-23
+
+### Changes
+- fix: add verification_token_expires to UserResponse schema (#1747) (#3249)
+
+**Source:** project-beta-api@04857d29
+
 ## [v0.7.1154] - 2026-02-22
 
 ### Changes
