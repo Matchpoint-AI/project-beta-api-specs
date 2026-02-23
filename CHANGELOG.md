@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1160] - 2026-02-23
+
+### Changes
+- feat: add brand_model_config table and migration (#3253) (#3258)
+
+**Source:** project-beta-api@ae2004db
+
 ## [v0.7.1159] - 2026-02-23
 
 ### Changes
