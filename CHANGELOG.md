@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1163] - 2026-02-23
+
+### Changes
+- fix: add Sentry error tracking integration (#3077) (#3262)
+
+**Source:** project-beta-api@e5f84595
+
 ## [v0.7.1162] - 2026-02-23
 
 ### Changes
