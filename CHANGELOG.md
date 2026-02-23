@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1162] - 2026-02-23
+
+### Changes
+- fix: wire brand model overrides into content generation fat message (#3256) (#3261)
+
+**Source:** project-beta-api@31983867
+
 ## [v0.7.1161] - 2026-02-23
 
 ### Changes
