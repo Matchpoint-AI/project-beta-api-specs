@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1161] - 2026-02-23
+
+### Changes
+- feat: add admin API endpoints for brand-level model config CRUD (#3255) (#3260)
+
+**Source:** project-beta-api@af6ef1cc
+
 ## [v0.7.1160] - 2026-02-23
 
 ### Changes

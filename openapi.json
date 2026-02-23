@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1160"
+    "version": "0.7.1161"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -275,6 +275,175 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v2/admin/brands/{brand_id}/model/config": {
+      "get": {
+        "tags": [
+          "admin-brand-model-config"
+        ],
+        "summary": "List Brand Model Config",
+        "description": "List all model config overrides for a brand.\n\nReturns an empty list if no overrides have been set.",
+        "operationId": "list_brand_model_config_api_v2_admin_brands__brand_id__model_config_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID",
+              "title": "Brand Id"
+            },
+            "description": "Brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Model config overrides for brand returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandModelConfigListResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/admin/brands/{brand_id}/model/config/{key}": {
+      "put": {
+        "tags": [
+          "admin-brand-model-config"
+        ],
+        "summary": "Upsert Brand Model Config",
+        "description": "Upsert a model config override for a brand.\n\nCreates or updates the override for the given key.\nReturns the saved entry.",
+        "operationId": "upsert_brand_model_config_api_v2_admin_brands__brand_id__model_config__key__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID",
+              "title": "Brand Id"
+            },
+            "description": "Brand ID"
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ModelConfigKey",
+              "description": "Model config key"
+            },
+            "description": "Model config key"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandModelConfigUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Model config override upserted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandModelConfigResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "422": {
+            "description": "Invalid model config key"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admin-brand-model-config"
+        ],
+        "summary": "Delete Brand Model Config",
+        "description": "Remove a model config override for a brand.\n\nAfter deletion the brand falls back to the global model config.\nReturns 204 No Content on success.",
+        "operationId": "delete_brand_model_config_api_v2_admin_brands__brand_id__model_config__key__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Brand ID",
+              "title": "Brand Id"
+            },
+            "description": "Brand ID"
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ModelConfigKey",
+              "description": "Model config key"
+            },
+            "description": "Model config key"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Model config override removed; brand falls back to global"
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "Override not found"
+          },
+          "422": {
+            "description": "Invalid model config key"
           }
         }
       }
@@ -11369,6 +11538,96 @@
         "title": "BrandManualCompleteResponse",
         "description": "Response schema for manual brand knowledge completion (Issue #3423).\n\nReturned when a user manually completes brand setup without a website crawl,\nmarking the brand as ready for campaign creation."
       },
+      "BrandModelConfigListResponse": {
+        "properties": {
+          "overrides": {
+            "items": {
+              "$ref": "#/components/schemas/BrandModelConfigResponse"
+            },
+            "type": "array",
+            "title": "Overrides",
+            "description": "List of model config overrides for the brand"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of overrides"
+          }
+        },
+        "type": "object",
+        "required": [
+          "overrides",
+          "total"
+        ],
+        "title": "BrandModelConfigListResponse",
+        "description": "Response schema for a list of brand model config entries."
+      },
+      "BrandModelConfigResponse": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id",
+            "description": "Brand ID"
+          },
+          "key": {
+            "$ref": "#/components/schemas/ModelConfigKey",
+            "description": "Model config key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Model identifier value"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated By",
+            "description": "User ID who last updated"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "Last update timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id",
+          "key",
+          "value"
+        ],
+        "title": "BrandModelConfigResponse",
+        "description": "Response schema for a single brand model config entry."
+      },
+      "BrandModelConfigUpdateRequest": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Model identifier to use for this brand"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "title": "BrandModelConfigUpdateRequest",
+        "description": "Request schema for upserting a brand model config override."
+      },
       "BrandOnboardingProgressResponse": {
         "properties": {
           "brandId": {
@@ -18007,6 +18266,17 @@
         ],
         "title": "MessageType",
         "description": "Message type discriminator for topic routing."
+      },
+      "ModelConfigKey": {
+        "type": "string",
+        "enum": [
+          "text_model",
+          "image_model",
+          "researcher_model",
+          "brand_crawl_model"
+        ],
+        "title": "ModelConfigKey",
+        "description": "Valid keys for brand model configuration overrides."
       },
       "ModelHealthMetrics": {
         "properties": {
