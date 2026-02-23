@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1157] - 2026-02-23
+
+### Changes
+- fix: only mark brand knowledge complete when data was extracted (#3707) (#3251)
+
+**Source:** project-beta-api@cd2186bf
+
 ## [v0.7.1156] - 2026-02-23
 
 ### Changes
