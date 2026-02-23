@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1155"
+    "version": "0.7.1156"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -5119,7 +5119,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PulseStatusResponse"
+                  "$ref": "#/components/schemas/src__domains__content__schemas__content_generator_pubsub__PulseStatusResponse"
                 }
               }
             }
@@ -7793,7 +7793,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PubSubPushEnvelope"
+                "$ref": "#/components/schemas/src__domains__crawler__schemas__crawler_pulses__PubSubPushEnvelope"
               }
             }
           }
@@ -8004,7 +8004,7 @@
           "scheduled-posts"
         ],
         "summary": "List Scheduled Posts",
-        "description": "List all scheduled posts for the authenticated user.\n\nReturns a list of scheduled posts optionally filtered by status.\nPosts are ordered by scheduled time.\n\nArgs:\n    user_id: Authenticated user ID (from JWT token)\n    status: Optional status filter\n\nReturns:\n    ScheduledPostListResponse with list of posts",
+        "description": "List all scheduled posts for the authenticated user.\n\nReturns a list of scheduled posts optionally filtered by status and/or\na date range.  Posts are ordered by scheduled time.\n\nIssue #2973: Added start_date/end_date query params for calendar UI.\n\nArgs:\n    user_id: Authenticated user ID (from JWT token)\n    status: Optional status filter\n    start_date: Optional lower bound for scheduled_time (inclusive, UTC)\n    end_date: Optional upper bound for scheduled_time (inclusive, UTC)\n\nReturns:\n    ScheduledPostListResponse with list of posts",
         "operationId": "list_scheduled_posts_api_v2_scheduled_posts_get",
         "security": [
           {
@@ -8029,6 +8029,44 @@
               "title": "Status"
             },
             "description": "Filter by status"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter posts scheduled on or after this datetime (ISO 8601, UTC). Use with end_date for a calendar date-range query.",
+              "title": "Start Date"
+            },
+            "description": "Filter posts scheduled on or after this datetime (ISO 8601, UTC). Use with end_date for a calendar date-range query."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter posts scheduled before or on this datetime (ISO 8601, UTC). Use with start_date for a calendar date-range query.",
+              "title": "End Date"
+            },
+            "description": "Filter posts scheduled before or on this datetime (ISO 8601, UTC). Use with start_date for a calendar date-range query."
           }
         ],
         "responses": {
@@ -8064,7 +8102,7 @@
           "scheduled-posts"
         ],
         "summary": "List Campaign Scheduled Posts",
-        "description": "List all scheduled posts for a specific campaign.\n\nReturns scheduled posts for the given campaign, optionally filtered by status.\nPosts are ordered by scheduled time.\n\nIssue #2558: Requires authentication to prevent information disclosure.\n\nArgs:\n    campaign_id: Campaign ID to filter by\n    user_id: Authenticated user ID (from JWT token) (Issue #2558)\n    status: Optional status filter\n\nReturns:\n    ScheduledPostListResponse with list of posts for the campaign",
+        "description": "List all scheduled posts for a specific campaign.\n\nReturns scheduled posts for the given campaign, optionally filtered by\nstatus and/or a date range.  Posts are ordered by scheduled time.\n\nIssue #2558: Requires authentication to prevent information disclosure.\nIssue #2973: Added start_date/end_date query params for calendar UI.\n\nArgs:\n    campaign_id: Campaign ID to filter by\n    user_id: Authenticated user ID (from JWT token) (Issue #2558)\n    status: Optional status filter\n    start_date: Optional lower bound for scheduled_time (inclusive, UTC)\n    end_date: Optional upper bound for scheduled_time (inclusive, UTC)\n\nReturns:\n    ScheduledPostListResponse with list of posts for the campaign",
         "operationId": "list_campaign_scheduled_posts_api_v2_campaigns__campaign_id__scheduled_posts_get",
         "security": [
           {
@@ -8100,6 +8138,44 @@
               "title": "Status"
             },
             "description": "Filter by status"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter posts scheduled on or after this datetime (ISO 8601, UTC). Use with end_date for a calendar date-range query.",
+              "title": "Start Date"
+            },
+            "description": "Filter posts scheduled on or after this datetime (ISO 8601, UTC). Use with end_date for a calendar date-range query."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter posts scheduled before or on this datetime (ISO 8601, UTC). Use with start_date for a calendar date-range query.",
+              "title": "End Date"
+            },
+            "description": "Filter posts scheduled before or on this datetime (ISO 8601, UTC). Use with start_date for a calendar date-range query."
           }
         ],
         "responses": {
@@ -8948,14 +9024,6 @@
         "summary": "Delete Current User",
         "description": "Delete current user account (GDPR Article 17).\n\nSchedules account deletion with a 30-day grace period.\nDuring the grace period, the user can cancel the deletion\nvia POST /users/me/deletion/cancellations.\n\nAfter scheduling deletion:\n- User data is soft-deleted (deleted_at timestamp set)\n- Current access token is blacklisted (user is logged out)\n- Permanent deletion occurs after 30 days\n\nRMM Level 2 Compliance:\n- DELETE to /users/me deletes the user resource\n- HTTP verb (DELETE) indicates delete action\n- Uses /me convention for current authenticated user\n- Returns 202 Accepted (deletion is scheduled, not immediate)\n\nArgs:\n    firebase_user: Decoded token claims (injected by auth dependency)\n    credentials: HTTP Bearer token credentials from request header\n    request: Optional deletion request with reason\n    user_service: Injected user service\n    token_blacklist_service: Injected token blacklist service\n\nReturns:\n    AccountDeletionResponse with deletion_date (30 days from now)\n\nRaises:\n    HTTPException 401: If authentication token is missing or invalid\n    HTTPException 409: If account is already scheduled for deletion\n    HTTPException 500: If deletion scheduling fails",
         "operationId": "delete_current_user_api_v2_users_me_delete",
-        "security": [
-          {
-            "HTTPBearer": []
-          },
-          {
-            "HTTPBearer": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -9003,7 +9071,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          },
+          {
+            "HTTPBearer": []
+          }
+        ]
       },
       "patch": {
         "tags": [
@@ -19955,26 +20031,6 @@
         "title": "PubSubMessage",
         "description": "Inner Pub/Sub message structure."
       },
-      "PubSubPushEnvelope": {
-        "properties": {
-          "message": {
-            "$ref": "#/components/schemas/PubSubMessage",
-            "description": "The Pub/Sub message"
-          },
-          "subscription": {
-            "type": "string",
-            "title": "Subscription",
-            "description": "Subscription name"
-          }
-        },
-        "type": "object",
-        "required": [
-          "message",
-          "subscription"
-        ],
-        "title": "PubSubPushEnvelope",
-        "description": "Pub/Sub push subscription envelope format."
-      },
       "PublishedPostSummary": {
         "properties": {
           "week_key": {
@@ -20041,69 +20097,6 @@
         ],
         "title": "PulseAckResponse",
         "description": "Response for successful pulse processing."
-      },
-      "PulseStatusResponse": {
-        "properties": {
-          "correlationId": {
-            "type": "string",
-            "title": "Correlationid",
-            "description": "Correlation ID"
-          },
-          "campaignId": {
-            "type": "integer",
-            "title": "Campaignid",
-            "description": "Campaign ID"
-          },
-          "step": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Step",
-            "description": "Step name"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Human-readable status message"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Current status"
-          },
-          "activePostId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Activepostid",
-            "description": "Post currently being generated"
-          },
-          "timestamp": {
-            "type": "string",
-            "title": "Timestamp",
-            "description": "ISO-8601 timestamp of last update"
-          }
-        },
-        "type": "object",
-        "required": [
-          "correlationId",
-          "campaignId",
-          "message",
-          "status",
-          "timestamp"
-        ],
-        "title": "PulseStatusResponse",
-        "description": "Response for GET /pulses/{correlation_id} polling endpoint."
       },
       "PurgeExpiredDeletionsResponse": {
         "properties": {
@@ -21374,6 +21367,30 @@
               }
             ],
             "description": "Status filter if applied"
+          },
+          "startDate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Startdate",
+            "description": "Date range start filter (ISO 8601) if applied"
+          },
+          "endDate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enddate",
+            "description": "Date range end filter (ISO 8601) if applied"
           }
         },
         "type": "object",
@@ -21417,14 +21434,25 @@
           },
           "scheduledTime": {
             "type": "string",
-            "format": "date-time",
             "title": "Scheduledtime",
-            "description": "When the post will be published"
+            "description": "When the post will be published (UTC ISO 8601)"
+          },
+          "scheduledTimeLocal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheduledtimelocal",
+            "description": "Scheduled time converted to the post's local timezone (ISO 8601). Populated automatically from scheduled_time and timezone fields."
           },
           "timezone": {
             "type": "string",
             "title": "Timezone",
-            "description": "IANA timezone string"
+            "description": "IANA timezone string (e.g., America/New_York)"
           },
           "status": {
             "$ref": "#/components/schemas/ScheduledPostStatus",
@@ -21503,28 +21531,25 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "date-time",
             "title": "Createdat",
-            "description": "Creation timestamp"
+            "description": "Creation timestamp (UTC ISO 8601)"
           },
           "updatedAt": {
             "type": "string",
-            "format": "date-time",
             "title": "Updatedat",
-            "description": "Last update timestamp"
+            "description": "Last update timestamp (UTC ISO 8601)"
           },
           "publishedAt": {
             "anyOf": [
               {
-                "type": "string",
-                "format": "date-time"
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
             "title": "Publishedat",
-            "description": "When post was published"
+            "description": "When post was published (UTC ISO 8601)"
           }
         },
         "type": "object",
@@ -21543,7 +21568,7 @@
           "updatedAt"
         ],
         "title": "ScheduledPostResponse",
-        "description": "Response schema for a scheduled post."
+        "description": "Response schema for a scheduled post.\n\nIncludes timezone-aware scheduling fields required by the frontend\nscheduling UI (issue #2973):\n- ``scheduled_time``: UTC ISO 8601 datetime\n- ``scheduled_time_local``: same instant expressed in the post's IANA\n  timezone (``timezone`` field), useful for displaying the local time to\n  the user without client-side conversion."
       },
       "ScheduledPostStatus": {
         "type": "string",
@@ -23683,6 +23708,69 @@
         "title": "PubSubPushEnvelope",
         "description": "Pub/Sub push subscription envelope format."
       },
+      "src__domains__content__schemas__content_generator_pubsub__PulseStatusResponse": {
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Correlation ID"
+          },
+          "campaignId": {
+            "type": "integer",
+            "title": "Campaignid",
+            "description": "Campaign ID"
+          },
+          "step": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step",
+            "description": "Step name"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable status message"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current status"
+          },
+          "activePostId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activepostid",
+            "description": "Post currently being generated"
+          },
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp",
+            "description": "ISO-8601 timestamp of last update"
+          }
+        },
+        "type": "object",
+        "required": [
+          "correlationId",
+          "campaignId",
+          "message",
+          "status",
+          "timestamp"
+        ],
+        "title": "PulseStatusResponse",
+        "description": "Response for GET /pulses/{correlation_id} polling endpoint."
+      },
       "src__domains__crawler__schemas__crawler_briefs__PubSubPushEnvelope": {
         "properties": {
           "message": {
@@ -23702,6 +23790,26 @@
         ],
         "title": "PubSubPushEnvelope",
         "description": "Pub/Sub push subscription envelope format.\n\nThis is the outer wrapper that Pub/Sub sends to push endpoints.\nThe actual message data is base64-encoded inside message.data."
+      },
+      "src__domains__crawler__schemas__crawler_pulses__PubSubPushEnvelope": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/PubSubMessage",
+            "description": "The Pub/Sub message"
+          },
+          "subscription": {
+            "type": "string",
+            "title": "Subscription",
+            "description": "Subscription name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "subscription"
+        ],
+        "title": "PubSubPushEnvelope",
+        "description": "Pub/Sub push subscription envelope format."
       },
       "src__domains__crawler__schemas__crawler_pulses__PulseStatusResponse": {
         "properties": {

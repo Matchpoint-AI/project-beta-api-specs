@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1156] - 2026-02-23
+
+### Changes
+- fix: ensure scheduled post API returns timezone-aware scheduling data (#2973) (#3250)
+
+**Source:** project-beta-api@7fb9e7c4
+
 ## [v0.7.1155] - 2026-02-23
 
 ### Changes
