@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1173] - 2026-02-24
+
+### Changes
+- feat: add feature_flags config category to admin endpoint (#3277) (#3278)
+
+**Source:** project-beta-api@e31e07b6
+
 ## [v0.7.1172] - 2026-02-24
 
 ### Changes
