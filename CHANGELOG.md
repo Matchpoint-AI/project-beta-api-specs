@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1179] - 2026-02-24
+
+### Changes
+- feat: add Artifact Registry dual-push to release workflow (#3473) (#3293)
+
+**Source:** project-beta-api@6c1e9355
+
 ## [v0.7.1178] - 2026-02-24
 
 ### Changes
