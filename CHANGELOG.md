@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1175] - 2026-02-24
+
+### Changes
+- fix: return 404 instead of 500 for non-existent campaign export (#3281) (#3282)
+
+**Source:** project-beta-api@f5c34474
+
 ## [v0.7.1174] - 2026-02-24
 
 ### Changes
