@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1177] - 2026-02-24
+
+### Changes
+- feat: add GenerationCost model and migration (#3284) (#3288)
+
+**Source:** project-beta-api@059e5187
+
 ## [v0.7.1176] - 2026-02-24
 
 ### Changes
