@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1166] - 2026-02-24
+
+### Changes
+- fix: add server-side URL validation to brand create/update schemas (#3202) (#3265)
+
+**Source:** project-beta-api@6cee5955
+
 ## [v0.7.1165] - 2026-02-24
 
 ### Changes
