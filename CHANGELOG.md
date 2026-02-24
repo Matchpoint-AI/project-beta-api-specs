@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1169] - 2026-02-24
+
+### Changes
+- feat: add variant_count field to Campaign model and schemas (#3269) (#3273)
+
+**Source:** project-beta-api@e896fb3b
+
 ## [v0.7.1168] - 2026-02-24
 
 ### Changes
