@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1174] - 2026-02-24
+
+### Changes
+- fix: use canonical API domain for Instagram OAuth redirect_uri (#3279) (#3280)
+
+**Source:** project-beta-api@4a83bb3f
+
 ## [v0.7.1173] - 2026-02-24
 
 ### Changes
