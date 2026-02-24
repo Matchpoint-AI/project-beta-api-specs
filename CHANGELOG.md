@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1165] - 2026-02-24
+
+### Changes
+- fix: refactor global state to class-based singletons (#1785) (#3264)
+
+**Source:** project-beta-api@e4043069
+
 ## [v0.7.1164] - 2026-02-24
 
 ### Changes
