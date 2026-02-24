@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1171] - 2026-02-24
+
+### Changes
+- fix: fan out one PostGeneratorMessage per variant from Content Designer output (#3271) (#3275)
+
+**Source:** project-beta-api@c64a8ec9
+
 ## [v0.7.1170] - 2026-02-24
 
 ### Changes
