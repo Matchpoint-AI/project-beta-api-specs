@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1170] - 2026-02-24
+
+### Changes
+- fix: propagate variant_count through fat message to Content Designer (#3270) (#3274)
+
+**Source:** project-beta-api@2f6878d1
+
 ## [v0.7.1169] - 2026-02-24
 
 ### Changes
