@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1176] - 2026-02-24
+
+### Changes
+- fix: add SQLAlchemy eager loading to prevent N+1 queries (#1783) (#3283)
+
+**Source:** project-beta-api@32f7a713
+
 ## [v0.7.1175] - 2026-02-24
 
 ### Changes
