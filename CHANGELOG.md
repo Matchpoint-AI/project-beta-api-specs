@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1168] - 2026-02-24
+
+### Changes
+- feat: add brand invitation CRUD endpoints (#3267) (#3268)
+
+**Source:** project-beta-api@0ea5446a
+
 ## [v0.7.1167] - 2026-02-24
 
 ### Changes

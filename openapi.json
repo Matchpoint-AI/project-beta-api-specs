@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1167"
+    "version": "0.7.1168"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -1136,6 +1136,145 @@
         ]
       }
     },
+    "/api/v2/admin/rate/limits": {
+      "get": {
+        "tags": [
+          "admin-rate-limits"
+        ],
+        "summary": "Get Rate Limit Config",
+        "description": "Get current rate limit configuration for all endpoint categories.\n\nReturns the active rate limit for each category, indicating whether\nit comes from the database or the hardcoded default.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
+        "operationId": "get_rate_limit_config_api_v2_admin_rate_limits_get",
+        "responses": {
+          "200": {
+            "description": "Rate limit configuration returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitConfigResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/rate/limits/{category}": {
+      "put": {
+        "tags": [
+          "admin-rate-limits"
+        ],
+        "summary": "Update Rate Limit",
+        "description": "Update the rate limit for a specific endpoint category.\n\nValid categories: general, content_generation, auth\n\nThe new value takes effect within the SystemConfigService cache TTL\n(60 seconds) without requiring redeployment.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
+        "operationId": "update_rate_limit_api_v2_admin_rate_limits__category__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Category"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RateLimitUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rate limit updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitEntry"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "Unknown rate limit category"
+          },
+          "422": {
+            "description": "Invalid rate limit format"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admin-rate-limits"
+        ],
+        "summary": "Reset Rate Limit To Default",
+        "description": "Reset a rate limit category to its hardcoded default.\n\nRemoves the database override so the middleware falls back to the\ncompiled-in default value.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
+        "operationId": "reset_rate_limit_to_default_api_v2_admin_rate_limits__category__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rate limit reset to default successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitEntry"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "Unknown rate limit category"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/auth/forgot-password": {
       "post": {
         "tags": [
@@ -1906,6 +2045,251 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/brands/{brand_id}/invitations": {
+      "get": {
+        "tags": [
+          "brand-invitations"
+        ],
+        "summary": "List Invitations",
+        "description": "List active (pending) invitations for a brand.\n\nReturns all non-accepted invitations for the specified brand.\nOnly the brand owner can view invitations.\n\nIssue #3267: Required for frontend team management feature.",
+        "operationId": "list_invitations_api_v2_brands__brand_id__invitations_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of active invitations returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandInvitationListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "brand-invitations"
+        ],
+        "summary": "Create Invitation",
+        "description": "Create a new brand invitation.\n\nGenerates a server-side invitation code that can be shared with a\npotential team member. Only the brand owner can create invitations.\n\nIssue #3267: Required for frontend team management feature.",
+        "operationId": "create_invitation_api_v2_brands__brand_id__invitations_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandInvitationCreate",
+                "default": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Invitation created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandInvitationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/{brand_id}/invitations/{invitation_id}": {
+      "delete": {
+        "tags": [
+          "brand-invitations"
+        ],
+        "summary": "Delete Invitation",
+        "description": "Revoke (delete) a brand invitation.\n\nPermanently removes an invitation, preventing it from being accepted.\nOnly the brand owner can revoke invitations.\n\nIssue #3267: Required for frontend team management feature.",
+        "operationId": "delete_invitation_api_v2_brands__brand_id__invitations__invitation_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The brand ID",
+              "title": "Brand Id"
+            },
+            "description": "The brand ID"
+          },
+          {
+            "name": "invitation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The invitation ID",
+              "title": "Invitation Id"
+            },
+            "description": "The invitation ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Invitation revoked successfully"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - user does not own this brand"
+          },
+          "404": {
+            "description": "Brand or invitation not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/brands/join": {
+      "post": {
+        "tags": [
+          "brand-invitations"
+        ],
+        "summary": "Join Brand",
+        "description": "Accept an invitation and join a brand.\n\nUses the provided invitation code to grant the authenticated user\nmembership in the associated brand. Invitation codes are single-use.\n\nIssue #3267: Required for frontend team management feature.",
+        "operationId": "join_brand_api_v2_brands_join_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandJoinRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Brand joined successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandJoinResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or already-used invitation code"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "404": {
+            "description": "Invitation code not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/api/v2/brands/{brand_id}/knowledge/workflows": {
@@ -9861,145 +10245,6 @@
           }
         ]
       }
-    },
-    "/api/v2/admin/rate/limits": {
-      "get": {
-        "tags": [
-          "admin-rate-limits"
-        ],
-        "summary": "Get Rate Limit Config",
-        "description": "Get current rate limit configuration for all endpoint categories.\n\nReturns the active rate limit for each category, indicating whether\nit comes from the database or the hardcoded default.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
-        "operationId": "get_rate_limit_config_api_v2_admin_rate_limits_get",
-        "responses": {
-          "200": {
-            "description": "Rate limit configuration returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RateLimitConfigResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin access required"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v2/admin/rate/limits/{category}": {
-      "put": {
-        "tags": [
-          "admin-rate-limits"
-        ],
-        "summary": "Update Rate Limit",
-        "description": "Update the rate limit for a specific endpoint category.\n\nValid categories: general, content_generation, auth\n\nThe new value takes effect within the SystemConfigService cache TTL\n(60 seconds) without requiring redeployment.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
-        "operationId": "update_rate_limit_api_v2_admin_rate_limits__category__put",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "category",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Category"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RateLimitUpdateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Rate limit updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RateLimitEntry"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin access required"
-          },
-          "404": {
-            "description": "Unknown rate limit category"
-          },
-          "422": {
-            "description": "Invalid rate limit format"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "admin-rate-limits"
-        ],
-        "summary": "Reset Rate Limit To Default",
-        "description": "Reset a rate limit category to its hardcoded default.\n\nRemoves the database override so the middleware falls back to the\ncompiled-in default value.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
-        "operationId": "reset_rate_limit_to_default_api_v2_admin_rate_limits__category__delete",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "category",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Category"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Rate limit reset to default successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RateLimitEntry"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin access required"
-          },
-          "404": {
-            "description": "Unknown rate limit category"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -11343,6 +11588,246 @@
         "type": "object",
         "title": "BrandGuardrailUpdate",
         "description": "Schema for updating a brand guardrail."
+      },
+      "BrandInvitationCreate": {
+        "properties": {
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "Optional email address of the invitee"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note",
+            "description": "Optional note or message for the invitee"
+          },
+          "expiresAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expiresat",
+            "description": "Optional expiration timestamp for the invitation"
+          }
+        },
+        "type": "object",
+        "title": "BrandInvitationCreate",
+        "description": "Schema for creating a new brand invitation."
+      },
+      "BrandInvitationListResponse": {
+        "properties": {
+          "invitations": {
+            "items": {
+              "$ref": "#/components/schemas/BrandInvitationResponse"
+            },
+            "type": "array",
+            "title": "Invitations",
+            "description": "List of active invitations for the brand"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of invitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total"
+        ],
+        "title": "BrandInvitationListResponse",
+        "description": "Schema for listing brand invitations."
+      },
+      "BrandInvitationResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Invitation ID"
+          },
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "Brand ID this invitation belongs to"
+          },
+          "createdBy": {
+            "type": "string",
+            "title": "Createdby",
+            "description": "User ID who created the invitation"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Unique invitation code to share with invitee"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "Optional invitee email address"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note",
+            "description": "Optional note for the invitee"
+          },
+          "acceptedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptedby",
+            "description": "User ID who accepted the invitation"
+          },
+          "acceptedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptedat",
+            "description": "When the invitation was accepted"
+          },
+          "expiresAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expiresat",
+            "description": "Optional expiration timestamp"
+          },
+          "isAccepted": {
+            "type": "boolean",
+            "title": "Isaccepted",
+            "description": "Whether this invitation has been accepted",
+            "default": false
+          },
+          "isExpired": {
+            "type": "boolean",
+            "title": "Isexpired",
+            "description": "Whether this invitation has expired",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat",
+            "description": "When the invitation was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat",
+            "description": "When the invitation was last updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "brandId",
+          "createdBy",
+          "code",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "BrandInvitationResponse",
+        "description": "Schema for brand invitation responses."
+      },
+      "BrandJoinRequest": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Code",
+            "description": "The invitation code received from the brand owner"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "BrandJoinRequest",
+        "description": "Schema for joining a brand via invitation code."
+      },
+      "BrandJoinResponse": {
+        "properties": {
+          "brandId": {
+            "type": "string",
+            "title": "Brandid",
+            "description": "ID of the brand that was joined"
+          },
+          "brandName": {
+            "type": "string",
+            "title": "Brandname",
+            "description": "Name of the brand that was joined"
+          },
+          "invitationId": {
+            "type": "string",
+            "title": "Invitationid",
+            "description": "ID of the invitation that was accepted"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable success message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "brandId",
+          "brandName",
+          "invitationId",
+          "message"
+        ],
+        "title": "BrandJoinResponse",
+        "description": "Schema for the response when joining a brand via invitation."
       },
       "BrandKnowledgeBrandSummaryResponse": {
         "properties": {
@@ -20536,6 +21021,101 @@
         "title": "PurgeExpiredDeletionsResponse",
         "description": "Response schema for the GDPR purge endpoint."
       },
+      "RateLimitConfigResponse": {
+        "properties": {
+          "limits": {
+            "items": {
+              "$ref": "#/components/schemas/RateLimitEntry"
+            },
+            "type": "array",
+            "title": "Limits",
+            "description": "List of rate limit entries"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of rate limit entries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "limits",
+          "total"
+        ],
+        "title": "RateLimitConfigResponse",
+        "description": "Response schema for all rate limit configuration entries."
+      },
+      "RateLimitEntry": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Rate limit category (general, content_generation, auth)"
+          },
+          "config_key": {
+            "type": "string",
+            "title": "Config Key",
+            "description": "System config key used to store this limit"
+          },
+          "current_value": {
+            "type": "string",
+            "title": "Current Value",
+            "description": "Active rate limit value (e.g. '100/minute')"
+          },
+          "default_value": {
+            "type": "string",
+            "title": "Default Value",
+            "description": "Hardcoded fallback default"
+          },
+          "is_using_default": {
+            "type": "boolean",
+            "title": "Is Using Default",
+            "description": "True when the DB has no override and the default is active"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Human-readable description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "config_key",
+          "current_value",
+          "default_value",
+          "is_using_default"
+        ],
+        "title": "RateLimitEntry",
+        "description": "A single rate limit configuration entry."
+      },
+      "RateLimitUpdateRequest": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "New rate limit value in 'N/period' format. Valid periods: second, minute, hour, day. Examples: '200/minute', '20/hour', '10/minute'.",
+            "examples": [
+              "200/minute",
+              "20/hour",
+              "10/minute"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "title": "RateLimitUpdateRequest",
+        "description": "Request schema for updating a rate limit value."
+      },
       "RecentGenerationEntry": {
         "properties": {
           "id": {
@@ -24266,101 +24846,6 @@
         ],
         "title": "PulseStatusResponse",
         "description": "Response for GET /pulses/{correlation_id} polling endpoint.\n\nIssue #2181: Frontend polling endpoint for crawl progress."
-      },
-      "RateLimitEntry": {
-        "properties": {
-          "category": {
-            "type": "string",
-            "title": "Category",
-            "description": "Rate limit category (general, content_generation, auth)"
-          },
-          "config_key": {
-            "type": "string",
-            "title": "Config Key",
-            "description": "System config key used to store this limit"
-          },
-          "current_value": {
-            "type": "string",
-            "title": "Current Value",
-            "description": "Active rate limit value (e.g. '100/minute')"
-          },
-          "default_value": {
-            "type": "string",
-            "title": "Default Value",
-            "description": "Hardcoded fallback default"
-          },
-          "is_using_default": {
-            "type": "boolean",
-            "title": "Is Using Default",
-            "description": "True when the DB has no override and the default is active"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Human-readable description"
-          }
-        },
-        "type": "object",
-        "required": [
-          "category",
-          "config_key",
-          "current_value",
-          "default_value",
-          "is_using_default"
-        ],
-        "title": "RateLimitEntry",
-        "description": "A single rate limit configuration entry."
-      },
-      "RateLimitConfigResponse": {
-        "properties": {
-          "limits": {
-            "items": {
-              "$ref": "#/components/schemas/RateLimitEntry"
-            },
-            "type": "array",
-            "title": "Limits",
-            "description": "List of rate limit entries"
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total",
-            "description": "Total number of rate limit entries"
-          }
-        },
-        "type": "object",
-        "required": [
-          "limits",
-          "total"
-        ],
-        "title": "RateLimitConfigResponse",
-        "description": "Response schema for all rate limit configuration entries."
-      },
-      "RateLimitUpdateRequest": {
-        "properties": {
-          "value": {
-            "type": "string",
-            "title": "Value",
-            "description": "New rate limit value in 'N/period' format. Valid periods: second, minute, hour, day. Examples: '200/minute', '20/hour', '10/minute'.",
-            "examples": [
-              "200/minute",
-              "20/hour",
-              "10/minute"
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "value"
-        ],
-        "title": "RateLimitUpdateRequest",
-        "description": "Request schema for updating a rate limit value."
       }
     },
     "securitySchemes": {
