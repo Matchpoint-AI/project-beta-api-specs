@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1178] - 2026-02-24
+
+### Changes
+- fix: remove continue-on-error from schema drift check (#1751) (#3292)
+
+**Source:** project-beta-api@c62d1440
+
 ## [v0.7.1177] - 2026-02-24
 
 ### Changes
