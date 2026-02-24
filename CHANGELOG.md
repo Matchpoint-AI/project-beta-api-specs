@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1172] - 2026-02-24
+
+### Changes
+- fix: store variant outputs on Post records and expose via content API (#3272) (#3276)
+
+**Source:** project-beta-api@1cdc323c
+
 ## [v0.7.1171] - 2026-02-24
 
 ### Changes
