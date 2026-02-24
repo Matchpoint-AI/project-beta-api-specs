@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1166"
+    "version": "0.7.1167"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -9860,6 +9860,145 @@
             "HTTPBearer": []
           }
         ]
+      }
+    },
+    "/api/v2/admin/rate/limits": {
+      "get": {
+        "tags": [
+          "admin-rate-limits"
+        ],
+        "summary": "Get Rate Limit Config",
+        "description": "Get current rate limit configuration for all endpoint categories.\n\nReturns the active rate limit for each category, indicating whether\nit comes from the database or the hardcoded default.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
+        "operationId": "get_rate_limit_config_api_v2_admin_rate_limits_get",
+        "responses": {
+          "200": {
+            "description": "Rate limit configuration returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitConfigResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/rate/limits/{category}": {
+      "put": {
+        "tags": [
+          "admin-rate-limits"
+        ],
+        "summary": "Update Rate Limit",
+        "description": "Update the rate limit for a specific endpoint category.\n\nValid categories: general, content_generation, auth\n\nThe new value takes effect within the SystemConfigService cache TTL\n(60 seconds) without requiring redeployment.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
+        "operationId": "update_rate_limit_api_v2_admin_rate_limits__category__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Category"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RateLimitUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rate limit updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitEntry"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "Unknown rate limit category"
+          },
+          "422": {
+            "description": "Invalid rate limit format"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admin-rate-limits"
+        ],
+        "summary": "Reset Rate Limit To Default",
+        "description": "Reset a rate limit category to its hardcoded default.\n\nRemoves the database override so the middleware falls back to the\ncompiled-in default value.\n\nIssue #2943: Rate limits are database-backed via system_config table.",
+        "operationId": "reset_rate_limit_to_default_api_v2_admin_rate_limits__category__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rate limit reset to default successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitEntry"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "404": {
+            "description": "Unknown rate limit category"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -24127,6 +24266,101 @@
         ],
         "title": "PulseStatusResponse",
         "description": "Response for GET /pulses/{correlation_id} polling endpoint.\n\nIssue #2181: Frontend polling endpoint for crawl progress."
+      },
+      "RateLimitEntry": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Rate limit category (general, content_generation, auth)"
+          },
+          "config_key": {
+            "type": "string",
+            "title": "Config Key",
+            "description": "System config key used to store this limit"
+          },
+          "current_value": {
+            "type": "string",
+            "title": "Current Value",
+            "description": "Active rate limit value (e.g. '100/minute')"
+          },
+          "default_value": {
+            "type": "string",
+            "title": "Default Value",
+            "description": "Hardcoded fallback default"
+          },
+          "is_using_default": {
+            "type": "boolean",
+            "title": "Is Using Default",
+            "description": "True when the DB has no override and the default is active"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Human-readable description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "config_key",
+          "current_value",
+          "default_value",
+          "is_using_default"
+        ],
+        "title": "RateLimitEntry",
+        "description": "A single rate limit configuration entry."
+      },
+      "RateLimitConfigResponse": {
+        "properties": {
+          "limits": {
+            "items": {
+              "$ref": "#/components/schemas/RateLimitEntry"
+            },
+            "type": "array",
+            "title": "Limits",
+            "description": "List of rate limit entries"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "Total number of rate limit entries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "limits",
+          "total"
+        ],
+        "title": "RateLimitConfigResponse",
+        "description": "Response schema for all rate limit configuration entries."
+      },
+      "RateLimitUpdateRequest": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "New rate limit value in 'N/period' format. Valid periods: second, minute, hour, day. Examples: '200/minute', '20/hour', '10/minute'.",
+            "examples": [
+              "200/minute",
+              "20/hour",
+              "10/minute"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "title": "RateLimitUpdateRequest",
+        "description": "Request schema for updating a rate limit value."
       }
     },
     "securitySchemes": {

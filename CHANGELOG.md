@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1167] - 2026-02-24
+
+### Changes
+- fix: make rate limits admin-configurable via system config (#2943) (#3266)
+
+**Source:** project-beta-api@f4e84f18
+
 ## [v0.7.1166] - 2026-02-24
 
 ### Changes
