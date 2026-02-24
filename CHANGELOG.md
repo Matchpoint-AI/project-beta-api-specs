@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1164] - 2026-02-24
+
+### Changes
+- fix: refactor single-file specs to multi-file directory structure (#2465) (#3263)
+
+**Source:** project-beta-api@6dfeb294
+
 ## [v0.7.1163] - 2026-02-23
 
 ### Changes
