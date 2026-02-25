@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1181] - 2026-02-25
+
+### Changes
+- fix: resolve SQLAlchemy mapper configuration in auth/user repository tests (#3296) (#3312)
+
+**Source:** project-beta-api@e5e3a8b3
+
 ## [v0.7.1180] - 2026-02-25
 
 ### Changes
