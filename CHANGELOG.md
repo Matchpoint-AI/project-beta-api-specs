@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1180] - 2026-02-25
+
+### Changes
+- chore: remove dead .coveragerc reference to nonexistent policy_version_repository (#3304) (#3309)
+
+**Source:** project-beta-api@bcbe10e8
+
 ## [v0.7.1179] - 2026-02-24
 
 ### Changes
