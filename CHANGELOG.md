@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1184] - 2026-03-09
+
+### Changes
+- fix: bind GenerationCostService mock and fix brands seed INSERT in tests (#3325)
+
+**Source:** project-beta-api@c60575ec
+
 ## [v0.7.1183] - 2026-03-09
 
 ### Changes
