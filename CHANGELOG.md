@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1182] - 2026-03-09
+
+### Changes
+- fix: add Instagram token refresh, improve OAuth errors, add integration status endpoint (#3321)
+
+**Source:** project-beta-api@cac7c007
+
 ## [v0.7.1181] - 2026-02-25
 
 ### Changes

@@ -3,7 +3,7 @@
   "info": {
     "title": "Project Beta API",
     "description": "AI-powered content generation platform API",
-    "version": "0.7.1181"
+    "version": "0.7.1182"
   },
   "paths": {
     "/api/v2/admin/audit/generations/{campaign_id}": {
@@ -660,6 +660,113 @@
         }
       }
     },
+    "/api/v2/admin/observability/costs": {
+      "get": {
+        "tags": [
+          "admin-costs"
+        ],
+        "summary": "Get Cost Summary",
+        "description": "Get aggregated generation cost summary for the given period.\n\nReturns total cost and credit spend, broken down by generation type\n(text, image, video, crawl) and the top brands by cost for the period.\n\nQuery params:\n- brand_id: optional, filter to a single brand\n- period: 1d | 7d | 30d | 90d (default 7d)\n- group_by: currently informational\n- top_brands_limit: how many top brands to include (1-50, default 10)",
+        "operationId": "get_cost_summary_api_v2_admin_observability_costs_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "brand_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by brand ID (omit for all brands)",
+              "title": "Brand Id"
+            },
+            "description": "Filter by brand ID (omit for all brands)"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Time period: 1d, 7d, 30d, 90d (default: 7d)",
+              "default": "7d",
+              "title": "Period"
+            },
+            "description": "Time period: 1d, 7d, 30d, 90d (default: 7d)"
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Grouping dimension (currently informational)",
+              "title": "Group By"
+            },
+            "description": "Grouping dimension (currently informational)"
+          },
+          {
+            "name": "top_brands_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "description": "Maximum number of top brands to return",
+              "default": 10,
+              "title": "Top Brands Limit"
+            },
+            "description": "Maximum number of top brands to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cost summary returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostSummaryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          },
+          "403": {
+            "description": "Admin access required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/admin/guardrails/brands/{brand_id}": {
       "get": {
         "tags": [
@@ -1022,6 +1129,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreditBalanceResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin access required"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/admin/observability/quality-metrics": {
+      "get": {
+        "tags": [
+          "admin-observability"
+        ],
+        "summary": "Get Quality Metrics",
+        "description": "Get content quality metrics aggregated from prompt revisions.\n\nAnalyzes the prompt_revisions table to provide:\n- Success/failure counts\n- Average, median, high/low quality scores\n- Common quality violation types",
+        "operationId": "get_quality_metrics_api_v2_admin_observability_quality_metrics_get",
+        "responses": {
+          "200": {
+            "description": "Quality metrics returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityMetricsResponse"
                 }
               }
             }
@@ -17115,6 +17252,66 @@
         "title": "ContextualBanditRecommendation",
         "description": "Response schema for contextual bandit recommendation."
       },
+      "CostByTypeEntry": {
+        "properties": {
+          "cost_usd": {
+            "type": "number",
+            "title": "Cost Usd",
+            "description": "Total USD cost for this type",
+            "default": 0.0
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "description": "Number of generation events for this type",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "CostByTypeEntry",
+        "description": "Cost breakdown for a single generation type."
+      },
+      "CostSummaryResponse": {
+        "properties": {
+          "total_cost_usd": {
+            "type": "number",
+            "title": "Total Cost Usd",
+            "description": "Total USD cost for the period",
+            "default": 0.0
+          },
+          "total_credits": {
+            "type": "number",
+            "title": "Total Credits",
+            "description": "Total credits consumed for the period",
+            "default": 0.0
+          },
+          "period": {
+            "type": "string",
+            "title": "Period",
+            "description": "Time period queried (e.g. 7d, 30d, 1d)",
+            "default": "7d"
+          },
+          "by_type": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CostByTypeEntry"
+            },
+            "type": "object",
+            "title": "By Type",
+            "description": "Cost breakdown by generation type (text, image, video, crawl)"
+          },
+          "top_brands": {
+            "items": {
+              "$ref": "#/components/schemas/TopBrandEntry"
+            },
+            "type": "array",
+            "title": "Top Brands",
+            "description": "Top brands ranked by total cost for the period"
+          }
+        },
+        "type": "object",
+        "title": "CostSummaryResponse",
+        "description": "Response schema for admin cost summary endpoint.\n\nReturns aggregated generation costs for the requested period,\nbroken down by generation type and top brands."
+      },
       "CrawlErrorSummary": {
         "properties": {
           "error_code": {
@@ -21051,6 +21248,94 @@
         "title": "PurgeExpiredDeletionsResponse",
         "description": "Response schema for the GDPR purge endpoint."
       },
+      "QualityMetricsResponse": {
+        "properties": {
+          "total_revisions": {
+            "type": "integer",
+            "title": "Total Revisions",
+            "description": "Total number of prompt revisions",
+            "default": 0
+          },
+          "successful_revisions": {
+            "type": "integer",
+            "title": "Successful Revisions",
+            "description": "Revisions that passed quality gates",
+            "default": 0
+          },
+          "failed_revisions": {
+            "type": "integer",
+            "title": "Failed Revisions",
+            "description": "Revisions that failed quality gates",
+            "default": 0
+          },
+          "average_quality_score": {
+            "type": "number",
+            "title": "Average Quality Score",
+            "description": "Average quality score across all revisions (0.0-1.0)",
+            "default": 0.0
+          },
+          "median_quality_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median Quality Score",
+            "description": "Median quality score across all revisions (0.0-1.0)"
+          },
+          "highest_quality_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Highest Quality Score",
+            "description": "Highest quality score recorded (0.0-1.0)"
+          },
+          "lowest_quality_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lowest Quality Score",
+            "description": "Lowest quality score recorded (0.0-1.0)"
+          },
+          "common_violations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Common Violations",
+            "description": "Most common quality violation types (e.g., relevance, coherence)"
+          },
+          "total_with_violations": {
+            "type": "integer",
+            "title": "Total With Violations",
+            "description": "Number of revisions with quality violations",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "QualityMetricsResponse",
+        "description": "Response schema for content quality metrics from prompt revisions."
+      },
       "RateLimitConfigResponse": {
         "properties": {
           "limits": {
@@ -23395,6 +23680,39 @@
         ],
         "title": "ToneAttributesV2",
         "description": "V2 Tone attributes for brand knowledge."
+      },
+      "TopBrandEntry": {
+        "properties": {
+          "brand_id": {
+            "type": "string",
+            "title": "Brand Id",
+            "description": "Brand ID"
+          },
+          "brand_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Name",
+            "description": "Brand name (if available)"
+          },
+          "cost_usd": {
+            "type": "number",
+            "title": "Cost Usd",
+            "description": "Total USD cost for this brand",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand_id"
+        ],
+        "title": "TopBrandEntry",
+        "description": "A single brand entry in the top brands by cost list."
       },
       "UnifiedPulseStatusResponse": {
         "properties": {
