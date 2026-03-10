@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1190] - 2026-03-10
+
+### Changes
+- feat: add automated Instagram token refresh before expiry (#3066) (#3332)
+
+**Source:** project-beta-api@35c9b816
+
 ## [v0.7.1189] - 2026-03-10
 
 ### Changes
