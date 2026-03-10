@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1191] - 2026-03-10
+
+### Changes
+- feat: add model fallback when primary AI service fails (#3063) (#3333)
+
+**Source:** project-beta-api@d6fa94f8
+
 ## [v0.7.1190] - 2026-03-10
 
 ### Changes
