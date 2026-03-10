@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1192] - 2026-03-10
+
+### Changes
+- fix: encrypt OAuth tokens at rest with Fernet symmetric encryption (#3065) (#3334)
+
+**Source:** project-beta-api@7693274e
+
 ## [v0.7.1191] - 2026-03-10
 
 ### Changes
