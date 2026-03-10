@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1193] - 2026-03-10
+
+### Changes
+- refactor: remove V2 suffixes from brand knowledge classes and methods (#3335)
+
+**Source:** project-beta-api@7d2c3055
+
 ## [v0.7.1192] - 2026-03-10
 
 ### Changes
