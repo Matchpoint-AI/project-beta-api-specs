@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1187] - 2026-03-10
+
+### Changes
+- fix: resolve test failures in content outputs controller and generation cost repository (#3329)
+
+**Source:** project-beta-api@8c9053d0
+
 ## [v0.7.1186] - 2026-03-10
 
 ### Changes
