@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1216] - 2026-03-11
+
+### Changes
+- feat: add webhook subscription endpoints for automation platform integration (#3360)
+
+**Source:** project-beta-api@7d5092fd
+
 ## [v0.7.1215] - 2026-03-11
 
 ### Changes
