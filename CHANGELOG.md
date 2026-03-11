@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1213] - 2026-03-11
+
+### Changes
+- feat: add campaign language field for i18n content generation (#3004) (#3357)
+
+**Source:** project-beta-api@0355abe0
+
 ## [v0.7.1212] - 2026-03-11
 
 ### Changes
