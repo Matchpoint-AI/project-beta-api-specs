@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1235] - 2026-03-11
+
+### Changes
+- feat: add TypeScript type generation from OpenAPI spec (#3381) (#3382)
+
+**Source:** project-beta-api@758708ef
+
 ## [v0.7.1234] - 2026-03-11
 
 ### Changes
