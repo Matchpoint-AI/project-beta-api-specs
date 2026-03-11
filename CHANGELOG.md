@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1205] - 2026-03-11
+
+### Changes
+- feat: add generation_metadata JSONB for model/provider tracking (#3014) (#3348)
+
+**Source:** project-beta-api@2a7e63b1
+
 ## [v0.7.1204] - 2026-03-11
 
 ### Changes
