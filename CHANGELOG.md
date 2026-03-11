@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1222] - 2026-03-11
+
+### Changes
+- feat: add /health/live and /health/detailed monitoring endpoints (#3366)
+
+**Source:** project-beta-api@e8ef78a3
+
 ## [v0.7.1221] - 2026-03-11
 
 ### Changes
