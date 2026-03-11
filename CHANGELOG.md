@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1242] - 2026-03-11
+
+### Changes
+- feat: add admin QA scheduling controls for credit management (#2941) (#3388)
+
+**Source:** project-beta-api@1e9c0d0b
+
 ## [v0.7.1241] - 2026-03-11
 
 ### Changes
