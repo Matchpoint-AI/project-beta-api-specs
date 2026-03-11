@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1246] - 2026-03-11
+
+### Changes
+- feat: add social platform engagement data ingestion pipeline (#2213) (#3393)
+
+**Source:** project-beta-api@84d8235e
+
 ## [v0.7.1245] - 2026-03-11
 
 ### Changes
