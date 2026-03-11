@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1212] - 2026-03-11
+
+### Changes
+- feat: add multi-platform social publishing abstraction layer (#3001) (#3355)
+
+**Source:** project-beta-api@85bff1da
+
 ## [v0.7.1211] - 2026-03-11
 
 ### Changes
