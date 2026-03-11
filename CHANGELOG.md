@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1227] - 2026-03-11
+
+### Changes
+- feat: add engagement data ingestion pipeline with webhook and scheduler endpoints (#2995) (#3372)
+
+**Source:** project-beta-api@0434912a
+
 ## [v0.7.1226] - 2026-03-11
 
 ### Changes
