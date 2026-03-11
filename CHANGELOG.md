@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1247] - 2026-03-11
+
+### Changes
+- feat: add Instagram Insights integration (#3394)
+
+**Source:** project-beta-api@296b4e1b
+
 ## [v0.7.1246] - 2026-03-11
 
 ### Changes
