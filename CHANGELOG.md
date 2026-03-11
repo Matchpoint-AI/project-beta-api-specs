@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1223] - 2026-03-11
+
+### Changes
+- feat: add structured request logging middleware for observability (#3367)
+
+**Source:** project-beta-api@e194c062
+
 ## [v0.7.1222] - 2026-03-11
 
 ### Changes
