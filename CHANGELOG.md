@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1218] - 2026-03-11
+
+### Changes
+- feat: add HATEOAS hypermedia links to API responses (#3362)
+
+**Source:** project-beta-api@2b435078
+
 ## [v0.7.1217] - 2026-03-11
 
 ### Changes
