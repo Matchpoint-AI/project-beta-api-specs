@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1231] - 2026-03-11
+
+### Changes
+- feat: add structured audit logging middleware for API operations (#3377)
+
+**Source:** project-beta-api@05b8457a
+
 ## [v0.7.1230] - 2026-03-11
 
 ### Changes
