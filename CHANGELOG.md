@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1194] - 2026-03-11
+
+### Changes
+- fix: reject placeholder Instagram OAuth credentials (#3234) (#3336)
+
+**Source:** project-beta-api@f4ca3578
+
 ## [v0.7.1193] - 2026-03-10
 
 ### Changes
