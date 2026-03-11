@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1236] - 2026-03-11
+
+### Changes
+- perf: speed up test suite by reducing per-test overhead (#2687) (#3383)
+
+**Source:** project-beta-api@00f49ee6
+
 ## [v0.7.1235] - 2026-03-11
 
 ### Changes
