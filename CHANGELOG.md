@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1206] - 2026-03-11
+
+### Changes
+- fix: replace incorrect MIT license with proprietary license (#3349)
+
+**Source:** project-beta-api@2af562d8
+
 ## [v0.7.1205] - 2026-03-11
 
 ### Changes
