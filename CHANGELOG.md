@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1232] - 2026-03-11
+
+### Changes
+- feat: add data quality monitoring and validation for BigQuery pipeline (#2997) (#3378)
+
+**Source:** project-beta-api@9ac2b9b5
+
 ## [v0.7.1231] - 2026-03-11
 
 ### Changes
