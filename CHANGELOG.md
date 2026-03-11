@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1200] - 2026-03-11
+
+### Changes
+- feat: add abstract integration layer to decouple from Instagram (#3069) (#3343)
+
+**Source:** project-beta-api@e40db733
+
 ## [v0.7.1199] - 2026-03-11
 
 ### Changes
