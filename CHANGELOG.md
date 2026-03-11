@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1202] - 2026-03-11
+
+### Changes
+- feat: persist ML monitoring baselines in database (#3075) (#3344)
+
+**Source:** project-beta-api@9ba14aa6
+
 ## [v0.7.1201] - 2026-03-11
 
 ### Changes
