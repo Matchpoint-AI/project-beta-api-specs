@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1215] - 2026-03-11
+
+### Changes
+- feat: add public API endpoints for content generation (#3007) (#3359)
+
+**Source:** project-beta-api@d4678a89
+
 ## [v0.7.1214] - 2026-03-11
 
 ### Changes
