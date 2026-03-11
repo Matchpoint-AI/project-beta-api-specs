@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1241] - 2026-03-11
+
+### Changes
+- fix: align Black version to 26.1.0 and fix mypy errors (#2678) (#3389)
+
+**Source:** project-beta-api@8592f220
+
 ## [v0.7.1240] - 2026-03-11
 
 ### Changes
