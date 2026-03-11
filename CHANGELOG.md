@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1226] - 2026-03-11
+
+### Changes
+- feat: persist Thompson Sampling state across API restarts (#2996) (#3371)
+
+**Source:** project-beta-api@0356adb1
+
 ## [v0.7.1225] - 2026-03-11
 
 ### Changes
