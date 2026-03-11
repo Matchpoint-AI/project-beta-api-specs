@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1195] - 2026-03-11
+
+### Changes
+- feat: add OpenTelemetry distributed tracing (#3079) (#3337)
+
+**Source:** project-beta-api@9a226fee
+
 ## [v0.7.1194] - 2026-03-11
 
 ### Changes
