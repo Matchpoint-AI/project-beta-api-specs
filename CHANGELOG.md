@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1239] - 2026-03-11
+
+### Changes
+- simplify: remove dual naming convention in brand knowledge normalization (#3386)
+
+**Source:** project-beta-api@909a9db0
+
 ## [v0.7.1238] - 2026-03-11
 
 ### Changes
