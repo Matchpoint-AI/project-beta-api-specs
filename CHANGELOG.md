@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1208] - 2026-03-11
+
+### Changes
+- docs: add auth architecture v2 RFC with JWT design spec (#3351)
+
+**Source:** project-beta-api@211286c6
+
 ## [v0.7.1207] - 2026-03-11
 
 ### Changes
