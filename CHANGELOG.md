@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1244] - 2026-03-11
+
+### Changes
+- fix: remove unused brand-crawl-events pulse handling (#2585) (#3391)
+
+**Source:** project-beta-api@ce87f699
+
 ## [v0.7.1243] - 2026-03-11
 
 ### Changes
