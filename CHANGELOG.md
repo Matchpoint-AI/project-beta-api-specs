@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1234] - 2026-03-11
+
+### Changes
+- fix: wire httpOnly cookie transport into session endpoints (#2980) (#3380)
+
+**Source:** project-beta-api@b6658efa
+
 ## [v0.7.1233] - 2026-03-11
 
 ### Changes
