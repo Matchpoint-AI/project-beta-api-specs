@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1214] - 2026-03-11
+
+### Changes
+- feat: add request body limit and IP denylist middleware for DDoS hardening (#3114) (#3358)
+
+**Source:** project-beta-api@e4350fac
+
 ## [v0.7.1213] - 2026-03-11
 
 ### Changes
