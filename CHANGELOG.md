@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1225] - 2026-03-11
+
+### Changes
+- feat: add OpenAPI tag metadata and rich API description for Swagger UI (#3369)
+
+**Source:** project-beta-api@615ee82c
+
 ## [v0.7.1224] - 2026-03-11
 
 ### Changes
