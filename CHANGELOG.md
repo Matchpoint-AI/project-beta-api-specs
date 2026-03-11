@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1240] - 2026-03-11
+
+### Changes
+- fix: standardize post text terminology, replace ambiguous caption references (#3387)
+
+**Source:** project-beta-api@d048b9c2
+
 ## [v0.7.1239] - 2026-03-11
 
 ### Changes
