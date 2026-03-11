@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1198] - 2026-03-11
+
+### Changes
+- feat: add integration health monitoring endpoint (#3341)
+
+**Source:** project-beta-api@5d16adbb
+
 ## [v0.7.1197] - 2026-03-11
 
 ### Changes
