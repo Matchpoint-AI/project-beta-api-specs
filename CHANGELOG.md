@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1204] - 2026-03-11
+
+### Changes
+- feat: add content performance engagement feedback loop (#3347)
+
+**Source:** project-beta-api@d7736a74
+
 ## [v0.7.1203] - 2026-03-11
 
 ### Changes
