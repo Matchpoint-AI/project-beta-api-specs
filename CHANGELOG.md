@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1201] - 2026-03-11
+
+### Changes
+- feat: add load and performance testing infrastructure (#3074) (#3345)
+
+**Source:** project-beta-api@09186877
+
 ## [v0.7.1200] - 2026-03-11
 
 ### Changes
