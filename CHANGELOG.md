@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1228] - 2026-03-11
+
+### Changes
+- feat: add per-user cost attribution for unit economics (#2979) (#3373)
+
+**Source:** project-beta-api@8275cbdb
+
 ## [v0.7.1227] - 2026-03-11
 
 ### Changes
