@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1230] - 2026-03-11
+
+### Changes
+- feat: Stripe payment processor for subscription billing (#3376)
+
+**Source:** project-beta-api@d2556971
+
 ## [v0.7.1229] - 2026-03-11
 
 ### Changes
