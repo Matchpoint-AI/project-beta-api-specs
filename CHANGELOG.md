@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1209] - 2026-03-11
+
+### Changes
+- feat: add client SDK generation pipeline for Python and TypeScript (#3352)
+
+**Source:** project-beta-api@7ea79d05
+
 ## [v0.7.1208] - 2026-03-11
 
 ### Changes
