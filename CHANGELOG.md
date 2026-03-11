@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1203] - 2026-03-11
+
+### Changes
+- feat: add dynamic arm discovery for contextual bandit (#3070) (#3346)
+
+**Source:** project-beta-api@9019d6be
+
 ## [v0.7.1202] - 2026-03-11
 
 ### Changes
