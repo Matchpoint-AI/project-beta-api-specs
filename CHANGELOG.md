@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1224] - 2026-03-11
+
+### Changes
+- feat: add query performance monitoring and connection pool status endpoint (#3368)
+
+**Source:** project-beta-api@86d0e266
+
 ## [v0.7.1223] - 2026-03-11
 
 ### Changes
