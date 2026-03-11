@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1210] - 2026-03-11
+
+### Changes
+- feat: add IP ownership tracking to content pipeline (#3353)
+
+**Source:** project-beta-api@32eab740
+
 ## [v0.7.1209] - 2026-03-11
 
 ### Changes
