@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1199] - 2026-03-11
+
+### Changes
+- feat: add flaky test detection and quarantine system (#3076) (#3342)
+
+**Source:** project-beta-api@69719a18
+
 ## [v0.7.1198] - 2026-03-11
 
 ### Changes
