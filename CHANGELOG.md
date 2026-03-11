@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1238] - 2026-03-11
+
+### Changes
+- feat: re-implement notification system (#3385)
+
+**Source:** project-beta-api@e29d10e0
+
 ## [v0.7.1237] - 2026-03-11
 
 ### Changes
