@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1196] - 2026-03-11
+
+### Changes
+- feat: add model versioning and pinning to prevent preview model instability (#3068) (#3338)
+
+**Source:** project-beta-api@4c3514e8
+
 ## [v0.7.1195] - 2026-03-11
 
 ### Changes
