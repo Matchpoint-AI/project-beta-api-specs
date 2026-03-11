@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1243] - 2026-03-11
+
+### Changes
+- docs: add troubleshooting section for content generation, DB pool, and image timeout issues (#3390)
+
+**Source:** project-beta-api@460d4e78
+
 ## [v0.7.1242] - 2026-03-11
 
 ### Changes
