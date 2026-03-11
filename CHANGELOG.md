@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1211] - 2026-03-11
+
+### Changes
+- feat: connect Thompson Sampling feedback loop to engagement data (#3064) (#3354)
+
+**Source:** project-beta-api@1838e5ff
+
 ## [v0.7.1210] - 2026-03-11
 
 ### Changes
