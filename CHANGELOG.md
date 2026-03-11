@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1217] - 2026-03-11
+
+### Changes
+- feat: add DMCA takedown request endpoints (#3361)
+
+**Source:** project-beta-api@f4a584c1
+
 ## [v0.7.1216] - 2026-03-11
 
 ### Changes
