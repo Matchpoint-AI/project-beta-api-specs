@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1233] - 2026-03-11
+
+### Changes
+- feat: add plan limit definitions and enforcement dependencies (#2978) (#3379)
+
+**Source:** project-beta-api@9caaa546
+
 ## [v0.7.1232] - 2026-03-11
 
 ### Changes
