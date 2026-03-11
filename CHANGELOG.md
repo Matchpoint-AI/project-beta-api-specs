@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1229] - 2026-03-11
+
+### Changes
+- feat: add usage metering and per-user consumption tracking (#2977) (#3375)
+
+**Source:** project-beta-api@242a74c3
+
 ## [v0.7.1228] - 2026-03-11
 
 ### Changes
