@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1245] - 2026-03-11
+
+### Changes
+- feat: add brand user roles and permissions (RBAC) (#3392)
+
+**Source:** project-beta-api@3902f2c0
+
 ## [v0.7.1244] - 2026-03-11
 
 ### Changes
