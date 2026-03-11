@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1237] - 2026-03-11
+
+### Changes
+- feat: add multi-user brand access with membership and roles (#2614) (#3384)
+
+**Source:** project-beta-api@358e9aba
+
 ## [v0.7.1236] - 2026-03-11
 
 ### Changes
