@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1221] - 2026-03-11
+
+### Changes
+- feat: add copyright attribution tracking and content provenance metadata (#3119) (#3364)
+
+**Source:** project-beta-api@b54a46a4
+
 ## [v0.7.1220] - 2026-03-11
 
 ### Changes
