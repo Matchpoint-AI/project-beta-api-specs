@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1259] - 2026-03-12
+
+### Changes
+- feat: add multi-tenant workspaces with team invitations and activity feed (#3407)
+
+**Source:** project-beta-api@189d3417
+
 ## [v0.7.1258] - 2026-03-12
 
 ### Changes
