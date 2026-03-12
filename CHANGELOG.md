@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1265] - 2026-03-12
+
+### Changes
+- test: add e2e integration tests for content generation pipeline (#3413)
+
+**Source:** project-beta-api@50821145
+
 ## [v0.7.1264] - 2026-03-12
 
 ### Changes
