@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1261] - 2026-03-12
+
+### Changes
+- feat: add user preferences, notification settings, and API usage tracking (#3409)
+
+**Source:** project-beta-api@c1d2d7e6
+
 ## [v0.7.1260] - 2026-03-12
 
 ### Changes
