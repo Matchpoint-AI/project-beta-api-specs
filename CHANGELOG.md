@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1262] - 2026-03-12
+
+### Changes
+- feat: add data export, monthly reports, and custom report generation (#3410)
+
+**Source:** project-beta-api@e0647ae2
+
 ## [v0.7.1261] - 2026-03-12
 
 ### Changes
