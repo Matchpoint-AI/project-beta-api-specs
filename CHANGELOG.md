@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1251] - 2026-03-12
+
+### Changes
+- feat: add publish failure notifications and retry logic for content pipeline (#3398)
+
+**Source:** project-beta-api@34e2b0f4
+
 ## [v0.7.1250] - 2026-03-12
 
 ### Changes
