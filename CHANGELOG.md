@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1249] - 2026-03-12
+
+### Changes
+- feat: structure audience demographics as proper data model (#3396)
+
+**Source:** project-beta-api@4cec509c
+
 ## [v0.7.1248] - 2026-03-12
 
 ### Changes
