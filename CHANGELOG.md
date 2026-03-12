@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1276] - 2026-03-12
+
+### Changes
+- feat: add UI theme and default campaign config to user preferences (#3425)
+
+**Source:** project-beta-api@fe24bd95
+
 ## [v0.7.1275] - 2026-03-12
 
 ### Changes
