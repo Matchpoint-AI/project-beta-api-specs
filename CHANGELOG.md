@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1268] - 2026-03-12
+
+### Changes
+- feat: add workspace member management endpoints (list, update role, remove) (#3415)
+
+**Source:** project-beta-api@c0741514
+
 ## [v0.7.1267] - 2026-03-12
 
 ### Changes
