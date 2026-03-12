@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1253] - 2026-03-12
+
+### Changes
+- feat: observability improvements — structured logging, request tracing, health checks (#3400)
+
+**Source:** project-beta-api@39759a0f
+
 ## [v0.7.1252] - 2026-03-12
 
 ### Changes
