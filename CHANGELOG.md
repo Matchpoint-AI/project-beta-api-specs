@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1248] - 2026-03-12
+
+### Changes
+- fix: enrich agentic message builder with full brand crawl data (#3395)
+
+**Source:** project-beta-api@f763e8f5
+
 ## [v0.7.1247] - 2026-03-11
 
 ### Changes
