@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1269] - 2026-03-12
+
+### Changes
+- feat: add content approval workflow with multi-step review endpoints (#3417)
+
+**Source:** project-beta-api@e4294e9f
+
 ## [v0.7.1268] - 2026-03-12
 
 ### Changes
