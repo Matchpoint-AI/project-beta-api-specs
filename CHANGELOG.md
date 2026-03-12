@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1250] - 2026-03-12
+
+### Changes
+- feat: add cross-pass validation between text and image prompts (#3397)
+
+**Source:** project-beta-api@e68d8404
+
 ## [v0.7.1249] - 2026-03-12
 
 ### Changes
