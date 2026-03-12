@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1252] - 2026-03-12
+
+### Changes
+- fix: add pagination to unbounded queries and improve API key startup validation (#3399)
+
+**Source:** project-beta-api@4d4feac6
+
 ## [v0.7.1251] - 2026-03-12
 
 ### Changes
