@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1273] - 2026-03-12
+
+### Changes
+- feat: add brand campaign analytics aggregation endpoint (#3421)
+
+**Source:** project-beta-api@b31e5299
+
 ## [v0.7.1272] - 2026-03-12
 
 ### Changes
