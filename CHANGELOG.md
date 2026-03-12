@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1264] - 2026-03-12
+
+### Changes
+- test: add integration tests for workspaces, calendar, exports, reports, and usage tracking (#3412)
+
+**Source:** project-beta-api@21ac6fac
+
 ## [v0.7.1263] - 2026-03-12
 
 ### Changes
