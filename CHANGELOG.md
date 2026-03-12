@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1272] - 2026-03-12
+
+### Changes
+- feat: add brand assets validation endpoint (#3420)
+
+**Source:** project-beta-api@532f2a80
+
 ## [v0.7.1271] - 2026-03-12
 
 ### Changes
