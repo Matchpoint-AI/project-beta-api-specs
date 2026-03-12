@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1267] - 2026-03-12
+
+### Changes
+- feat: add campaign scheduling and content calendar endpoints (#3416)
+
+**Source:** project-beta-api@655238c7
+
 ## [v0.7.1266] - 2026-03-12
 
 ### Changes
