@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1258] - 2026-03-12
+
+### Changes
+- feat: add brand health score, campaign analytics, and quality trending endpoints (#3406)
+
+**Source:** project-beta-api@4b8ef57b
+
 ## [v0.7.1257] - 2026-03-12
 
 ### Changes
