@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1260] - 2026-03-12
+
+### Changes
+- feat: add content calendar API with scheduling, conflict detection, and optimal time suggestions (#3408)
+
+**Source:** project-beta-api@7c86b451
+
 ## [v0.7.1259] - 2026-03-12
 
 ### Changes
