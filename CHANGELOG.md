@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1257] - 2026-03-12
+
+### Changes
+- feat: add campaign scheduling, templates, duplication, and webhook notifications (#3405)
+
+**Source:** project-beta-api@847de654
+
 ## [v0.7.1256] - 2026-03-12
 
 ### Changes
