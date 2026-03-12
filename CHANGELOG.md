@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1274] - 2026-03-12
+
+### Changes
+- feat: add brand comparison endpoint for competitor analysis (#3423)
+
+**Source:** project-beta-api@dbad67f8
+
 ## [v0.7.1273] - 2026-03-12
 
 ### Changes
