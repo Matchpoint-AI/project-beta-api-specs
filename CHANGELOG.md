@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1256] - 2026-03-12
+
+### Changes
+- feat: add input sanitization utilities for user-provided text fields (#3404)
+
+**Source:** project-beta-api@7f00106d
+
 ## [v0.7.1255] - 2026-03-12
 
 ### Changes
