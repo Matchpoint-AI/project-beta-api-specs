@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1271] - 2026-03-12
+
+### Changes
+- feat: add brand asset management endpoints with user override support (#3419)
+
+**Source:** project-beta-api@79aff150
+
 ## [v0.7.1270] - 2026-03-12
 
 ### Changes
