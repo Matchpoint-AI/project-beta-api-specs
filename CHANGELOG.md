@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1270] - 2026-03-12
+
+### Changes
+- fix: add stripe to requirements.txt — missing dep crashes API on startup (#3418)
+
+**Source:** project-beta-api@8c49645f
+
 ## [v0.7.1269] - 2026-03-12
 
 ### Changes
