@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1263] - 2026-03-12
+
+### Changes
+- feat: add comprehensive OpenAPI docs, API versioning, and developer experience improvements (#3411)
+
+**Source:** project-beta-api@7ead021a
+
 ## [v0.7.1262] - 2026-03-12
 
 ### Changes
