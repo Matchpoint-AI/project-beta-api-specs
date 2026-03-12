@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1275] - 2026-03-12
+
+### Changes
+- feat: enhance webhook system with HTTP tests and reduce retry attempts (#3424)
+
+**Source:** project-beta-api@5067aebb
+
 ## [v0.7.1274] - 2026-03-12
 
 ### Changes
