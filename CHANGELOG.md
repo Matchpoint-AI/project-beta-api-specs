@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1254] - 2026-03-12
+
+### Changes
+- feat: add mood board, prompt template, and brand asset API endpoints (#3401)
+
+**Source:** project-beta-api@a25238a6
+
 ## [v0.7.1253] - 2026-03-12
 
 ### Changes
