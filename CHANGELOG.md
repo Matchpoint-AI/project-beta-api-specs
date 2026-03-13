@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1278] - 2026-03-13
+
+### Changes
+- fix: add missing runtime dependencies and graceful degradation for optional services (#3428)
+
+**Source:** project-beta-api@29ed099e
+
 ## [v0.7.1277] - 2026-03-12
 
 ### Changes
