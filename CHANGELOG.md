@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1308] - 2026-03-14
+
+### Changes
+- fix: re-apply content_credentials column lost to schema drift (#3468)
+
+**Source:** project-beta-api@0c6f253b
+
 ## [v0.7.1307] - 2026-03-14
 
 ### Changes
