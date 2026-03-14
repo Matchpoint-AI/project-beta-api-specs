@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1296] - 2026-03-14
+
+### Changes
+- fix: crawl/status endpoint gracefully degrades instead of 500ing (#3455)
+
+**Source:** project-beta-api@e50353ba
+
 ## [v0.7.1295] - 2026-03-14
 
 ### Changes
