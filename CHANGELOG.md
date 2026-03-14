@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1280] - 2026-03-14
+
+### Changes
+- fix: repair migration chain and add missing crawlstatus enum value (#3437)
+
+**Source:** project-beta-api@4c8c9a3d
+
 ## [v0.7.1279] - 2026-03-14
 
 ### Changes
