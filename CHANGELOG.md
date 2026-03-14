@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1289] - 2026-03-14
+
+### Changes
+- fix: remove self-referencing DI binding for SystemConfigService (#3446)
+
+**Source:** project-beta-api@b469a6bd
+
 ## [v0.7.1288] - 2026-03-14
 
 ### Changes
