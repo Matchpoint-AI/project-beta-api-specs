@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1295] - 2026-03-14
+
+### Changes
+- feat: add content generation retry endpoint for failed campaigns (#3454)
+
+**Source:** project-beta-api@2b14208e
+
 ## [v0.7.1294] - 2026-03-14
 
 ### Changes
