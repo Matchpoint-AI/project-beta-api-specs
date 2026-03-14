@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1309] - 2026-03-14
+
+### Changes
+- fix: return 503 with migration message instead of 500 on schema drift (#3469)
+
+**Source:** project-beta-api@a1d507cc
+
 ## [v0.7.1308] - 2026-03-14
 
 ### Changes
