@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1307] - 2026-03-14
+
+### Changes
+- feat: add pipeline stage tracking for content generation status (#3467)
+
+**Source:** project-beta-api@9a26a1df
+
 ## [v0.7.1306] - 2026-03-14
 
 ### Changes
