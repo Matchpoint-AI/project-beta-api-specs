@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1284] - 2026-03-14
+
+### Changes
+- fix: merge 21 migration heads into single chain and fix broken references (#3441)
+
+**Source:** project-beta-api@85e369c1
+
 ## [v0.7.1283] - 2026-03-14
 
 ### Changes
