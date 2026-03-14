@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1291] - 2026-03-14
+
+### Changes
+- feat: parse free-text demographics into structured model for image targeting (#3448)
+
+**Source:** project-beta-api@9f5f64a8
+
 ## [v0.7.1290] - 2026-03-14
 
 ### Changes
