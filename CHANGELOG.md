@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1311] - 2026-03-14
+
+### Changes
+- fix: add missing image categories to ImageCategory enum (#3471)
+
+**Source:** project-beta-api@9d156d0d
+
 ## [v0.7.1310] - 2026-03-14
 
 ### Changes
