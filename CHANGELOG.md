@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1312] - 2026-03-14
+
+### Changes
+- fix: add repair migration for missing brand_model_config table (#3472)
+
+**Source:** project-beta-api@b7c7bb0f
+
 ## [v0.7.1311] - 2026-03-14
 
 ### Changes
