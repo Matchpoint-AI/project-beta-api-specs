@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1281] - 2026-03-14
+
+### Changes
+- test: add integration tests for content generation pipeline endpoints (#3438)
+
+**Source:** project-beta-api@702fbc1b
+
 ## [v0.7.1280] - 2026-03-14
 
 ### Changes
