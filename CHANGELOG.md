@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1298] - 2026-03-14
+
+### Changes
+- fix: normalize free-text font source values from crawler LLM (#3456)
+
+**Source:** project-beta-api@d505d314
+
 ## [v0.7.1297] - 2026-03-14
 
 ### Changes
