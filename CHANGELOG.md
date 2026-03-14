@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1279] - 2026-03-14
+
+### Changes
+- docs: add version comment to health check endpoint response format (#3436)
+
+**Source:** project-beta-api@6ae0c01a
+
 ## [v0.7.1278] - 2026-03-13
 
 ### Changes
