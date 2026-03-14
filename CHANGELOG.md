@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1300] - 2026-03-14
+
+### Changes
+- feat: add manual brand visual identity entry endpoint (#3459)
+
+**Source:** project-beta-api@d636fa99
+
 ## [v0.7.1299] - 2026-03-14
 
 ### Changes
