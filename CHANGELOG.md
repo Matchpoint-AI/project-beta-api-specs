@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1306] - 2026-03-14
+
+### Changes
+- fix: resolve lint and type errors in diagnostics endpoint (#3466)
+
+**Source:** project-beta-api@3d510958
+
 ## [v0.7.1305] - 2026-03-14
 
 ### Changes
