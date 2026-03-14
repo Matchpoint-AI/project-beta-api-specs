@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1287] - 2026-03-14
+
+### Changes
+- test: add integration tests for brand data pipeline through agentic message builder (#3444)
+
+**Source:** project-beta-api@bdd15639
+
 ## [v0.7.1286] - 2026-03-14
 
 ### Changes
