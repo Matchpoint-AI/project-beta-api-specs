@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1288] - 2026-03-14
+
+### Changes
+- fix: remove non-head revisions from merge migrations to fix SQL render (#3445)
+
+**Source:** project-beta-api@11d624e5
+
 ## [v0.7.1287] - 2026-03-14
 
 ### Changes
