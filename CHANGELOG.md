@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1292] - 2026-03-14
+
+### Changes
+- fix: resolve ContentPatternExtractorService DI Protocol mismatch (#3449)
+
+**Source:** project-beta-api@30c61411
+
 ## [v0.7.1291] - 2026-03-14
 
 ### Changes
