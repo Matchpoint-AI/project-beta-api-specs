@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1297] - 2026-03-14
+
+### Changes
+- fix: increase stall detection threshold to 5 minutes and add stall_reason field (#3457)
+
+**Source:** project-beta-api@cc804924
+
 ## [v0.7.1296] - 2026-03-14
 
 ### Changes
