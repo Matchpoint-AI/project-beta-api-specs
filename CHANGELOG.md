@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1301] - 2026-03-14
+
+### Changes
+- fix: persist all campaign fields during creation (data loss bug) (#3460)
+
+**Source:** project-beta-api@75b856d5
+
 ## [v0.7.1300] - 2026-03-14
 
 ### Changes
