@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1294] - 2026-03-14
+
+### Changes
+- fix: reject sentinel values like "null" in SendGrid API key validation (#3452)
+
+**Source:** project-beta-api@d0ccda4f
+
 ## [v0.7.1293] - 2026-03-14
 
 ### Changes
