@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1299] - 2026-03-14
+
+### Changes
+- feat: add structured error logging and metrics to brand-crawl-output webhook (#3458)
+
+**Source:** project-beta-api@c0fed1e6
+
 ## [v0.7.1298] - 2026-03-14
 
 ### Changes
