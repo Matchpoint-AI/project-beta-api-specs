@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1293] - 2026-03-14
+
+### Changes
+- fix: handle pipeline error messages in designer_prompts_controller (#3450)
+
+**Source:** project-beta-api@46628332
+
 ## [v0.7.1292] - 2026-03-14
 
 ### Changes
