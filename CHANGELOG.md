@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1302] - 2026-03-14
+
+### Changes
+- feat: add campaign diagnostics endpoint for pipeline health inspection (#3461)
+
+**Source:** project-beta-api@f5283167
+
 ## [v0.7.1301] - 2026-03-14
 
 ### Changes
