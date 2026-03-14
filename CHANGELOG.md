@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1305] - 2026-03-14
+
+### Changes
+- fix: set variant_index default to 0 to fix placeholder post creation (#3464)
+
+**Source:** project-beta-api@90446804
+
 ## [v0.7.1304] - 2026-03-14
 
 ### Changes
