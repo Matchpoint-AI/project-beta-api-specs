@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1303] - 2026-03-14
+
+### Changes
+- fix: detect stalled campaigns when worker never picks up generation task (#3462)
+
+**Source:** project-beta-api@9f1e7e4a
+
 ## [v0.7.1302] - 2026-03-14
 
 ### Changes
