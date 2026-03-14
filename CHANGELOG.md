@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1304] - 2026-03-14
+
+### Changes
+- fix: allow content generation retry for stalled campaigns (#3463)
+
+**Source:** project-beta-api@9a897701
+
 ## [v0.7.1303] - 2026-03-14
 
 ### Changes
