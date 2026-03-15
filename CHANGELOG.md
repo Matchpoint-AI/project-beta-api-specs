@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1330] - 2026-03-15
+
+### Changes
+- fix: make rate limit path detection method-aware for post versions (#3489)
+
+**Source:** project-beta-api@cbf89daf
+
 ## [v0.7.1329] - 2026-03-15
 
 ### Changes
