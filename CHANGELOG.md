@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1334] - 2026-03-15
+
+### Changes
+- feat: add schema versioning to all Pub/Sub message schemas (#1956) (#3493)
+
+**Source:** project-beta-api@47d611c5
+
 ## [v0.7.1333] - 2026-03-15
 
 ### Changes
