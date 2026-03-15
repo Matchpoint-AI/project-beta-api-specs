@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1320] - 2026-03-15
+
+### Changes
+- feat: handle content designer pipeline errors to unblock stuck campaigns (#3453)
+
+**Source:** project-beta-api@d4734766
+
 ## [v0.7.1319] - 2026-03-15
 
 ### Changes
