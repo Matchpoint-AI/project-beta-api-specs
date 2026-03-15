@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1327] - 2026-03-15
+
+### Changes
+- fix: resolve N+1 query patterns in campaign list endpoint (#3486)
+
+**Source:** project-beta-api@548c292c
+
 ## [v0.7.1326] - 2026-03-15
 
 ### Changes
