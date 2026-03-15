@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1328] - 2026-03-15
+
+### Changes
+- feat: add structured logging to content generation flow (#1675) (#3487)
+
+**Source:** project-beta-api@28fa101b
+
 ## [v0.7.1327] - 2026-03-15
 
 ### Changes
