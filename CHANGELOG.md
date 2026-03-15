@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1338] - 2026-03-15
+
+### Changes
+- feat: add brand memory signals, prompt library, and image style library (#3498)
+
+**Source:** project-beta-api@e4e00ccc
+
 ## [v0.7.1337] - 2026-03-15
 
 ### Changes
