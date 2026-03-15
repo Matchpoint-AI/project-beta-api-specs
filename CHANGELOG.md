@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1335] - 2026-03-15
+
+### Changes
+- cleanup: remove deprecated content_generator_output_repository shim (#1630) (#3495)
+
+**Source:** project-beta-api@5b059183
+
 ## [v0.7.1334] - 2026-03-15
 
 ### Changes
