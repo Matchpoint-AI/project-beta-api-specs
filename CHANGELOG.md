@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1339] - 2026-03-15
+
+### Changes
+- feat: add reviewer/collaborator roles and independent element approval (#3480) (#3499)
+
+**Source:** project-beta-api@b565572f
+
 ## [v0.7.1338] - 2026-03-15
 
 ### Changes
