@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1314] - 2026-03-15
+
+### Changes
+- fix: remove duplicate Pub/Sub publish from campaign creation (#3474)
+
+**Source:** project-beta-api@a07b9f69
+
 ## [v0.7.1313] - 2026-03-14
 
 ### Changes
