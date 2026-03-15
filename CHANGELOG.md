@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1319] - 2026-03-15
+
+### Changes
+- fix: return 503 with 'coming soon' message for unconfigured Instagram OAuth (#3479)
+
+**Source:** project-beta-api@df76ee22
+
 ## [v0.7.1318] - 2026-03-15
 
 ### Changes
