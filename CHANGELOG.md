@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1317] - 2026-03-15
+
+### Changes
+- feat: add publish failure notifications for scheduled posts (#3477)
+
+**Source:** project-beta-api@179cfa7a
+
 ## [v0.7.1316] - 2026-03-15
 
 ### Changes
