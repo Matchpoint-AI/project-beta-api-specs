@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1340] - 2026-03-15
+
+### Changes
+- test: add missing service layer tests to close coverage gap (#1777) (#3501)
+
+**Source:** project-beta-api@8c91bfad
+
 ## [v0.7.1339] - 2026-03-15
 
 ### Changes
