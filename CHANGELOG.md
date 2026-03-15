@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1331] - 2026-03-15
+
+### Changes
+- feat: add missing database indexes from 32-model audit (#1768) (#3490)
+
+**Source:** project-beta-api@30c85901
+
 ## [v0.7.1330] - 2026-03-15
 
 ### Changes
