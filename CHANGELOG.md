@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1326] - 2026-03-15
+
+### Changes
+- feat: add circuit breaker for OpenRouter API calls (#3485)
+
+**Source:** project-beta-api@2c0aa2e0
+
 ## [v0.7.1325] - 2026-03-15
 
 ### Changes
