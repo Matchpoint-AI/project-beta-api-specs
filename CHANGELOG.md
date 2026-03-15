@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1321] - 2026-03-15
+
+### Changes
+- fix: bind UserService and FreeTierGuardrailService in brand controller tests (#3480)
+
+**Source:** project-beta-api@ef16617d
+
 ## [v0.7.1320] - 2026-03-15
 
 ### Changes
