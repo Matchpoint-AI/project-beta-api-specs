@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1332] - 2026-03-15
+
+### Changes
+- feat: rename CONTENT_* env vars to POST_* with backward compat (#1626) (#3491)
+
+**Source:** project-beta-api@af8f1b2d
+
 ## [v0.7.1331] - 2026-03-15
 
 ### Changes
