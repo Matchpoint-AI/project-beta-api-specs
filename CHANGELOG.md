@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1316] - 2026-03-15
+
+### Changes
+- fix: graceful degradation when SendGrid API key is "null" (#3476)
+
+**Source:** project-beta-api@df3ed8c7
+
 ## [v0.7.1315] - 2026-03-15
 
 ### Changes
