@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1336] - 2026-03-15
+
+### Changes
+- fix: resolve migration branch conflict and email verification (#3496)
+
+**Source:** project-beta-api@c6236fc4
+
 ## [v0.7.1335] - 2026-03-15
 
 ### Changes
