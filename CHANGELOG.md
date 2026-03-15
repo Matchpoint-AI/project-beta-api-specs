@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1329] - 2026-03-15
+
+### Changes
+- cleanup: remove deprecated content_* controller shim files (#3488)
+
+**Source:** project-beta-api@7c340d64
+
 ## [v0.7.1328] - 2026-03-15
 
 ### Changes
