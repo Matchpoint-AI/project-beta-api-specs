@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1341] - 2026-03-15
+
+### Changes
+- feat: add /posts routes with deprecation headers for /content routes (#3502)
+
+**Source:** project-beta-api@e129fb2a
+
 ## [v0.7.1340] - 2026-03-15
 
 ### Changes
