@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1337] - 2026-03-15
+
+### Changes
+- feat: implement Stripe billing and token system (FRD 4.6) (#3497)
+
+**Source:** project-beta-api@37a1e9b4
+
 ## [v0.7.1336] - 2026-03-15
 
 ### Changes
