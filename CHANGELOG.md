@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1322] - 2026-03-15
+
+### Changes
+- spec: FRD reconciliation — project-beta-api (#3481)
+
+**Source:** project-beta-api@eb21d12a
+
 ## [v0.7.1321] - 2026-03-15
 
 ### Changes
