@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1324] - 2026-03-15
+
+### Changes
+- fix: auto-set JWT_COOKIE_DOMAIN for cross-subdomain CSRF cookie sharing (#3483)
+
+**Source:** project-beta-api@e5ea3966
+
 ## [v0.7.1323] - 2026-03-15
 
 ### Changes
