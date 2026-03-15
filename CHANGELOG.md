@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1323] - 2026-03-15
+
+### Changes
+- docs: update README and AGENTS.md with FRD coverage (#3482)
+
+**Source:** project-beta-api@cc4dfb2c
+
 ## [v0.7.1322] - 2026-03-15
 
 ### Changes
