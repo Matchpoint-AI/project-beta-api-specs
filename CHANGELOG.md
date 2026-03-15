@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1315] - 2026-03-15
+
+### Changes
+- fix: pass all brand data to Content Designer instead of dropping 60% (#3475)
+
+**Source:** project-beta-api@6c7080ae
+
 ## [v0.7.1314] - 2026-03-15
 
 ### Changes
