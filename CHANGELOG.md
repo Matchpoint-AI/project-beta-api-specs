@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1333] - 2026-03-15
+
+### Changes
+- feat: add version info to structured request logs for cross-stack observability (#3492)
+
+**Source:** project-beta-api@8726a54f
+
 ## [v0.7.1332] - 2026-03-15
 
 ### Changes
