@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1318] - 2026-03-15
+
+### Changes
+- fix: return structured error codes on token refresh failure (#3478)
+
+**Source:** project-beta-api@bde9f3e1
+
 ## [v0.7.1317] - 2026-03-15
 
 ### Changes
