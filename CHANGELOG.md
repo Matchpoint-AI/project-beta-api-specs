@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1365] - 2026-03-16
+
+### Changes
+- feat: add per-user rate limits for campaign and brand creation (#3528)
+
+**Source:** project-beta-api@1749c5cb
+
 ## [v0.7.1364] - 2026-03-16
 
 ### Changes
