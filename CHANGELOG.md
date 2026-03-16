@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1362] - 2026-03-16
+
+### Changes
+- feat: add admin campaign analytics endpoints for staging demo (#3525)
+
+**Source:** project-beta-api@bc26083e
+
 ## [v0.7.1361] - 2026-03-16
 
 ### Changes
