@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1400] - 2026-03-16
+
+### Changes
+- feat: add multi-tenant isolation for workspace-scoped data access (#3574)
+
+**Source:** project-beta-api@b225e130
+
 ## [v0.7.1399] - 2026-03-16
 
 ### Changes
