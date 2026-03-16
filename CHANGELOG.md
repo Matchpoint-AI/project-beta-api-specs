@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1343] - 2026-03-16
+
+### Changes
+- fix: resolve alembic multiple heads preventing migration 3471 from running (#3506)
+
+**Source:** project-beta-api@01be8d28
+
 ## [v0.7.1342] - 2026-03-15
 
 ### Changes
