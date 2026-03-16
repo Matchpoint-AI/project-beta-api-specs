@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1389] - 2026-03-16
+
+### Changes
+- feat: add team_id to brands and email-based member invites (#3552)
+
+**Source:** project-beta-api@88606c5a
+
 ## [v0.7.1388] - 2026-03-16
 
 ### Changes
