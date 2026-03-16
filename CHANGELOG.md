@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1397] - 2026-03-16
+
+### Changes
+- feat: add data export API with CSV/JSON formats and async job support (#3571)
+
+**Source:** project-beta-api@59c150fa
+
 ## [v0.7.1396] - 2026-03-16
 
 ### Changes
