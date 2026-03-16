@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1379] - 2026-03-16
+
+### Changes
+- feat: add team and role-based access control (#3542)
+
+**Source:** project-beta-api@0dc2a8ad
+
 ## [v0.7.1378] - 2026-03-16
 
 ### Changes
