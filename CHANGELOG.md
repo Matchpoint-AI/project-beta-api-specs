@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1356] - 2026-03-16
+
+### Changes
+- feat: add Pub/Sub message deduplication to prevent duplicate content generation (#3519)
+
+**Source:** project-beta-api@3e49effb
+
 ## [v0.7.1355] - 2026-03-16
 
 ### Changes
