@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1371] - 2026-03-16
+
+### Changes
+- feat: add resource creation rate limits, input sanitization, and structured error responses (#3534)
+
+**Source:** project-beta-api@6e291311
+
 ## [v0.7.1370] - 2026-03-16
 
 ### Changes
