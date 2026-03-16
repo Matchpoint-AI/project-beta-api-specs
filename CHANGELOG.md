@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1403] - 2026-03-16
+
+### Changes
+- fix: align API specs with actual implementation (audit round 2) (#3578)
+
+**Source:** project-beta-api@fe1cda7d
+
 ## [v0.7.1402] - 2026-03-16
 
 ### Changes
