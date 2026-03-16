@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1377] - 2026-03-16
+
+### Changes
+- feat: add content editing and version history endpoints (#3540)
+
+**Source:** project-beta-api@b491bd6e
+
 ## [v0.7.1376] - 2026-03-16
 
 ### Changes
