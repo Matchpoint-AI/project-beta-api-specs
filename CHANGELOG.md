@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1388] - 2026-03-16
+
+### Changes
+- feat: add per-post metrics, daily time-series, content type breakdown, and caching (#3551)
+
+**Source:** project-beta-api@5d9208f0
+
 ## [v0.7.1387] - 2026-03-16
 
 ### Changes
