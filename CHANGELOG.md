@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1369] - 2026-03-16
+
+### Changes
+- feat: add complete OpenAPI tag metadata and spec validation tests (#3532)
+
+**Source:** project-beta-api@6f1e4575
+
 ## [v0.7.1368] - 2026-03-16
 
 ### Changes
