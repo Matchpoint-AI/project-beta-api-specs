@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1390] - 2026-03-16
+
+### Changes
+- feat: add content template management API with CRUD, versioning, and fat message integration (#3553)
+
+**Source:** project-beta-api@9a0faea1
+
 ## [v0.7.1389] - 2026-03-16
 
 ### Changes
