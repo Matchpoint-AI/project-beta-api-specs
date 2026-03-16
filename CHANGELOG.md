@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1368] - 2026-03-16
+
+### Changes
+- feat: add bulk brand import endpoint for agency onboarding (#3531)
+
+**Source:** project-beta-api@358ee071
+
 ## [v0.7.1367] - 2026-03-16
 
 ### Changes
