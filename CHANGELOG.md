@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1348] - 2026-03-16
+
+### Changes
+- fix: harden Instagram OAuth placeholder handling and add all-platform status (#3511)
+
+**Source:** project-beta-api@052eeb57
+
 ## [v0.7.1347] - 2026-03-16
 
 ### Changes
