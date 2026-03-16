@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1372] - 2026-03-16
+
+### Changes
+- feat: add webhook dispatch for campaign lifecycle events (#3535)
+
+**Source:** project-beta-api@0189d06f
+
 ## [v0.7.1371] - 2026-03-16
 
 ### Changes
