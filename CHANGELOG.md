@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1398] - 2026-03-16
+
+### Changes
+- feat: add comprehensive audit logging with query API and retention (#3572)
+
+**Source:** project-beta-api@9b72e62d
+
 ## [v0.7.1397] - 2026-03-16
 
 ### Changes
