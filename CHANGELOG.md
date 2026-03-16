@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1383] - 2026-03-16
+
+### Changes
+- feat: enhance OpenAPI docs with security schemes, rate limit headers, and CSRF documentation (#3546)
+
+**Source:** project-beta-api@2e5a14b0
+
 ## [v0.7.1382] - 2026-03-16
 
 ### Changes
