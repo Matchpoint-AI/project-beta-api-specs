@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1344] - 2026-03-16
+
+### Changes
+- fix: resolve startup crash in brand_memory_controller (P0) (#3507)
+
+**Source:** project-beta-api@88bad529
+
 ## [v0.7.1343] - 2026-03-16
 
 ### Changes
