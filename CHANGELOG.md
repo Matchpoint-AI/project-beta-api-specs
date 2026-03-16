@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1399] - 2026-03-16
+
+### Changes
+- feat: add multi-scope rate limiting with per-user, per-team, per-API-key support (#3573)
+
+**Source:** project-beta-api@6d6d5217
+
 ## [v0.7.1398] - 2026-03-16
 
 ### Changes
