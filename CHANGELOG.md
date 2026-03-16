@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1405] - 2026-03-16
+
+### Changes
+- feat: add API versioning with backward-compatible v1 routing and deprecation headers (#3579)
+
+**Source:** project-beta-api@634d287f
+
 ## [v0.7.1404] - 2026-03-16
 
 ### Changes
