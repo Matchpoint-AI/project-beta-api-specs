@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1381] - 2026-03-16
+
+### Changes
+- feat: add campaign templates with seed presets and create-from-template endpoint (#3544)
+
+**Source:** project-beta-api@c6fad82e
+
 ## [v0.7.1380] - 2026-03-16
 
 ### Changes
