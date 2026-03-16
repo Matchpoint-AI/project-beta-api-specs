@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1404] - 2026-03-16
+
+### Changes
+- fix: document cross-repo Pub/Sub schema dependencies (#3505) (#3580)
+
+**Source:** project-beta-api@88676cd9
+
 ## [v0.7.1403] - 2026-03-16
 
 ### Changes
