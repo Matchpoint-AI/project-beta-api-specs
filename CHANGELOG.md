@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1360] - 2026-03-16
+
+### Changes
+- fix: include development env in JWT_COOKIE_DOMAIN auto-set for CSRF (#3523)
+
+**Source:** project-beta-api@6a8a689a
+
 ## [v0.7.1359] - 2026-03-16
 
 ### Changes
