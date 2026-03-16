@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1353] - 2026-03-16
+
+### Changes
+- feat: hide AI prompts and quality metrics from public API responses (#3514)
+
+**Source:** project-beta-api@ccab15f4
+
 ## [v0.7.1352] - 2026-03-16
 
 ### Changes
