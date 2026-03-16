@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1396] - 2026-03-16
+
+### Changes
+- feat: add search and filtering API with full-text search, facets, and saved searches (#3559)
+
+**Source:** project-beta-api@7a148406
+
 ## [v0.7.1395] - 2026-03-16
 
 ### Changes
