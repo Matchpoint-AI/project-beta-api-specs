@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1386] - 2026-03-16
+
+### Changes
+- feat: add media asset management with upload, tagging, and usage tracking (#3549)
+
+**Source:** project-beta-api@46a75a8b
+
 ## [v0.7.1385] - 2026-03-16
 
 ### Changes
