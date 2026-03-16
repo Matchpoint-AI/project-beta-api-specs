@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1387] - 2026-03-16
+
+### Changes
+- feat: add subscription plans table and feature gating middleware (#3550)
+
+**Source:** project-beta-api@760e6159
+
 ## [v0.7.1386] - 2026-03-16
 
 ### Changes
