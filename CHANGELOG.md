@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1384] - 2026-03-16
+
+### Changes
+- feat: add search and filtering for campaigns and posts (#3547)
+
+**Source:** project-beta-api@38c2f67a
+
 ## [v0.7.1383] - 2026-03-16
 
 ### Changes
