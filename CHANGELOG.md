@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1394] - 2026-03-16
+
+### Changes
+- feat: add notification dispatch system with in-app and email channels (#3557)
+
+**Source:** project-beta-api@a5e1ed38
+
 ## [v0.7.1393] - 2026-03-16
 
 ### Changes
