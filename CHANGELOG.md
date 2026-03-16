@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1345] - 2026-03-16
+
+### Changes
+- feat: auto-generate brand guardrails from crawl data (#3508)
+
+**Source:** project-beta-api@b8afc321
+
 ## [v0.7.1344] - 2026-03-16
 
 ### Changes
