@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1378] - 2026-03-16
+
+### Changes
+- feat: add health check caching, pipeline status endpoint, and response time tracking (#3541)
+
+**Source:** project-beta-api@b74463a3
+
 ## [v0.7.1377] - 2026-03-16
 
 ### Changes
