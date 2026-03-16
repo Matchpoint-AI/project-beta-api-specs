@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1402] - 2026-03-16
+
+### Changes
+- feat: enhance media API with video support, CDN URLs, bulk ops, and storage tracking (#3577)
+
+**Source:** project-beta-api@12d82bc6
+
 ## [v0.7.1401] - 2026-03-16
 
 ### Changes
