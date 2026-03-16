@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1374] - 2026-03-16
+
+### Changes
+- feat: add bulk campaign operations with audit logging (#3537)
+
+**Source:** project-beta-api@d82b144b
+
 ## [v0.7.1373] - 2026-03-16
 
 ### Changes
