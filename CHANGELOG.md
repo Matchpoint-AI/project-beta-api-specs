@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1346] - 2026-03-16
+
+### Changes
+- feat: add font and campaign goal dimensions to cross-pass alignment validation (#3509)
+
+**Source:** project-beta-api@4dd6725b
+
 ## [v0.7.1345] - 2026-03-16
 
 ### Changes
