@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1392] - 2026-03-16
+
+### Changes
+- feat: add API key management controller tests (#3555)
+
+**Source:** project-beta-api@362f5648
+
 ## [v0.7.1391] - 2026-03-16
 
 ### Changes
