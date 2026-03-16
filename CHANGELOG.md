@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1393] - 2026-03-16
+
+### Changes
+- feat: add usage metering and billing events for consumption-based billing (#3556)
+
+**Source:** project-beta-api@1340d3c7
+
 ## [v0.7.1392] - 2026-03-16
 
 ### Changes
