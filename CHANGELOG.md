@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1401] - 2026-03-16
+
+### Changes
+- feat: add comprehensive health diagnostics endpoint with queue depth and cache stats (#3575)
+
+**Source:** project-beta-api@6588d2ec
+
 ## [v0.7.1400] - 2026-03-16
 
 ### Changes
