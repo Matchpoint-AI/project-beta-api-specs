@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1357] - 2026-03-16
+
+### Changes
+- feat: improve campaign lifecycle management for staging readiness (#3520)
+
+**Source:** project-beta-api@23b12769
+
 ## [v0.7.1356] - 2026-03-16
 
 ### Changes
