@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1380] - 2026-03-16
+
+### Changes
+- feat: add export and reporting capabilities with CSV, PDF, and scheduled digests (#3543)
+
+**Source:** project-beta-api@0aa2fa08
+
 ## [v0.7.1379] - 2026-03-16
 
 ### Changes
