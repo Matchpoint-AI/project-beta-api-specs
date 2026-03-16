@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1382] - 2026-03-16
+
+### Changes
+- feat: add user onboarding progress tracking and guided setup flow (#3545)
+
+**Source:** project-beta-api@4dba726b
+
 ## [v0.7.1381] - 2026-03-16
 
 ### Changes
