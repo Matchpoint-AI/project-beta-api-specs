@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1367] - 2026-03-16
+
+### Changes
+- feat: add campaign duplication endpoint (#3530)
+
+**Source:** project-beta-api@ec09630b
+
 ## [v0.7.1366] - 2026-03-16
 
 ### Changes
