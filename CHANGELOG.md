@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1352] - 2026-03-16
+
+### Changes
+- fix: make roles and billing migrations idempotent (P0) (#3516)
+
+**Source:** project-beta-api@ac1b77ff
+
 ## [v0.7.1351] - 2026-03-16
 
 ### Changes
