@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1373] - 2026-03-16
+
+### Changes
+- feat: enhance campaign and brand analytics with failed counts, generation time stats, and pagination (#3536)
+
+**Source:** project-beta-api@44747457
+
 ## [v0.7.1372] - 2026-03-16
 
 ### Changes
