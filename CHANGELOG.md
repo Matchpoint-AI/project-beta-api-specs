@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1370] - 2026-03-16
+
+### Changes
+- feat: add cross-brand comparison endpoint for side-by-side crawl data (#3533)
+
+**Source:** project-beta-api@beb5e0a2
+
 ## [v0.7.1369] - 2026-03-16
 
 ### Changes
