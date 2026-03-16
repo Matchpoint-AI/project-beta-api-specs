@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1351] - 2026-03-16
+
+### Changes
+- feat: add granular rate limits for public auth endpoints (#3515)
+
+**Source:** project-beta-api@1e3a70e7
+
 ## [v0.7.1350] - 2026-03-16
 
 ### Changes
