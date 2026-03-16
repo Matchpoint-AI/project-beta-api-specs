@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1349] - 2026-03-16
+
+### Changes
+- feat: add preference-aware publish failure notifications (#3512)
+
+**Source:** project-beta-api@b0c1960d
+
 ## [v0.7.1348] - 2026-03-16
 
 ### Changes
