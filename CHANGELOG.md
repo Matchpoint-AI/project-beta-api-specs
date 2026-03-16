@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1347] - 2026-03-16
+
+### Changes
+- fix: token refresh reliability — proactive refresh and structured logging (#3510)
+
+**Source:** project-beta-api@b417e719
+
 ## [v0.7.1346] - 2026-03-16
 
 ### Changes
