@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1364] - 2026-03-16
+
+### Changes
+- feat: add brand data enrichment validation for content generation (#3527)
+
+**Source:** project-beta-api@e1557d55
+
 ## [v0.7.1363] - 2026-03-16
 
 ### Changes
