@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1366] - 2026-03-16
+
+### Changes
+- feat: add content generation preferences to user preferences API (#3529)
+
+**Source:** project-beta-api@f299a907
+
 ## [v0.7.1365] - 2026-03-16
 
 ### Changes
