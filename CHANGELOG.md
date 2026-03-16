@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1355] - 2026-03-16
+
+### Changes
+- feat: add deep health check endpoint with critical/non-critical deps (#3518)
+
+**Source:** project-beta-api@0794caea
+
 ## [v0.7.1354] - 2026-03-16
 
 ### Changes
