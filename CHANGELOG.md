@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1385] - 2026-03-16
+
+### Changes
+- feat: add activity feed and audit logging system (#3548)
+
+**Source:** project-beta-api@70fcc102
+
 ## [v0.7.1384] - 2026-03-16
 
 ### Changes
