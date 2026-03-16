@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1358] - 2026-03-16
+
+### Changes
+- test: add campaign lifecycle, message builder, and migration chain tests (#3521)
+
+**Source:** project-beta-api@9183e966
+
 ## [v0.7.1357] - 2026-03-16
 
 ### Changes
