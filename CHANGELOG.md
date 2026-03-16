@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1354] - 2026-03-16
+
+### Changes
+- feat: add structured pipeline logging for content generation tracing (#3517)
+
+**Source:** project-beta-api@1a2458cc
+
 ## [v0.7.1353] - 2026-03-16
 
 ### Changes
