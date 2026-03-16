@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1359] - 2026-03-16
+
+### Changes
+- test: add integration tests for content pipeline Pub/Sub message flow and campaign fan-out (#3522)
+
+**Source:** project-beta-api@ec37caf7
+
 ## [v0.7.1358] - 2026-03-16
 
 ### Changes
