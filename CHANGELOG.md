@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1375] - 2026-03-16
+
+### Changes
+- feat: add notification preferences and PATCH mark-as-read endpoint (#3538)
+
+**Source:** project-beta-api@90d384fb
+
 ## [v0.7.1374] - 2026-03-16
 
 ### Changes
