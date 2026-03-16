@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1361] - 2026-03-16
+
+### Changes
+- security: harden API input validation, rate limiting, and error sanitization (#3524)
+
+**Source:** project-beta-api@f255104b
+
 ## [v0.7.1360] - 2026-03-16
 
 ### Changes
