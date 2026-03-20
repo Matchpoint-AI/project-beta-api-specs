@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1407] - 2026-03-20
+
+### Changes
+- fix: resolve PostVersionRepository forward reference crash (#3582)
+
+**Source:** project-beta-api@26d4fb29
+
 ## [v0.7.1406] - 2026-03-20
 
 ### Changes
