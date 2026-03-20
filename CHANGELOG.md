@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1406] - 2026-03-20
+
+### Changes
+- fix: trigger release to rebuild Docker image (#3581)
+
+**Source:** project-beta-api@2260cafa
+
 ## [v0.7.1405] - 2026-03-16
 
 ### Changes
