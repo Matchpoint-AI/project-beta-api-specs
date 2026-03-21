@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1411] - 2026-03-21
+
+### Changes
+- fix: chain orphaned alembic migration (#3587)
+
+**Source:** project-beta-api@61f3ab51
+
 ## [v0.7.1410] - 2026-03-21
 
 ### Changes
