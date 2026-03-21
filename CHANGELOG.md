@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1408] - 2026-03-21
+
+### Changes
+- feat: add demo data seeding script for platform showcase (#3590)
+
+**Source:** project-beta-api@ec908cf2
+
 ## [v0.7.1407] - 2026-03-20
 
 ### Changes
