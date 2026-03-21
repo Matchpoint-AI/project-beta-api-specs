@@ -11,7 +11,7 @@
       "name": "Proprietary",
       "url": "https://matchpointai.com/terms"
     },
-    "version": "0.7.1409"
+    "version": "0.7.1410"
   },
   "servers": [
     {
@@ -4589,7 +4589,7 @@
           "brand-memory"
         ],
         "summary": "List Brand Memory",
-        "description": "List brand memory signals.",
+        "description": "List brand memory signals with optional type and date range filters.",
         "operationId": "list_brand_memory_api_v2_brands__brand_id__memory_get",
         "security": [
           {
@@ -4623,6 +4623,44 @@
               "title": "Signal Type"
             },
             "description": "Filter by signal type"
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter signals from this date",
+              "title": "Date From"
+            },
+            "description": "Filter signals from this date"
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter signals until this date",
+              "title": "Date To"
+            },
+            "description": "Filter signals until this date"
           },
           {
             "name": "limit",
@@ -8523,6 +8561,81 @@
         }
       }
     },
+    "/api/v2/campaigns/{campaign_id}/generation_status": {
+      "get": {
+        "tags": [
+          "campaigns",
+          "campaign-generation"
+        ],
+        "summary": "Get Generation Status",
+        "description": "Get generation status for frontend polling (every 5s).\n\nReturns {status, posts_completed, posts_total, current_stage}.\nSection 2.16: Pulse transport polling endpoint.",
+        "operationId": "get_generation_status_api_v2_campaigns__campaign_id__generation_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          },
+          {
+            "name": "correlation_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Correlation ID for tracing",
+              "title": "Correlation Id"
+            },
+            "description": "Correlation ID for tracing"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generation status for frontend polling",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignContentStatusResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Campaign not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/campaigns/{campaign_id}/content/generations": {
       "post": {
         "tags": [
@@ -9720,6 +9833,183 @@
         }
       }
     },
+    "/api/v2/campaigns/{campaign_id}/generate-questions": {
+      "post": {
+        "tags": [
+          "campaign-ai"
+        ],
+        "summary": "Generate Questions",
+        "description": "Generate dynamic questions for campaign wizard (placeholder).\n\nReturns mock questions. Real AI generation will be wired in later.",
+        "operationId": "generate_questions_api_v2_campaigns__campaign_id__generate_questions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateQuestionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI-generated dynamic questions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateQuestionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/generate-timing": {
+      "post": {
+        "tags": [
+          "campaign-ai"
+        ],
+        "summary": "Generate Timing",
+        "description": "Generate timing suggestion for a campaign (placeholder).\n\nReturns mock timing data. Real AI analysis will be wired in later.",
+        "operationId": "generate_timing_api_v2_campaigns__campaign_id__generate_timing_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateTimingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI-generated timing suggestion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateTimingResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/campaigns/{campaign_id}/generate-brief": {
+      "post": {
+        "tags": [
+          "campaign-ai"
+        ],
+        "summary": "Generate Brief",
+        "description": "Generate a creative brief for a campaign (placeholder).\n\nReturns mock brief. Real AI brief generation will be wired in later.",
+        "operationId": "generate_brief_api_v2_campaigns__campaign_id__generate_brief_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The campaign ID",
+              "title": "Campaign Id"
+            },
+            "description": "The campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "AI-generated creative brief",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateBriefResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/campaigns/{campaign_id}/export/csv": {
       "get": {
         "tags": [
@@ -10633,183 +10923,6 @@
           },
           "404": {
             "description": "Template not found"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/generate-questions": {
-      "post": {
-        "tags": [
-          "campaign-ai"
-        ],
-        "summary": "Generate Questions",
-        "description": "Generate dynamic questions for campaign wizard (placeholder).\n\nReturns mock questions. Real AI generation will be wired in later.",
-        "operationId": "generate_questions_api_v2_campaigns__campaign_id__generate_questions_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerateQuestionsRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "AI-generated dynamic questions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenerateQuestionsResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/generate-timing": {
-      "post": {
-        "tags": [
-          "campaign-ai"
-        ],
-        "summary": "Generate Timing",
-        "description": "Generate timing suggestion for a campaign (placeholder).\n\nReturns mock timing data. Real AI analysis will be wired in later.",
-        "operationId": "generate_timing_api_v2_campaigns__campaign_id__generate_timing_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerateTimingRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "AI-generated timing suggestion",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenerateTimingResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/campaigns/{campaign_id}/generate-brief": {
-      "post": {
-        "tags": [
-          "campaign-ai"
-        ],
-        "summary": "Generate Brief",
-        "description": "Generate a creative brief for a campaign (placeholder).\n\nReturns mock brief. Real AI brief generation will be wired in later.",
-        "operationId": "generate_brief_api_v2_campaigns__campaign_id__generate_brief_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "campaign_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "description": "The campaign ID",
-              "title": "Campaign Id"
-            },
-            "description": "The campaign ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "AI-generated creative brief",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenerateBriefResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required"
           },
           "422": {
             "description": "Validation Error",

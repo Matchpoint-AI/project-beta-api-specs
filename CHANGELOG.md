@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1410] - 2026-03-21
+
+### Changes
+- feat: Phase 2 API features (2.1, 2.4, 2.6, 2.15, 2.16) (#3588)
+
+**Source:** project-beta-api@908f9ff1
+
 ## [v0.7.1409] - 2026-03-21
 
 ### Changes
