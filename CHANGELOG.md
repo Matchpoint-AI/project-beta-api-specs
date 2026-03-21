@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1409] - 2026-03-21
+
+### Changes
+- feat(api): Phase 2 billing, brand research, and image scanning (2.10-2.14) (#3589)
+
+**Source:** project-beta-api@86df90a0
+
 ## [v0.7.1408] - 2026-03-21
 
 ### Changes
