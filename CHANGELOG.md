@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1412] - 2026-03-22
+
+### Changes
+- test: add critical test coverage (unit, integration, E2E) (#3591)
+
+**Source:** project-beta-api@6a0d2599
+
 ## [v0.7.1411] - 2026-03-21
 
 ### Changes
