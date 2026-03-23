@@ -2,6 +2,13 @@
 
 All notable changes to the Project Beta API specification will be documented in this file.
 
+## [v0.7.1413] - 2026-03-23
+
+### Changes
+- fix: resolve SceneMixPolicy mapper crash (P0) (#3593)
+
+**Source:** project-beta-api@c34843e8
+
 ## [v0.7.1412] - 2026-03-22
 
 ### Changes
